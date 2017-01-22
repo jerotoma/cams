@@ -7,7 +7,18 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
+    'CreateAssessmentsTable' => $baseDir . '/database/migrations/2017_01_20_095007_create_assessments_table.php',
+    'CreateCampsTable' => $baseDir . '/database/migrations/2017_01_19_144953_create_camps_table.php',
+    'CreateClientFamiliesTable' => $baseDir . '/database/migrations/2017_01_19_151016_create_client_families_table.php',
+    'CreateClientVulnerabilityCodesTable' => $baseDir . '/database/migrations/2017_01_20_100418_create_client_vulnerability_codes_table.php',
+    'CreateClientsTable' => $baseDir . '/database/migrations/2017_01_14_082929_create_clients_table.php',
+    'CreateCountriesTable' => $baseDir . '/database/migrations/2017_01_19_144819_create_countries_table.php',
+    'CreateDepartmentsTable' => $baseDir . '/database/migrations/2017_01_19_144559_create_departments_table.php',
+    'CreateDistrictsTable' => $baseDir . '/database/migrations/2017_01_19_144932_create_districts_table.php',
+    'CreateHousholdProfilesTable' => $baseDir . '/database/migrations/2017_01_20_103359_create_houshold_profiles_table.php',
+    'CreatePSNCodesTable' => $baseDir . '/database/migrations/2017_01_19_151759_create_p_s_n_codes_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
+    'CreateRegionsTable' => $baseDir . '/database/migrations/2017_01_19_144922_create_regions_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'EntrustSetupTables' => $baseDir . '/database/migrations/2017_01_14_072224_entrust_setup_tables.php',
@@ -574,5 +585,6 @@ return array(
     'SebastianBergmann\\Version' => $vendorDir . '/sebastian/version/src/Version.php',
     'TestCase' => $baseDir . '/tests/TestCase.php',
     'Text_Template' => $vendorDir . '/phpunit/php-text-template/src/Template.php',
+    'UsersTableSeeder' => $baseDir . '/database/seeds/UsersTableSeeder.php',
     'Zizaco\\Entrust\\MigrationCommand' => $vendorDir . '/zizaco/entrust/src/commands/MigrationCommand.php',
 );

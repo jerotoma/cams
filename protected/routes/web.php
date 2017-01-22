@@ -11,6 +11,21 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','HomeController@index');
+Route::get('home','HomeController@index');
+Route::get('login','UserController@login');
+Route::post('login','UserController@postLogin');
+Route::get('logout','UserController@logout');
+
+//Countries
+Route::resource('countries','CountryController');
+Route::resource('regions','RegionController');
+Route::get('fetch/districts/{id}','RegionController@getDistrictsById');
+Route::resource('districts','DistrictController');
+Route::resource('camps','CampController');
+Route::resource('departments','DepartmentController');
+Route::resource('psncodes','PSNCodesController');
+Route::resource('clients','ClientsController');
+
+
+

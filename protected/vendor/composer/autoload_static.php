@@ -368,7 +368,18 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
 
     public static $classMap = array (
         'Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
+        'CreateAssessmentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_20_095007_create_assessments_table.php',
+        'CreateCampsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_144953_create_camps_table.php',
+        'CreateClientFamiliesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_151016_create_client_families_table.php',
+        'CreateClientVulnerabilityCodesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_20_100418_create_client_vulnerability_codes_table.php',
+        'CreateClientsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_14_082929_create_clients_table.php',
+        'CreateCountriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_144819_create_countries_table.php',
+        'CreateDepartmentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_144559_create_departments_table.php',
+        'CreateDistrictsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_144932_create_districts_table.php',
+        'CreateHousholdProfilesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_20_103359_create_houshold_profiles_table.php',
+        'CreatePSNCodesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_151759_create_p_s_n_codes_table.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
+        'CreateRegionsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_144922_create_regions_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'EntrustSetupTables' => __DIR__ . '/../..' . '/database/migrations/2017_01_14_072224_entrust_setup_tables.php',
@@ -935,6 +946,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
         'TestCase' => __DIR__ . '/../..' . '/tests/TestCase.php',
         'Text_Template' => __DIR__ . '/..' . '/phpunit/php-text-template/src/Template.php',
+        'UsersTableSeeder' => __DIR__ . '/../..' . '/database/seeds/UsersTableSeeder.php',
         'Zizaco\\Entrust\\MigrationCommand' => __DIR__ . '/..' . '/zizaco/entrust/src/commands/MigrationCommand.php',
     );
 
