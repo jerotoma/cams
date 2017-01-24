@@ -21,7 +21,7 @@ class CreateClientsTable extends Migration
             $table->integer('age')->nullable();
             $table->string('civil_status')->nullable();
             $table->string('care_giver')->nullable();
-            $table->string('nationality')->nullable();
+            $table->integer('country_id')->nullable();
             $table->date('date_arrival')->nullable();
             $table->string('present_address')->nullable();
             $table->string('household_number')->nullable();

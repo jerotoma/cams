@@ -30,9 +30,9 @@
                 <li>
                     <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
                     <ul>
-                        <li ><a href="{{url('assessments/create')}}">Vulnerability assessment</a></li>
-                        <li><a href="{{url('import/assessments')}}">Inclusion assessment</a></li>
-                        <li><a href="{{url('export/assessments')}}">Wheelchair Assessment</a></li>
+                        <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
+                        <li><a href="{{url('assessments/inclusion')}}">Inclusion assessment</a></li>
+                        <li><a href="{{url('assessments/wheelchair')}}">Wheelchair Assessment</a></li>
                         <li><a href="{{url('reports/assessments')}}">Assessments Report</a></li>
                     </ul>
                 </li>
@@ -47,7 +47,41 @@
                     </ul>
                 </li>
                 <!-- /main -->
-
+                <!-- Forms -->
+                <li class="navigation-header"><span>Material Distribution</span> <i class="icon-menu" title="Material Distribution"></i></li>
+                <li>
+                    <a href="#"><i class="icon-popout"></i> <span>Material Distribution</span></a>
+                    <ul>
+                        <li><a href="{{url('inventory/received/create')}}">Add Records</a></li>
+                        <li><a href="{{url('inventory/received')}}">Search Records</a></li>
+                        <li><a href="{{url('import/received/items')}}">Import data</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-list"></i> <span>Received Materials</span></a>
+                    <ul>
+                        <li><a href="{{url('inventory/received/create')}}">Add Records</a></li>
+                        <li><a href="{{url('inventory/received')}}">Search Records</a></li>
+                        <li><a href="{{url('import/received/items')}}">Import data</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-stack"></i> <span>Material Inventory</span></a>
+                    <ul>
+                        <li><a href="{{url('inventory/create')}}">Add Item</a></li>
+                        <li><a href="{{url('inventory')}}">List All Item</a></li>
+                        <li><a href="{{url('inventory/Import')}}">Import</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-grid"></i> <span>Inventory Categories</span></a>
+                    <ul>
+                        <li><a href="{{url('inventory/categories')}}">Add Category</a></li>
+                        <li><a href="{{url('inventory/categories')}}">List All Item</a></li>
+                        <li><a href="{{url('inventory/Import')}}">Import</a></li>
+                    </ul>
+                </li>
+                <!-- /forms -->
                 <!-- Forms -->
                 <li class="navigation-header"><span>Rehabilitation</span> <i class="icon-menu" title="Forms"></i></li>
                 <li>

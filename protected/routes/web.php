@@ -26,6 +26,19 @@ Route::resource('camps','CampController');
 Route::resource('departments','DepartmentController');
 Route::resource('psncodes','PSNCodesController');
 Route::resource('clients','ClientsController');
+Route::resource('inventory','ItemInventoryController@index');
+Route::resource('inventory/categories','ItemsCategoriesController@index');
+Route::resource('inventory/disbursement','ItemsDisbursementController@index');
+Route::resource('inventory/received','ItemsReceivingController@index');
+
+//Assessments
+Route::resource('assessments/vulnerability','VulnerabilityController@index');
+
+//Import
+Route::get('inventory/import','ItemInventoryController@showImport');
+Route::post('inventory/import','ItemInventoryController@postImport');
+Route::get('inventory/disbursement/import','ItemsDisbursementController@showImport');
+Route::post('inventory/disbursement/import','ItemsDisbursementController@postImport');
 
 
 

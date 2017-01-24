@@ -105,7 +105,18 @@
                     </div>
                {!! Form::close() !!}
                 <!-- /advanced login -->
-
+                <script>
+                    $("#formLogin").validate({
+                        rules: {
+                            username: "required",
+                            password: "required"
+                        },
+                        messages: {
+                            username: "Enter your username",
+                            password: "Enter your password"
+                        }
+                    });
+                </script>
             </div>
             <!-- /content area -->
 

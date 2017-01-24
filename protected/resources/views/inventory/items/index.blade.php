@@ -8,6 +8,96 @@
 @stop
 @section('scripts')
     <script>
+        $(".addRegion").click(function(){
+            var modaldis = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+            modaldis+= '<div class="modal-content">';
+            modaldis+= '<div class="modal-header .bg-primary ">';
+            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Add Item</span>';
+            modaldis+= '</div>';
+            modaldis+= '<div class="modal-body">';
+            modaldis+= ' </div>';
+            modaldis+= '</div>';
+            modaldis+= '</div>';
+            $('body').css('overflow','hidden');
+
+            $("body").append(modaldis);
+            $("#myModal").modal("show");
+            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+            $(".modal-body").load("<?php echo url("inventory/create") ?>");
+            $("#myModal").on('hidden.bs.modal',function(){
+                $("#myModal").remove();
+            })
+
+        });
+        $(".showImport").click(function(){
+            var modaldis = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+            modaldis+= '<div class="modal-content">';
+            modaldis+= '<div class="modal-header">';
+            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Add Item</span>';
+            modaldis+= '</div>';
+            modaldis+= '<div class="modal-body">';
+            modaldis+= ' </div>';
+            modaldis+= '</div>';
+            modaldis+= '</div>';
+            $('body').css('overflow','hidden');
+
+            $("body").append(modaldis);
+            $("#myModal").modal("show");
+            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+            $(".modal-body").load("<?php echo url("inventory/import") ?>");
+            $("#myModal").on('hidden.bs.modal',function(){
+                $("#myModal").remove();
+            })
+
+        });
+
+        $(".editRecord").click(function(){
+            var id1 = $(this).parent().attr('id');
+            var modaldis = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+            modaldis+= '<div class="modal-dialog" style="width:60%;margin-right: 20% ;margin-left: 20%">';
+            modaldis+= '<div class="modal-content">';
+            modaldis+= '<div class="modal-header">';
+            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update item details</span>';
+            modaldis+= '</div>';
+            modaldis+= '<div class="modal-body">';
+            modaldis+= ' </div>';
+            modaldis+= '</div>';
+            modaldis+= '</div>';
+            $('body').css('overflow','hidden');
+
+            $("body").append(modaldis);
+            $("#myModal").modal("show");
+            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+            $(".modal-body").load("<?php echo url("inventory/edit") ?>/"+id1);
+            $("#myModal").on('hidden.bs.modal',function(){
+                $("#myModal").remove();
+            })
+
+        });
+
+        $(".deleteRecord").click(function(){
+            var id1 = $(this).parent().attr('id');
+            $(".deleteModule").show("slow").parent().parent().find("span").remove();
+            var btn = $(this).parent().parent();
+            $(this).hide("slow").parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
+            $("#no").click(function(){
+                $(this).parent().parent().find(".deleteRecord").show("slow");
+                $(this).parent().parent().find("span").remove();
+            });
+            $("#yes").click(function(){
+                $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
+                $.get("<?php echo url('inventory/remove') ?>/"+id1,function(data){
+                    btn.hide("slow").next("hr").hide("slow");
+                });
+            });
+        });
+    </script>
+    <script>
         $(".deleteRecord").click(function(){
             var id1 = $(this).parent().attr('id');
             $(".deleteModule").show("slow").parent().parent().find("span").remove();
@@ -173,80 +263,84 @@
     </div>
 @stop
 @section('page_title')
-    Clients
+    INVENTORY
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Clients </span> </h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Material Inventory </span> </h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li><a href="{{url('clients')}}">Clients list</a></li>
+        <li><a href="{{url('clients')}}">Inventories</a></li>
     </ul>
 @stop
 @section('contents')
-    <div class="row" style="margin-bottom: 5px">
-        <div class="col-md-12 text-right">
-            <a  href="{{url('clients/create')}}" class="btn btn-info "><i class="fa fa-file-o"></i> <span>Register New Client</span></a>
-            <a  href="{{url('clients')}}" class="btn btn-info "><i class="fa fa-list"></i> <span>List All</span></a>
-            <a  href="{{url('clients')}}" class="btn btn-info "><i class="fa fa-search"></i> <span>Search</span></a>
-        </div>
-    </div>
-    <div class="panel panel-flat">
-        <div class="panel-heading">
-            <h5 class="panel-title">Clients Search</h5>
-        </div>
+                <div class="row" style="margin-bottom: 5px">
+                <div class="col-md-12 text-right">
+                    <a href="#" class="addRegion btn btn-info"> <i class="fa fa-plus"></i> Add New Item</a>
+                    <a href="{{url('inventory')}}" class="btn btn-info"><i class="fa fa-server"></i> Item list</a>
+                    <a href="{{url('inventory/categories')}}" class="btn btn-info"><i class="fa fa-server"></i> Inventory Categories</a>
+                    <a href="{{url('inventory/import')}}" class=" btn btn-info"><i class="fa fa-download"></i> Import Items</a>
+                </div>
+            </div>
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h5 class="panel-title text-uppercase">Manage Inventory</h5>
+                </div>
 
-        <div class="panel-body">
+                <div class="panel-body">
+                </div>
+            <table class="table datatable-basic table-hover">
+                <thead>
+                <tr>
+                    <th> SNO </th>
+                    <th> Item Name </th>
+                    <th> Descriptions </th>
+                    <th> Category </th>
+                    <th> Quantity </th>
+                    <th> Remarks </th>
+                    <th> Status </th>
+                    <th class="text-center"> Action </th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php $count=1;?>
+                @if(count($items)>0)
+                    @foreach($items as $item)
+                        <tr class="odd gradeX">
+                            <td> {{$count++}} </td>
+                            <td>
+                                {{$item->item_name	}}
+                            </td>
+                            <td>
+                                {{$item->description}}
+                            </td>
+                            <td>
+                                @if(is_object($item->category) && $item->category != null && $item->category !="")
+                                    {{$item->category->category_name}}
+                                @endif
+                            </td>
+                            <td>
+                                {{$item->quantity}}
+                            </td>
+                            <td>
+                                {{$item->remarks}}
+                            </td>
+                            <td>
+                                {{$item->status}}
+                            </td>
+                            <td class="text-center" id="{{$item->id}}">
+                                <a href="#"  class="btn btn-icon-only blue editRecord"> <i class="fa fa-edit"></i> </a>
+                                <a href="#" class="btn btn-icon-only red deleteRecord"> <i class="fa fa-trash"></i> </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
+
+
+                </tbody>
+            </table>
+            <!-- END EXAMPLE TABLE PORTLET-->
         </div>
-
-        <table class="table datatable-basic table-hover">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>REG #</th>
-                <th>Full Name</th>
-                <th>Sex</th>
-                <th>Age</th>
-                <th>Address</th>
-                <th>Origin</th>
-                <th>Arrival Date</th>
-                <th>Camp</th>
-                <th class="text-center">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php $i=1;?>
-            @foreach($clients as $client)
-            <tr>
-                <td>{{$i++}}</td>
-                <td>{{$client->client_number}}</td>
-                <td>{{$client->full_name}}</td>
-                <td>{{$client->sex}}</td>
-                <td>{{$client->age}}</td>
-                <td>{{$client->address}}</td>
-                <td>@if(is_object($client->nationality) && $client->nationality != null ){{$client->nationality->country_name}}@endif</td>
-                <td>{{date('d M Y',strtotime($client->date_arrival))}}</td>
-                <td> @if(is_object($client->camp) && $client->camp != null ){{$client->camp->camp_name}}@endif</td>
-                <td class="text-center">
-                    <ul class="icons-list">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li><a href="#"><i class="fa fa-pencil"></i> Update details</a></li>
-                                <li><a href="#"><i class="fa fa-trash"></i> Remove from list</a></li>
-                                <li><a href="#"><i class="fa fa-file-o"></i> Vulnerability Assessment </a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
 @stop
