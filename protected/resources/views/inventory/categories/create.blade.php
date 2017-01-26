@@ -1,7 +1,7 @@
 <!-- BEGIN SAMPLE FORM PORTLET-->
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'inventory/categories/create','role'=>'form','id'=>'DepartmentFormUN')) !!}
+        {!! Form::open(array('url'=>'inventory-categories','role'=>'form','id'=>'formInventoryCategories')) !!}
         <div class="form-body">
             <div class="form-group">
                 <label>Category Name</label>
@@ -38,7 +38,7 @@
     </div>
 </div>
 <!-- END SAMPLE FORM PORTLET-->
-{!! Html::script("assets/pages/scripts/jquery.validate.min.js") !!}
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script>
 
     $("#region_id").change(function () {
@@ -51,7 +51,17 @@
 
         }else{$("#district_id").html("<option value=''>----</option>");}
     });
-    $("#DepartmentFormUN").validate({
+    $("#formInventoryCategories").validate({
+        ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
+        errorClass: 'validation-error-label',
+        successClass: 'validation-valid-label',
+        highlight: function(element, errorClass) {
+            $(element).removeClass(errorClass);
+        },
+        unhighlight: function(element, errorClass) {
+            $(element).removeClass(errorClass);
+        },
+        errorElement:'div',
         rules: {
             category_name: "required",
             status: "required"
@@ -62,8 +72,8 @@
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-            var postData = $('#DepartmentFormUN').serializeArray();
-            var formURL = $('#DepartmentFormUN').attr("action");
+            var postData = $('#formInventoryCategories').serializeArray();
+            var formURL = $('#formInventoryCategories').attr("action");
             $.ajax(
                     {
                         url : formURL,

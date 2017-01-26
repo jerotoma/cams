@@ -1,7 +1,7 @@
 <!-- BEGIN SAMPLE FORM PORTLET-->
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'inventory/categories/edit','role'=>'form','id'=>'DepartmentFormUN')) !!}
+        {!! Form::model($categories, array('route' => array('inventory-categories.update', $categories->id), 'method' => 'PUT','role'=>'form','id'=>'formItemCategories')) !!}
         <div class="form-body">
             <div class="form-group">
                 <label>Category Name</label>
@@ -30,7 +30,6 @@
 
                 </div>
                 <div class="col-md-4 col-sm-4 pull-right text-right">
-                    <input type="hidden" name="id" id="id" value="{{$categories->id}}">
                     <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
                 </div>
@@ -43,7 +42,7 @@
     </div>
 </div>
 <!-- END SAMPLE FORM PORTLET-->
-{!! Html::script("assets/pages/scripts/jquery.validate.min.js") !!}
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script>
 
     $("#region_id").change(function () {
@@ -56,7 +55,7 @@
 
         }else{$("#district_id").html("<option value=''>----</option>");}
     });
-    $("#DepartmentFormUN").validate({
+    $("#formItemCategories").validate({
         rules: {
             category_name: "required",
             status: "required"
@@ -67,8 +66,8 @@
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-            var postData = $('#DepartmentFormUN').serializeArray();
-            var formURL = $('#DepartmentFormUN').attr("action");
+            var postData = $('#formItemCategories').serializeArray();
+            var formURL = $('#formItemCategories').attr("action");
             $.ajax(
                     {
                         url : formURL,
@@ -88,11 +87,7 @@
                         {
                             console.log(data.responseJSON);
                             //in the responseJSON you get the form validation back.
-                            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
-
-                            setTimeout(function() {
-                                $("#output").html("");
-                            }, 2000);
+                            $("#output").html("<h3><span class='text-danger'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
                         }
                     });
         }

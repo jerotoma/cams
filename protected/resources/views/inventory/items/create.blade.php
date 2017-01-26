@@ -1,7 +1,7 @@
 <!-- BEGIN SAMPLE FORM PORTLET-->
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'inventory/create','role'=>'form','id'=>'DepartmentFormUN')) !!}
+        {!! Form::open(array('url'=>'inventory','role'=>'form','id'=>'DepartmentFormUN')) !!}
         <div class="form-body">
             <div class="form-group">
                 <label>Item Name</label>
@@ -73,6 +73,16 @@
         }else{$("#district_id").html("<option value=''>----</option>");}
     });
     $("#DepartmentFormUN").validate({
+        ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
+        errorClass: 'validation-error-label',
+        successClass: 'validation-valid-label',
+        highlight: function(element, errorClass) {
+            $(element).removeClass(errorClass);
+        },
+        unhighlight: function(element, errorClass) {
+            $(element).removeClass(errorClass);
+        },
+        errorElement:'div',
         rules: {
             item_name: "required",
             status: "required",
@@ -106,11 +116,8 @@
                         {
                             console.log(data.responseJSON);
                             //in the responseJSON you get the form validation back.
-                            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
+                            $("#output").html("<h3><span class='text-danger'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
 
-                            setTimeout(function() {
-                                $("#output").html("");
-                            }, 2000);
                         }
                     });
         }

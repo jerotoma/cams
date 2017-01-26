@@ -172,10 +172,10 @@ class ItemInventoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
         //
-        $item=ItemsInventory::find($request->id);
+        $item=ItemsInventory::find($id);
         $item->item_name=$request->item_name;
         $item->description=$request->description;
         $item->category_id=$request->category_id;

@@ -191,7 +191,7 @@
                     <div class="panel-body">
                         <div class="form-group">
                             <label>Region Name:</label>
-                            <select class="form-control" name="region_id" id="region_id">
+                            <select class="select" name="region_id" id="region_id">
                                 @if(old('region_id') !="")
                                     <?php $region=\App\Region::find(old('region_id'));?>
                                      <option value="{{$region->id}}">{{$region->region_name}}</option>

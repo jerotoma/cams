@@ -19,9 +19,6 @@ class CreateInclusionAssesmentsTable extends Migration
             $table->string('medical_information')->nullable();
             $table->string('present_medical_history')->nullable();
             $table->string('other_services')->nullable();
-            $table->string('medical_information')->nullable();
-            $table->string('medical_information')->nullable();
-            $table->string('medical_information')->nullable();
             $table->timestamps();
         });
     }

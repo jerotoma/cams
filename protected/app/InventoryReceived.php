@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class InventoryReceived extends Model
 {
     //
-    public function item()
+    public function items()
     {
-        return $this::belongsTo('\App\ItemsInventory','item_id');
+        return $this::hasMany('\App\ItemReceived','received_id');
     }
 }

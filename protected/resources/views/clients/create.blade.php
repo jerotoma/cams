@@ -73,6 +73,16 @@
                 camp_id: "Please  Camp name is required"
             }
         });
+        $("#civil_status").change(function () {
+            var id1 = this.value;
+            if(id1 != "Married")
+            {
+                $("#spouse_name").removeAttr('value');
+                $("#spouse_name").attr('value','');
+                $("#spouse_name").attr('readonly','readonly');
+
+            }else{$("#spouse_name").removeAttr('readonly');}
+        });
 
         $("#region_id").change(function () {
             var id1 = this.value;
@@ -258,8 +268,8 @@
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li><a href="{{url('regions')}}">Camps</a></li>
-        <li class="active">Add New</li>
+        <li><a href="{{url('regions')}}">Clients</a></li>
+        <li class="active">Registration</li>
     </ul>
 @stop
 @section('contents')
@@ -398,7 +408,7 @@
                                     <label class="control-label">Date of Arrival</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                        <input type="text" class="form-control pickadate-selectors" value="{{old('date_arrival')}}" name="date_arrival" id="date_arrival">
+                                        <input type="text" class="form-control pickadate-selectors" placeholder="Date of Arrival" value="{{old('date_arrival')}}" name="date_arrival" id="date_arrival">
                                     </div>
                                     @if($errors->first('date_arrival') !="")
                                         <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('date_arrival') }}</label>
@@ -464,7 +474,7 @@
                                 <label id="address-error" class="validation-error-label" for="ration_card_number">{{ $errors->first('ration_card_number') }}</label>
                             @endif
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-group-material">
                             <label>Vulnerability Code</label>
                             <select multiple="multiple" class="select" name="vulnerability_code[]" id="vulnerability_code">
                                 <optgroup label="Vulnerability Code">

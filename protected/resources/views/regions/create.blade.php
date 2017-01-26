@@ -190,7 +190,7 @@
                     <div class="panel-body">
                         <div class="form-group">
                             <label>Country Name:</label>
-                            <select class="form-control" name="country_id" id="country_id">
+                            <select class="select" name="country_id" id="country_id">
                                 @if(old('country_id') !="")
                                     <?php $country=\App\Country::find(old('country_id'));?>
                                      <option value="{{$country->id}}">{{$country->country_name}}</option>

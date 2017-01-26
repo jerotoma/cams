@@ -9,10 +9,10 @@
 @section('scripts')
     <script>
         $(".addRegion").click(function(){
-            var modaldis = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
             modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
             modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header .bg-primary ">';
+            modaldis+= '<div class="modal-header bg-primary ">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
             modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Add Item</span>';
             modaldis+= '</div>';
@@ -32,10 +32,10 @@
 
         });
         $(".showImport").click(function(){
-            var modaldis = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+            modaldis+= '<div class="modal-dialog" style="width:60%;margin-right: 20% ;margin-left: 20%">';
             modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header">';
+            modaldis+= '<div class="modal-header bg-primary">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
             modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Add Item</span>';
             modaldis+= '</div>';
@@ -57,10 +57,10 @@
 
         $(".editRecord").click(function(){
             var id1 = $(this).parent().attr('id');
-            var modaldis = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
             modaldis+= '<div class="modal-dialog" style="width:60%;margin-right: 20% ;margin-left: 20%">';
             modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header">';
+            modaldis+= '<div class="modal-header bg-primary">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
             modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update item details</span>';
             modaldis+= '</div>';
@@ -73,7 +73,7 @@
             $("body").append(modaldis);
             $("#myModal").modal("show");
             $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("inventory/edit") ?>/"+id1);
+            $(".modal-body").load("<?php echo url("inventory") ?>/"+id1+"/edit");
             $("#myModal").on('hidden.bs.modal',function(){
                 $("#myModal").remove();
             })
@@ -91,26 +91,8 @@
             });
             $("#yes").click(function(){
                 $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
-                $.get("<?php echo url('inventory/remove') ?>/"+id1,function(data){
-                    btn.hide("slow").next("hr").hide("slow");
-                });
-            });
-        });
-    </script>
-    <script>
-        $(".deleteRecord").click(function(){
-            var id1 = $(this).parent().attr('id');
-            $(".deleteModule").show("slow").parent().parent().find("span").remove();
-            var btn = $(this).parent().parent();
-            $(this).hide("slow").parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
-            $("#no").click(function(){
-                $(this).parent().parent().find(".deleteRecord").show("slow");
-                $(this).parent().parent().find("span").remove();
-            });
-            $("#yes").click(function(){
-                $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
                 $.ajax({
-                    url:"<?php echo url('camps') ?>/"+id1,
+                    url:"<?php echo url('inventory') ?>/"+id1,
                     type: 'post',
                     data: {_method: 'delete', _token :"{{csrf_token()}}"},
                     success:function(msg){
@@ -263,7 +245,7 @@
     </div>
 @stop
 @section('page_title')
-    INVENTORY
+    Item Inventory
 @stop
 @section('page_heading_title')
     <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Material Inventory </span> </h4>
@@ -278,10 +260,10 @@
 @section('contents')
                 <div class="row" style="margin-bottom: 5px">
                 <div class="col-md-12 text-right">
-                    <a href="#" class="addRegion btn btn-info"> <i class="fa fa-plus"></i> Add New Item</a>
-                    <a href="{{url('inventory')}}" class="btn btn-info"><i class="fa fa-server"></i> Item list</a>
-                    <a href="{{url('inventory/categories')}}" class="btn btn-info"><i class="fa fa-server"></i> Inventory Categories</a>
-                    <a href="{{url('inventory/import')}}" class=" btn btn-info"><i class="fa fa-download"></i> Import Items</a>
+                    <a href="#" class="addRegion btn "> <i class="fa fa-plus text-success"></i> Add New Item</a>
+                    <a href="{{url('inventory')}}" class="btn"><i class="fa fa-server text-info"></i> Item list</a>
+                    <a href="{{url('inventory-categories')}}" class="btn "><i class="fa fa-forward text-danger"></i> Inventory Categories</a>
+                    <a href="{{url('inventory-import')}}" class=" btn "><i class="fa fa-upload text-primary"></i> Import Items</a>
                 </div>
             </div>
             <div class="panel panel-flat">
@@ -327,12 +309,15 @@
                             <td>
                                 {{$item->remarks}}
                             </td>
-                            <td>
-                                {{$item->status}}
+                            <td>@if(strtolower($item->status) )
+                                <span class="label label-success">{{$item->status}}</span>
+                                    @else
+                                    <span class="label label-danger">{{$item->status}}</span>
+                                @endif
                             </td>
                             <td class="text-center" id="{{$item->id}}">
-                                <a href="#"  class="btn btn-icon-only blue editRecord"> <i class="fa fa-edit"></i> </a>
-                                <a href="#" class="btn btn-icon-only red deleteRecord"> <i class="fa fa-trash"></i> </a>
+                                <a href="#"  title="Edit Item details" class="btn btn-icon-only  editRecord"> <i class="fa fa-edit text-primary"></i> </a>
+                                <a href="#" title="Delete Item" class="btn btn-icon-only  deleteRecord"> <i class="fa fa-trash text-danger"></i> </a>
                             </td>
                         </tr>
                     @endforeach

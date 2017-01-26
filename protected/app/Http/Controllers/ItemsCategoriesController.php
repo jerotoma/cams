@@ -85,10 +85,10 @@ class ItemsCategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
         //
-        $categories=ItemsCategories::find($request->id);
+        $categories=ItemsCategories::find($id);
         $categories->category_name=$request->category_name;
         $categories->description=$request->description;
         $categories->status=$request->status;

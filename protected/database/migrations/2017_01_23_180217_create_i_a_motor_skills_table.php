@@ -22,7 +22,7 @@ class CreateIAMotorSkillsTable extends Migration
             $table->text('tone')->nullable();
             $table->text('endurance')->nullable();
             $table->text('balance')->nullable();
-            $table->text('lying_sitting ')->nullable();
+            $table->text('lying_sitting')->nullable();
             $table->text('sitting')->nullable();
             $table->text('squatting')->nullable();
             $table->text('standing')->nullable();
@@ -35,7 +35,6 @@ class CreateIAMotorSkillsTable extends Migration
             $table->text('hand_function')->nullable();
             $table->text('coordination')->nullable();
             $table->text('eye_hand_coordination')->nullable();
-            $table->text('coordination')->nullable();
             $table->text('tripod_grasp')->nullable();
             $table->text('power_grasp')->nullable();
             $table->text('cylindrical_grasp')->nullable();

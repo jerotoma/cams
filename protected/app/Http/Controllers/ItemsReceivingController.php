@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\InventoryReceived;
+use App\ItemReceived;
 use App\ItemsInventory;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -47,24 +49,110 @@ class ItemsReceivingController extends Controller
      */
     public function store(Request $request)
     {
+        try {
         //
-        if(! count(InventoryReceived::where('item_name','=',$request->item_name)->where('way_bill_number','=',$request->way_bill_number)->where('donor','=',$request->donor)->where('quantity','=',$request->quantity)->where('population','=',$request->population)->where('received_date','=',date("Y-m-d",strtotime($request->received_date)))->get()) >0) {
-            $items = new InventoryReceived;
-            $items->item_name = $request->item_name;
-            $items->way_bill_number = $request->way_bill_number;
-            $items->received_from = $request->received_from;
-            $items->donor = $request->donor;
-            $items->population = $request->population;
-            $items->receiver = $request->receiver;
-            $items->quantity = $request->quantity;
-            $items->received_date = date("Y-m-d",strtotime($request->received_date));
-            $items->save();
+        $input = array('inventory_file' => $request->file('inventory_file'));
+        $rules = array(
+            'inventory_file' => 'required',
+        );
+        $validator = Validator::make($input, $rules);
 
-            return "<span class='text-success'><i class='fa fa-info'></i> Saved successfully</span>";
+        if($validator->fails()) {
+
+           dump($validator);
+            //return "<span class='text-danger'><h3><i class='fa fa-info'></i> Save failed Invalid file type</h3></span>";
         }
-        else
-        {
-            return "<span class='text-danger'><h3><i class='fa fa-info'></i> Save failed  Record exist</h3></span>";
+        else{
+
+            if(! count(InventoryReceived::where('reference_number','=',$request->reference_number)
+                    ->where('donor_ref','=',$request->donor_ref)
+                    ->where('received_from','=',$request->received_from)
+                    ->where('receiving_officer','=',$request->receiving_officer)
+                    ->where('project','=',$request->project)
+                    ->where('date_received','=',date("Y-m-d",strtotime($request->date_received)))->get()) >0) {
+
+                $items = new InventoryReceived;
+                $items->reference_number = $request->reference_number;
+                $items->date_received = date("Y-m-d",strtotime($request->date_received));
+                $items->donor_ref = $request->donor_ref;
+                $items->received_from = $request->received_from;
+                $items->receiving_officer = $request->receiving_officer;
+                $items->project = $request->project;
+                $items->onward_delivery = $request->onward_delivery;
+                $items->comments = $request->comments;
+                $items->checked_by = $request->checked_by;
+                $items->save();
+
+                $file= $request->file('inventory_file');
+                $destinationPath = public_path() .'/uploads/temp/';
+                $filename   = str_replace(' ', '_', $file->getClientOriginalName());
+                $file->move($destinationPath, $filename);
+                Excel::load($destinationPath . $filename, function ($reader) use($items) {
+
+                    $results = $reader->get();
+
+                    $results->each(function($row) use($items){
+
+                        //Categories
+
+                        //Items
+                        if($row->item != null & $row->qty !="")
+                        {
+                            //Get Item
+                            $itm_id="";
+
+                            if(count(ItemsInventory::where('item_name','=',ucwords($row->item))->get()) >0)
+                            {
+                                $invItem =ItemsInventory::where('item_name','=',ucwords($row->item))->get()->first();
+                                $itm_id=$invItem->id;
+                            }
+                            else
+                            {
+                                $invItem=new ItemsInventory;
+                                $invItem->item_name=$row->item;
+                                $invItem->description=$row->description;
+                                $invItem->quantity=$row->quantity;
+                                $invItem->remarks=$row->description;
+                                $invItem->status="Available";
+                                $invItem->save();
+
+                                $itm_id=$invItem->id;
+                            }
+
+                            if (!count(ItemReceived::where('received_id','=',$items->id)
+                                    ->where('item_id','=',$itm_id)
+                                    ->where('quantity','=',$items->quantity)
+                                    ->where('description','=',$items->description)->get())>0)
+                            {
+                                $tmreceived=new ItemReceived;
+                                $tmreceived->received_id=$items->id;
+                                $tmreceived->item_id=$itm_id;
+                                $tmreceived->quantity=$row->quantity;
+                                $tmreceived->description=$row->description;
+                                $tmreceived->save();
+                            }
+
+
+                        }
+
+
+                    });
+
+                });
+
+               // File::delete($destinationPath . $filename); //Delete after upload
+
+                return "<span class='text-success'><i class='fa fa-info'></i> Saved successfully</span>";
+            }
+            else
+            {
+                return "<span class='text-danger'><h3><i class='fa fa-info'></i> Save failed  Record exist</h3></span>";
+            }
+        }
+        } catch (\Exception $e) {
+
+            dump($e->getMessage());
+            //return  redirect()->back()->with('error',$e->getMessage());
         }
     }
 
@@ -89,6 +177,11 @@ class ItemsReceivingController extends Controller
     {
         //
         try {
+
+            $this->validate($request, [
+                'inventory_file' => 'required|mimes:xls,xlsx',
+            ]);
+
 
             $file= $request->file('inventory_file');
             $destinationPath = public_path() .'/uploads/temp/';

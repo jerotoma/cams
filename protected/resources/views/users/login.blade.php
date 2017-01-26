@@ -100,7 +100,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-danger btn-block btn-lg">Login <i class="icon-arrow-right14 position-right"></i></button>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg">Login <i class="icon-arrow-right14 position-right"></i></button>
                         </div>
                     </div>
                {!! Form::close() !!}

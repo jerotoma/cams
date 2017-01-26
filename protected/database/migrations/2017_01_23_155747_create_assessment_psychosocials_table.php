@@ -15,15 +15,15 @@ class CreateAssessmentPsychosocialsTable extends Migration
     {
         Schema::create('assessment_psychosocials', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('assessment_id')->unsigned();
-            $table->string('q8_1')->unsigned();
-            $table->string('q8_2')->unsigned();
-            $table->string('q8_3')->unsigned();
-            $table->string('q8_4')->unsigned();
-            $table->string('q8_5')->unsigned();
-            $table->string('q8_6')->unsigned();
-            $table->string('q8_7')->unsigned();
-            $table->string('q8_8')->unsigned();
+            $table->integer('assessment_id')->nullable();
+            $table->string('q8_1')->nullable();
+            $table->string('q8_2')->nullable();
+            $table->string('q8_3')->nullable();
+            $table->string('q8_4')->nullable();
+            $table->string('q8_5')->nullable();
+            $table->string('q8_6')->nullable();
+            $table->string('q8_7')->nullable();
+            $table->string('q8_8')->nullable();
             $table->timestamps();
         });
     }

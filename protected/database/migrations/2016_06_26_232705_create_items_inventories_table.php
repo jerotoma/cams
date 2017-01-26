@@ -14,12 +14,13 @@ class CreateItemsInventoriesTable extends Migration
     {
         Schema::create('items_inventories', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('item_name');
-            $table->string('description');
-            $table->integer('category_id');
-            $table->integer('quantity');
-            $table->string('remarks');
-            $table->string('status');
+            $table->string('item_name')->nullable();
+            $table->string('description')->nullable();
+            $table->integer('category_id')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->string('remarks')->nullable();
+            $table->string('unit')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
