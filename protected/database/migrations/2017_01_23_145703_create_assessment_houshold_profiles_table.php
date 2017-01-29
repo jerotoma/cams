@@ -22,7 +22,7 @@ class CreateAssessmentHousholdProfilesTable extends Migration
             $table->string('q2_4')->nullable();
             $table->string('q2_5')->nullable();
             $table->string('q2_6')->nullable();
-            $table->date('q2_7')->nullable();
+            $table->string('q2_7')->nullable();
             $table->string('q2_8')->nullable();
             $table->string('q2_9')->nullable();
             $table->string('q2_10')->nullable();

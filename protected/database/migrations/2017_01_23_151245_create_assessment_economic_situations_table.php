@@ -20,10 +20,10 @@ class CreateAssessmentEconomicSituationsTable extends Migration
             $table->string('q3_2')->nullable();
             $table->string('q3_3')->nullable();
             $table->string('q3_4')->nullable();
-            $table->integer('q3_5')->nullable();
+            $table->string('q3_5')->nullable();
             $table->string('q3_6')->nullable();
             $table->string('q3_7')->nullable();
-            $table->double('q3_8')->nullable();
+            $table->string('q3_8')->nullable();
             $table->timestamps();
             $table->foreign('assessment_id')->references('id')->on('vulnerability_assessments')
                 ->onUpdate('cascade')->onDelete('cascade');

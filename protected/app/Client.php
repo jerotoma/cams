@@ -19,4 +19,9 @@ class Client extends Model
     {
         return $this::belongsTo('\App\ClientVulnerabilityCode','client_id');
     }
+    public function vulAssessment()
+    {
+        return $this::hasOne('\App\VulnerabilityAssessment','client_id');
+    }
+
 }

@@ -36,6 +36,7 @@ Route::resource('inventory-received','ItemsReceivingController');
 
 //Assessments
 Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
+Route::get('getvalist','VulnerabilityAssessmentController@getJSonDataSearch');
 Route::get('client/assessments/vulnerability/{id}','VulnerabilityAssessmentController@showClientVulnerability');
 
 

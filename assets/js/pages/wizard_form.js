@@ -119,7 +119,7 @@ $(function() {
 
 
     // AJAX form submit
-    $(".form-ajaxjj").formwizard({
+    $(".form-ajax_back").formwizard({
         disableUIStyles: true,
         formPluginEnabled: true,
         disableInputFields: false,

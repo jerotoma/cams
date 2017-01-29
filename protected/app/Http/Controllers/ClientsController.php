@@ -125,7 +125,7 @@ class ClientsController extends Controller
                 });
 
             });
-          // return redirect('clients');
+           return redirect('clients');
         }
         catch (\Exception $e)
         {
@@ -161,6 +161,12 @@ class ClientsController extends Controller
             {
                 $status=' <a href="#" class="label label-success">'.$client->status.'</a>';
             }
+            $vcolor="label-danger";
+
+            if(is_object($client->vulAssessment) && count($client->vulAssessment) >0)
+            {
+                $vcolor="label-success";
+            }
             $records["data"][] = array(
 
                 $client->client_number,
@@ -177,7 +183,7 @@ class ClientsController extends Controller
 
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li id="'.$client->id.'"><a href="#" class="showRecord label label-primary text-white"><i class="fa fa-user"></i> PSN Profile </a></li>
-                                <li id="'.$client->id.'"><a href="#" class="showVulnerability label label-danger text-white"><i class="fa fa-file"></i> Vulnerability Assessment </a></li>
+                                <li id="'.$client->id.'"><a href="#" class="showVulnerability label '.$vcolor.' text-white"><i class="fa fa-file"></i> Vulnerability Assessment </a></li>
                                 <li id="'.$client->id.'"><a href="#" class="showFunctional label label-danger text-white"><i class="fa fa-file"></i> Functional Assessment </a></li>
                                 <li id="'.$client->id.'"><a href="#" class="showInclusion label label-danger text-white"><i class="fa fa-file"></i> Inclusion Assessment</a></li>
                                  <li id="'.$client->id.'"><a href="#" class="showWheelchair label label-danger text-white"><i class="fa fa-file"></i> Wheelchair Assessment</a></li>
