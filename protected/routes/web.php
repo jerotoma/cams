@@ -26,16 +26,26 @@ Route::resource('camps','CampController');
 Route::resource('departments','DepartmentController');
 Route::resource('psncodes','PSNCodesController');
 Route::resource('clients','ClientsController');
+Route::get('getclientsjson','ClientsController@getJSonDataSearch');
+Route::get('search/clients','ClientsController@searchClients');
+Route::post('search/clients','ClientsController@postSearchClient');
+
 Route::resource('inventory-categories','ItemsCategoriesController');
 Route::resource('inventory','ItemInventoryController');
 Route::resource('inventory-received','ItemsReceivingController');
 
 //Assessments
-Route::resource('assessments/vulnerability','VulnerabilityController@index');
+Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
+Route::get('client/assessments/vulnerability/{id}','VulnerabilityAssessmentController@showClientVulnerability');
+
 
 //Import
 Route::get('inventory-import','ItemInventoryController@showImport');
 Route::post('inventory-import','ItemInventoryController@postImport');
+//Clients
+Route::get('import/clients','ClientsController@showImport');
+Route::post('import/clients','ClientsController@postImport');
+
 
 Route::get('excel/import/received/items','ItemsReceivingController@showImport');
 Route::post('excel/import/received/items','ItemsReceivingController@postImport');

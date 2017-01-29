@@ -16,19 +16,19 @@ class CreateAssessmentImpairmentTypesTable extends Migration
         Schema::create('assessment_impairment_types', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('assessment_id')->unsigned();
-            $table->string('physical_impairment')->nullable();
-            $table->string('hearing_impairment')->nullable();
-            $table->string('speech_impairment')->nullable();
-            $table->string('visual_impairment')->nullable();
-            $table->string('mental_Illness')->nullable();
-            $table->string('lt_medical_treatment')->nullable();
-            $table->string('condition:')->nullable();
-            $table->string('drugs_availability')->nullable();
-            $table->string('medication')->nullable();
-            $table->string('treatment_duration')->nullable();
-            $table->string('stopped_medications')->nullable();
-            $table->string('when_stopped_medications')->nullable();
+            $table->string('q5_1')->nullable();
+            $table->string('q5_2')->nullable();
+            $table->string('q5_3')->nullable();
+            $table->string('q5_4')->nullable();
+            $table->string('q5_5')->nullable();
+            $table->string('q5_6')->nullable();
+            $table->string('q5_7')->nullable();
+            $table->string('q5_8')->nullable();
+            $table->string('q5_9')->nullable();
+            $table->string('q5_10')->nullable();
             $table->timestamps();
+            $table->foreign('assessment_id')->references('id')->on('vulnerability_assessments')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

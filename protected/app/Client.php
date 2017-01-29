@@ -15,4 +15,8 @@ class Client extends Model
     {
         return $this::belongsTo('\App\Camp','camp_id');
     }
+    public function vulnerability()
+    {
+        return $this::belongsTo('\App\ClientVulnerabilityCode','client_id');
+    }
 }

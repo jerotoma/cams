@@ -25,6 +25,8 @@ class CreateAssessmentPsychosocialsTable extends Migration
             $table->string('q8_7')->nullable();
             $table->string('q8_8')->nullable();
             $table->timestamps();
+            $table->foreign('assessment_id')->references('id')->on('vulnerability_assessments')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

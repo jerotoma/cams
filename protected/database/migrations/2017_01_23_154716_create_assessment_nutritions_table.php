@@ -16,10 +16,12 @@ class CreateAssessmentNutritionsTable extends Migration
         Schema::create('assessment_nutritions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('assessment_id')->unsigned();
-            $table->string('screening')->nullable();
-            $table->string('meals_per_day')->nullable();
-            $table->string('meal_source')->nullable();
+            $table->string('q6_1')->nullable();
+            $table->string('q6_2')->nullable();
+            $table->string('q6_3')->nullable();
             $table->timestamps();
+            $table->foreign('assessment_id')->references('id')->on('vulnerability_assessments')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

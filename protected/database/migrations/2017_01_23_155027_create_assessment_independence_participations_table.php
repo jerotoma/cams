@@ -16,15 +16,17 @@ class CreateAssessmentIndependenceParticipationsTable extends Migration
         Schema::create('assessment_independence_participations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('assessment_id')->unsigned();
-            $table->string('daily_activities')->nullable();
-            $table->string('bathing')->nullable();
-            $table->string('using_toilets')->nullable();
-            $table->string('dressing')->nullable();
-            $table->string('eating')->nullable();
-            $table->string('cooking')->nullable();
-            $table->string('cleaning')->nullable();
-            $table->string('community_activities')->nullable();
+            $table->string('q7_1')->nullable();
+            $table->string('q7_2')->nullable();
+            $table->string('q7_3')->nullable();
+            $table->string('q7_4')->nullable();
+            $table->string('q7_5')->nullable();
+            $table->string('q7_6')->nullable();
+            $table->string('q7_7')->nullable();
+            $table->string('q7_8')->nullable();
             $table->timestamps();
+            $table->foreign('assessment_id')->references('id')->on('vulnerability_assessments')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

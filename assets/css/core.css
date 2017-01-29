@@ -966,7 +966,7 @@ legend .control-arrow:hover {
 }
 label {
   margin-bottom: 8px;
-  font-weight: 400;
+  font-weight: bold;
 }
 select[multiple],
 select[size] {

@@ -16,16 +16,17 @@ class CreateAssessmentEconomicSituationsTable extends Migration
         Schema::create('assessment_economic_situations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('assessment_id')->unsigned();
-            $table->string('past_activity')->nullable();
-            $table->string('present_activity')->nullable();
-            $table->string('income_source')->nullable();
-            $table->string('assistance_received')->nullable();
-            $table->integer('family_members')->nullable();
-            $table->string('share_expenses')->nullable();
-            $table->string('share_expenses_percentage')->nullable();
-            $table->double('spend_per_week')->nullable();
-            $table->string('buy_food_frequency')->nullable();
+            $table->string('q3_1')->nullable();
+            $table->string('q3_2')->nullable();
+            $table->string('q3_3')->nullable();
+            $table->string('q3_4')->nullable();
+            $table->integer('q3_5')->nullable();
+            $table->string('q3_6')->nullable();
+            $table->string('q3_7')->nullable();
+            $table->double('q3_8')->nullable();
             $table->timestamps();
+            $table->foreign('assessment_id')->references('id')->on('vulnerability_assessments')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

@@ -119,7 +119,7 @@ $(function() {
 
 
     // AJAX form submit
-    $(".form-ajax").formwizard({
+    $(".form-ajaxjj").formwizard({
         disableUIStyles: true,
         formPluginEnabled: true,
         disableInputFields: false,
@@ -128,6 +128,10 @@ $(function() {
         formOptions :{
             success: function(data){
                 swal({title: "Congratulations!", text: "You are registered now!", type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
+                setTimeout(function() {
+                    location.reload();
+                    $("#output").html("");
+                }, 2000);
             },
             beforeSubmit: function(data){
                 $("#ajax-data").css({borderTop: '1px solid #ddd', padding: 15}).html("<span class='text-semibold'>Data sent to the server:</span> " + $.param(data));
