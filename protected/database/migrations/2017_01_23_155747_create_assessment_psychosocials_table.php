@@ -15,7 +15,7 @@ class CreateAssessmentPsychosocialsTable extends Migration
     {
         Schema::create('assessment_psychosocials', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('assessment_id')->nullable();
+            $table->integer('assessment_id')->unsigned();
             $table->string('q8_1')->nullable();
             $table->string('q8_2')->nullable();
             $table->string('q8_3')->nullable();

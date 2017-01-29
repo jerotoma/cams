@@ -16,10 +16,10 @@ class CreateFormsFieldsTable extends Migration
         Schema::create('forms_fields', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('group_id')->unsigned();
-            $table->string('name');
-            $table->string('type');
-            $table->string('text');
-            $table->text('values')->default('');
+            $table->string('name')->nullable();
+            $table->string('type')->nullable();
+            $table->string('text')->nullable();
+            $table->text('values')->nullable();
             $table->string('rule')->default('');
             $table->timestamps();
         });
