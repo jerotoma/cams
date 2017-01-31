@@ -27,6 +27,7 @@ Route::resource('departments','DepartmentController');
 Route::resource('psncodes','PSNCodesController');
 Route::resource('clients','ClientsController');
 Route::get('getclientsjson','ClientsController@getJSonDataSearch');
+Route::get('getclientslist','ClientsController@getJSonClientDataSearch');
 Route::get('search/clients','ClientsController@searchClients');
 Route::post('search/clients','ClientsController@postSearchClient');
 
@@ -34,15 +35,28 @@ Route::resource('inventory-categories','ItemsCategoriesController');
 Route::resource('inventory','ItemInventoryController');
 Route::resource('inventory-received','ItemsReceivingController');
 
+//Referrals
+Route::resource('referrals','ReferralController');
+Route::get('list-all-referrals','ReferralController@getReferralList');
+Route::get('referrals-request','ReferralController@getReferralClientList');
+Route::get('referrals-request/{id}','ReferralController@create');
+Route::get('download/referrals/form/{id}','ReferralController@downloadPDF');
+
+
 //Assessments
 Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
+Route::get('clients-va','VulnerabilityAssessmentController@showClients');
 Route::get('getvalist','VulnerabilityAssessmentController@getJSonDataSearch');
 Route::get('client/assessments/vulnerability/{id}','VulnerabilityAssessmentController@showClientVulnerability');
-
+Route::get('vulnerability-assessment/download/{id}','VulnerabilityAssessmentController@downloadForm');
 
 //Import
 Route::get('inventory-import','ItemInventoryController@showImport');
 Route::post('inventory-import','ItemInventoryController@postImport');
+
+//Referrals
+Route::get('import/referrals','ReferralController@showImport');
+Route::post('import/referrals','ReferralController@postImport');
 //Clients
 Route::get('import/clients','ClientsController@showImport');
 Route::post('import/clients','ClientsController@postImport');

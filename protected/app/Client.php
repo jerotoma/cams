@@ -23,5 +23,9 @@ class Client extends Model
     {
         return $this::hasOne('\App\VulnerabilityAssessment','client_id');
     }
+    public function referrals()
+    {
+        return $this::hasMany('\App\Referral','client_id');
+    }
 
 }

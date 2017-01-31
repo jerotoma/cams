@@ -41,11 +41,7 @@
                 <li>
                     <a href="#"><i class="icon-stack"></i> <span>Client Referrals</span></a>
                     <ul>
-                        <li ><a href="{{url('referrals/create')}}">Open Referral</a></li>
-                        <li><a href="{{url('import/referrals')}}">Import Referral</a></li>
-                        <li><a href="{{url('export/referrals')}}">Export Referral</a></li>
-                        <li><a href="{{url('search/referrals')}}">Search Referral</a></li>
-                        <li><a href="{{url('reports/referrals')}}">Referral Report</a></li>
+                        <li ><a href="{{url('referrals')}}">Referrals</a></li>
                     </ul>
                 </li>
                 <!-- /main -->

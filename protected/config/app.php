@@ -174,6 +174,7 @@ return [
 		PrettyRoutes\ServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
 		Maatwebsite\Excel\ExcelServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -232,10 +233,12 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 		'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-		'PDF' => Barryvdh\DomPDF\Facade::class,
+		'DOMPDF' => Barryvdh\DomPDF\Facade::class,
 		'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
 		'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
 
     ],
 

@@ -28,7 +28,134 @@ class ClientsController extends Controller
         $clients=Client::all();
         return view('clients.index',compact('clients'));
     }
+    public function  getJSonClientDataSearch()
+    {
+        //
+        $clients=Client::orderBy('full_name','ASC')->get();
+        $iTotalRecords =count(Client::all());
+        $sEcho = intval(10);
 
+        $records = array();
+        $records["data"] = array();
+
+
+        $count=1;
+        foreach($clients as $client) {
+            $origin="";
+            $status="";
+
+            if(is_object($client->nationality) && $client->nationality != null )
+            {
+                $origin=$client->nationality->country_name;
+            }
+            if(strtolower($client->status) =="incomplete")
+            {
+                $status=' <a href="#" class="label label-danger">'.$client->status.'</a>';
+            }
+            else
+            {
+                $status=' <a href="#" class="label label-success">'.$client->status.'</a>';
+            }
+            $vcolor="label-danger";
+
+            if(is_object($client->vulAssessment) && count($client->vulAssessment) >0)
+            {
+                $vcolor="label-success";
+            }
+            $records["data"][] = array(
+                $count++,
+                $client->client_number,
+                $client->full_name,
+                $client->sex,
+                $client->age,
+                $origin,
+                date('d M Y',strtotime($client->date_arrival)),
+
+                '<span id="'.$client->id.'">
+                    <a href="#" title="Edit" class="btn btn-icon-only showVulnerability"> <i class="fa fa-file-o text-primary">  </i> Open Form</a>
+                   </span>',
+            );
+        }
+
+
+        $records["draw"] = $sEcho;
+        $records["recordsTotal"] = $iTotalRecords;
+        $records["recordsFiltered"] = $iTotalRecords;
+
+        echo json_encode($records);
+    }
+    public function getJSonDataSearch()
+    {
+        //
+        $clients=Client::orderBy('full_name','ASC')->get();
+        $iTotalRecords =count(Client::all());
+        $sEcho = intval(10);
+
+        $records = array();
+        $records["data"] = array();
+
+
+        $count=1;
+        foreach($clients as $client) {
+            $origin="";
+            $status="";
+
+            if(is_object($client->nationality) && $client->nationality != null )
+            {
+                $origin=$client->nationality->country_name;
+            }
+            if(strtolower($client->status) =="incomplete")
+            {
+                $status=' <a href="#" class="label label-danger">'.$client->status.'</a>';
+            }
+            else
+            {
+                $status=' <a href="#" class="label label-success">'.$client->status.'</a>';
+            }
+            $vcolor="label-danger";
+
+            if(is_object($client->vulAssessment) && count($client->vulAssessment) >0)
+            {
+                $vcolor="label-success";
+            }
+            $records["data"][] = array(
+
+                $client->client_number,
+                $client->full_name,
+                $client->sex,
+                $client->age,
+                $origin,
+                date('d M Y',strtotime($client->date_arrival)),
+                '<span><ul class="icons-list">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li id="'.$client->id.'"><a href="#" class="showRecord label label-primary text-white"><i class="fa fa-user"></i> PSN Profile </a></li>
+                                <li id="'.$client->id.'"><a href="#" class="showVulnerability label '.$vcolor.' text-white"><i class="fa fa-file"></i> Vulnerability Assessment </a></li>
+                                <li id="'.$client->id.'"><a href="#" class="showFunctional label label-danger text-white"><i class="fa fa-file"></i> Functional Assessment </a></li>
+                                <li id="'.$client->id.'"><a href="#" class="showInclusion label label-danger text-white"><i class="fa fa-file"></i> Inclusion Assessment</a></li>
+                                 <li id="'.$client->id.'"><a href="#" class="showWheelchair label label-danger text-white"><i class="fa fa-file"></i> Wheelchair Assessment</a></li>
+                            </ul>
+                        </li>
+                    </ul></span>',
+                $status,
+                '<span id="'.$client->id.'">
+                
+                    <a href="#" title="Edit" class="btn btn-icon-only editRecord"> <i class="fa fa-edit text-primary">  </i> </a>
+                    <a href="#" title="Delete" class="btn btn-icon-only  deleteRecord"> <i class="fa fa-trash text-danger"></i> </a></span>',
+            );
+        }
+
+
+        $records["draw"] = $sEcho;
+        $records["recordsTotal"] = $iTotalRecords;
+        $records["recordsFiltered"] = $iTotalRecords;
+
+        echo json_encode($records);
+    }
     public function searchClients()
     {
         return view('clients.search');
@@ -133,78 +260,7 @@ class ClientsController extends Controller
             return  redirect()->back()->with('error',$e->getMessage());
         }
     }
-    public function getJSonDataSearch()
-    {
-        //
-        $clients=Client::orderBy('full_name','ASC')->get();
-        $iTotalRecords =count(Client::all());
-        $sEcho = intval(10);
 
-        $records = array();
-        $records["data"] = array();
-
-
-        $count=1;
-        foreach($clients as $client) {
-            $origin="";
-            $status="";
-
-            if(is_object($client->nationality) && $client->nationality != null )
-            {
-                $origin=$client->nationality->country_name;
-            }
-            if(strtolower($client->status) =="incomplete")
-            {
-                $status=' <a href="#" class="label label-danger">'.$client->status.'</a>';
-            }
-            else
-            {
-                $status=' <a href="#" class="label label-success">'.$client->status.'</a>';
-            }
-            $vcolor="label-danger";
-
-            if(is_object($client->vulAssessment) && count($client->vulAssessment) >0)
-            {
-                $vcolor="label-success";
-            }
-            $records["data"][] = array(
-
-                $client->client_number,
-                $client->full_name,
-                $client->sex,
-                $client->age,
-                $origin,
-                date('d M Y',strtotime($client->date_arrival)),
-                '<span><ul class="icons-list">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li id="'.$client->id.'"><a href="#" class="showRecord label label-primary text-white"><i class="fa fa-user"></i> PSN Profile </a></li>
-                                <li id="'.$client->id.'"><a href="#" class="showVulnerability label '.$vcolor.' text-white"><i class="fa fa-file"></i> Vulnerability Assessment </a></li>
-                                <li id="'.$client->id.'"><a href="#" class="showFunctional label label-danger text-white"><i class="fa fa-file"></i> Functional Assessment </a></li>
-                                <li id="'.$client->id.'"><a href="#" class="showInclusion label label-danger text-white"><i class="fa fa-file"></i> Inclusion Assessment</a></li>
-                                 <li id="'.$client->id.'"><a href="#" class="showWheelchair label label-danger text-white"><i class="fa fa-file"></i> Wheelchair Assessment</a></li>
-                            </ul>
-                        </li>
-                    </ul></span>',
-                $status,
-                '<span id="'.$client->id.'">
-                
-                    <a href="#" title="Edit" class="btn btn-icon-only editRecord"> <i class="fa fa-edit text-primary">  </i> </a>
-                    <a href="#" title="Delete" class="btn btn-icon-only  deleteRecord"> <i class="fa fa-trash text-danger"></i> </a></span>',
-            );
-        }
-
-
-        $records["draw"] = $sEcho;
-        $records["recordsTotal"] = $iTotalRecords;
-        $records["recordsFiltered"] = $iTotalRecords;
-
-        echo json_encode($records);
-    }
     /**
      * Show the form for creating a new resource.
      *

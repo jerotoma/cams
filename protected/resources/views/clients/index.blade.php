@@ -41,7 +41,7 @@
                         var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
                         modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
                         modaldis+= '<div class="modal-content">';
-                        modaldis+= '<div class="modal-header bg-primary">';
+                        modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
                         modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Clients Details</span>';
                         modaldis+= '</div>';
@@ -66,7 +66,7 @@
                         var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
                         modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
                         modaldis+= '<div class="modal-content">';
-                        modaldis+= '<div class="modal-header bg-primary">';
+                        modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
                         modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Client Details </span>';
                         modaldis+= '</div>';
@@ -90,7 +90,7 @@
                         var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
                         modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
                         modaldis+= '<div class="modal-content">';
-                        modaldis+= '<div class="modal-header bg-primary">';
+                        modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
                         modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Client Vulnerability Assessments </span>';
                         modaldis+= '</div>';
@@ -114,7 +114,7 @@
                         var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
                         modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
                         modaldis+= '<div class="modal-content">';
-                        modaldis+= '<div class="modal-header bg-primary">';
+                        modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
                         modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Client Inclusion Assessments </span>';
                         modaldis+= '</div>';
@@ -138,7 +138,7 @@
                         var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
                         modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
                         modaldis+= '<div class="modal-content">';
-                        modaldis+= '<div class="modal-header bg-primary">';
+                        modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
                         modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Client Functional Assessments </span>';
                         modaldis+= '</div>';
@@ -162,7 +162,7 @@
                         var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
                         modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
                         modaldis+= '<div class="modal-content">';
-                        modaldis+= '<div class="modal-header bg-primary">';
+                        modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
                         modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Client Wheelchair Assessments </span>';
                         modaldis+= '</div>';
@@ -251,7 +251,7 @@
             var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
             modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
             modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header bg-primary">';
+            modaldis+= '<div class="modal-header bg-indigo">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
             modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Register New Client: Client Registration Details</span>';
             modaldis+= '</div>';

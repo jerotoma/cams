@@ -18,8 +18,9 @@ class CreateReferralsTable extends Migration
             $table->integer('client_id')->unsigned();
             $table->string('progress_number')->nullable();
             $table->string('case_name')->nullable();
-            $table->date('date')->nullable();
+            $table->date('referral_date')->nullable();
             $table->string('completed_by')->nullable();
+            $table->string('location')->nullable();
             $table->string('age')->nullable();
             $table->date('birth_date')->nullable();
             $table->string('disabilities')->nullable();
@@ -42,8 +43,10 @@ class CreateReferralsTable extends Migration
             $table->string('referred_to_position')->nullable();
             $table->string('organization')->nullable();
             $table->string('org_phone')->nullable();
-            $table->date('referral_date')->nullable();
+            $table->string('org_email')->nullable();
             $table->timestamps();
+            $table->foreign('client_id')->references('id')->on('clients')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
