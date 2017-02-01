@@ -17,11 +17,15 @@ class Client extends Model
     }
     public function vulnerability()
     {
-        return $this::belongsTo('\App\ClientVulnerabilityCode','client_id');
+        return $this::hasOne('\App\ClientVulnerabilityCode','client_id');
     }
     public function vulAssessment()
     {
         return $this::hasOne('\App\VulnerabilityAssessment','client_id');
+    }
+    public function needs()
+    {
+        return $this::hasOne('\App\HomeAssessment','client_id');
     }
     public function referrals()
     {

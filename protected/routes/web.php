@@ -50,6 +50,12 @@ Route::get('getvalist','VulnerabilityAssessmentController@getJSonDataSearch');
 Route::get('client/assessments/vulnerability/{id}','VulnerabilityAssessmentController@showClientVulnerability');
 Route::get('vulnerability-assessment/download/{id}','VulnerabilityAssessmentController@downloadForm');
 
+//PSN Needs/Home assessment Form
+Route::resource('assessments/home','HomeAssessmentController');
+Route::get('clients-hm','HomeAssessmentController@showClients');
+Route::get('list/assessments/home','HomeAssessmentController@getJSonAssessmentList');
+Route::get('client/assessments/home/{id}','HomeAssessmentController@create');
+
 //Import
 Route::get('inventory-import','ItemInventoryController@showImport');
 Route::post('inventory-import','ItemInventoryController@postImport');

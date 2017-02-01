@@ -18,11 +18,14 @@ class CreateClientsTable extends Migration
             $table->string('client_number')->unique();
             $table->string('full_name')->unique();
             $table->string('sex')->nullable();
+            $table->date('birth_date')->nullable();
             $table->integer('age')->nullable();
             $table->string('civil_status')->nullable();
             $table->string('spouse_name')->nullable();
             $table->string('care_giver')->nullable();
             $table->integer('country_id')->nullable();
+            $table->string('origin')->nullable();
+            $table->string('district')->nullable();
             $table->date('date_arrival')->nullable();
             $table->string('present_address')->nullable();
             $table->integer('females_total')->nullable();

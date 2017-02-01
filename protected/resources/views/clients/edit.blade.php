@@ -34,8 +34,8 @@
                 <fieldset class="scheduler-border">
                     <legend class="text-bold">Personal Details</legend>
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group form-group-material">
+                        <div class="col-md-4">
+                            <div class="form-group ">
                                 <label class="control-label">Client Number</label>
                                 <input type="text" class="form-control" placeholder="Client Number" name="client_number" id="client_number"
                                        value="{{$client->client_number}}">
@@ -44,8 +44,8 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-group-material">
+                        <div class="col-md-8">
+                            <div class="form-group ">
                                 <label class="control-label">Full Name</label>
                                 <input type="text" class="form-control" placeholder="Full Name" id="full_name" name="full_name" value="{{$client->full_name}}">
                                 @if($errors->first('full_name') !="")
@@ -55,8 +55,20 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label class="control-label">Birth Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                                    <input type="text" class="form-control pickadate" placeholder="Birth Date" value="{{$client->birth_date}}" name="birth_date" id="birth_date">
+                                </div>
+                                @if($errors->first('birth_date') !="")
+                                    <label id="address-error" class="validation-error-label" for="birth_date">{{ $errors->first('birth_date') }}</label>
+                                @endif
+                            </div>
+                        </div>
                         <div class="col-md-6">
-                            <div class="form-group form-group-material">
+                            <div class="form-group ">
                                 <label class="control-label">Sex</label>
                                 <select class="select" name="sex" id="sex">
                                     @if($client->sex!= "")
@@ -72,7 +84,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group form-group-material">
+                            <div class="form-group ">
                                 <label class="control-label">Age</label>
                                 <input type="number" class="form-control" name="age" id="age" placeholder="Age" value="{{$client->age}}">
                                 @if($errors->first('age') !="")
@@ -82,8 +94,58 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label class="control-label">Date of Arrival</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                                    <input type="text" class="form-control pickadate" placeholder="Date of Arrival" value="{{$client->date_arrival}}" name="date_arrival" id="date_arrival">
+                                </div>
+                                @if($errors->first('date_arrival') !="")
+                                    <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('date_arrival') }}</label>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label class="control-label">Camp</label>
+                                <select class="select" name="camp_id" id="camp_id">
+                                    @if($client->camp_id !="")
+                                        <?php $camp=\App\Camp::find($client->camp_id);?>
+                                        <option value="{{$client->camp_id}}">{{$camp->camp_name}}</option>
+                                    @endif
+                                    <option value="">Camp</option>
+                                    @foreach(\App\Camp::all() as $item)
+                                        <option value="{{$item->id}}">{{$item->camp_name}}</option>
+                                    @endforeach
+                                </select>
+                                @if($errors->first('camp_id') !="")
+                                    <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label class="control-label">Nationality</label>
+                                <select class="select" name="nationality" id="nationality">
+                                    @if(is_object($client->nationality) && $client->nationality)
+                                        <option value="{{$client->nationality->id}}">{{$client->nationality->country_name}}</option>
+                                    @endif
+                                    <option value="">Origin</option>
+                                    @foreach(\App\Country::all() as $item)
+                                        <option value="{{$item->id}}">{{$item->country_name}}</option>
+                                    @endforeach
+                                </select>
+                                @if($errors->first('nationality') !="")
+                                    <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('nationality') }}</label>
+                                @endif
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group form-group-material">
+                            <div class="form-group ">
                                 <label class="control-label">Civil Status</label>
                                 <select class="select" name="civil_status" id="civil_status">
                                     @if($client->civil_status)
@@ -101,7 +163,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group form-group-material">
+                            <div class="form-group ">
                                 <label class="control-label">Name of Spouse</label>
                                 <input type="text" class="form-control" placeholder="Name of Spouse" name="spouse_name" id="spouse_name" readonly value="{{$client->spouse_name}}">
                                 @if($errors->first('spouse_name') !="")
@@ -110,7 +172,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group form-group-material">
+                    <div class="form-group ">
+                        <label class="control-label">Origin</label>
+                        <input type="text" class="form-control" placeholder="Origin" name="origin" id="care_giver" value="{{$client->origin}}">
+                        @if($errors->first('care_giver') !="")
+                            <label id="address-error" class="validation-error-label" for="origin">{{ $errors->first('origin') }}</label>
+                        @endif
+                    </div>
+                    <div class="form-group ">
                         <label class="control-label">Care Giver</label>
                         <input type="text" class="form-control" placeholder="Care Giver" name="care_giver" id="care_giver" value="{{$client->care_giver}}">
                         @if($errors->first('care_giver') !="")
@@ -122,7 +191,7 @@
                     <legend class="text-bold" >Household Size </legend>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group form-group-material">
+                            <div class="form-group ">
                                 <label class="control-label">Number of Males</label>
                                 <input type="number" class="form-control" name="males_total" id="males_total" placeholder="Number of Males" value="{{$client->males_total}}">
                                 @if($errors->first('males_total') !="")
@@ -131,7 +200,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group form-group-material">
+                            <div class="form-group ">
                                 <label class="control-label">Number of Females</label>
                                 <input type="number" class="form-control" name="females_total" id="females_total" placeholder="Number of Females" value="{{$client->females_total}}">
                                 @if($errors->first('females_total') !="")
@@ -141,78 +210,29 @@
                         </div>
                     </div>
                 </fieldset>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group form-group-material">
-                            <label class="control-label">Date of Arrival</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                <input type="text" class="form-control pickadate" placeholder="Date of Arrival" value="{{$client->date_arrival}}" name="date_arrival" id="date_arrival">
-                            </div>
-                            @if($errors->first('date_arrival') !="")
-                                <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('date_arrival') }}</label>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group form-group-material">
-                            <label class="control-label">Camp</label>
-                            <select class="select" name="camp_id" id="camp_id">
-                                @if($client->camp_id !="")
-                                    <?php $camp=\App\Camp::find($client->camp_id);?>
-                                    <option value="{{$client->camp_id}}">{{$camp->camp_name}}</option>
-                                @endif
-                                <option value="">Camp</option>
-                                @foreach(\App\Camp::all() as $item)
-                                    <option value="{{$item->id}}">{{$item->camp_name}}</option>
-                                @endforeach
-                            </select>
-                            @if($errors->first('camp_id') !="")
-                                <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group form-group-material">
-                            <label class="control-label">Origin</label>
-                            <select class="select" name="nationality" id="nationality">
-                                @if(is_object($client->nationality) && $client->nationality)
-                                    <option value="{{$client->nationality->id}}">{{$client->nationality->country_name}}</option>
-                                @endif
-                                <option value="">Origin</option>
-                                @foreach(\App\Country::all() as $item)
-                                    <option value="{{$item->id}}">{{$item->country_name}}</option>
-                                @endforeach
-                            </select>
-                            @if($errors->first('nationality') !="")
-                                <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('nationality') }}</label>
-                            @endif
-                        </div>
-                    </div>
-
-                </div>
-                <div class="form-group form-group-material">
+                
+                <div class="form-group ">
                     <label class="control-label"> Present address (Zone, Cluster, Neibourhood etc)</label>
                     <input type="text" class="form-control" placeholder="Present address (Zone, Cluster, Neibourhood etc)" name="address" id="address" value="{{$client->address}}">
                     @if($errors->first('address') !="")
                         <label id="address-error" class="validation-error-label" for="address">{{ $errors->first('address') }}</label>
                     @endif
                 </div>
-                <div class="form-group form-group-material">
+                <div class="form-group ">
                     <label class="control-label"> Household Number</label>
                     <input type="text" class="form-control" placeholder="Household Number" name="household_number" id="household_number" value="{{$client->household_number}}">
                     @if($errors->first('household_number') !="")
                         <label id="address-error" class="validation-error-label" for="household_number">{{ $errors->first('household_number') }}</label>
                     @endif
                 </div>
-                <div class="form-group form-group-material">
+                <div class="form-group ">
                     <label class="control-label"> Ration Card Number </label>
                     <input type="text" class="form-control" placeholder="Ration Card Number " name="ration_card_number" id="ration_card_number" value="{{$client->ration_card_number}}">
                     @if($errors->first('ration_card_number') !="")
                         <label id="address-error" class="validation-error-label" for="ration_card_number">{{ $errors->first('ration_card_number') }}</label>
                     @endif
                 </div>
-                <div class="form-group form-group-material">
+                <div class="form-group ">
                     <label>Vulnerability Code</label>
                     <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="vulnerability_code[]" id="vulnerability_code">
                         <optgroup label="Vulnerability Code">
@@ -229,14 +249,14 @@
                         <label id="address-error" class="validation-error-label" for="vulnerability_code">{{ $errors->first('vulnerability_code') }}</label>
                     @endif
                 </div>
-                <div class="form-group form-group-material">
+                <div class="form-group ">
                     <label class="control-label"> Assistance Received to date </label>
                     <input type="text" class="form-control" name="assistance_received" id="assistance_received" placeholder="Assistance Received to date (mention)..." value="{{$client->assistance_received}}">
                     @if($errors->first('assistance_received') !="")
                         <label id="address-error" class="validation-error-label" for="assistance_received">{{ $errors->first('assistance_received') }}</label>
                     @endif
                 </div>
-                <div class="form-group form-group-material">
+                <div class="form-group ">
                     <label class="control-label"> Problem Specification </label>
                     <input type="text" class="form-control" placeholder="Problem Specification" name="problem_specification" id="assistance_received" value="{{$client->problem_specification}}">
                     @if($errors->first('problem_specification') !="")
