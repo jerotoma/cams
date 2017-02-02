@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Role;
 class UserController extends Controller
 {
 
@@ -31,12 +31,18 @@ class UserController extends Controller
             return redirect('home');
         }
     }
+    //Add users view
+    public function getAddUser(){
+        return view('users.add_user');
+    }
+    
     //Post login for Authenticating users
     public function postLogin(Request $request)
-    {
+     {
+         
         $username=strtolower($request->username);
         $password=$request->password;
-
+        
         if (Auth::attempt(['username' => $username, 'password' => $password]))
         {
             if(Auth::user()->blocked ==1 || Auth::user()->status=="Inactive")
@@ -96,16 +102,32 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $user=new User();
-        $user->firstname=$request->first_name;
-        $user->lastname=$request->last_name;
-        $user->username=$request->user_name;
-        $user->password=bcrypt($request->pass);
-        $user->email=$request->email;
-        $user->status=$request->status;
-        $user->save();
-        $user->roles()->attach($request->id);
+          if ( $request->ajax() && $request->isMethod('post') ) {
+              
+          
+          
+            return response()->json([  
+                                     'firstname' => $request->first_name,
+                                     'response'  => 'This is post method',
+                                     'success'   => 'true'
+                                    ]); 
+                  
+          }else{
+                $user              = new User();
+                $request->status   = 'Active';
+                $user->full_name   = $request->first_name .' '. $request->last_name;
+                $user->email       = $request->email;
+                $user->username    = $request->username;
+                $user->password    = bcrypt($request->password);       //  
+                $user->phone       = $request->phone;
+                $user->address     = $request->address;      //;
+                $user->status      = $request->status;
+                $user->save();
+                $user->roles()->attach($request->id);
+
+          }
+        
+       
     }
 
     /**

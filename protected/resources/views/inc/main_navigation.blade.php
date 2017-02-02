@@ -1,20 +1,4 @@
-@extends('site.master')
-@section('page_js')
-    <script type="text/javascript" src="{{asset("assets/js/plugins/visualization/d3/d3.min.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/visualization/d3/d3_tooltip.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/switchery.min.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_multiselect.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/ui/moment/moment.min.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/daterangepicker.js")}}"></script>
-
-    <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
-
-
-    <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
-@stop
-@section('main_navigation')
-    <div class="sidebar-category sidebar-category-visible">
+<div class="sidebar-category sidebar-category-visible">
         <div class="category-content no-padding">
             <ul class="navigation navigation-main navigation-accordion">
                 <li class="active"><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
@@ -23,40 +7,31 @@
                 <li>
                     <a href="#"><i class="icon-users"></i>Clients <span></span></a>
                     <ul>
-                        <li ><a href="{{url('clients')}}">List All Clients</a></li>
-                        <li><a href="{{url('search/clients')}}">Search Clients</a></li>
-                        <li><a href="{{url('import/clients')}}">Import Clients</a></li>
+                        <li ><a href="{{url('clients/create')}}">Register New Client</a></li>
+                        <li><a href="{{url('clients')}}">Search Client</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
                     <ul>
-                        <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
-                        <li><a href="{{url('assessments/inclusion')}}">Inclusion assessment</a></li>
-                        <li><a href="{{url('assessments/wheelchair')}}">Wheelchair Assessment</a></li>
-                        <li><a href="{{url('assessments/home')}}">PSN Needs/Home Assessment </a></li>
+                        <li ><a href="{{url('assessments/create')}}">Vulnerability assessment</a></li>
+                        <li><a href="{{url('import/assessments')}}">Inclusion assessment</a></li>
+                        <li><a href="{{url('export/assessments')}}">Wheelchair Assessment</a></li>
+                        <li><a href="{{url('reports/assessments')}}">Assessments Report</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#"><i class="icon-stack"></i> <span>Client Referrals</span></a>
                     <ul>
-                        <li ><a href="{{url('referrals')}}">Referrals</a></li>
+                        <li ><a href="{{url('referrals/create')}}">Open Referral</a></li>
+                        <li><a href="{{url('import/referrals')}}">Import Referral</a></li>
+                        <li><a href="{{url('export/referrals')}}">Export Referral</a></li>
+                        <li><a href="{{url('search/referrals')}}">Search Referral</a></li>
+                        <li><a href="{{url('reports/referrals')}}">Referral Report</a></li>
                     </ul>
                 </li>
                 <!-- /main -->
-                <!-- Forms -->
-                <li class="navigation-header"><span>Material Distribution</span> <i class="icon-menu" title="Material Distribution"></i></li>
-                <li>
-                    <a href="#"><i class="icon-popout"></i> <span>Material Distribution</span></a>
-                    <ul>
-                        <li><a href="{{url('inventory-received')}}">Item Distribution</a></li>
-                        <li><a href="{{url('inventory-received')}}">Received Items</a></li>
-                        <li><a href="{{url('inventory')}}">Items Inventory</a></li>
-                        <li><a href="{{url('inventory-categories')}}">Items Categories</a></li>
-                    </ul>
-                </li>
 
-                <!-- /forms -->
                 <!-- Forms -->
                 <li class="navigation-header"><span>Rehabilitation</span> <i class="icon-menu" title="Forms"></i></li>
                 <li>
@@ -127,7 +102,7 @@
                 <li>
                     <a href="#"><i class="icon-users"></i> <span>Users</span></a>
                     <ul>
-                        <li><a href="{{url('users/add-user')}}">Add New User</a></li>
+                        <li><a href="{{url('users')}}">Add New User</a></li>
                         <li><a href="{{url('users')}}">List All Users</a></li>
                         <li><a href="{{url('reports/users')}}">User Reports</a></li>
                     </ul>
@@ -162,17 +137,3 @@
             </ul>
         </div>
     </div>
-@stop
-@section('page_title')
-    welcome!
-@stop
-@section('page_heading_title')
-        <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Home</span> - Dashboard</h4>
-        <a class="heading-elements-toggle"><i class="icon-more"></i></a>
-@stop
-@section('breadcrumb')
-    <ul class="breadcrumb">
-        <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li class="active">Dashboard</li>
-    </ul>
-@stop

@@ -13,9 +13,13 @@
 
 Route::get('/','HomeController@index');
 Route::get('home','HomeController@index');
+
+//Users
 Route::get('login','UserController@login');
 Route::post('login','UserController@postLogin');
 Route::get('logout','UserController@logout');
+Route::get('users/add-user',array('uses'=> 'UserController@getAddUser', 'as'=>'users/add-user'));
+Route::post('users/store',array('uses'=> 'UserController@store', 'as'=>'users/store'));
 
 //Countries
 Route::resource('countries','CountryController');
