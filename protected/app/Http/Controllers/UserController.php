@@ -102,17 +102,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-          if ( $request->ajax() && $request->isMethod('post') ) {
+          
+         $this->validate($request, [
+                        'first_name' => 'bail|required|max:255',
+                        'last_name'  => 'bail|required|max:255',
+                        'email'      => 'bail|required|max:255',
+                        'username'   => 'bail|required|max:255',
+                        'password'   => 'bail|required|max:255',
+                        'phone'      => 'bail|required|max:255',
+                        'address'    => 'bail|required',
+                                    ]);
+
+        
+        
+        if ( $request->ajax() && $request->isMethod('post') ) {
               
-          
-          
-            return response()->json([  
-                                     'firstname' => $request->first_name,
-                                     'response'  => 'This is post method',
-                                     'success'   => 'true'
-                                    ]); 
-                  
-          }else{
                 $user              = new User();
                 $request->status   = 'Active';
                 $user->full_name   = $request->first_name .' '. $request->last_name;
@@ -124,6 +128,11 @@ class UserController extends Controller
                 $user->status      = $request->status;
                 $user->save();
                 $user->roles()->attach($request->id);
+          
+            return response()->json([ 'success'   => true ]); 
+                  
+          }else{
+             return response()->json([ 'success'   => false ]);    
 
           }
         

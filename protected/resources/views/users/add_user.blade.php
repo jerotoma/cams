@@ -17,6 +17,16 @@
         <div class="row">
              <div class="col-md-6 col-md-offset-3">
                  <h1 class="text-center">Add New User</h1>
+                   @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                         </div>
+                    @endif
+                
                  <form id = "users-add-user" action="{{route('users/store')}}" method="POST" >
                      {{ csrf_field() }}
                       <div class="row">
@@ -63,6 +73,14 @@
                                   </div> 
                           </div>
                      </div>
+                      <div class="row">
+                          
+                          <div class="col-md-12">
+                            <div class="alertuser">
+                            
+                              </div>
+                          </div>
+                     </div>
                      <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                      <button type="submit" class="btn btn-success">Add User</button>
                 </form>
@@ -74,7 +92,7 @@
     $(document).ready(function(){
      
         $('#users-add-user').on('submit',function(){
-            
+            $('.remove-alert-user').remove();
         var   first_name        = $('#first_name').val(),
               last_name         = $('#last_name').val(),
               username          = $('#username').val(),
@@ -106,16 +124,33 @@
                     success:function(response){
                         console.log(response);
                     },
-                    erreor:function(xhr){
-                        
+                    error:function(xhr){
+                      var msg = '<ul>';
+                    if (xhr.status == 422){
+                        $.each(xhr.responseJSON, function (key, value) {
+                               msg += '<li>';
+                               msg += value;
+                               msg +='</li>'; 
+                           
+                        });
+                        msg += '</ul>';
+                      $('.alertuser').html(alertUser(msg));
+                     }
                     }
                });
             return false;
         });
         
+    function alertUser(error){
+            var msg = '<div class="alert alert-danger remove-alert-user alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Error!</strong> '+error+'</div>';
         
+        return msg;
+        }
     
-    
+     $('#users-add-user input').on('change',function(){
+         $('.remove-alert-user').remove();
+         
+     });
     
     
     });
