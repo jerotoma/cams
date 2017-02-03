@@ -201,20 +201,17 @@ class UserController extends Controller
         // var_dump( $args );exit;
           if ( $request->ajax() && $request->isMethod('post') ) {      
                   
-                
-             $rs= DB::table('users')
-                             ->where('id', $id)
-                             ->update($args);
+             //update user with  $id id    
+             $rs= DB::table('users')->where('id', $id)->update($args);
               
-              return response()->json([ 'success'   => true ]);  
+              return response()->json([ 'success'   => $rs ]);  
           
           
           }else{
-             
-             $rs= DB::table('users')
-                             ->where('id', $id)
-                             ->update($args);
+             //update user with  $id id 
+              $rs    =  DB::table('users')->where('id', $id)->update($args);
            
+			  //get Updated users
               $users =  DB::table('users')->get();
           
              return view('users.index', ['users' =>  $users  ] );  

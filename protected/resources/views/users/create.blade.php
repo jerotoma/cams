@@ -105,7 +105,7 @@
             $('#users-add-user').on('submit',function(){
             $('.remove-alert-user').remove();
             
-              var alert             = "<p class='remove-alert-user' style='color:#FF0000; font-size:11px font-family:Open sans;'>Please make sure this field is not empty</>";;
+              var alert             = "<p class='remove-alert-user' style='color:#FF0000; font-size:11px font-family:Open sans;'>Please make sure this field is not empty</p>";;
               var first_name        = $('#first_name'),
                   last_name         = $('#last_name'),
                   username          = $('#username'),
@@ -114,7 +114,7 @@
                   phone             = $('#phone'),
                   confirm_password  = $('#confirm_password'),
                   address           = $('#address'),
-                  _token            = $('#csrf-token').value(),   
+                  _token            = $('#csrf-token').val(),   
                   formURL           = $('#users-add-user').attr("action");  
 
             var array               = [], i;
