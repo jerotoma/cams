@@ -22,9 +22,9 @@ Route::get('users/create','UserController@create');
 Route::post('users/store','UserController@store');
 Route::get('users','UserController@index');
 Route::get('users/{id}/edit','UserController@edit');
-Route::get('users/{id}/show','UserController@show');
+Route::get('users/{id}/view','UserController@show');
 Route::post('users/{id}/update','UserController@update');
-Route::get('users/{id}/delete','UserController@delete');
+Route::get('users/{id}/delete','UserController@destroy');
 
 //Countries
 Route::resource('countries','CountryController');

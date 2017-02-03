@@ -155,7 +155,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $users = DB::table('users')->where('id', '=', $id )->get();
+     
+    return view('users.show')->with(array("users"=>$users));
     }
 
     /**
@@ -225,7 +227,11 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
+	{
+           $user = User::find($id);
+           $user ->delete();
+          //get Updated users
+           $users =  DB::table('users')->get();
+           return view('users.index', ['users' =>  $users  ] );
     }
 }
