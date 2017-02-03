@@ -107,7 +107,7 @@
                   phone             = $('#phone'),
                   confirm_password  = $('#confirm_password'),
                   address           = $('#address'),
-                  _token            = $('#csrf-token').value(),   
+                  _token            = $('#csrf-token').val(),   
                   formURL           = $('#users-edit-user').attr("action");  
 
              var array               = [], i;
