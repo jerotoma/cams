@@ -102,7 +102,7 @@
                 <li>
                     <a href="#"><i class="icon-users"></i> <span>Users</span></a>
                     <ul>
-                        <li><a href="{{url('users')}}">Add New User</a></li>
+                        <li><a href="{{url('users/create')}}">Add New User</a></li>
                         <li><a href="{{url('users')}}">List All Users</a></li>
                         <li><a href="{{url('reports/users')}}">User Reports</a></li>
                     </ul>

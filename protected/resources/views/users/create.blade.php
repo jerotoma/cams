@@ -6,15 +6,26 @@
 
 <!-- Add new user form -->
 @section('contents')
- <div class="container-fluid">
          <style>
+             .add-new-user{
+                 background-color:#FFF;
+                 padding:20px;
+             }
              .form-control{
                  background: #FFF;
                  padding: 15px;
                  border: 1px solid #4CAF50; 
              }
+             .alert-dismissable .close, 
+             .alert-dismissible .close {
+                position: relative;
+                 top: -2px;
+                 right: -10px; 
+                 color: inherit;
+            }
          </style>
-        <div class="row">
+ <div class="container-fluid add-new-user">
+           <div class="row">
              <div class="col-md-6 col-md-offset-3">
                  <h1 class="text-center">Add New User</h1>
                    @if (count($errors) > 0)
@@ -27,9 +38,8 @@
                          </div>
                     @endif
                 
-                 <form id = "users-add-user" action="{{route('users/store')}}" method="POST" >
-                     {{ csrf_field() }}
-                      <div class="row">
+                 <form id = "users-add-user" action="{{url('users/store')}}" method="POST" >
+                        <div class="row">
                           <div class="col-md-6">
                                   <div class="form-group">
                                     <label for="first_name">First Name: </label>
@@ -88,41 +98,87 @@
             </div>
      </div>
 </div>
-<script>
+<script type="text/javascript">
+    
     $(document).ready(function(){
      
-        $('#users-add-user').on('submit',function(){
+            $('#users-add-user').on('submit',function(){
             $('.remove-alert-user').remove();
-        var   first_name        = $('#first_name').val(),
-              last_name         = $('#last_name').val(),
-              username          = $('#username').val(),
-              password          = $('#password').val(),
-              email             = $('#email').val(),
-              phone             = $('#phone').val(),
-              confirm_password  = $('#confirm_password').val(),
-              address           = $('#address').val(),
-              _token            = $('#csrf-token').val(),   
-              formURL           = $('#users-add-user').attr("action");  
             
-           
-            var data =  { 
-                             first_name : first_name,
-                             last_name  : last_name,
-                             email      : email,
-                             username   : username,
-                             password   : password, 
-                             phone      : phone,
-                             address    : address,
-                       };
-          console.log(data);
-          $.ajax({ 
+              var alert             = "<p class='remove-alert-user' style='color:#FF0000; font-size:11px font-family:Open sans;'>Please make sure this field is not empty</>";;
+              var first_name        = $('#first_name'),
+                  last_name         = $('#last_name'),
+                  username          = $('#username'),
+                  password          = $('#password'),
+                  email             = $('#email'),
+                  phone             = $('#phone'),
+                  confirm_password  = $('#confirm_password'),
+                  address           = $('#address'),
+                  _token            = $('#csrf-token').value(),   
+                  formURL           = $('#users-add-user').attr("action");  
+
+            var array               = [], i;
+            var data                =  { 
+                                             first_name : first_name.val(),
+                                             last_name  : last_name.val(),
+                                             email      : email.val(),
+                                             username   : username.val(),
+                                             password   : password.val(), 
+                                             phone      : phone.val(),
+                                             address    : address.val(),
+                                       };
+         if(  first_name.val().length  === 0 && last_name.val().length         === 0 &&
+              username.val().length    === 0 && email.val().length             === 0 &&
+              phone.val().length       === 0 && address.val().length           === 0 &&
+              password.val().length    === 0 && confirm_password.val().length  === 0    ){
+                 
+                       array.push(first_name);
+                       array.push(last_name);
+                       array.push(username);
+                       array.push(phone);
+                       array.push(password);
+                       array.push(confirm_password);
+                       array.push(address);
+                       array.push(email);
+
+                      for(i=0; i < array.length;  i++ ){
+
+                          array[i].after(alert);
+
+                      } 
+          return false;   
+         }else{
+         
+             
+                      if(first_name.val().length  === 0){ array.push(first_name);}
+                      if(last_name.val().length   === 0){ array.push(last_name);}
+                      if(username.val().length    === 0){ array.push(username);}
+                      if(phone.val().length       === 0){ array.push(phone);}
+                      if(password.val().length    === 0){ array.push(password);}
+                      if(confirm_password.val().length    === 0){ array.push(confirm_password);}
+                      if(address.val().length     === 0){ array.push(address);} 
+                      if(email.val().length       === 0){ array.push(email);}
+
+                     if(array.length != 0 ){
+
+                      for(i=0; i < array.length;  i++ ){
+
+                          array[i].after(alert);
+
+                      }   
+          return false;  
+          
+          }else{
+              $.ajax({ 
                     headers : {'X-CSRF-TOKEN': _token},
                     url     : formURL,
                     data    : data,
                     type    : 'POST',
                     datatype: 'JSON',
                     success:function(response){
-                        console.log(response);
+                       if(response.success){
+                           window.location.replace('{{url("/users")}}');
+                       }
                     },
                     error:function(xhr){
                       var msg = '<ul>';
@@ -138,10 +194,14 @@
                      }
                     }
                });
+              
+              }
+             
+             }
             return false;
         });
         
-    function alertUser(error){
+     function alertUser(error){
             var msg = '<div class="alert alert-danger remove-alert-user alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Error!</strong> '+error+'</div>';
         
         return msg;
@@ -154,8 +214,6 @@
     
     
     });
-
-
 </script>
 
 @stop

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Role;
@@ -14,11 +15,20 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
+    public $users = array();
+    
+    public function  __construct(){
+        
+        $this->users = DB::table('users')->get();
+    }
+    
     public function index()
     {
-        //
+        $users =  $this->users; 
+       
+       return view('users.index', ['users' =>  $users  ] );
     }
+
 
     public function login()
     {
@@ -31,11 +41,7 @@ class UserController extends Controller
             return redirect('home');
         }
     }
-    //Add users view
-    public function getAddUser(){
-        return view('users.add_user');
-    }
-    
+      
     //Post login for Authenticating users
     public function postLogin(Request $request)
      {
@@ -113,32 +119,34 @@ class UserController extends Controller
                         'address'    => 'bail|required',
                                     ]);
 
-        
-        
+        $user              = new User();
+        $request->status   = 'Active';
+        $user->full_name   = $request->first_name .' '. $request->last_name;
+        $user->email       = $request->email;
+        $user->username    = $request->username;
+        $user->password    = bcrypt($request->password);       //  
+        $user->phone       = $request->phone;
+        $user->address     = $request->address;      //;
+        $user->status      = $request->status;
+
         if ( $request->ajax() && $request->isMethod('post') ) {
               
-                $user              = new User();
-                $request->status   = 'Active';
-                $user->full_name   = $request->first_name .' '. $request->last_name;
-                $user->email       = $request->email;
-                $user->username    = $request->username;
-                $user->password    = bcrypt($request->password);       //  
-                $user->phone       = $request->phone;
-                $user->address     = $request->address;      //;
-                $user->status      = $request->status;
                 $user->save();
                 $user->roles()->attach($request->id);
           
             return response()->json([ 'success'   => true ]); 
                   
           }else{
-             return response()->json([ 'success'   => false ]);    
+                $user->save();
+                $user->roles()->attach($request->id);
+           
+          // return response()->json([ 'success'   => false ]);    
 
           }
         
        
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -158,7 +166,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+    $users = DB::table('users')->where('id', '=', $id )->get();
+     
+    return view('users.edit')->with(array("users"=>$users));
     }
 
     /**
@@ -168,9 +178,47 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id )
     {
-        //
+         $this->validate($request, [
+                        'full_name' => 'bail|required|max:255',
+                        'email'      => 'bail|required|max:255',
+                        'username'   => 'bail|required|max:255',
+                        'password'   => 'bail|required|max:255',
+                        'phone'      => 'bail|required|max:255',
+                        'address'    => 'bail|required',
+                                    ]);
+
+         $args   =        [ 
+                             'full_name'   => $request->full_name,
+                             'email'       => $request->email,
+                             'username'    => $request->username,
+                             'password'    => bcrypt($request->password),       //  
+                             'phone'       => $request->phone,
+                             'address'     => $request->address,      //;
+                           ];
+        
+        // var_dump( $args );exit;
+          if ( $request->ajax() && $request->isMethod('post') ) {      
+                  
+                
+             $rs= DB::table('users')
+                             ->where('id', $id)
+                             ->update($args);
+              
+              return response()->json([ 'success'   => true ]);  
+          
+          
+          }else{
+             
+             $rs= DB::table('users')
+                             ->where('id', $id)
+                             ->update($args);
+           
+              $users =  DB::table('users')->get();
+          
+             return view('users.index', ['users' =>  $users  ] );  
+          } 
     }
 
     /**
