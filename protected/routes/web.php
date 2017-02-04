@@ -18,13 +18,8 @@ Route::get('home','HomeController@index');
 Route::get('login','UserController@login');
 Route::post('login','UserController@postLogin');
 Route::get('logout','UserController@logout');
-Route::get('users/create','UserController@create');
-Route::post('users/store','UserController@store');
-Route::get('users','UserController@index');
-Route::get('users/{id}/edit','UserController@edit');
-Route::get('users/{id}/view','UserController@show');
-Route::post('users/{id}/update','UserController@update');
-Route::get('users/{id}/delete','UserController@destroy');
+Route::resource('users','UserController');
+
 
 //Countries
 Route::resource('countries','CountryController');

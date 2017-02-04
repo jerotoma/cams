@@ -81,7 +81,8 @@
                     </ul>
                 </li>
                 <!-- /data visualization -->
-                <!-- Appearance -->
+            @role('admin')
+                <!-- Settings -->
                 <li class="navigation-header"><span>Settings</span> <i class="icon-menu" title="Settings"></i></li>
                 <li>
                     <a href="#"><i class="icon-list"></i> <span>Countries</span></a>
@@ -127,24 +128,22 @@
                 <li>
                     <a href="#"><i class="icon-users"></i> <span>Users</span></a>
                     <ul>
-                        <li><a href="{{url('users/create')}}">Add New User</a></li>
                         <li><a href="{{url('users')}}">List All Users</a></li>
-                        <li><a href="{{url('reports/users')}}">User Reports</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#"><i class="icon-popout"></i> <span>Users Rights</span></a>
                     <ul>
-                        <li><a href="{{url('access/rights/create')}}">Add New</a></li>
-                        <li><a href="{{url('access/rights')}}">List All</a></li>
+                        <li><a href="{{url('access/rights')}}">List All Rights</a></li>
                     </ul>
                 </li>
-                <!-- /layout -->
+                <!-- /Settings -->
+            @endrole
 
 
 
                 <!-- Extensions -->
-                <li class="navigation-header"><span>Data Sharing</span> <i class="icon-menu" title="Data Sharing"></i></li>
+                <li class="navigation-header"><span>Data Sharing/Backup</span> <i class="icon-menu" title="Data Sharing"></i></li>
                 <li>
                     <a href="#"><i class="icon-puzzle4"></i> <span>Data import</span></a>
                     <ul>

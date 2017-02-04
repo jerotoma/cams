@@ -7,6 +7,8 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Role;
+use Illuminate\Support\Facades\Validator;
+
 class UserController extends Controller
 {
 
@@ -16,15 +18,16 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public $users = array();
-    
-    public function  __construct(){
-        
-        $this->users = DB::table('users')->get();
+
+    //These middleware will protect the rest of functions from unauthenticated users 
+    public function __construct()
+    {
+        $this->middleware('auth',['except' => ['login','postLogin']]);
     }
     
     public function index()
     {
-        $users =  $this->users; 
+        $users =  User::all();
        
        return view('users.index', ['users' =>  $users  ] );
     }
@@ -108,42 +111,40 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-          
-         $this->validate($request, [
-                        'first_name' => 'bail|required|max:255',
-                        'last_name'  => 'bail|required|max:255',
-                        'email'      => 'bail|required|max:255',
-                        'username'   => 'bail|required|max:255',
-                        'password'   => 'bail|required|max:255',
-                        'phone'      => 'bail|required|max:255',
-                        'address'    => 'bail|required',
-                                    ]);
-
-        $user              = new User();
-        $request->status   = 'Active';
-        $user->full_name   = $request->first_name .' '. $request->last_name;
-        $user->email       = $request->email;
-        $user->username    = $request->username;
-        $user->password    = bcrypt($request->password);       //  
-        $user->phone       = $request->phone;
-        $user->address     = $request->address;      //;
-        $user->status      = $request->status;
-
-        if ( $request->ajax() && $request->isMethod('post') ) {
-              
+        try {
+            $validator = Validator::make($request->all(), [
+                'full_name' => 'required',
+                'username' => 'required|unique:users',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:8',
+                'status' => 'required',
+                'role_id' => 'required',
+                'phone' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return redirect('post/create')
+                    ->withErrors($validator)
+                    ->withInput();
+            } else {
+                $user = new User;
+                $user->full_name = $request->full_name;
+                $user->phone = $request->phone;
+                $user->email = $request->email;
+                $user->password = bcrypt($request->pass);
+                $user->department_id = $request->department_id;
+                $user->designation = $request->designation;
+                $user->status = $request->status;
+                $user->username = $request->username;
                 $user->save();
-                $user->roles()->attach($request->id);
-          
-            return response()->json([ 'success'   => true ]); 
-                  
-          }else{
+                $user->roles()->attach($request->role_id);
                 $user->save();
-                $user->roles()->attach($request->id);
-           
-          // return response()->json([ 'success'   => false ]);    
-
-          }
-        
+            }
+            return "Success";
+        }
+        catch (\Exception $ex)
+        {
+            return "Failed".$ex.getMessage();
+        }
        
     }
     
@@ -155,9 +156,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $users = DB::table('users')->where('id', '=', $id )->get();
-     
-    return view('users.show')->with(array("users"=>$users));
+        $user = User::findorfail($id);
+        return view('users.show',compact('user'));
     }
 
     /**
@@ -168,9 +168,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-    $users = DB::table('users')->where('id', '=', $id )->get();
-     
-    return view('users.edit')->with(array("users"=>$users));
+        $user = User::findorfail($id);
+        return view('users.edit',compact('user'));
     }
 
     /**
@@ -182,42 +181,28 @@ class UserController extends Controller
      */
     public function update(Request $request, $id )
     {
-         $this->validate($request, [
-                        'full_name' => 'bail|required|max:255',
-                        'email'      => 'bail|required|max:255',
-                        'username'   => 'bail|required|max:255',
-                        'password'   => 'bail|required|max:255',
-                        'phone'      => 'bail|required|max:255',
-                        'address'    => 'bail|required',
-                                    ]);
+        $this->validate($request, [
+            'full_name' => 'required',
+            'username'  => 'required|unique:users',
+            'email'      => 'required|email|unique:users',
+            'password'   => 'required|minn:8',
+            'status'      => 'required',
+            'role_id'      => 'required',
+            'phone'    => 'required',
+        ]);
 
-         $args   =        [ 
-                             'full_name'   => $request->full_name,
-                             'email'       => $request->email,
-                             'username'    => $request->username,
-                             'password'    => bcrypt($request->password),       //  
-                             'phone'       => $request->phone,
-                             'address'     => $request->address,      //;
-                           ];
-        
-        // var_dump( $args );exit;
-          if ( $request->ajax() && $request->isMethod('post') ) {      
-                  
-             //update user with  $id id    
-             $rs= DB::table('users')->where('id', $id)->update($args);
-              
-              return response()->json([ 'success'   => $rs ]);  
-          
-          
-          }else{
-             //update user with  $id id 
-              $rs    =  DB::table('users')->where('id', $id)->update($args);
-           
-			  //get Updated users
-              $users =  DB::table('users')->get();
-          
-             return view('users.index', ['users' =>  $users  ] );  
-          } 
+        $user= User::findorfail($id);
+        $user->full_name=$request->full_name;
+        $user->phone=$request->phone;
+        $user->email=$request->email;
+        $user->password=bcrypt($request->pass);
+        $user->department_id=$request->department_id;
+        $user->designation=$request->designation;
+        $user->status=$request->status;
+        $user->username=$request->username;
+        $user->save();
+        $user->roles()->attach($request->role_id);
+        $user->save();
     }
 
     /**
@@ -230,8 +215,5 @@ class UserController extends Controller
 	{
            $user = User::find($id);
            $user ->delete();
-          //get Updated users
-           $users =  DB::table('users')->get();
-           return view('users.index', ['users' =>  $users  ] );
     }
 }

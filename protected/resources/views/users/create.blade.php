@@ -1,220 +1,201 @@
- <!-- @extends('site.master') This is extended in the dashboard.blade.php so no need to extend it again  -->
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form_wizard.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
 
-@section('main_navigation')
-    @include('site.dashboard')
-@stop
+<script type="text/javascript" src="{{asset("assets/js/pages/wizard_form.js")}}"></script>
 
-<!-- Add new user form -->
-@section('contents')
-         <style>
-             .add-new-user{
-                 background-color:#FFF;
-                 padding:20px;
-             }
-             .form-control{
-                 background: #FFF;
-                 padding: 15px;
-                 border: 1px solid #4CAF50; 
-             }
-             .alert-dismissable .close, 
-             .alert-dismissible .close {
-                position: relative;
-                 top: -2px;
-                 right: -10px; 
-                 color: inherit;
-            }
-         </style>
- <div class="container-fluid add-new-user">
-           <div class="row">
-             <div class="col-md-6 col-md-offset-3">
-                 <h1 class="text-center">Add New User</h1>
-                   @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                         </div>
-                    @endif
-                
-                 <form id = "users-add-user" action="{{url('users/store')}}" method="POST" >
-                        <div class="row">
-                          <div class="col-md-6">
-                                  <div class="form-group">
-                                    <label for="first_name">First Name: </label>
-                                    <input type="text" name="first_name" class="form-control" id="first_name">
-                                  </div>
-                          </div>
-                          <div class="col-md-6">
-                                 <div class="form-group">
-                                    <label for="last_name">Last Name:</label>
-                                    <input type="text" name="last_name" class="form-control" id="last_name">
-                                 </div> 
-                          </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="phone">Phone:</label>
-                        <input type="text" name="phone" class="form-control" id="phone">
-                      </div>
-                      <div class="form-group">
-                        <label for="address">Address:</label>
-                        <input type="text" name="address" class="form-control" id="address">
-                      </div>
-                     <div class="form-group">
-                        <label for="email">Email Address:</label>
-                        <input type="email" name="email" class="form-control" id="email">
-                      </div>
-                     <div class="form-group">
-                        <label for="username">Username:</label>
-                        <input type="text" name="username" class="form-control" id="username">
-                      </div>
-                     <div class="row">
-                          <div class="col-md-6">
-                                  <div class="form-group">
-                                    <label for="password">Password:</label>
-                                    <input type="password" name="password" class="form-control" id="password">
-                                  </div>
-                          </div>
-                          <div class="col-md-6">
-                                 <div class="form-group">
-                                    <label for="confirm_password">Confirm Password:</label>
-                                    <input type="password" name="confirm_password" class="form-control" id="confirm_password">
-                                  </div> 
-                          </div>
-                     </div>
-                      <div class="row">
-                          
-                          <div class="col-md-12">
-                            <div class="alertuser">
-                            
-                              </div>
-                          </div>
-                     </div>
-                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                     <button type="submit" class="btn btn-success">Add User</button>
-                </form>
-
-            </div>
-     </div>
-</div>
-<script type="text/javascript">
-    
-    $(document).ready(function(){
-     
-            $('#users-add-user').on('submit',function(){
-            $('.remove-alert-user').remove();
-            
-              var alert             = "<p class='remove-alert-user' style='color:#FF0000; font-size:11px font-family:Open sans;'>Please make sure this field is not empty</p>";;
-              var first_name        = $('#first_name'),
-                  last_name         = $('#last_name'),
-                  username          = $('#username'),
-                  password          = $('#password'),
-                  email             = $('#email'),
-                  phone             = $('#phone'),
-                  confirm_password  = $('#confirm_password'),
-                  address           = $('#address'),
-                  _token            = $('#csrf-token').val(),   
-                  formURL           = $('#users-add-user').attr("action");  
-
-            var array               = [], i;
-            var data                =  { 
-                                             first_name : first_name.val(),
-                                             last_name  : last_name.val(),
-                                             email      : email.val(),
-                                             username   : username.val(),
-                                             password   : password.val(), 
-                                             phone      : phone.val(),
-                                             address    : address.val(),
-                                       };
-         if(  first_name.val().length  === 0 && last_name.val().length         === 0 &&
-              username.val().length    === 0 && email.val().length             === 0 &&
-              phone.val().length       === 0 && address.val().length           === 0 &&
-              password.val().length    === 0 && confirm_password.val().length  === 0    ){
-                 
-                       array.push(first_name);
-                       array.push(last_name);
-                       array.push(username);
-                       array.push(phone);
-                       array.push(password);
-                       array.push(confirm_password);
-                       array.push(address);
-                       array.push(email);
-
-                      for(i=0; i < array.length;  i++ ){
-
-                          array[i].after(alert);
-
-                      } 
-          return false;   
-         }else{
-         
-             
-                      if(first_name.val().length  === 0){ array.push(first_name);}
-                      if(last_name.val().length   === 0){ array.push(last_name);}
-                      if(username.val().length    === 0){ array.push(username);}
-                      if(phone.val().length       === 0){ array.push(phone);}
-                      if(password.val().length    === 0){ array.push(password);}
-                      if(confirm_password.val().length    === 0){ array.push(confirm_password);}
-                      if(address.val().length     === 0){ array.push(address);} 
-                      if(email.val().length       === 0){ array.push(email);}
-
-                     if(array.length != 0 ){
-
-                      for(i=0; i < array.length;  i++ ){
-
-                          array[i].after(alert);
-
-                      }   
-          return false;  
-          
-          }else{
-              $.ajax({ 
-                    headers : {'X-CSRF-TOKEN': _token},
-                    url     : formURL,
-                    data    : data,
-                    type    : 'POST',
-                    datatype: 'JSON',
-                    success:function(response){
-                       if(response.success){
-                           window.location.replace('{{url("/users")}}');
-                       }
-                    },
-                    error:function(xhr){
-                      var msg = '<ul>';
-                    if (xhr.status == 422){
-                        $.each(xhr.responseJSON, function (key, value) {
-                               msg += '<li>';
-                               msg += value;
-                               msg +='</li>'; 
-                           
-                        });
-                        msg += '</ul>';
-                      $('.alertuser').html(alertUser(msg));
-                     }
-                    }
-               });
-              
-              }
-             
-             }
-            return false;
-        });
-        
-     function alertUser(error){
-            var msg = '<div class="alert alert-danger remove-alert-user alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Error!</strong> '+error+'</div>';
-        
-        return msg;
-        }
-    
-     $('#users-add-user input').on('change',function(){
-         $('.remove-alert-user').remove();
-         
-     });
-    
-    
-    });
+<script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
+<script>
+    $('.pickadate').pickadate();
 </script>
 
-@stop
-<!-- Add new user form -->
+<div class="portlet light bordered">
+    <div class="portlet-body form">
+        {!! Form::open(array('url'=>'users','role'=>'form','id'=>'formUsers')) !!}
+        <div class="panel panel-flat">
+
+
+            <div class="panel-body">
+                <fieldset class="scheduler-border">
+                    <legend class="text-bold">User Details</legend>
+                    <div class="form-group ">
+                        <label class="control-label">Full Name</label>
+                        <input type="text" class="form-control" placeholder="Username" name="full_name" id="full_name"
+                               value="">
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label">Designation</label>
+                        <input type="text" class="form-control" placeholder="Designation" name="designation" id="designation"
+                               value="">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Email</label>
+                                <input type="text" class="form-control" placeholder="Email" name="email" id="email"
+                                       value="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Phone</label>
+                                <input type="text" class="form-control" placeholder="phone" name="phone" id="phone"
+                                       value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Username</label>
+                                <input type="text" class="form-control" placeholder="Username" name="username" id="username"
+                                       value="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Role</label>
+                                <select class="select" name="role_id" id="role_id" data-placeholder="Choose an option...">
+                                    <option></option>
+                                    @foreach(\App\Role::all() as $role)
+                                        <option value="{{$role->id}}">{{$role->display_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label">Department</label>
+                        <select class="select" name="department_id	" id="department_id	" data-placeholder="Choose an option...">
+                            <option></option>
+                            @foreach(\App\Department::all() as $department)
+                            <option value="{{$department->id}}">{{$department->department_name}}</option>
+                                @endforeach
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Password</label>
+                                <input type="password" class="form-control" placeholder="password" name="password" id="password"
+                                       value="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Confirm Password</label>
+                                <input type="password" class="form-control" placeholder="confirm" name="confirm" id="confirm"
+                                       value="">
+                            </div>
+                        </div>
+                    </div>
+
+                </fieldset>
+                <div class="row">
+                    <div class="col-md-8 col-sm-8 pull-left" id="output">
+
+                    </div>
+                    <div class="col-md-4 col-sm-4 pull-right text-right">
+                        <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Add  User </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {!! Form::close() !!}
+    </div>
+</div>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
+<script>
+
+
+    $("#formUsers").validate({
+        ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
+        errorClass: 'validation-error-label',
+        successClass: 'validation-valid-label',
+        highlight: function(element, errorClass) {
+            $(element).removeClass(errorClass);
+        },
+        unhighlight: function(element, errorClass) {
+            $(element).removeClass(errorClass);
+        },
+        errorElement:'div',
+        rules: {
+            full_name: "required",
+            phone: "required",
+            username: "required",
+            status: "required",
+            role_id: "required",
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true,
+                minlength: 8
+            },
+            confirm: {
+                required: true,
+                minlength: 8,
+                equalTo : "#password"
+            }
+        },
+        messages: {
+            full_name: "Please this field is required",
+            phone: "Please field is required",
+            username: "Please this field is required",
+            role_id: "Please this field is required",
+            status: "Please this field is required",
+            email:{
+                required:"Please this field is required",
+                email:"Please enter valid email",
+            },
+            password:{
+                required:"Please this field is required",
+                minlength:"Password must have 8 characters",
+            },
+            confirm:{
+                required:"Please this field is required",
+                minlength:"Password must have 8 characters",
+                equalTo :"Password don't match",
+            }
+        },
+        submitHandler: function(form) {
+            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
+            var postData = $('#formClients').serializeArray();
+            var formURL = $('#formClients').attr("action");
+            $.ajax(
+                {
+                    url : formURL,
+                    type: "POST",
+                    data : postData,
+                    success:function(data)
+                    {
+                        console.log(data);
+                        //data: return data from server
+                        $("#output").html(data);
+                        setTimeout(function() {
+                            location.replace('{{url('referrals')}}');
+                            $("#output").html("");
+                        }, 2000);
+                    },
+                    error: function(data)
+                    {
+                        console.log(data);
+                        //in the responseJSON you get the form validation back.
+                        $("#output").html("<h3><span class='text-danger'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
+
+                    }
+                });
+        }
+    });
+</script>
