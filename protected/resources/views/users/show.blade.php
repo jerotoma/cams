@@ -9,8 +9,8 @@
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
             <a  href="{{url('users')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>All User</span></a>
-            <a  href="{{url('users/create')}}" class="btn "><i class="fa fa-plus-square-o text-primary" aria-hidden="true"></i> <span>Add New User</span></a>
-            <a  href="{{url('user/report')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>User Report</span></a>
+            <a  href="#" class="btn " data-toggle="modal" data-target="#add-user-new"><i class="fa fa-plus-square-o text-primary" aria-hidden="true"></i> <span>Add New User</span></a>
+           <a  href="{{url('user/report')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>User Report</span></a>
         </div>
     </div>
     <div class="panel panel-flat">
@@ -55,18 +55,69 @@
 				<th class="text-left success">Action</th>
 				 <td class="text-center success" id="{{$user->id}}">
                     <a href="{{url('users')}}" class="viewRecord btn "><i class="fa fa-eye" aria-hidden="true"></i> All users</a>
-                    <a href="{{url('users')}}/{{$user->id}}/edit" class="editRecord btn "><i class="fa fa-pencil text-success"></i> Edit</a>
+                   <a href="#" data-toggle="modal" data-target="#{{$user->id}}" class="editRecord btn "><i class="fa fa-pencil text-success"></i> Edit</a>
                     <a href="{{url('users')}}/{{$user->id}}/delete"  class="deleteRecord btn" ><i class="fa fa-trash text-danger"></i> Delete</a>
                 </td>
             </tr>
+                         <!-- Modal -->
+                <div id="{{$user->id}}" class="modal fade" role="dialog">
+                      <div class="modal-dialog ">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><h1 class="text-center">Edit User</h1></h4>
+                          </div>
+                          <?php $user_id = $user->id; ?>
+                           
+                          <div class="modal-body">
+                            @section('specific-column')
+                              <div class="col-md-12">
+                            @stop
+                            <!--Include Create View -->
+                             @include('users.inc.edit')
+                            <!--/Include Create View -->
+                            </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                </div>
            @endforeach
          </table>
 		@else
 			<p>No view at this moment</p>
 		@endif
         </div>
-   
-       
-    </div>
-       
+     </div>
+    <!-- Modal -->
+    <div id="add-user-new" class="modal fade" role="dialog">
+          <div class="modal-dialog ">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><h1 class="text-center">Add New User</h1></h4>
+              </div>
+              <div class="modal-body">
+                @section('specific-column')
+                  <div class="col-md-12">
+                @stop
+                <!--Include Create View -->
+                 @include('users.inc.create')
+                <!--/Include Create View -->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>  
+    </div>   
 @endsection
