@@ -81,7 +81,7 @@
                                   </div>
                           </div>
                           <div class="col-md-6">
-                                 <div class="form-group">
+                                 <div class="form-group pass_mismatch">
                                     <label for="confirm_password">Confirm Password:</label>
                                     <input type="password" name="confirm_password" value="{{$user->password}}" class="form-control" id="confirm_password">
                                   </div> 
@@ -116,6 +116,7 @@
                   username          = $('#username'),
                   password          = $('#password'),
                   email             = $('#email'),
+                  pass_mismatch     = $('.pass_mismatch'),
                   phone             = $('#phone'),
                   confirm_password  = $('#confirm_password'),
                   address           = $('#address'),
@@ -152,6 +153,7 @@
           return false;   
          }else{
          
+              var mismatch = false;
              
                       if(full_name.val().length   === 0){ array.push(full_name);}
                       if(username.val().length    === 0){ array.push(username);}
@@ -160,14 +162,17 @@
                       if(confirm_password.val().length    === 0){ array.push(confirm_password);}
                       if(address.val().length     === 0){ array.push(address);} 
                       if(email.val().length       === 0){ array.push(email);}
-
-            if(array.length != 0 ){
+                      if(confirm_password.val()   != password.val()){mismatch=true}
+            if(array.length != 0 || mismatch ){
 
                       for(i=0; i < array.length;  i++ ){
 
                           array[i].after(alert);
 
-                      }   
+                      } 
+                if(mismatch){
+                         pass_mismatch.after("<p class='remove-alert-user' style='color:#FF0000; font-size:11px font-family:Open sans;'>Password mismatch</p>") 
+                      }
               return false;  
 
               }else{
