@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8e30bb40-a70f-433f-8fb4-a37ab77960ae" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/protected/vendor/psy/psysh/test/fixtures/default/.local/share/psysh/php_manual.sqlite" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/app/Http/Controllers/UserController.php" afterPath="$PROJECT_DIR$/protected/app/Http/Controllers/UserController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/database/seeds/DatabaseSeeder.php" afterPath="$PROJECT_DIR$/protected/database/seeds/DatabaseSeeder.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/database/seeds/UsersTableSeeder.php" afterPath="$PROJECT_DIR$/protected/database/seeds/UsersTableSeeder.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/resources/views/site/dashboard.blade.php" afterPath="$PROJECT_DIR$/protected/resources/views/site/dashboard.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/resources/views/users/create.blade.php" afterPath="$PROJECT_DIR$/protected/resources/views/users/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/resources/views/users/edit.blade.php" afterPath="$PROJECT_DIR$/protected/resources/views/users/edit.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/resources/views/users/index.blade.php" afterPath="$PROJECT_DIR$/protected/resources/views/users/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/routes/web.php" afterPath="$PROJECT_DIR$/protected/routes/web.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/vendor/composer/autoload_classmap.php" afterPath="$PROJECT_DIR$/protected/vendor/composer/autoload_classmap.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/vendor/composer/autoload_static.php" afterPath="$PROJECT_DIR$/protected/vendor/composer/autoload_static.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/readme.md" afterPath="$PROJECT_DIR$/protected/readme.md" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -58,7 +47,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UserController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/protected/app/Http/Controllers/UserController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="596">
@@ -66,6 +55,19 @@
               <folding>
                 <element signature="e#40#53#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="readme.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/protected/readme.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="0">
+                <caret line="0" column="16" lean-forward="false" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
+                <folding />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -147,6 +149,7 @@
         <option value="$PROJECT_DIR$/protected/routes/web.php" />
         <option value="$PROJECT_DIR$/protected/resources/views/users/create.blade.php" />
         <option value="$PROJECT_DIR$/protected/app/Http/Controllers/UserController.php" />
+        <option value="$PROJECT_DIR$/protected/readme.md" />
       </list>
     </option>
   </component>
@@ -647,12 +650,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1486213058451</updated>
-      <workItem from="1486213064392" duration="19254000" />
+      <workItem from="1486213064392" duration="19666000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19254000" />
+    <option name="totallyTimeSpent" value="19666000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -975,6 +978,17 @@
           <folding>
             <element signature="e#40#53#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/readme.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="16" lean-forward="false" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
+            <folding />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
