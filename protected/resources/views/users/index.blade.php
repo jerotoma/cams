@@ -35,7 +35,7 @@
             <tbody>
             <?php $count = 1; ?>
              @foreach($users as $key => $user)
-                <tr id='#user-row-{{$user->id}}'>
+                <tr id='user-row-{{$user->id}}'>
                 <td class="text-left success">{{$count + $key }}</td>
                 <td class="text-left success">{{$user->full_name}}</td>
                 <td class="text-left success">{{$user->phone}}</td>
@@ -50,23 +50,18 @@
                 <script type="text/javascript">
                     $(document).ready(function(){
                         $('#delete-user-{{$user->id}}').on('click', function(){
-                          var  url = '{{url('users')}}/{{$user->id}}/delete'; 
-                               deleteRecord(url);
-                         return false;   
-                        });
-                     function deleteRecord(url){
-                      
-                        $.get(url, function(data, status){
+                          var  url = "{{url('users')}}/{{$user->id}}/delete"; 
+                          $.get(url, function(data, status){
                             if(status == 'success'){
                                $('#user-row-{{$user->id}}').remove(); 
                                console.log('This is the status '+status);
                             }
                            
-                        }); 
-                                     
-                     }
-                        
-
+                        });
+                            // deleteRecord(url);
+                         return false;   
+                        });
+                     
                     });
 
                 </script> 
