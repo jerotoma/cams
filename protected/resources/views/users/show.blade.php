@@ -6,12 +6,11 @@
 
 <!-- Add new user form -->
 @section('contents')
-       <div class="row" style="margin-bottom: 5px">
+    <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="#" class="addRecord btn"><i class="fa fa-file-o text-success"></i> <span>Register New Client</span></a>
-            <a  href="{{url('clients')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All</span></a>
-            <a  href="{{url('clients')}}" class="btn "><i class="fa fa-search text-primary"></i> <span>Search</span></a>
-            <a  href="{{url('import/clients')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
+            <a  href="{{url('users')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>All User</span></a>
+            <a  href="{{url('users/create')}}" class="btn "><i class="fa fa-plus-square-o text-primary" aria-hidden="true"></i> <span>Add New User</span></a>
+            <a  href="{{url('user/report')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>User Report</span></a>
         </div>
     </div>
     <div class="panel panel-flat">

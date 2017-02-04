@@ -24,8 +24,20 @@
                  color: inherit;
             }
          </style>
- <div class="container-fluid add-new-user">
-           <div class="row">
+    <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-12 text-right">
+            <a  href="{{url('users')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>All User</span></a>
+            <a  href="{{url('users/create')}}" class="btn "><i class="fa fa-plus-square-o text-primary" aria-hidden="true"></i> <span>Add New User</span></a>
+            <a  href="{{url('user/report')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>User Report</span></a>
+        </div>
+    </div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">User Search</h5>
+        </div>
+
+        <div class="panel-body">
+	      <div class="row">
              <div class="col-md-6 col-md-offset-3">
                  <h1 class="text-center">Add New User</h1>
                    @if (count($errors) > 0)
@@ -215,6 +227,6 @@
     
     });
 </script>
-
+</div>
 @stop
 <!-- Add new user form -->
