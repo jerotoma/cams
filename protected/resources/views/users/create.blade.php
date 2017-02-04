@@ -89,7 +89,7 @@
                                   </div>
                           </div>
                           <div class="col-md-6">
-                                 <div class="form-group">
+                                 <div class="form-group pass_mismatch">
                                     <label for="confirm_password">Confirm Password:</label>
                                     <input type="password" name="confirm_password" class="form-control" id="confirm_password">
                                   </div> 
@@ -126,6 +126,7 @@
                   phone             = $('#phone'),
                   confirm_password  = $('#confirm_password'),
                   address           = $('#address'),
+                  pass_mismatch     = $('.pass_mismatch'),
                   _token            = $('#csrf-token').val(),   
                   formURL           = $('#users-add-user').attr("action");  
 
@@ -160,7 +161,7 @@
                       } 
           return false;   
          }else{
-         
+             var mismatch = false;
              
                       if(first_name.val().length  === 0){ array.push(first_name);}
                       if(last_name.val().length   === 0){ array.push(last_name);}
@@ -170,44 +171,48 @@
                       if(confirm_password.val().length    === 0){ array.push(confirm_password);}
                       if(address.val().length     === 0){ array.push(address);} 
                       if(email.val().length       === 0){ array.push(email);}
+                      if(confirm_password.val()   != password.val()){mismatch=true}
 
-                     if(array.length != 0 ){
+                     if(array.length != 0 || mismatch ){
 
                       for(i=0; i < array.length;  i++ ){
 
                           array[i].after(alert);
 
-                      }   
-          return false;  
-          
-          }else{
-              $.ajax({ 
-                    headers : {'X-CSRF-TOKEN': _token},
-                    url     : formURL,
-                    data    : data,
-                    type    : 'POST',
-                    datatype: 'JSON',
-                    success:function(response){
-                       if(response.success){
-                           window.location.replace('{{url("/users")}}');
-                       }
-                    },
-                    error:function(xhr){
-                      var msg = '<ul>';
-                    if (xhr.status == 422){
-                        $.each(xhr.responseJSON, function (key, value) {
-                               msg += '<li>';
-                               msg += value;
-                               msg +='</li>'; 
-                           
-                        });
-                        msg += '</ul>';
-                      $('.alertuser').html(alertUser(msg));
+                      } 
+                      if(mismatch){
+                         pass_mismatch.after("<p class='remove-alert-user' style='color:#FF0000; font-size:11px font-family:Open sans;'>Password mismatch</p>") 
+                      }
+                      return false;  
+
+                      }else{
+                          $.ajax({ 
+                                headers : {'X-CSRF-TOKEN': _token},
+                                url     : formURL,
+                                data    : data,
+                                type    : 'POST',
+                                datatype: 'JSON',
+                                success:function(response){
+                                   if(response.success){
+                                       window.location.replace('{{url("/users")}}');
+                                   }
+                                },
+                                error:function(xhr){
+                                  var msg = '<ul>';
+                                if (xhr.status == 422){
+                                    $.each(xhr.responseJSON, function (key, value) {
+                                           msg += '<li>';
+                                           msg += value;
+                                           msg +='</li>'; 
+
+                                    });
+                                    msg += '</ul>';
+                                  $('.alertuser').html(alertUser(msg));
+                                 }
+                                }
+                           });
+
                      }
-                    }
-               });
-              
-              }
              
              }
             return false;
