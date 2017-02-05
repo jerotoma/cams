@@ -224,7 +224,7 @@
 
 @stop
 @section('main_navigation')
-    @include(inc.main_navigation)
+    @include('inc.main_navigation')
 @stop
 @section('page_title')
     Client Referral

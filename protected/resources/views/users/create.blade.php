@@ -12,6 +12,7 @@
 
 <script type="text/javascript" src="{{asset("assets/js/pages/wizard_form.js")}}"></script>
 
+
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
     $('.pickadate').pickadate();
@@ -19,7 +20,7 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'users','role'=>'form','id'=>'formUsers')) !!}
+        {!! Form::open(array('url'=>'users','role'=>'form','id'=>'formUsers','method'=>'POST')) !!}
         <div class="panel panel-flat">
 
 
@@ -74,7 +75,7 @@
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Department</label>
-                        <select class="select" name="department_id	" id="department_id	" data-placeholder="Choose an option...">
+                        <select class="select" name="department_id" id="department_id" data-placeholder="Choose an option...">
                             <option></option>
                             @foreach(\App\Department::all() as $department)
                             <option value="{{$department->id}}">{{$department->department_name}}</option>
@@ -171,31 +172,44 @@
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-            var postData = $('#formClients').serializeArray();
-            var formURL = $('#formClients').attr("action");
+            var postData = $('#formUsers').serializeArray();
+            var formURL = $('#formUsers').attr("action");
             $.ajax(
                 {
                     url : formURL,
                     type: "POST",
                     data : postData,
+                    dataType: 'json',
                     success:function(data)
                     {
-                        console.log(data);
-                        //data: return data from server
-                        $("#output").html(data);
+                        $("#output").html(data.message);
                         setTimeout(function() {
-                            location.replace('{{url('referrals')}}');
+                            location.replace('{{url('users')}}');
                             $("#output").html("");
                         }, 2000);
+
                     },
-                    error: function(data)
-                    {
-                        console.log(data);
-                        //in the responseJSON you get the form validation back.
-                        $("#output").html("<h3><span class='text-danger'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
+                    error: function(jqXhr,status, response) {
+                        if( jqXhr.status === 401 ) {
+                            location.replace('{{url('login')}}');
+                        }
+                        if( jqXhr.status === 400 ) {
+                            var errors = jqXhr.responseJSON.errors;
+                            errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                            $.each(errors, function (key, value) {
+                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                            });
+                            errorsHtml += '</ul></di>';
+                            $('#output').html(errorsHtml);
+                        }
+                        else
+                        {
+                            $('#output').html("");
+                        }
 
                     }
                 });
         }
     });
 </script>
+

@@ -113,18 +113,17 @@
                         <li><a href="{{url('psncodes')}}">List All Codes</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#"><i class="icon-list"></i> <span>Departments</span></a>
-                    <ul>
-                        <li><a href="{{url('departments/create')}}">Add New Code</a></li>
-                        <li><a href="{{url('departments')}}">List All Departments</a></li>
-                    </ul>
-                </li>
+
                 <!-- /appearance -->
 
                 <!-- Layout -->
                 <li class="navigation-header"><span>Users Managements</span> <i class="icon-menu" title="Users Managements"></i></li>
-
+                <li>
+                    <a href="#"><i class="icon-list"></i> <span>Departments</span></a>
+                    <ul>
+                        <li><a href="{{url('departments')}}">List All Departments</a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="#"><i class="icon-users"></i> <span>Users</span></a>
                     <ul>

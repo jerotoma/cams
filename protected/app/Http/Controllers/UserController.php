@@ -7,6 +7,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Role;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -117,14 +118,14 @@ class UserController extends Controller
                 'username' => 'required|unique:users',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:8',
-                'status' => 'required',
                 'role_id' => 'required',
                 'phone' => 'required',
             ]);
             if ($validator->fails()) {
-                return redirect('post/create')
-                    ->withErrors($validator)
-                    ->withInput();
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
             } else {
                 $user = new User;
                 $user->full_name = $request->full_name;
@@ -135,15 +136,22 @@ class UserController extends Controller
                 $user->designation = $request->designation;
                 $user->status = $request->status;
                 $user->username = $request->username;
+                $user->status = "Active";
                 $user->save();
                 $user->roles()->attach($request->role_id);
                 $user->save();
             }
-            return "Success";
+            return response()->json([
+                'success' => true,
+                'message' => "<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>"
+            ], 200);
         }
         catch (\Exception $ex)
         {
-            return "Failed".$ex.getMessage();
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
         }
        
     }
@@ -181,28 +189,51 @@ class UserController extends Controller
      */
     public function update(Request $request, $id )
     {
-        $this->validate($request, [
-            'full_name' => 'required',
-            'username'  => 'required|unique:users',
-            'email'      => 'required|email|unique:users',
-            'password'   => 'required|minn:8',
-            'status'      => 'required',
-            'role_id'      => 'required',
-            'phone'    => 'required',
-        ]);
+        try {
+            $validator = Validator::make($request->all(), [
+                'full_name' => 'required',
+                'username' => 'required|unique:users',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:8',
+                'role_id' => 'required',
+                'phone' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
 
-        $user= User::findorfail($id);
-        $user->full_name=$request->full_name;
-        $user->phone=$request->phone;
-        $user->email=$request->email;
-        $user->password=bcrypt($request->pass);
-        $user->department_id=$request->department_id;
-        $user->designation=$request->designation;
-        $user->status=$request->status;
-        $user->username=$request->username;
-        $user->save();
-        $user->roles()->attach($request->role_id);
-        $user->save();
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $user = User::findorfail($id);
+                $user->full_name = $request->full_name;
+                $user->phone = $request->phone;
+                $user->email = $request->email;
+                if($request->password != ""){
+                $user->password = bcrypt($request->password);
+                }
+                $user->department_id = $request->department_id;
+                $user->designation = $request->designation;
+                $user->status = $request->status;
+                $user->save();
+                $user->roles()->attach($request->role_id);
+                $user->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'record updated'
+                ], 200);
+            }
+
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**

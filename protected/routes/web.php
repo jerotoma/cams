@@ -19,9 +19,9 @@ Route::get('login','UserController@login');
 Route::post('login','UserController@postLogin');
 Route::get('logout','UserController@logout');
 Route::resource('users','UserController');
+//User rights
+Route::resource('access/rights','RolesController');
 
-
-//Countries
 Route::resource('countries','CountryController');
 Route::resource('regions','RegionController');
 Route::get('fetch/districts/{id}','RegionController@getDistrictsById');
@@ -38,6 +38,7 @@ Route::post('search/clients','ClientsController@postSearchClient');
 Route::resource('inventory-categories','ItemsCategoriesController');
 Route::resource('inventory','ItemInventoryController');
 Route::resource('inventory-received','ItemsReceivingController');
+
 
 //Referrals
 Route::resource('referrals','ReferralController');

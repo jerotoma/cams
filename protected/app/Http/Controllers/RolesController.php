@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Department;
+use App\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class DepartmentController extends Controller
+class RolesController extends Controller
 {
     public function __construct()
     {
@@ -20,8 +19,8 @@ class DepartmentController extends Controller
     public function index()
     {
         //
-        $departments=Department::all();
-        return view('departments.index',compact('departments'));
+        $roles=Role::all();
+        return view('users.roles.index',compact('roles'));
     }
 
     /**
@@ -32,7 +31,7 @@ class DepartmentController extends Controller
     public function create()
     {
         //
-        return view('departments.create');
+        return view('users.roles.create');
     }
 
     /**
@@ -45,19 +44,18 @@ class DepartmentController extends Controller
     {
         //
         $this->validate($request, [
-        'department_name' => 'required|unique:departments',
+            'role_name' => 'required',
         ]);
-        if(count(Department::where('department_name','=',ucwords($request->department_name))->get()) >0)
+        if(count(Role::where('name','=',strtolower($request->role_name))->get()) >0)
         {
-            return "<span class='text-info'><i class='fa fa-info'></i>Duplicate department name ".$request->department_name."</span>";
+            return "<span class='text-info'><i class='fa fa-info'></i>Duplicate role name ".$request->role_name."</span>";
         }
         else {
-            $department = new Department;
-            $department->department_name = ucwords($request->department_name);
-            $department->description = $request->description;
-            $department->parent_id = $request->parent_id;
-            $department->created_by = Auth::user()->username;
-            $department->save();
+            $role = new Role;
+            $role->name = $request->role_name;
+            $role->display_name = $request->display_name;
+            $role->description = $request->description;
+            $role->save();
             return "<span class='text-info'><i class='fa fa-info'></i> Successful submitted</span>";
         }
     }
@@ -71,8 +69,6 @@ class DepartmentController extends Controller
     public function show($id)
     {
         //
-        $department=Department::find($id);
-        return view('departments.show',compact('department'));
     }
 
     /**
@@ -84,8 +80,8 @@ class DepartmentController extends Controller
     public function edit($id)
     {
         //
-        $department=Department::find($id);
-        return view('departments.edit',compact('department'));
+        $role=Role::find($id);
+        return view('users.roles.edit',compact('role'));
     }
 
     /**
@@ -99,20 +95,18 @@ class DepartmentController extends Controller
     {
         //
         $this->validate($request, [
-         'department_name' => 'required',
+            'role_name' => 'required',
         ]);
-        if(count(Department::where('department_name','=',ucwords($request->department_name))
-                ->where('id','<>',$id)->get()) >0)
+        if(count(Role::where('name','=',strtolower($request->role_name))->where('id','<>',$id)->get()) >0)
         {
-            return "<span class='text-info'><i class='fa fa-info'></i> Duplicate department name ".$request->department_name."</span>";
+            return "<span class='text-info'><i class='fa fa-info'></i>Duplicate role name ".$request->role_name."</span>";
         }
         else {
-            $department = Department::find($id);
-            $department->department_name = ucwords($request->department_name);
-            $department->description = $request->description;
-            $department->parent_id = $request->parent_id;
-            $department->created_by = Auth::user()->username;
-            $department->save();
+            $role =  Role::find($id);
+            $role->name = $request->role_name;
+            $role->display_name = $request->display_name;
+            $role->description = $request->description;
+            $role->save();
             return "<span class='text-info'><i class='fa fa-info'></i> Successful submitted</span>";
         }
     }
@@ -125,7 +119,7 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
-        //
-
+        $role = Role::findOrFail($id); //
+        $role->forceDelete(); //
     }
 }

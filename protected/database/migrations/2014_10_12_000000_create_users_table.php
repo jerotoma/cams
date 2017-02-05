@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('camp_id')->nullable();
             $table->string('designation')->nullable();
             $table->string('level')->default('Normal');
-            $table->string('status')->default('Active');
+            $table->string('status')->nullable()->default('Active');
             $table->integer('locked')->default(0);
             $table->string('username')->unique();
             $table->string('password', 100);

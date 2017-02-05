@@ -36,14 +36,14 @@
             $('.datatable-basic').DataTable({
                 "scrollX": false,
                 "fnDrawCallback": function (oSettings) {
-                    $(".viewRecord").click(function(){
+                    $(".showRecord").click(function(){
                         var id1 = $(this).parent().attr('id');
                         var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
                         modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> User Details</span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> User Role Details</span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -54,7 +54,7 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("users") ?>/"+id1);
+                        $(".modal-body").load("<?php echo url("access/rights") ?>/"+id1);
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
@@ -68,7 +68,7 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update User Details </span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update User Role Details </span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -79,7 +79,7 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("users") ?>/"+id1+"/edit");
+                        $(".modal-body").load("<?php echo url("access/rights") ?>/"+id1+"/edit");
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
@@ -98,7 +98,7 @@
                         $("#yes").click(function(){
                             $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
                             $.ajax({
-                                url:"<?php echo url('users') ?>/"+id1,
+                                url:"<?php echo url('access/rights') ?>/"+id1,
                                 type: 'post',
                                 data: {_method: 'delete', _token :"{{csrf_token()}}"},
                                 success:function(msg){
@@ -157,7 +157,7 @@
             modaldis+= '<div class="modal-content">';
             modaldis+= '<div class="modal-header bg-indigo">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Register New User</span>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Add New Role</span>';
             modaldis+= '</div>';
             modaldis+= '<div class="modal-body">';
             modaldis+= ' </div>';
@@ -168,7 +168,7 @@
             $("body").append(modaldis);
             $("#myModal").modal("show");
             $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("users/create") ?>");
+            $(".modal-body").load("<?php echo url("access/rights/create") ?>");
             $("#myModal").on('hidden.bs.modal',function(){
                 $("#myModal").remove();
             })
@@ -328,30 +328,31 @@
     </div>
 @stop
 @section('page_title')
-    Users Management
+    Users Roles Management
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Users Management </span> </h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Users Roles Management </span> </h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
         <li><a href="{{url('users')}}">Users list</a></li>
+        <li><a href="{{url('access/rights')}}">Users Roles</a></li>
     </ul>
 @stop
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-file-o "></i> <span>Register New User</span></a>
-            <a  href="{{url('users')}}" class="btn btn-primary "><i class="fa fa-users "></i> <span>List All Users</span></a>
-            <a  href="{{url('access/rights')}}" class="btn btn-primary "><i class="fa fa-user-secret "></i> <span>User Access Rights</span></a>
+            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-file-o "></i> <span>Add New Role</span></a>
+            <a  href="{{url('access/rights')}}" class="btn btn-primary "><i class="fa fa-users "></i> <span>List All Roles</span></a>
+            <a  href="{{url('users')}}" class="btn btn-primary "><i class="fa fa-user-secret "></i> <span>User</span></a>
         </div>
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
 
-            <h5 class="panel-title text-center text-uppercase">List of All Users</h5>
+            <h5 class="panel-title text-center text-uppercase">List of All Roles</h5>
         </div>
 
         <div class="panel-body">
@@ -359,41 +360,24 @@
             <thead>
             <tr>
                 <th>No</th>
-                <th>Full Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Designation</th>
-                <th>Department</th>
-                <th>Status</th>
+                <th>Role Name</th>
+                <th>Display Name</th>
+                <th>Description</th>
                 <th class="text-center">Action</th>
             </tr>
             </thead>
             <tbody>
             <?php $count = 1; ?>
-             @foreach($users as $key => $user)
+             @foreach($roles as $role)
                 <tr>
-                <td>{{$count + $key }}</td>
-                <td>{{$user->full_name}}</td>
-                <td>{{$user->phone}}</td>
-                <td>{{$user->email}}</td>
-                <td>{{$user->designation}}</td>
-                <td> @if($user->department_id != "" && count(\App\Department::find($user->department_id)) > 0 )
-                        <option value="{{\App\Department::find($user->department_id)->id}}" selected>{{\App\Department::find($user->department_id)->department_name}}</option>
-                    @endif</td>
-                <td>@if(strtolower($user->status)=="active")<a href="#" class="label label-success">{{$user->status}}</a>
-                    @else
-                        <a href="#" class="label label-danger">{{$user->status}}</a>
-                        @endif
+                <td>{{$count++  }}</td>
+                <td>{{$role->name}}</td>
+                <td>{{$role->display_name}}</td>
+                <td>{{$role->description}}</td>
+                <td class="text-center" id="{{$role->id}}">
+                    <a href="#" class="editRecord btn "><i class="fa fa-pencil text-success"></i> Edit </a>
+                    <a href="#"  class="deleteRecord btn" title="delete user"><i class="fa fa-trash text-danger"></i> Delete</a>
                 </td>
-                <td class="text-center" id="{{$user->id}}">
-                    <a href="#" class="viewRecord btn " title="View user"><i class="fa fa-eye" aria-hidden="true"></i> </a>
-                    <a href="#" class="editRecord btn "><i class="fa fa-pencil text-success"></i> </a>
-                    @if($user->id ==\Auth::user()->id)
-                    <a href="#"  class=" btn" title="Can't delete yourself"><i class="fa fa-trash text-danger"></i></a>
-                        @else
-                        <a href="#"  class="deleteRecord btn" title="delete user"><i class="fa fa-trash text-danger"></i> </a>
-                    @endif
-                </td></td>
                </tr>
               @endforeach
             </tbody>

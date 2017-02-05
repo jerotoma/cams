@@ -21,62 +21,41 @@
 <div class="portlet light bordered">
     <div class="portlet-body form">
 
-            <!-- Basic layout-->
-            {!! Form::model($department,array('route' => array('departments.update', $department->id), 'method' => 'PUT','role'=>'form','id'=>'formDepartments')) !!}
-            <div class="panel panel-flat">
-                <div class="panel-heading">
-                    <h5 class="panel-title">Department Details</h5>
-                </div>
-
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label>Department Name:</label>
-                        <input type="text" class="form-control" placeholder="Department Name" name="department_name" id="department_name"
-                               @if(old('department_name'))value="{{old('department_name')}}"@else value="{{$department->department_name}}" @endif>
-                        @if($errors->first('department_name') !="")
-                            <label id="department_name-error" class="validation-error-label" for="department_name">{{ $errors->first('department_name') }}</label>
-                        @endif
-                        @if(Session::has('department_error'))
-                            <label id="country_code-error" class="validation-error-label" for="country_code">{{ Session::get('department_error') }}</label>
-                        @endif
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <textarea class="form-control" placeholder="Descriptions" name="description" id="description">@if(old('department_name')){{old('description')}}@else{{$department->description}}@endif</textarea>
-                        @if($errors->first('description') !="")
-                            <label id="description-error" class="validation-error-label" for="description">{{ $errors->first('description') }}</label>
-                        @endif
-
-                    </div>
-                    <div class="form-group">
-                        <label>Parent Department:</label>
-                        <select class="select" name="parent_id" id="parent_id" data-placeholder="Choose an option...">
-                                @if(is_object($department->parent) && $department->parent != null)
-                                <option value="{{$department->parent->id}}">{{$department->parent->department_name}}</option>
-                            @endif
-                                    <option value="0"></option>
-                            @foreach(\App\Department::orderBy('department_name','ASC')->get() as $item)
-                                <option value="{{$item->id}}">{{$item->department_name}}</option>
-                            @endforeach
-                        </select>
-                        @if($errors->first('parent_id') !="")
-                            <label id="parent_id_name-error" class="validation-error-label" for="region_id">{{ $errors->first('parent_id') }}</label>
-                        @endif
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-8 col-sm-8 pull-left" id="output">
-
-                        </div>
-                        <div class="col-md-4 col-sm-4 pull-right text-right">
-                            <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Update Department<i class="icon-arrow-right14 position-right"></i></button>
-                        </div>
-
-                    </div>
-                </div>
+        <!-- Basic layout-->
+        {!! Form::open(array('url'=>'access/rights','role'=>'form','id'=>'formDepartments')) !!}
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title">Role Details</h5>
             </div>
-        {!! Form::close() !!}
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>Role Name:</label>
+                    <input type="text" class="form-control" placeholder="Role Name" name="role_name" id="role_name" value="{{old('role_name')}}">
+                </div>
+                <div class="form-group">
+                    <label>Display Name:</label>
+                    <input type="text" class="form-control"  name="display_name" id="display_name" value="{{old('display_name')}}">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" placeholder="Descriptions" name="description" id="description">{{old('description')}}</textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-sm-8 pull-left" id="output">
+
+                    </div>
+                    <div class="col-md-4 col-sm-4 pull-right text-right">
+                        <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit form <i class="icon-arrow-right14 position-right"></i></button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    {!! Form::close() !!}
+    <!-- /basic layout -->
         <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
         <script>
 
@@ -93,10 +72,12 @@
                 },
                 errorElement:'div',
                 rules: {
-                    department_name: "required"
+                    role_name: "required",
+                    display_name: "required"
                 },
                 messages: {
-                    department_name: "Please this field is required"
+                    role_name: "Please this field is required",
+                    display_name: "Please this field is required"
 
                 },
                 submitHandler: function(form) {
@@ -114,7 +95,7 @@
                                 //data: return data from server
                                 $("#output").html(data);
                                 setTimeout(function() {
-                                    location.replace('{{url('departments')}}');
+                                    location.replace('{{url('access/rights')}}');
                                     $("#output").html("");
                                 }, 2000);
                             },
