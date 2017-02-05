@@ -50,7 +50,7 @@
 
 
                 <!-- Main navigation -->
-                @yield("main_navigation")
+                    @yield("main_navigation")
 
                 <!-- /main navigation -->
 

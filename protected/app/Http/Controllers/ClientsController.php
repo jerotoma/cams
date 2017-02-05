@@ -156,7 +156,7 @@ class ClientsController extends Controller
 
         echo json_encode($records);
     }
-    public function searchClients()
+    public function searchClient()
     {
         return view('clients.search');
     }
