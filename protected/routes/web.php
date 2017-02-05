@@ -36,6 +36,7 @@ Route::get('search/clients','ClientsController@searchClient');
 Route::post('search/clients','ClientsController@postSearchClient');
 
 Route::resource('inventory-categories','ItemsCategoriesController');
+Route::post('onflycategory','ItemsCategoriesController@onFlyCategory');
 Route::resource('inventory','ItemInventoryController');
 Route::resource('inventory-received','ItemsReceivingController');
 

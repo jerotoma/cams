@@ -6,6 +6,8 @@ use App\ItemsCategories;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class ItemsCategoriesController extends Controller
 {
@@ -42,15 +44,52 @@ class ItemsCategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function onFlyCategory(Request $request)
+    {
+        try {
+            if (!count(ItemsCategories::where('category_name', '=', ucwords(strtolower($request->category_name)))->get()) > 0
+                && $request->category_name !="") {
+                $category = new ItemsCategories;
+                $category->category_name = $request->category_name;
+                $category->status = $request->status;
+                $category->description = $request->description;
+                $category->save();
+                return response()->json([
+                    'success' => true,
+                    'id' => $category->id,
+                    'category_name' => $category->category_name,
+                ], 200);
+            } else {
+                $id = "";
+                $id = ItemsCategories::where('category_name', '=', ucwords(strtolower($request->category_name)))->get()->first()->id;
+                return response()->json([
+                    'success' => true,
+                    'id' => $id
+                ], 200);
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+
+
+    }
     public function store(Request $request)
     {
         //
-        $categories=new ItemsCategories;
-        $categories->category_name=$request->category_name;
-        $categories->status=$request->status;
-        $categories->description=$request->description;
-        $categories->save();
+        $category=new ItemsCategories;
+        $category->category_name=$request->category_name;
+        $category->status=$request->status;
+        $category->description=$request->description;
+        $category->save();
     }
+
+
+
 
     /**
      * Display the specified resource.
