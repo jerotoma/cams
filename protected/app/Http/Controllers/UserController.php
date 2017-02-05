@@ -18,8 +18,9 @@ class UserController extends Controller
     public $users = array();
     
     public function  __construct(){
-        
+        $this->middleware('auth');
         $this->users = DB::table('users')->get();
+         
     }
     
     public function index()

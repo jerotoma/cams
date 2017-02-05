@@ -37,7 +37,7 @@ Route::resource('psncodes','PSNCodesController');
 Route::resource('clients','ClientsController');
 Route::get('getclientsjson','ClientsController@getJSonDataSearch');
 Route::get('getclientslist','ClientsController@getJSonClientDataSearch');
-Route::get('search/clients','ClientsController@searchClients');
+Route::get('search/clients','ClientsController@searchClient');
 Route::post('search/clients','ClientsController@postSearchClient');
 
 Route::resource('inventory-categories','ItemsCategoriesController');
@@ -54,6 +54,8 @@ Route::get('download/referrals/form/{id}','ReferralController@downloadPDF');
 
 //Assessments
 Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
+Route::resource('assessments/wheelchair','VulnerabilityAssessmentController');
+Route::resource('assessments/inclusion','VulnerabilityAssessmentController@inclusion');
 Route::get('clients-va','VulnerabilityAssessmentController@showClients');
 Route::get('getvalist','VulnerabilityAssessmentController@getJSonDataSearch');
 Route::get('client/assessments/vulnerability/{id}','VulnerabilityAssessmentController@showClientVulnerability');
@@ -100,6 +102,40 @@ Route::get('inventory/disbursement/import/errors','ItemsDisbursementController@s
 
 
 //ItemsReceivingController
+
+
+//RehabilitationControllers
+Route::get('rehabilitation/register',[
+      'uses' => 'RehabilitationController@index',
+      'as'   => 'rehabilitation/register'
+]);
+Route::get('rehabilitation/export',[
+      'uses' => 'RehabilitationController@export',
+      'as'   => 'rehabilitation/export'
+]);
+Route::get('rehabilitation/import',[
+      'uses' => 'RehabilitationController@import',
+      'as'   => 'rehabilitation/import'
+]);
+Route::get('rehabilitation/progress',[
+      'uses' => 'RehabilitationController@progress',
+      'as'   => 'rehabilitation/progress'
+]);
+
+//Data Visualization
+Route::get('reports/clients',[
+      'uses' => 'DataVisualizationController@registration',
+      'as'   => 'reports/clients'
+]);
+Route::get('reports/clients',[
+      'uses' => 'DataVisualizationController@assessments',
+      'as'   => 'reports/clients'
+]);
+Route::get('reports/clients',[
+      'uses' => 'DataVisualizationController@referral',
+      'as'   => 'reports/clients'
+]);
+
 
 
 

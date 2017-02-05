@@ -7,31 +7,40 @@
                 <li>
                     <a href="#"><i class="icon-users"></i>Clients <span></span></a>
                     <ul>
-                        <li ><a href="{{url('clients/create')}}">Register New Client</a></li>
-                        <li><a href="{{url('clients')}}">Search Client</a></li>
+                        <li ><a href="{{url('clients')}}">List All Clients</a></li>
+                        <li><a href="{{url('search/clients')}}">Search Clients</a></li>
+                        <li><a href="{{url('import/clients')}}">Import Clients</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
                     <ul>
-                        <li ><a href="{{url('assessments/create')}}">Vulnerability assessment</a></li>
-                        <li><a href="{{url('import/assessments')}}">Inclusion assessment</a></li>
-                        <li><a href="{{url('export/assessments')}}">Wheelchair Assessment</a></li>
-                        <li><a href="{{url('reports/assessments')}}">Assessments Report</a></li>
+                        <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
+                        <li><a href="{{url('assessments/inclusion')}}">Inclusion assessment</a></li>
+                        <li><a href="{{url('assessments/wheelchair')}}">Wheelchair Assessment</a></li>
+                        <li><a href="{{url('assessments/home')}}">PSN Needs/Home Assessment </a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#"><i class="icon-stack"></i> <span>Client Referrals</span></a>
                     <ul>
-                        <li ><a href="{{url('referrals/create')}}">Open Referral</a></li>
-                        <li><a href="{{url('import/referrals')}}">Import Referral</a></li>
-                        <li><a href="{{url('export/referrals')}}">Export Referral</a></li>
-                        <li><a href="{{url('search/referrals')}}">Search Referral</a></li>
-                        <li><a href="{{url('reports/referrals')}}">Referral Report</a></li>
+                        <li ><a href="{{url('referrals')}}">Referrals</a></li>
                     </ul>
                 </li>
                 <!-- /main -->
+                <!-- Forms -->
+                <li class="navigation-header"><span>Material Distribution</span> <i class="icon-menu" title="Material Distribution"></i></li>
+                <li>
+                    <a href="#"><i class="icon-popout"></i> <span>Material Distribution</span></a>
+                    <ul>
+                        <li><a href="{{url('inventory-received')}}">Item Distribution</a></li>
+                        <li><a href="{{url('inventory-received')}}">Received Items</a></li>
+                        <li><a href="{{url('inventory')}}">Items Inventory</a></li>
+                        <li><a href="{{url('inventory-categories')}}">Items Categories</a></li>
+                    </ul>
+                </li>
 
+                <!-- /forms -->
                 <!-- Forms -->
                 <li class="navigation-header"><span>Rehabilitation</span> <i class="icon-menu" title="Forms"></i></li>
                 <li>
@@ -40,7 +49,7 @@
                         <li><a href="{{url('rehabilitation/register')}}">Open Register</a></li>
                         <li><a href="{{url('rehabilitation/progress')}}">Progress</a></li>
                         <li><a href="{{url('rehabilitation/register')}}">Search</a></li>
-                        <li><a href="{{url('rehabilitation/Import')}}">Import</a></li>
+                        <li><a href="{{url('rehabilitation/import')}}">Import</a></li>
                         <li><a href="{{url('rehabilitation/export')}}">Export</a></li>
                     </ul>
                 </li>

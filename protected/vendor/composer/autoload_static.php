@@ -412,6 +412,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
         'CreateReferralsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_24_080636_create_referrals_table.php',
         'CreateRegionsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_144922_create_regions_table.php',
+        'CreateRehabilitationsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_04_225954_create_rehabilitations_table.php',
         'CreateTempReceivedItemsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_26_072851_create_temp_received_items_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'CreateVulnerabilityAssessmentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_23_142828_create_vulnerability_assessments_table.php',
