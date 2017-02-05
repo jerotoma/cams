@@ -42,15 +42,11 @@
 
             <!-- /forms -->
             <!-- Forms -->
-            <li class="navigation-header"><span>Rehabilitation</span> <i class="icon-menu" title="Forms"></i></li>
+            <li class="navigation-header"><span>Progress Monitoring</span> <i class="icon-menu" title="Forms"></i></li>
             <li>
-                <a href="#"><i class="icon-grid"></i> <span>Rehabilitation Service</span></a>
+                <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
                 <ul>
-                    <li><a href="{{url('rehabilitation/register')}}">Open Register</a></li>
-                    <li><a href="{{url('rehabilitation/progress')}}">Progress</a></li>
-                    <li><a href="{{url('rehabilitation/register')}}">Search</a></li>
-                    <li><a href="{{url('rehabilitation/Import')}}">Import</a></li>
-                    <li><a href="{{url('rehabilitation/export')}}">Export</a></li>
+                    <li><a href="#"></a></li>
                 </ul>
             </li>
             <!-- /forms -->
