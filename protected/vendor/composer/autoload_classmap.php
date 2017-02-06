@@ -45,6 +45,7 @@ return array(
     'CreateTempReceivedItemsTable' => $baseDir . '/database/migrations/2017_01_26_072851_create_temp_received_items_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'CreateVulnerabilityAssessmentsTable' => $baseDir . '/database/migrations/2017_01_23_142828_create_vulnerability_assessments_table.php',
+    'CreateWheelchairassessmentsTable' => $baseDir . '/database/migrations/2017_02_05_205315_create_wheelchairassessments_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'EntrustSetupTables' => $baseDir . '/database/migrations/2017_01_14_072224_entrust_setup_tables.php',
     'File_Iterator' => $vendorDir . '/phpunit/php-file-iterator/src/Iterator.php',

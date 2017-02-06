@@ -416,6 +416,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'CreateTempReceivedItemsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_26_072851_create_temp_received_items_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'CreateVulnerabilityAssessmentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_23_142828_create_vulnerability_assessments_table.php',
+        'CreateWheelchairassessmentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_05_205315_create_wheelchairassessments_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'EntrustSetupTables' => __DIR__ . '/../..' . '/database/migrations/2017_01_14_072224_entrust_setup_tables.php',
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',

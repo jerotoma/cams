@@ -37,7 +37,7 @@
                                     <label for="username_edit_{{$user->id}}">Username:</label>
                                     <input type="text" name="username" value="{{$user->username}}" class="form-control" id="username_edit_{{$user->id}}">
                                   </div>
-                                 <div class="row">
+                               <!--  <div class="row">
                                       <div class="col-md-6">
                                               <div class="form-group">
                                                 <label for="password_edit_{{$user->id}}">Password:</label>
@@ -50,7 +50,7 @@
                                                 <input type="password" name="confirm_password" value="{{$user->password}}" class="form-control" id="confirm_password_edit_{{$user->id}}">
                                               </div> 
                                       </div>
-                                 </div>
+                                 </div>-->
                                   <div class="row">
 
                                       <div class="col-md-12">
@@ -58,7 +58,7 @@
 
                                           </div>
                                       </div>
-                                 </div>
+                                 </div> 
                                  <input type="hidden" name="_token" id="csrf-token_edit" value="{{ Session::token() }}" />
                                  <button type="submit" class="btn btn-success">Edit User</button>
                               </form>
@@ -145,7 +145,7 @@
                                                             datatype: 'JSON',
                                                             success:function(response){
                                                                if(response.success){
-                                                                   //window.location.replace('{{url("/users")}}');
+                                                                   window.location.replace('{{url("/users")}}');
                                                                }
                                                             },
                                                             error:function(xhr){

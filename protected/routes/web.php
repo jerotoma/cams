@@ -14,9 +14,12 @@
 Route::get('/','HomeController@index');
 Route::get('home','HomeController@index');
 
+//Authentication
+Route::get('login','Auth\LoginController@login');
+Route::post('login','Auth\LoginController@postLogin');
+
+
 //Users
-Route::get('login','UserController@login');
-Route::post('login','UserController@postLogin');
 Route::get('logout','UserController@logout');
 Route::get('users/create','UserController@create');
 Route::post('users/store','UserController@store');
@@ -54,7 +57,7 @@ Route::get('download/referrals/form/{id}','ReferralController@downloadPDF');
 
 //Assessments
 Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
-Route::resource('assessments/wheelchair','VulnerabilityAssessmentController');
+Route::resource('assessments/wheelchair','WheelChairAssessmentController@index');
 Route::resource('assessments/inclusion','VulnerabilityAssessmentController@inclusion');
 Route::get('clients-va','VulnerabilityAssessmentController@showClients');
 Route::get('getvalist','VulnerabilityAssessmentController@getJSonDataSearch');
@@ -104,7 +107,7 @@ Route::get('inventory/disbursement/import/errors','ItemsDisbursementController@s
 //ItemsReceivingController
 
 
-//RehabilitationControllers
+//RehabilitationController
 Route::get('rehabilitation/register',[
       'uses' => 'RehabilitationController@index',
       'as'   => 'rehabilitation/register'

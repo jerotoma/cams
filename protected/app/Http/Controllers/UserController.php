@@ -18,7 +18,7 @@ class UserController extends Controller
     public $users = array();
     
     public function  __construct(){
-        $this->middleware('auth');
+        //$this->middleware('auth');
         $this->users = DB::table('users')->get();
          
     }
@@ -29,54 +29,8 @@ class UserController extends Controller
        
        return view('users.index', ['users' =>  $users  ] );
     }
-
-
-    public function login()
-    {
-        if(Auth::guest())
-        {
-            return view('users.login');
-        }
-        else
-        {
-            return redirect('home');
-        }
-    }
-      
-    //Post login for Authenticating users
-    public function postLogin(Request $request)
-     {
-         
-        $username=strtolower($request->username);
-        $password=$request->password;
-        
-        if (Auth::attempt(['username' => $username, 'password' => $password]))
-        {
-            if(Auth::user()->blocked ==1 || Auth::user()->status=="Inactive")
-            {
-
-                Auth::logout();
-                return redirect()->back()->with('message', 'Login Failed you don\'t have Access to login please  Contact support team');
-            }
-            else
-            {
-
-                $user= User::find(Auth::user()->id);
-                $user->last_success_login=date("Y-m-d h:i:s");
-                $user->save();
-
-                // //Audit log
-                return redirect()->intended('home');
-
-            }
-
-        }
-        else {
-
-            return redirect()->back()->with('message', 'Login Failed,Invalid username or password');
-        }
-
-    }
+   
+    
     public function logout()
     {
         if (Auth::check())
@@ -184,10 +138,10 @@ class UserController extends Controller
     public function update(Request $request, $id )
     {
          $this->validate($request, [
-                        'full_name' => 'bail|required|max:255',
+                        'full_name'  => 'bail|required|max:255',
                         'email'      => 'bail|required|max:255',
                         'username'   => 'bail|required|max:255',
-                        'password'   => 'bail|required|max:255',
+                        //'password'   => 'bail|required|max:255',
                         'phone'      => 'bail|required|max:255',
                         'address'    => 'bail|required',
                                     ]);
@@ -196,7 +150,7 @@ class UserController extends Controller
                              'full_name'   => $request->full_name,
                              'email'       => $request->email,
                              'username'    => $request->username,
-                             'password'    => bcrypt($request->password),       //  
+                             //'password'    => bcrypt($request->password),       //  
                              'phone'       => $request->phone,
                              'address'     => $request->address,      //;
                            ];
