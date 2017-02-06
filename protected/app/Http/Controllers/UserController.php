@@ -19,7 +19,6 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public $users = array();
 
     //This middleware protects unauthenticated users 
     public function __construct()
@@ -132,7 +131,8 @@ class UserController extends Controller
      */
     public function update(Request $request, $id )
     {
-      try {
+       try {
+
             $validator = Validator::make($request->all(), [
                 'full_name' => 'required',
                 'username' => 'required|unique:users,id,'.$id,
@@ -178,7 +178,7 @@ class UserController extends Controller
             ), 400); // 400 being the HTTP code for an invalid request.
         }
 
-    }
+
 
     /**
      * Remove the specified resource from storage.
