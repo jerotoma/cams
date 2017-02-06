@@ -130,12 +130,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id )
     {
-       try {
+        try {
 
             $validator = Validator::make($request->all(), [
                 'full_name' => 'required',
-                'username' => 'required|unique:users,id,'.$id,
-                'email' => 'required|email|unique:users,email,'.$id,
+                'username' => 'required|unique:users,id,' . $id,
+                'email' => 'required|email|unique:users,email,' . $id,
                 'password' => 'min:8',
                 'role_id' => 'required',
                 'phone' => 'required',
@@ -151,8 +151,8 @@ class UserController extends Controller
                 $user->full_name = $request->full_name;
                 $user->phone = $request->phone;
                 $user->email = $request->email;
-                if($request->password != ""){
-                $user->password = bcrypt($request->password);
+                if ($request->password != "") {
+                    $user->password = bcrypt($request->password);
                 }
                 $user->department_id = $request->department_id;
                 $user->designation = $request->designation;
@@ -167,17 +167,14 @@ class UserController extends Controller
                 ], 200);
             }
 
-        }
-        catch (\Exception $ex)
-        {
+        } catch (\Exception $ex) {
             return Response::json(array(
                 'success' => false,
                 'errors' => $ex->getMessage()
 
             ), 400); // 400 being the HTTP code for an invalid request.
         }
-
-
+    }
 
     /**
      * Remove the specified resource from storage.
