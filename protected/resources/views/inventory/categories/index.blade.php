@@ -12,7 +12,7 @@
             var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
             modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
             modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header bg-primary">';
+            modaldis+= '<div class="modal-header bg-indigo">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
             modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Add Inventory Category</span>';
             modaldis+= '</div>';
@@ -37,7 +37,7 @@
             var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
             modaldis+= '<div class="modal-dialog" style="width:60%;margin-right: 20% ;margin-left: 20%">';
             modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header bg-primary">';
+            modaldis+= '<div class="modal-header bg-indigo">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
             modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update item details</span>';
             modaldis+= '</div>';
@@ -238,10 +238,10 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a href="#" class="addRecord btn "> <i class="fa fa-plus text-success"></i> Add Category</a>
-            <a href="{{url('inventory-categories')}}" class="btn "><i class="fa fa-list text-info"></i> List Categories</a>
-            <a href="{{url('inventory')}}" class="btn "><i class="fa fa-reply text-danger"></i> Go to Item list</a>
-            <a href="{{url('inventory-import')}}" class=" btn "><i class="fa fa-upload text-primary"></i> Import Items</a>
+            <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-success"></i> Add Category</a>
+            <a href="{{url('inventory-categories')}}" class="btn btn-primary"><i class="fa fa-list text-info"></i> List Categories</a>
+            <a href="{{url('inventory')}}" class="btn btn-primary"><i class="fa fa-reply text-danger"></i> Go to Item list</a>
+            <a href="{{url('inventory-import')}}" class=" btn btn-primary"><i class="fa fa-upload text-primary"></i> Import Items</a>
         </div>
     </div>
     <div class="panel panel-flat">

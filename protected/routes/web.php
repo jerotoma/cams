@@ -21,15 +21,10 @@ Route::post('login','Auth\LoginController@postLogin');
 
 //Users
 Route::get('logout','UserController@logout');
-Route::get('users/create','UserController@create');
-Route::post('users/store','UserController@store');
-Route::get('users','UserController@index');
-Route::get('users/{id}/edit','UserController@edit');
-Route::get('users/{id}/view','UserController@show');
-Route::post('users/{id}/update','UserController@update');
-Route::get('users/{id}/delete','UserController@destroy');
+Route::resource('users','UserController');
+//User rights
+Route::resource('access/rights','RolesController');
 
-//Countries
 Route::resource('countries','CountryController');
 Route::resource('regions','RegionController');
 Route::get('fetch/districts/{id}','RegionController@getDistrictsById');
@@ -44,8 +39,10 @@ Route::get('search/clients','ClientsController@searchClient');
 Route::post('search/clients','ClientsController@postSearchClient');
 
 Route::resource('inventory-categories','ItemsCategoriesController');
+Route::post('onflycategory','ItemsCategoriesController@onFlyCategory');
 Route::resource('inventory','ItemInventoryController');
 Route::resource('inventory-received','ItemsReceivingController');
+
 
 //Referrals
 Route::resource('referrals','ReferralController');

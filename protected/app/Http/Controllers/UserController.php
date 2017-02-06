@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\RoleUser;
 use App\User;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Role;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
+
 class UserController extends Controller
 {
 
@@ -16,16 +20,24 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public $users = array();
+<<<<<<< HEAD
     
     public function  __construct(){
         //$this->middleware('auth');
         $this->users = DB::table('users')->get();
          
+=======
+
+    //These middleware will protect the rest of functions from unauthenticated users 
+    public function __construct()
+    {
+        $this->middleware('auth',['except' => ['login','postLogin']]);
+>>>>>>> d49c6ff9d99ca31d76d15f55e4642d8c6cc35871
     }
     
     public function index()
     {
-        $users =  $this->users; 
+        $users =  User::all();
        
        return view('users.index', ['users' =>  $users  ] );
     }
@@ -63,42 +75,47 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-          
-         $this->validate($request, [
-                        'first_name' => 'bail|required|max:255',
-                        'last_name'  => 'bail|required|max:255',
-                        'email'      => 'bail|required|max:255',
-                        'username'   => 'bail|required|max:255',
-                        'password'   => 'bail|required|max:255',
-                        'phone'      => 'bail|required|max:255',
-                        'address'    => 'bail|required',
-                                    ]);
-
-        $user              = new User();
-        $request->status   = 'Active';
-        $user->full_name   = $request->first_name .' '. $request->last_name;
-        $user->email       = $request->email;
-        $user->username    = $request->username;
-        $user->password    = bcrypt($request->password);       //  
-        $user->phone       = $request->phone;
-        $user->address     = $request->address;      //;
-        $user->status      = $request->status;
-
-        if ( $request->ajax() && $request->isMethod('post') ) {
-              
+        try {
+            $validator = Validator::make($request->all(), [
+                'full_name' => 'required',
+                'username' => 'required|unique:users',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:8',
+                'role_id' => 'required',
+                'phone' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $user = new User;
+                $user->full_name = $request->full_name;
+                $user->phone = $request->phone;
+                $user->email = $request->email;
+                $user->password = bcrypt($request->pass);
+                $user->department_id = $request->department_id;
+                $user->designation = $request->designation;
+                $user->status = $request->status;
+                $user->username = $request->username;
+                $user->status = "Active";
                 $user->save();
-                $user->roles()->attach($request->id);
-          
-            return response()->json([ 'success'   => true ]); 
-                  
-          }else{
+                $user->roles()->attach($request->role_id);
                 $user->save();
-                $user->roles()->attach($request->id);
-           
-          // return response()->json([ 'success'   => false ]);    
-
-          }
-        
+            }
+            return response()->json([
+                'success' => true,
+                'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Record saved</span><h3>"
+            ], 200);
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
        
     }
     
@@ -110,9 +127,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $users = DB::table('users')->where('id', '=', $id )->get();
-     
-    return view('users.show')->with(array("users"=>$users));
+        $user = User::findorfail($id);
+        return view('users.show',compact('user'));
     }
 
     /**
@@ -123,9 +139,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-    $users = DB::table('users')->where('id', '=', $id )->get();
-     
-    return view('users.edit')->with(array("users"=>$users));
+        $user = User::findorfail($id);
+        return view('users.edit',compact('user'));
     }
 
     /**
@@ -137,6 +152,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id )
     {
+/*<<<<<<< HEAD
          $this->validate($request, [
                         'full_name'  => 'bail|required|max:255',
                         'email'      => 'bail|required|max:255',
@@ -173,6 +189,53 @@ class UserController extends Controller
           
              return view('users.index', ['users' =>  $users  ] );  
           } 
+=======   */
+        try {
+            $validator = Validator::make($request->all(), [
+                'full_name' => 'required',
+                'username' => 'required|unique:users,id,'.$id,
+                'email' => 'required|email|unique:users,email,'.$id,
+                'password' => 'min:8',
+                'role_id' => 'required',
+                'phone' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $user = User::findorfail($id);
+                $user->full_name = $request->full_name;
+                $user->phone = $request->phone;
+                $user->email = $request->email;
+                if($request->password != ""){
+                $user->password = bcrypt($request->password);
+                }
+                $user->department_id = $request->department_id;
+                $user->designation = $request->designation;
+                $user->status = $request->status;
+                $user->locked = $request->locked;
+                $user->save();
+
+
+                return response()->json([
+                    'success' => true,
+                    'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Record Updated</span><h3>"
+                ], 200);
+            }
+
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+
     }
 
     /**
@@ -185,8 +248,5 @@ class UserController extends Controller
 	{
            $user = User::find($id);
            $user ->delete();
-          //get Updated users
-           $users =  DB::table('users')->get();
-           return view('users.index', ['users' =>  $users  ] );
     }
 }

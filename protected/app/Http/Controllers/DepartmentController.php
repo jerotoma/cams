@@ -45,11 +45,11 @@ class DepartmentController extends Controller
     {
         //
         $this->validate($request, [
-        'department_name' => 'required',
+        'department_name' => 'required|unique:departments',
         ]);
         if(count(Department::where('department_name','=',ucwords($request->department_name))->get()) >0)
         {
-            return redirect()->back()->withInput()->with('department_error',"Duplicate department name ".$request->department_name);
+            return "<span class='text-info'><i class='fa fa-info'></i>Duplicate department name ".$request->department_name."</span>";
         }
         else {
             $department = new Department;
@@ -58,7 +58,7 @@ class DepartmentController extends Controller
             $department->parent_id = $request->parent_id;
             $department->created_by = Auth::user()->username;
             $department->save();
-            return redirect('departments');
+            return "<span class='text-info'><i class='fa fa-info'></i> Successful submitted</span>";
         }
     }
 
@@ -104,7 +104,7 @@ class DepartmentController extends Controller
         if(count(Department::where('department_name','=',ucwords($request->department_name))
                 ->where('id','<>',$id)->get()) >0)
         {
-            return redirect()->back()->withInput()->with('department_error',"Duplicate department name ".$request->department_name);
+            return "<span class='text-info'><i class='fa fa-info'></i> Duplicate department name ".$request->department_name."</span>";
         }
         else {
             $department = Department::find($id);
@@ -113,7 +113,7 @@ class DepartmentController extends Controller
             $department->parent_id = $request->parent_id;
             $department->created_by = Auth::user()->username;
             $department->save();
-            return redirect('departments');
+            return "<span class='text-info'><i class='fa fa-info'></i> Successful submitted</span>";
         }
     }
 

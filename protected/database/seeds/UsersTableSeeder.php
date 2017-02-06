@@ -12,13 +12,20 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('users')->insert([
-            'full_name' => "System Administrator",
-            'username' => 'admin',
-            'level' => 'Super',
-            'email' => 'chriss.innocent@gmail.com',
-            'password' => bcrypt('admin'),
-            'status' => 'Active',
-        ]);
+        if(!count(\App\User::where("full_name","=","System Administrator")
+            ->where("full_name","=","System Administrator")
+            ->where("username","=",'admin')
+            ->where("level","=",'Super')->get())>0)
+        {
+            DB::table('users')->insert([
+                'full_name' => "System Administrator",
+                'username' => 'admin',
+                'level' => 'Super',
+                'email' => 'chriss.innocent@gmail.com',
+                'password' => bcrypt('admin'),
+                'status' => 'Active',
+            ]);
+        }
+
     }
 }
