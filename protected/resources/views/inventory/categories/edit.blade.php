@@ -1,4 +1,21 @@
-<!-- BEGIN SAMPLE FORM PORTLET-->
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form_wizard.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
+
+<script type="text/javascript" src="{{asset("assets/js/pages/wizard_form.js")}}"></script>
+
+
+<script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
+
+
 <div class="portlet light bordered">
     <div class="portlet-body form">
         {!! Form::model($categories, array('route' => array('inventory-categories.update', $categories->id), 'method' => 'PUT','role'=>'form','id'=>'formItemCategories')) !!}
@@ -13,18 +30,15 @@
             </div>
             <div class="form-group">
                 <label>Status</label>
-                <select name="status" class="form-control" id="status">
+                <select name="status" class="select" id="status" data-placeholder="Choose an option...">
                     @if($categories->status !="" )
                         <option value="{{$categories->status}}">{{$categories->status}}</option>
-                    @else
-                        <option value="">--Select--</option>
                     @endif
+                        <option></option>
                     <option value="Available">Available</option>
                     <option value="Available">Not available</option>
                 </select>
             </div>
-
-            <hr/>
             <div class="row">
                 <div class="col-md-8 col-sm-8 pull-left" id="output">
 
@@ -45,16 +59,6 @@
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script>
 
-    $("#region_id").change(function () {
-        var id1 = this.value;
-        if(id1 != "")
-        {
-            $.get("<?php echo url('fetch/districts') ?>/"+id1,function(data){
-                $("#district_id").html(data);
-            });
-
-        }else{$("#district_id").html("<option value=''>----</option>");}
-    });
     $("#formItemCategories").validate({
         rules: {
             category_name: "required",
@@ -69,27 +73,40 @@
             var postData = $('#formItemCategories').serializeArray();
             var formURL = $('#formItemCategories').attr("action");
             $.ajax(
+                {
+                    url : formURL,
+                    type: "POST",
+                    data : postData,
+                    dataType: 'json',
+                    success:function(data)
                     {
-                        url : formURL,
-                        type: "POST",
-                        data : postData,
-                        success:function(data)
-                        {
-                            console.log(data);
-                            //data: return data from server
-                            $("#output").html(data);
-                            setTimeout(function() {
-                                location.reload();
-                                $("#output").html("");
-                            }, 2000);
-                        },
-                        error: function(data)
-                        {
-                            console.log(data.responseJSON);
-                            //in the responseJSON you get the form validation back.
-                            $("#output").html("<h3><span class='text-danger'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
+                        $("#output").html(data.message);
+                        setTimeout(function() {
+                            location.replace('{{url('inventory-categories')}}');
+                            $("#output").html("");
+                        }, 2000);
+
+                    },
+                    error: function(jqXhr,status, response) {
+                        if( jqXhr.status === 401 ) {
+                            location.replace('{{url('login')}}');
                         }
-                    });
+                        if( jqXhr.status === 400 ) {
+                            var errors = jqXhr.responseJSON.errors;
+                            errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                            $.each(errors, function (key, value) {
+                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                            });
+                            errorsHtml += '</ul></di>';
+                            $('#output').html(errorsHtml);
+                        }
+                        else
+                        {
+                            $('#output').html("");
+                        }
+
+                    }
+                });
         }
     });
 

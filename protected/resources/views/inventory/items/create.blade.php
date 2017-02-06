@@ -177,7 +177,7 @@
                         {
                             $("#output").html(data.message);
                             setTimeout(function() {
-                                location.replace('{{url('users')}}');
+                                location.replace('{{url('inventory')}}');
                                 $("#output").html("");
                             }, 2000);
 

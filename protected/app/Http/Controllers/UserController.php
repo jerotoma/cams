@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\RoleUser;
 use App\User;
 use DB;
 use Illuminate\Http\Request;
@@ -143,7 +144,7 @@ class UserController extends Controller
             }
             return response()->json([
                 'success' => true,
-                'message' => "<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>"
+                'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Record saved</span><h3>"
             ], 200);
         }
         catch (\Exception $ex)
@@ -192,9 +193,9 @@ class UserController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'full_name' => 'required',
-                'username' => 'required|unique:users',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|min:8',
+                'username' => 'required|unique:users,id,'.$id,
+                'email' => 'required|email|unique:users,email,'.$id,
+                'password' => 'min:8',
                 'role_id' => 'required',
                 'phone' => 'required',
             ]);
@@ -215,13 +216,13 @@ class UserController extends Controller
                 $user->department_id = $request->department_id;
                 $user->designation = $request->designation;
                 $user->status = $request->status;
+                $user->locked = $request->locked;
                 $user->save();
-                $user->roles()->attach($request->role_id);
-                $user->save();
+
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'record updated'
+                    'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Record Updated</span><h3>"
                 ], 200);
             }
 

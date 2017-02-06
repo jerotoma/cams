@@ -65,6 +65,9 @@
                             <div class="form-group ">
                                 <label class="control-label">Role</label>
                                 <select class="select" name="role_id" id="role_id" data-placeholder="Choose an option...">
+                                    @if(count(\App\RoleUser::where('user_id','=',$user->id)->get()) > 0 )
+                                        <option value="{{\App\RoleUser::where('user_id','=',$user->id)->get()->first()->role_id}}" selected>{{\App\RoleUser::where('user_id','=',$user->id)->get()->first()->role->display_name}}</option>
+                                    @endif
                                     <option></option>
                                     @foreach(\App\Role::all() as $role)
                                         <option value="{{$role->id}}">{{$role->display_name}}</option>
@@ -84,6 +87,36 @@
                                 <option value="{{$department->id}}">{{$department->department_name}}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Status</label>
+                                <select class="select" name="status" id="status" data-placeholder="Choose an option...">
+                                    @if($user->status !="")
+                                        <option value="{{$user->status}}">{{$user->status}}</option>
+                                        @endif
+                                    <option></option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Locked</label>
+                                <select class="select" name="locked" id="locked" data-placeholder="Choose an option...">
+                                    @if($user->locked !="" && $user->locked ==1 )
+                                        <option value="{{$user->locked}}">Yes</option>
+                                        @elseif($user->locked ==0)
+                                        <option value="{{$user->locked}}">No</option>
+                                    @endif
+                                    <option></option>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -109,7 +142,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 pull-right text-right">
                         <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Add  User </button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Update  User </button>
                     </div>
 
                 </div>
@@ -183,7 +216,7 @@
                     {
                         console.log(data);
                         //data: return data from server
-                        $("#output").html(data);
+                        $("#output").html(data.message);
                         setTimeout(function() {
                             location.replace('{{url('users')}}');
                             $("#output").html("");

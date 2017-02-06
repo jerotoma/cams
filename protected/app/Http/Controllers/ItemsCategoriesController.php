@@ -81,11 +81,36 @@ class ItemsCategoriesController extends Controller
     public function store(Request $request)
     {
         //
-        $category=new ItemsCategories;
-        $category->category_name=$request->category_name;
-        $category->status=$request->status;
-        $category->description=$request->description;
-        $category->save();
+        try {
+            $validator = Validator::make($request->all(), [
+                'category_name' => 'required|unique:items_categories',
+                'status' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $category = new ItemsCategories;
+                $category->category_name = $request->category_name;
+                $category->status = $request->status;
+                $category->description = $request->description;
+                $category->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Record saved</span><h3>"
+                ], 200);
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+
     }
 
 
@@ -127,11 +152,35 @@ class ItemsCategoriesController extends Controller
     public function update(Request $request,$id)
     {
         //
-        $categories=ItemsCategories::find($id);
-        $categories->category_name=$request->category_name;
-        $categories->description=$request->description;
-        $categories->status=$request->status;
-        $categories->save();
+        try {
+            $validator = Validator::make($request->all(), [
+                'category_name' => 'required|unique:items_categories,category_name,'.$id,
+                'status' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $category =  ItemsCategories::find($id);
+                $category->category_name = $request->category_name;
+                $category->status = $request->status;
+                $category->description = $request->description;
+                $category->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Record Updated</span><h3>"
+                ], 200);
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**
