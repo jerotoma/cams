@@ -58,157 +58,19 @@
     </script>
 @stop
 @section('main_navigation')
-    <div class="sidebar-category sidebar-category-visible">
-        <div class="category-content no-padding">
-            <ul class="navigation navigation-main navigation-accordion">
-                <li class="active"><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
-                <!-- Main -->
-                <li class="navigation-header">Registration desk<span></span> <i class="icon-menu" title="Main pages"></i></li>
-                <li>
-                    <a href="#"><i class="icon-users"></i>Clients <span></span></a>
-                    <ul>
-                        <li ><a href="{{url('clients/create')}}">Register New Client</a></li>
-                        <li><a href="{{url('clients')}}">Search Client</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
-                    <ul>
-                        <li ><a href="{{url('assessments/create')}}">Vulnerability assessment</a></li>
-                        <li><a href="{{url('import/assessments')}}">Inclusion assessment</a></li>
-                        <li><a href="{{url('export/assessments')}}">Wheelchair Assessment</a></li>
-                        <li><a href="{{url('reports/assessments')}}">Assessments Report</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-stack"></i> <span>Client Referrals</span></a>
-                    <ul>
-                        <li ><a href="{{url('referrals/create')}}">Open Referral</a></li>
-                        <li><a href="{{url('import/referrals')}}">Import Referral</a></li>
-                        <li><a href="{{url('export/referrals')}}">Export Referral</a></li>
-                        <li><a href="{{url('search/referrals')}}">Search Referral</a></li>
-                        <li><a href="{{url('reports/referrals')}}">Referral Report</a></li>
-                    </ul>
-                </li>
-                <!-- /main -->
-
-                <!-- Forms -->
-                <li class="navigation-header"><span>Rehabilitation</span> <i class="icon-menu" title="Forms"></i></li>
-                <li>
-                    <a href="#"><i class="icon-grid"></i> <span>Rehabilitation Service</span></a>
-                    <ul>
-                        <li><a href="{{url('rehabilitation/register')}}">Open Register</a></li>
-                        <li><a href="{{url('rehabilitation/progress')}}">Progress</a></li>
-                        <li><a href="{{url('rehabilitation/register')}}">Search</a></li>
-                        <li><a href="{{url('rehabilitation/Import')}}">Import</a></li>
-                        <li><a href="{{url('rehabilitation/export')}}">Export</a></li>
-                    </ul>
-                </li>
-                <!-- /forms -->
-                <!-- Data visualization -->
-                <li class="navigation-header"><span>Data visualization</span> <i class="icon-menu" title="Data visualization"></i></li>
-                <li>
-                    <a href="#"><i class="icon-graph"></i> <span>Clients Reports</span></a>
-                    <ul>
-                        <li><a href="{{url('reports/clients')}}">Registration</a></li>
-                        <li><a href="{{url('reports/clients')}}">Assessments</a></li>
-                        <li><a href="{{url('reports/clients')}}">Refferal</a></li>
-                    </ul>
-                </li>
-                <!-- /data visualization -->
-                <!-- Appearance -->
-                <li class="navigation-header"><span>Settings</span> <i class="icon-menu" title="Settings"></i></li>
-                <li>
-                    <a href="#"><i class="icon-list"></i> <span>Countries</span></a>
-                    <ul>
-                        <li><a href="{{url('countries/create')}}">Add New Country</a></li>
-                        <li><a href="{{url('countries')}}">List All Countries</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-list"></i> <span>Regions</span></a>
-                    <ul>
-                        <li><a href="{{url('regions/create')}}">Add New Region</a></li>
-                        <li><a href="{{url('regions')}}">List All Regions</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#"><i class="icon-grid"></i> <span>Camps</span></a>
-                    <ul>
-                        <li><a href="{{url('camps/create')}}">Add New Camp</a></li>
-                        <li><a href="{{url('camps')}}">List All camps</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-puzzle4"></i> <span>PSN Codes</span></a>
-                    <ul>
-                        <li><a href="{{url('psncodes/create')}}">Add New Code</a></li>
-                        <li><a href="{{url('psncodes')}}">List All Codes</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-list"></i> <span>Departments</span></a>
-                    <ul>
-                        <li><a href="{{url('departments/create')}}">Add New Code</a></li>
-                        <li><a href="{{url('departments')}}">List All Departments</a></li>
-                    </ul>
-                </li>
-                <!-- /appearance -->
-
-                <!-- Layout -->
-                <li class="navigation-header"><span>Users Managements</span> <i class="icon-menu" title="Users Managements"></i></li>
-
-                <li>
-                    <a href="#"><i class="icon-users"></i> <span>Users</span></a>
-                    <ul>
-                        <li><a href="{{url('users')}}">Add New User</a></li>
-                        <li><a href="{{url('users')}}">List All Users</a></li>
-                        <li><a href="{{url('reports/users')}}">User Reports</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-popout"></i> <span>Users Rights</span></a>
-                    <ul>
-                        <li><a href="{{url('access/rights/create')}}">Add New</a></li>
-                        <li><a href="{{url('access/rights')}}">List All</a></li>
-                    </ul>
-                </li>
-                <!-- /layout -->
-
-
-
-                <!-- Extensions -->
-                <li class="navigation-header"><span>Data Sharing</span> <i class="icon-menu" title="Data Sharing"></i></li>
-                <li>
-                    <a href="#"><i class="icon-puzzle4"></i> <span>Data import</span></a>
-                    <ul>
-                        <li><a href="{{url('backup/import')}}">Import</a></li>
-                        <li><a href="{{url('backup/export')}}">Export</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-popout"></i> <span>Data Approval</span></a>
-                    <ul>
-                        <li><a href="{{url('approval/pending')}}">Pending</a></li>
-                    </ul>
-                </li>
-                <!-- /extensions -->
-            </ul>
-        </div>
-    </div>
+    @include('inc.main_navigation')
 @stop
 @section('page_title')
-    Material Inventory
+    NFIs Items Inventory
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Material Inventory</span> - Import Items</h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">NFIs Items Inventory</span> - Import Items</h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li><a href="{{url('inventory')}}">Material Inventory</a></li>
+        <li><a href="{{url('inventory')}}">NFIs Items Inventory</a></li>
         <li class="active">Import Items</li>
     </ul>
 @stop
@@ -217,7 +79,7 @@
         <div class="col-md-12 text-right">
             <a href="#" class="addRegion btn "> <i class="fa fa-plus text-success"></i> Add New Item</a>
             <a href="{{url('inventory')}}" class="btn"><i class="fa fa-server text-info"></i> Item list</a>
-            <a href="{{url('inventory-categories')}}" class="btn "><i class="fa fa-forward text-danger"></i> Inventory Categories</a>
+            <a href="{{url('inventory-categories')}}" class="btn "><i class="fa fa-forward text-danger"></i> Items Categories</a>
             <a href="{{url('inventory-import')}}" class=" btn "><i class="fa fa-upload text-primary"></i> Import Items</a>
         </div>
     </div>
@@ -229,9 +91,18 @@
         <div class="panel-body">
             {!! Form::open(array('url'=>'inventory-import','role'=>'form','id'=>'formImportItems','files'=>true)) !!}
             <div class="form-body">
+                @if(Session::has('error'))
+                    <div class="alert fade in alert-danger">
+                        <i class="icon-remove close" data-dismiss="alert"></i>
+                        {{Session::get('error')}}
+                    </div>
+                @endif
                 <div class="form-group">
                     <label>Import Items from MS Excel <a href={{asset("assets/templates/item_import_template.xls")}}>Download template here</a> </label>
                     <input TYPE="file" class="form-control" name="inventory_file" id="inventory_file">
+                    @if($errors->first('inventory_file') !="")
+                        <div id="client_number-error" class="validation-error-label">{{ $errors->first('inventory_file') }}</div>
+                    @endif
                 </div>
                 <hr/>
                 <div class="row text-center">

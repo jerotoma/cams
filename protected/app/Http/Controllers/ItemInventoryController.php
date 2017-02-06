@@ -7,6 +7,8 @@ use App\ItemsInventory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ItemInventoryController extends Controller
@@ -41,7 +43,9 @@ class ItemInventoryController extends Controller
     {
         //
         try {
-
+            $this->validate($request, [
+                'inventory_file' => 'required|mimes:xls,xlsx',
+            ]);
             $file= $request->file('inventory_file');
             $destinationPath = public_path() .'/uploads/temp/';
             $filename   = str_replace(' ', '_', $file->getClientOriginalName());
@@ -95,7 +99,6 @@ class ItemInventoryController extends Controller
             return  redirect('inventory');
         } catch (\Exception $e) {
 
-            //echo $e->getMessage();
             return  redirect()->back()->with('error',$e->getMessage());
         }
     }
@@ -128,15 +131,39 @@ class ItemInventoryController extends Controller
     public function store(Request $request)
     {
         //
-       
-        $item=new ItemsInventory;
-        $item->item_name=$request->item_name;
-        $item->description=$request->description;
-        $item->category_id=$request->category_id;
-        $item->quantity=$request->quantity;
-        $item->remarks=$request->remarks;
-        $item->status=$request->status;
-        $item->save();
+        try {
+            $validator = Validator::make($request->all(), [
+                'item_name' => 'required|unique:items_inventories',
+                'quantity' => 'required|numeric',
+                'status' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $item = new ItemsInventory;
+                $item->item_name = $request->item_name;
+                $item->description = $request->description;
+                $item->category_id = $request->category_id;
+                $item->quantity = $request->quantity;
+                $item->remarks = $request->remarks;
+                $item->status = $request->status;
+                $item->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Record saved</span><h3>"
+                ], 200);
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**
