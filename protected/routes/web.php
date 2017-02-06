@@ -17,10 +17,10 @@ Route::get('home','HomeController@index');
 //Authentication
 Route::get('login','Auth\LoginController@login');
 Route::post('login','Auth\LoginController@postLogin');
+Route::get('logout','Auth\LoginController@logout');
 
 
 //Users
-Route::get('logout','UserController@logout');
 Route::resource('users','UserController');
 //User rights
 Route::resource('access/rights','RolesController');

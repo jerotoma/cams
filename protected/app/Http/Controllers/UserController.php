@@ -20,19 +20,12 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public $users = array();
-<<<<<<< HEAD
-    
-    public function  __construct(){
-        //$this->middleware('auth');
-        $this->users = DB::table('users')->get();
-         
-=======
 
-    //These middleware will protect the rest of functions from unauthenticated users 
+    //This middleware protects unauthenticated users 
     public function __construct()
     {
         $this->middleware('auth',['except' => ['login','postLogin']]);
->>>>>>> d49c6ff9d99ca31d76d15f55e4642d8c6cc35871
+
     }
     
     public function index()
@@ -42,20 +35,7 @@ class UserController extends Controller
        return view('users.index', ['users' =>  $users  ] );
     }
    
-    
-    public function logout()
-    {
-        if (Auth::check())
-        {
-            $user= User::find(Auth::user()->id);
-            $user->last_logout=date("Y-m-d h:i:s");
-            $user->save();
-
-        }
-        Auth::logout();
-        return redirect('login');
-    }
-
+   
     /**
      * Show the form for creating a new resource.
      *
@@ -152,45 +132,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id )
     {
-/*<<<<<<< HEAD
-         $this->validate($request, [
-                        'full_name'  => 'bail|required|max:255',
-                        'email'      => 'bail|required|max:255',
-                        'username'   => 'bail|required|max:255',
-                        //'password'   => 'bail|required|max:255',
-                        'phone'      => 'bail|required|max:255',
-                        'address'    => 'bail|required',
-                                    ]);
-
-         $args   =        [ 
-                             'full_name'   => $request->full_name,
-                             'email'       => $request->email,
-                             'username'    => $request->username,
-                             //'password'    => bcrypt($request->password),       //  
-                             'phone'       => $request->phone,
-                             'address'     => $request->address,      //;
-                           ];
-        
-        // var_dump( $args );exit;
-          if ( $request->ajax() && $request->isMethod('post') ) {      
-                  
-             //update user with  $id id    
-             $rs= DB::table('users')->where('id', $id)->update($args);
-              
-              return response()->json([ 'success'   => $rs ]);  
-          
-          
-          }else{
-             //update user with  $id id 
-              $rs    =  DB::table('users')->where('id', $id)->update($args);
-           
-			  //get Updated users
-              $users =  DB::table('users')->get();
-          
-             return view('users.index', ['users' =>  $users  ] );  
-          } 
-=======   */
-        try {
+      try {
             $validator = Validator::make($request->all(), [
                 'full_name' => 'required',
                 'username' => 'required|unique:users,id,'.$id,
