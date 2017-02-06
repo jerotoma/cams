@@ -86,4 +86,16 @@ class LoginController extends Controller
         }
 
     }
+	public function logout()
+    {
+        if (Auth::check())
+        {
+            $user= User::find(Auth::user()->id);
+            $user->last_logout=date("Y-m-d h:i:s");
+            $user->save();
+
+        }
+        Auth::logout();
+        return redirect('login');
+    }
 }

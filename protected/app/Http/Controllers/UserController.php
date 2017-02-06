@@ -19,10 +19,11 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    //These middleware will protect the rest of functions from unauthenticated users 
+    //This middleware protects unauthenticated users 
     public function __construct()
     {
         $this->middleware('auth',['except' => ['login','postLogin']]);
+
     }
     
     public function index()
@@ -32,20 +33,7 @@ class UserController extends Controller
        return view('users.index', ['users' =>  $users  ] );
     }
    
-    
-    public function logout()
-    {
-        if (Auth::check())
-        {
-            $user= User::find(Auth::user()->id);
-            $user->last_logout=date("Y-m-d h:i:s");
-            $user->save();
-
-        }
-        Auth::logout();
-        return redirect('login');
-    }
-
+   
     /**
      * Show the form for creating a new resource.
      *
@@ -142,7 +130,8 @@ class UserController extends Controller
      */
     public function update(Request $request, $id )
     {
-        try {
+       try {
+
             $validator = Validator::make($request->all(), [
                 'full_name' => 'required',
                 'username' => 'required|unique:users,id,'.$id,
@@ -188,7 +177,7 @@ class UserController extends Controller
             ), 400); // 400 being the HTTP code for an invalid request.
         }
 
-    }
+
 
     /**
      * Remove the specified resource from storage.
