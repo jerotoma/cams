@@ -14,7 +14,10 @@ class CreateWheelchairassessmentsTable extends Migration
     public function up()
     {
         Schema::table('wheelchairassessments', function (Blueprint $table) {
-            //
+               $table->bigIncrements('id');
+			   $table->bigInteger('client_id');
+			   $table->bigInteger('assessor_id');
+			   $table->timestamps();
         });
     }
 

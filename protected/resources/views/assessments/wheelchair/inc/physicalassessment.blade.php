@@ -2,7 +2,7 @@
             <div class="col-xs-12">
                 <div class="col-md-12 well">
                     <h1 class="text-center"> STEP 3</h1>
-                   <form class="well" action="upload.php" method="post" enctype="multipart/form-data">
+                   <form class="well" id="physicalassessment"  action="{{url('/assessments/wheelchair/physicalassessment')}}" method="POST" enctype="multipart/form-data">
                     <div class="form-group"> 
                         <div class="row">
                           <div class="col-md-12">
@@ -141,7 +141,7 @@
                                            <div class="col-md-12">
                                              <div clas="form-group"> 
                                                     <label for="describe1">Comment:</label>
-                                                    <input type="text" class="form-control" placeholder="Describe" name ="physical_assess_method_of_pushing_qn_2" value="">                                    
+                                                    <input type="text" class="form-control" placeholder="Describe" name ="physical_assess_method_of_pushing_qn_2_describe" value="">                                    
                                                 </div>
                                            </div>
                                         </div>
@@ -238,21 +238,6 @@
                                  <div class="row">
                                   <div class="row clearfix">
                                     <div class="col-md-12">
-                                        <?php 
-                                              $parts = array(   array('slug'=> 'perlvis', 'name'=>'Perlvis'),
-                                                                array('slug'=> 'truck', 'name'=>'Trunk'),
-                                                                array('slug'=> 'head', 'name'=>'Head'),
-                                                                array('slug'=> 'hip', 'name'=>'L Hip'),
-                                                                array('slug'=> 'hip', 'name'=>'R Hip'),
-                                                                array('slug'=> 'thighs', 'name'=>'Thighs'),
-                                                                array('slug'=> 'knee', 'name'=>'L Knee'),
-                                                                array('slug'=> 'knee', 'name'=>'R Knee'),
-                                                                array('slug'=> 'ankle', 'name'=>'L Ankle'),
-                                                                array('slug'=> 'ankle', 'name'=>'R Ankle'),
-
-                                                         );
-
-                                        ?>
                                         <table class="table table-bordered table-hover">
                                             <thead>
                                                 <tr >

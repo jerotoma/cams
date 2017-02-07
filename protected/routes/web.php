@@ -56,7 +56,6 @@ Route::get('download/referrals/form/{id}','ReferralController@downloadPDF');
 
 //Assessments
 Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
-Route::resource('assessments/wheelchair','WheelChairAssessmentController@index');
 Route::resource('assessments/inclusion','VulnerabilityAssessmentController@inclusion');
 Route::get('clients-va','VulnerabilityAssessmentController@showClients');
 Route::get('getvalist','VulnerabilityAssessmentController@getJSonDataSearch');
@@ -101,8 +100,11 @@ Route::get('inventory/disbursement/import','ItemsDisbursementController@showImpo
 Route::post('inventory/disbursement/import','ItemsDisbursementController@postImport');
 Route::get('inventory/disbursement/import/errors','ItemsDisbursementController@showImportErrors');
 
-
-
+//WheelChairAssessment
+ Route::resource('assessments/wheelchair','WheelChairAssessmentController@index');
+ Route::post('/assessments/wheelchair/assessmentinterview','WheelChairAssessmentController@store');
+ Route::post('/assessments/wheelchair/assessmentClient','WheelChairAssessmentController@store');
+ Route::post('/assessments/wheelchair/physicalassessment','WheelChairAssessmentController@store');
 //ItemsReceivingController
 
 

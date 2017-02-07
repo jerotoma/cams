@@ -3,7 +3,7 @@
             <div class="col-md-12 well text-center">
                 <h1> STEP 1</h1>
                 
-                        <form>                
+                        <form id="assessmentClient"  action="{{url('/assessments/wheelchair/assessmentClient')}}" method="POST" >                
                         <div class="form-group">
                             <div class="row clearfix">
                                 <div class="col-md-12 column">

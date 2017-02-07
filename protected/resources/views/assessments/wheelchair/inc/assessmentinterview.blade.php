@@ -2,12 +2,12 @@
         <div class="col-xs-12">
             <div class="col-md-12 well">
                 
-                <form class="well" action="upload.php" method="post" enctype="multipart/form-data">
+                <form class="well" id="assessmentinterview" action="{{url('/assessments/wheelchair/assessmentinterview')}}" method="POST" enctype="multipart/form-data">
                 <div class="form-group"> 
 					<div class="row">
                           <div class="col-md-12">
                              <h3 class="text-center"> Physical</h3>
-						</div> 
+						  </div> 
 					</div>
 					 <hr>
                     <div class="row">
@@ -163,7 +163,7 @@
                                    <div class="col-md-12 col-md-pull-0">
                                        <div clas="form-group"> 
                                         <label for="describe1">Describe where the wheelchair user will use their wheelchair:</label>
-                                        <input type="text" class="form-control" id="describe1" placeholder="Describe" name ="d" value="">                                    
+                                        <input type="text" class="form-control" id="" placeholder="Describe" name ="assess_interview_lifestyle_env_qn_1_describe" value="">                                    
                                     </div>
                                    </div>
                                </div>
@@ -201,7 +201,7 @@
                                    <div class="col-md-12 col-md-pull-0">
                                        <div clas="form-group"> 
                                         <label for="describe1">When out of the wheelchair, where does the wheelchair user sit or lie down and how (posture and surface)?</label>
-                                        <input type="text" class="form-control" id="describe1" placeholder="Describe" name ="assess_interview_lifestyle_env_qn_3" value="">                                    
+                                        <input type="text" class="form-control"  placeholder="Describe" name ="assess_interview_lifestyle_env_qn_3" value="">                                    
                                     </div>
                                    </div>
                                </div>
@@ -365,7 +365,10 @@
                     <hr>
                     
                 </div>
-                <div class="form-group"> 
+                <div class="form-group" id="inform_assessor"> 
+                 
+               </div>
+				<div class="form-group"> 
                  <button type="submit" id="activate-step-3" class="btn btn-primary btn-md">Submit Assessment Interview</button>
                </div>
              </form>
