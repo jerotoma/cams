@@ -1,9 +1,29 @@
+
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_multiselect.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_select.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/selectboxit.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/typeahead/typeahead.bundle.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/tags/tagsinput.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/tags/tokenfield.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/touchspin.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/maxlength.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/formatter.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/ui/moment/moment.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+
+<script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
-    // Basic options
     $('.pickadate').pickadate();
 </script>
+
 <div class="portlet light bordered">
     <div class="portlet-body form">
         {!! Form::open(array('url'=>'inventory-received','role'=>'form','id'=>'formItemsReceived','files'=>true)) !!}
@@ -83,8 +103,8 @@
             <fieldset class="scheduler-border">
                 <legend class="text-bold">ITEMS</legend>
                 <div class="form-group">
-                    <label>Use this template for importing Items <a href={{asset("assets/templates/received_items_templates.xls")}}>Download template here</a> </label>
-                    <input TYPE="file" class="form-control" name="inventory_file" id="inventory_file">
+                    <label>Use this template for importing Items <a href={{asset("assets/templates/item_import_template.xls")}}>Download template here</a> </label>
+                    <input type="file" class="form-control" name="items_file" id="items_file">
                 </div>
             </fieldset>
                 <div class="form-group ">
@@ -134,7 +154,7 @@
             donor_ref: "required",
             receiving_officer: "required",
             project: "required",
-            inventory_file:"required"
+            items_file:"required"
         },
         messages: {
             reference_number: "Please field is required",
@@ -143,50 +163,51 @@
             donor_ref: "Please field is required",
             receiving_officer: "Please field is required",
             project: "Please field is required",
-            inventory_file: "Please field is required"
+            items_file: "Please Upload file is required"
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
             var formURL = $('#formItemsReceived').attr("action");
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+            var formData = new FormData(form);
             $.ajax(
+                {
+                    url : formURL,
+                    type: "POST",
+                    data : formData,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success:function(data)
                     {
-                        url : formURL,
-                        type: "POST",
-                        dataType : "json",
-                        data: new FormData(this),
-                        processData: false,
-                        contentType: false,
-                        success:function(data)
-                        {
-                            if(data =="<span class='text-success'><i class='fa fa-info'></i> Saved successfully</span>")
-                            {
-                                //data: return data from server
-                                $("#output").html(data);
-                                setTimeout(function() {
-                                    location.reload();
-                                    $("#output").html("");
-                                }, 2000);
-                            }
-                            else
-                            {
-                                $("#output").html(data);
+                        $("#output").html(data.message);
+                        setTimeout(function() {
+                            location.replace('{{url('inventory-received')}}');
+                            $("#output").html("");
+                        }, 2000);
 
-                            }
-                        },
-                        error: function(data)
-                        {
-                            console.log(data);
-                            //in the responseJSON you get the form validation back.
-                            $("#output").html("<h3><span class='text-danger'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
-
+                    },
+                    error: function(jqXhr,status, response) {
+                        if( jqXhr.status === 401 ) {
+                            location.replace('{{url('login')}}');
                         }
-                    });
+                        if( jqXhr.status === 400 ) {
+                            var errors = jqXhr.responseJSON.errors;
+                            errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                            $.each(errors, function (key, value) {
+                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                            });
+                            errorsHtml += '</ul></di>';
+                            $('#output').html(errorsHtml);
+                        }
+                        else
+                        {
+                            $('#output').html("");
+                        }
+
+                    }
+                });
         }
     });
 </script>

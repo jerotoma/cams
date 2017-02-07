@@ -38,11 +38,13 @@ Route::get('getclientslist','ClientsController@getJSonClientDataSearch');
 Route::get('search/clients','ClientsController@searchClient');
 Route::post('search/clients','ClientsController@postSearchClient');
 
+//NFIs Item inventory
 Route::resource('inventory-categories','ItemsCategoriesController');
 Route::post('onflycategory','ItemsCategoriesController@onFlyCategory');
 Route::resource('inventory','ItemInventoryController');
 Route::resource('inventory-received','ItemsReceivingController');
-
+Route::get('download/pdf/inventory-received/{id}','ItemsReceivingController@downloadPDF');
+Route::get('print/inventory-received/{id}','ItemsReceivingController@loadPrintForm');
 
 //Referrals
 Route::resource('referrals','ReferralController');

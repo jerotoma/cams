@@ -202,14 +202,39 @@ class ItemInventoryController extends Controller
     public function update(Request $request,$id)
     {
         //
-        $item=ItemsInventory::find($id);
-        $item->item_name=$request->item_name;
-        $item->description=$request->description;
-        $item->category_id=$request->category_id;
-        $item->quantity=$request->quantity;
-        $item->remarks=$request->remarks;
-        $item->status=$request->status;
-        $item->save();
+        try {
+            $validator = Validator::make($request->all(), [
+                'item_name' => 'required|unique:items_inventories,item_name,'.$id,
+                'quantity' => 'required|numeric',
+                'status' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $item = ItemsInventory::find($id);
+                $item->item_name = $request->item_name;
+                $item->description = $request->description;
+                $item->category_id = $request->category_id;
+                $item->quantity = $request->quantity;
+                $item->remarks = $request->remarks;
+                $item->status = $request->status;
+                $item->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Record saved</span><h3>"
+                ], 200);
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**
