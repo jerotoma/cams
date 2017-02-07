@@ -98,29 +98,32 @@
                                    </div>
                                </div>
                                <div class="row">
-                                 <div class="col-md-6 col-md-pull-1">
+                                 <div class="col-md-5 col-md-pull-1">
                                      <div class="checkbox">
                                           <p>Problems with eating, drinking and swallowing</p>
                                      </div>  
                                  </div>
-                                 <div class="col-md-6 col-md-pull-1">
+                                 <div class="col-md-3 col-md-pull-1">
                                     <div class="checkbox">
                                       <label class="checkbox-inline"><input type="checkbox" name ="assess_interview_physical_issues_qn_3" value="Problems with eating, drinking and swallowing"></label>
                                     </div>
+                                 
+                                 </div>
+                                <div class="col-md-4 col-md-pull-2">
                                     <div clas="form-group"> 
-                                        <label for="describe1">Describe</label>
                                         <input type="text" class="form-control"  placeholder="Describe" name ="assess_interview_physical_issues_qn_3_describe" value="">                                    
                                     </div>
                                  </div>
                               </div>
                               <div class="row">
-                                 <div class="col-md-6 col-md-pull-1">
+                                 <div class="col-md-4 col-md-pull-1">
                                     <div class="checkbox">
                                       <label class="checkbox-inline"><input type="checkbox" name ="assess_interview_physical_issues_qn_4" value="Pain">Pain</label>
                                     </div>
+                                </div>
+                                <div class="col-md-8 col-md-pull-3">
                                     <div clas="form-group"> 
-                                        <label for="describe1">Describe location</label>
-                                        <input type="text" class="form-control"  placeholder="Describe" name ="assess_interview_physical_issues_qn_4_describe" value="">                                    
+                                       <input type="text" class="form-control"  placeholder="Describe location" name ="assess_interview_physical_issues_qn_4_describe" value="">                                    
                                     </div>
                                  </div>
                               </div> 
