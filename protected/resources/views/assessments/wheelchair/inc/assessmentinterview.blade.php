@@ -342,8 +342,8 @@
                                           <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_5" value="No">No</label>
                                         </div>
                                     </div>
-                               </div>
-                              <div class="row">
+                             </div>
+                             <div class="row">
                                    <div class="col-md-12 col-md-pull-0">
                                        <div clas="form-group"> 
                                         <label for="describe1">Comments:</label>
@@ -351,12 +351,11 @@
                                         </div>
                                    </div>
                              </div>
-                               <div class="row">
+                             <div class="row">
                                    <div class="col-md-12 col-md-pull-0">
                                        <div clas="form-group"> 
                                          <p>If yes to all questions, the user may not need a new wheelchair. If no to any of these questions, the user needs a different wheelchair or cushion; or the existing wheelchair or cushion needs repairs or modifications. </p>
-                                                                       
-                                    </div>
+                                       </div>
                                    </div>
                              </div>
                           </div>
@@ -367,8 +366,8 @@
                 <div class="form-group" id="inform_assessor"> 
                  
                </div>
-				<div class="form-group"> 
-                 <button id="activate-step-3" class="btn btn-primary btn-md">Submit Assessment Interview</button>
+				<div class="form-group text-center"> 
+                 <button id="activate-step-3" class="btn btn-primary btn-md legitRipple">Continue to Physical Assessment</button>
                </div>
             
             </div>

@@ -45,33 +45,32 @@
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h2 class="panel-title text-center">Completed WheelChair Assessment</h2>
+            <h2 class="panel-title text-center">Intermediate Wheelchair Assessment Form </h2>
         </div>
         <div class="panel-body">
-          @include('assessments.wheelchair.inc.list_all')
+          @include('assessments.wheelchair.inc.view')
 		</div>
     </div>
-  
-<!-- Modal -->
-<div id="client_wheelchair_assessment" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header bg-indigo">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title text-center">Client Wheelchair Assessment</h4>
-      </div>
-      <div class="modal-body">
-        @include('assessments.wheelchair.inc.wheelchairassessment')
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+	<!-- Modal -->
+	<div id="client_wheelchair_assessment" class="modal fade" role="dialog">
+	  <div class="modal-dialog modal-lg">
 
-  </div>
-</div>
-  @include('assessments.wheelchair.inc.wheelchair_js')
+		<!-- Modal content-->
+		<div class="modal-content">
+		  <div class="modal-header bg-indigo">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title text-center">Client Wheelchair Assessment</h4>
+		  </div>
+		  <div class="modal-body">
+			@include('assessments.wheelchair.inc.wheelchairassessment')
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
 
+	  </div>
+	</div>
+ @include('assessments.wheelchair.inc.wheelchair_js')
 @stop
