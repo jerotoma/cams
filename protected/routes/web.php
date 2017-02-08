@@ -53,15 +53,21 @@ Route::get('list-all-referrals','ReferralController@getReferralList');
 Route::get('referrals-request','ReferralController@getReferralClientList');
 Route::get('referrals-request/{id}','ReferralController@create');
 Route::get('download/referrals/form/{id}','ReferralController@downloadPDF');
-
-
-//Assessments
-Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
+//inclusion Assessments
 Route::resource('assessments/inclusion','VulnerabilityAssessmentController@inclusion');
+//vulnerability Assessments
+Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
 Route::get('clients-va','VulnerabilityAssessmentController@showClients');
 Route::get('getvalist','VulnerabilityAssessmentController@getJSonDataSearch');
 Route::get('client/assessments/vulnerability/{id}','VulnerabilityAssessmentController@showClientVulnerability');
 Route::get('vulnerability-assessment/download/{id}','VulnerabilityAssessmentController@downloadForm');
+
+//paediatric Assessments
+Route::resource('assessments/paediatric','PaediatricAssessmentController');
+Route::get('clients-pd','PaediatricAssessmentController@showClients');
+Route::get('getpdlist','PaediatricAssessmentController@getJSonDataSearch');
+Route::get('client/assessments/paediatric/{id}','PaediatricAssessmentController@showClientVulnerability');
+Route::get('paediatric-assessment/download/{id}','PaediatricAssessmentController@downloadForm');
 
 //PSN Needs/Home assessment Form
 Route::resource('assessments/home','HomeAssessmentController');
