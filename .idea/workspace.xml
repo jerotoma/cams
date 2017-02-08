@@ -2,23 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8e30bb40-a70f-433f-8fb4-a37ab77960ae" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/protected/resources/views/assessments/paediatric/inclusion.blade.php" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/app/Client.php" afterPath="$PROJECT_DIR$/protected/app/Client.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/app/Http/Controllers/PaediatricAssessmentController.php" afterPath="$PROJECT_DIR$/protected/app/Http/Controllers/PaediatricAssessmentController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/app/Http/Controllers/WheelChairAssessmentController.php" afterPath="$PROJECT_DIR$/protected/app/Http/Controllers/WheelChairAssessmentController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/database/migrations/2017_02_08_164349_create_paediatric_assessments_table.php" afterPath="$PROJECT_DIR$/protected/database/migrations/2017_02_08_164349_create_paediatric_assessments_table.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/resources/views/assessments/paediatric/create.blade.php" afterPath="$PROJECT_DIR$/protected/resources/views/assessments/paediatric/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/resources/views/assessments/paediatric/index.blade.php" afterPath="$PROJECT_DIR$/protected/resources/views/assessments/paediatric/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/resources/views/assessments/paediatric/listclients.blade.php" afterPath="$PROJECT_DIR$/protected/resources/views/assessments/paediatric/listclients.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/resources/views/assessments/wheelchair/inc/client.blade.php" afterPath="$PROJECT_DIR$/protected/resources/views/assessments/wheelchair/inc/client.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/resources/views/assessments/wheelchair/index.blade.php" afterPath="$PROJECT_DIR$/protected/resources/views/assessments/wheelchair/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/resources/views/clients/index.blade.php" afterPath="$PROJECT_DIR$/protected/resources/views/clients/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/routes/web.php" afterPath="$PROJECT_DIR$/protected/routes/web.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/vendor/composer/autoload_classmap.php" afterPath="$PROJECT_DIR$/protected/vendor/composer/autoload_classmap.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/vendor/composer/autoload_static.php" afterPath="$PROJECT_DIR$/protected/vendor/composer/autoload_static.php" />
     </list>
-    <ignored path=".idea/" />
+    <manually-removed-from-ignored>
+      <directory path=".idea/" />
+    </manually-removed-from-ignored>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,7 +20,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="create.blade.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="create.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/protected/resources/views/assessments/paediatric/create.blade.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="7880">
@@ -53,6 +41,18 @@
                 <marker date="1486594535309" expanded="true" signature="22813:22903" ph="..." />
                 <marker date="1486594535309" expanded="true" signature="22813:22919" ph="..." />
                 <marker date="1486594535309" expanded="true" signature="22813:22920" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WheelChairAssessmentController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/protected/app/Http/Controllers/WheelChairAssessmentController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-3541">
+              <caret line="35" column="90" lean-forward="false" selection-start-line="35" selection-start-column="90" selection-end-line="35" selection-end-column="90" />
+              <folding>
+                <element signature="e#40#68#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -909,12 +909,12 @@
       <workItem from="1486492064775" duration="1545000" />
       <workItem from="1486525895484" duration="986000" />
       <workItem from="1486557229650" duration="1802000" />
-      <workItem from="1486572155087" duration="18212000" />
+      <workItem from="1486572155087" duration="18727000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="106854000" />
+    <option name="totallyTimeSpent" value="107369000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -927,7 +927,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23014805" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6473755" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1225,17 +1225,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/app/Http/Controllers/WheelChairAssessmentController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="35" column="90" lean-forward="false" selection-start-line="35" selection-start-column="90" selection-end-line="35" selection-end-column="90" />
-          <folding>
-            <element signature="e#40#68#0#PHP" expanded="true" />
-            <marker date="1486587841223" expanded="true" signature="2380:2489" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/protected/resources/views/assessments/paediatric/listclients.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -1456,6 +1445,16 @@
             <marker date="1486594535309" expanded="true" signature="22813:22903" ph="..." />
             <marker date="1486594535309" expanded="true" signature="22813:22919" ph="..." />
             <marker date="1486594535309" expanded="true" signature="22813:22920" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/app/Http/Controllers/WheelChairAssessmentController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3541">
+          <caret line="35" column="90" lean-forward="false" selection-start-line="35" selection-start-column="90" selection-end-line="35" selection-end-column="90" />
+          <folding>
+            <element signature="e#40#68#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
