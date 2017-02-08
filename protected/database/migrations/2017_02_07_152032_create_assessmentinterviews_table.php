@@ -24,7 +24,7 @@ class CreateAssessmentinterviewsTable extends Migration
 			   $table->text('assess_interview_physical_issues_qn_3_describe')->nullable();
 			   $table->string('assess_interview_physical_issues_qn_4', 100 )->nullable();
 			   $table->string('assess_interview_physical_issues_qn_5', 100 )->nullable();
-			   $table->string('assess_interview_physical_issues_qn_6', 100 ->nullable());
+			   $table->string('assess_interview_physical_issues_qn_6', 100) ->nullable();
 			   $table->text('assess_interview_lifestyle_env_qn_1_describe')->nullable();
 			   $table->string('assess_interview_lifestyle_env_qn_1', 100 )->nullable();
 			   $table->string('assess_interview_lifestyle_env_qn_2', 100 )->nullable();
