@@ -22,7 +22,7 @@ Route::get('logout','Auth\LoginController@logout');
 
 //Users
 Route::resource('users','UserController');
-//Route::get('regist','UserController@store');
+//Route::get('create-user','UserController@createUser');
 //User rights
 Route::resource('access/rights','RolesController');
 
