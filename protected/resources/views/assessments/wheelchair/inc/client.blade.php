@@ -1,3 +1,80 @@
+<script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
+<script>
+    $(function() {
+
+
+        // Table setup
+        // ------------------------------
+
+        // Setting datatable defaults
+        $.extend( $.fn.dataTable.defaults, {
+            autoWidth: false,
+            dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
+            language: {
+                search: '<span>Filter:</span> _INPUT_',
+                lengthMenu: '<span>Show:</span> _MENU_',
+                paginate: { 'first': 'First', 'last': 'Last', 'next': '&rarr;', 'previous': '&larr;' }
+            },
+            drawCallback: function () {
+                $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').addClass('dropup');
+            },
+            preDrawCallback: function() {
+                $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').removeClass('dropup');
+            }
+        });
+
+
+        // Basic datatable
+        $('.datatable-basic').DataTable({
+            "scrollX": false,
+            ajax: '{{url('getwaclientsjson')}}',
+            "fnDrawCallback": function (oSettings) {
+            }
+        });
+
+
+        // Alternative pagination
+        $('.datatable-pagination').DataTable({
+            pagingType: "simple",
+            language: {
+                paginate: {'next': 'Next &rarr;', 'previous': '&larr; Prev'}
+            }
+        });
+
+
+        // Datatable with saving state
+        $('.datatable-save-state').DataTable({
+            stateSave: true
+        });
+
+
+        // Scrollable datatable
+        $('.datatable-scroll-y').DataTable({
+            autoWidth: true,
+            scrollY: 300
+        });
+
+
+
+        // External table additions
+        // ------------------------------
+
+        // Add placeholder to the datatable filter option
+        $('.dataTables_filter input[type=search]').attr('placeholder','Type to filter...');
+
+
+        // Enable Select2 select for the length option
+        $('.dataTables_length select').select2({
+            minimumResultsForSearch: Infinity,
+            width: 'auto'
+        });
+
+    });
+
+</script>
 <div class="row setup-content" id="step-1">
         <div class="col-xs-12">
             <div class="col-md-12 well text-center">
@@ -5,7 +82,7 @@
                     <div class="form-group">
                             <div class="row clearfix">
                                 <div class="col-md-12 column">
-                                      <table class="table table-bordered table-hover" id="tab_logic">
+                                      <table class="table datatable-basic table-bordered table-hover" id="tab_logic">
                                         <thead>
                                             <tr >
                                                 <th class="text-center">
@@ -32,29 +109,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr id='addr0'>
-                                                <td class="text-center">
-                                                    1
-                                                </td>
-                                                <td class="text-center">
-                                                    HP67T
-                                                </td>
-                                                <td class="text-center">
-                                                    Otoman Nkomanya
-                                                </td>
-                                                <td class="text-center">
-                                                    Male
-                                                </td>
-                                               <td class="text-center">
-                                                   Tanzanian
-                                                </td>
-                                                <td class="text-center">
-                                                   January 2nd, 2017
-                                                </td>
-                                                <td class="text-center">
-                                                    <label><input type="radio" name="client_id" value="1"></label>
-                                                </td>
-                                            </tr>
                                             <tr id='addr1'></tr>
                                         </tbody>
                                     </table>

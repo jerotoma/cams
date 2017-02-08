@@ -377,6 +377,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
     );
 
     public static $classMap = array (
+        'AddcentreNametopaediatric' => __DIR__ . '/../..' . '/database/migrations/2017_02_08_225621_addcentre_nametopaediatric.php',
         'Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'CreateAssessmentEconomicSituationsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_23_151245_create_assessment_economic_situations_table.php',
         'CreateAssessmentHousholdProfilesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_23_145703_create_assessment_houshold_profiles_table.php',

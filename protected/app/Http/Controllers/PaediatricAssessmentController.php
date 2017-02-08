@@ -24,7 +24,6 @@ class PaediatricAssessmentController extends Controller
         return view('assessments.paediatric.index',compact('assessments'));
 
     }
-
     public function showClients()
     {
         return view('assessments.paediatric.listclients');

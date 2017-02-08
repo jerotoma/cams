@@ -15,7 +15,7 @@
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li class="active"><a href="{{url('assessments/inclusion')}}"><i class="icon-grid position-left"></i> WheelChair Assessments</a></li>
+        <li class="active"><a href="{{url('assessments/wheelchair')}}"><i class="icon-grid position-left"></i> WheelChair Assessments</a></li>
         <li class="active">Wheel Chair</li>
     </ul>
 @stop
@@ -36,9 +36,9 @@
    
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="{{url('clients-va')}}" class=" btn"><i class="fa fa-search text-success"></i> <span>Search Client</span></a>
-            <a  href="{{url('assessments/vulnerability')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All</span></a>
-            <a  href="{{url('import/assessments/vulnerability')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
+            <a  href="{{url('clients-wa')}}" class=" btn"><i class="fa fa-search text-success"></i> <span>Search Client</span></a>
+            <a  href="{{url('assessments/wheelchair')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All</span></a>
+            <a  href="{{url('import/assessments/wheelchair')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
         </div>
     </div>
     <div class="panel panel-flat">
