@@ -235,15 +235,15 @@ class WheelChairAssessmentController extends Controller
     public function show($id)
     {
          $parts          = $this->parts;
-		 
+		 $clients        = Client::all();
          $wc_assessment  = WheelChairAssessment::find($id);;
 		 $assessed       = $wc_assessment;
 				
 			$assessed->client_id;
-		    $client   = Client::find($assessed->client_id);
+		    $assessedClient   = Client::find($assessed->client_id);
 			$assessor = User::find($assessed->assessor_id);
 	
-		return view('assessments.wheelchair.view', compact('parts', 'client','assessor','wc_assessment'));
+		return view('assessments.wheelchair.view', compact('parts','clients','assessedClient','assessor','wc_assessment'));
     }
 
     /**

@@ -53,28 +53,28 @@
                                         </thead>
                                         <tbody>
 											<?php $count = 1; ?>
-										@if(!empty($client ))
+										@if(!empty($assessedClient ))
 												<tr id='addr0'>
 													<td class="text-center">
 														{{$wc_assessment->id}}
 													</td>
 													<td class="text-center">
-														{{$client->client_number}}
+														{{$assessedClient->client_number}}
 													</td>
 													<td class="text-center">
-														{{$client->full_name}}
+														{{$assessedClient->full_name}}
 													</td>
 													<td class="text-center">
-														{{$client->sex}}
+														{{$assessedClient->sex}}
 													</td>
 												   <td class="text-center">
-													   {{$client->age}}
+													   {{$assessedClient->age}}
 													</td>
 													<td class="text-center">
-													   {{$client->phone}}
+													   {{$assessedClient->phone}}
 													</td>
 													<td class="text-center">
-													   {{$client->address}}
+													   {{$assessedClient->address}}
 													</td>
 												  </tr>
 											@endif
