@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTakemeasurementsTable extends Migration
+class CreateTakeMeasurementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateTakemeasurementsTable extends Migration
      */
     public function up()
     {
-        Schema::table('takemeasurements', function (Blueprint $table) {
+        Schema::create('take_measurements', function (Blueprint $table) {
                $table->increments('id');
 			   $table->integer('p_assessment_id')->unsigned();
                $table->timestamps();
-			   $table->foreign('p_assessment_id')->references('id')->on('physicalassessments')
+			   $table->foreign('p_assessment_id')->references('id')->on('physical_assessments')
 					->onUpdate('cascade')->onDelete('cascade');
         });
     }
@@ -29,7 +29,7 @@ class CreateTakemeasurementsTable extends Migration
      */
     public function down()
     {
-        Schema::table('takemeasurements', function (Blueprint $table) {
+        Schema::table('take_measurements', function (Blueprint $table) {
             //
         });
     }

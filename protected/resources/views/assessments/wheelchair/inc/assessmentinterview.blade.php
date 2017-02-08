@@ -1,8 +1,7 @@
     <div class="row setup-content" id="step-2">
         <div class="col-xs-12">
             <div class="col-md-12 well">
-                
-                <form class="well" id="assessmentinterview" action="{{url('/assessments/wheelchair/assessmentinterview')}}" method="POST" enctype="multipart/form-data">
+              
                 <div class="form-group"> 
 					<div class="row">
                           <div class="col-md-12">
@@ -19,23 +18,23 @@
                                    <div class="col-md-4 col-md-pull-1">
                                       
                                        <div class="checkbox">
-                                           <label class="checkbox text-left"><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" value="Brain Injury">Brain Injury</label>
-                                           <label class="checkbox text-left"><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" value="Cerebral Palsy">Cerebral Palsy </label>
-                                           <label class="checkbox text-left"><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" value="Muscular Dystrophy">Muscular Dystrophy</label> 
+                                           <label class="checkbox text-left"><input type="checkbox" name="assess_interview_diagnosis_qn_1" value="Brain Injury">Brain Injury</label>
+                                           <label class="checkbox text-left"><input type="checkbox" name="assess_interview_diagnosis_qn_1" value="Cerebral Palsy">Cerebral Palsy </label>
+                                           <label class="checkbox text-left"><input type="checkbox" name="assess_interview_diagnosis_qn_1" value="Muscular Dystrophy">Muscular Dystrophy</label> 
                                        </div>
                                    </div>
                                    <div class="col-md-4 col-md-pull-2">
                                       <div class="checkbox">
-                                           <label class="checkbox text-left "><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="Polio">Polio</label>
-                                           <label class="checkbox text-left"><input type="checkbox"   name="assess_interview_diagnosis_qn_1[]" value="Spina Bifida">Spina Bifida</label>
-                                           <label class="checkbox text-left"><input type="checkbox"   name="assess_interview_diagnosis_qn_1[]" value="Spinal Cord Injury">Spinal Cord Injury </label> 
+                                           <label class="checkbox text-left "><input type="checkbox"  name="assess_interview_diagnosis_qn_1" value="Polio">Polio</label>
+                                           <label class="checkbox text-left"><input type="checkbox"   name="assess_interview_diagnosis_qn_1" value="Spina Bifida">Spina Bifida</label>
+                                           <label class="checkbox text-left"><input type="checkbox"   name="assess_interview_diagnosis_qn_1" value="Spinal Cord Injury">Spinal Cord Injury </label> 
                                        </div>
                                    </div> 
                                    <div class="col-md-4 col-md-pull-3">
                                        <div class="checkbox">
-                                           <label class="checkbox text-left "><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" value="">Stroke</label>
-                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="">Unknown</label>
-                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="">Other</label> 
+                                           <label class="checkbox text-left "><input type="checkbox" name="assess_interview_diagnosis_qn_1" value="">Stroke</label>
+                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1" value="">Unknown</label>
+                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1" value="">Other</label> 
                                        </div>
                                    </div>
                                </div>
@@ -63,9 +62,9 @@
                                <div class="row">
                                    <div class="col-md-12 col-md-pull-1">
                                        <div class="checkbox">
-                                           <label class="checkbox-inline text-left move-left"><input type="checkbox" name ="assess_interview_physical_issues_qn_1[]" value="Frail">Frail</label>
-                                           <label class="checkbox-inline text-left move-left"><input type="checkbox" name ="assess_interview_physical_issues_qn_1[]" value="Spasms/uncontrolled movements">Spasms/uncontrolled movements</label>
-                                           <label class="checkbox-inline text-left move-left"><input type="checkbox" name ="assess_interview_physical_issues_qn_1[]" value="Muscle tone (high/low)">Muscle tone (high/low)</label> 
+                                           <label class="checkbox-inline text-left move-left"><input type="checkbox" name ="assess_interview_physical_issues_qn_1" value="Frail">Frail</label>
+                                           <label class="checkbox-inline text-left move-left"><input type="checkbox" name ="assess_interview_physical_issues_qn_1" value="Spasms/uncontrolled movements">Spasms/uncontrolled movements</label>
+                                           <label class="checkbox-inline text-left move-left"><input type="checkbox" name ="assess_interview_physical_issues_qn_1" value="Muscle tone (high/low)">Muscle tone (high/low)</label> 
                                       </div> 
                                    </div>
                                </div>
@@ -79,21 +78,21 @@
                                <div class="row">
                                    <div class="col-md-4 col-md-pull-1">
                                     <div class="checkbox">
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="R above knee">R above knee</label> 
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="R below knee">R below knee</label>
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="L above knee">L above knee</label>
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2" value="R above knee">R above knee</label> 
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2" value="R below knee">R below knee</label>
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2" value="L above knee">L above knee</label>
                                     </div>
                                    </div>
                                    <div class="col-md-4 col-md-pull-1">
                                      <div class="checkbox">
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="L above knee">L above knee</label>
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="Fatigue">Fatigue</label> 
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="Hip dislocation">Hip dislocation</label>
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2" value="L above knee">L above knee</label>
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2" value="Fatigue">Fatigue</label> 
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2" value="Hip dislocation">Hip dislocation</label>
                                      </div>
                                    </div>
                                    <div class="col-md-4 col-md-pull-2">
                                        <div class="checkbox">
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="">Epilepsy</label>
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2" value="">Epilepsy</label>
                                        </div>
                                    </div>
                                </div>
@@ -369,9 +368,9 @@
                  
                </div>
 				<div class="form-group"> 
-                 <button type="submit" id="activate-step-3" class="btn btn-primary btn-md">Submit Assessment Interview</button>
+                 <button id="activate-step-3" class="btn btn-primary btn-md">Submit Assessment Interview</button>
                </div>
-             </form>
+            
             </div>
         </div>
     </div>    

@@ -22,6 +22,7 @@ Route::get('logout','Auth\LoginController@logout');
 
 //Users
 Route::resource('users','UserController');
+//Route::get('regist','UserController@store');
 //User rights
 Route::resource('access/rights','RolesController');
 
@@ -102,9 +103,8 @@ Route::get('inventory/disbursement/import/errors','ItemsDisbursementController@s
 
 //WheelChairAssessment
  Route::resource('assessments/wheelchair','WheelChairAssessmentController@index');
- Route::post('/assessments/wheelchair/assessmentinterview','WheelChairAssessmentController@store');
- Route::post('/assessments/wheelchair/assessmentClient','WheelChairAssessmentController@store');
- Route::post('/assessments/wheelchair/physicalassessment','WheelChairAssessmentController@store');
+ Route::post('assessments/wheelchair/wheelchairassessment','WheelChairAssessmentController@postData');
+ 
 //ItemsReceivingController
 
 

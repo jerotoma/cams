@@ -2,7 +2,6 @@
             <div class="col-xs-12">
                 <div class="col-md-12 well">
                     <h1 class="text-center"> STEP 3</h1>
-                   <form class="well" id="physicalassessment"  action="{{url('/assessments/wheelchair/physicalassessment')}}" method="POST" enctype="multipart/form-data">
                     <div class="form-group"> 
                         <div class="row">
                           <div class="col-md-12">
@@ -443,26 +442,10 @@
                             <div class="form-group">
                              <button id="activate-step-4" class="btn btn-primary btn-md">Submit Physical Assessment</button>
                            </div>
-                        </form>
+                        
                         </div>
                         
 
                      </div>
             </div>
-           <div class="row setup-content" id="step-4">
-            <div class="col-xs-12">
-                <div class="col-md-12 well text-center">
-                    <h1 class="text-center"> STEP 4</h1>
-
-                     <form>
-                         <div class="alert alert-success alert-dismissable">
-                           <strong>Success!</strong> Conglatulations, You have completed  Intermediate Wheelchair Assessment, Please click the finish button to finalize the assessment.
-                        </div>
-                        <div class="form-group">
-                             <button id="activate-step-4" class="btn btn-primary btn-md">Finish</button>
-                        </div>
-                     </form>
-
-                </div>
-            </div>
-        </div>
+           

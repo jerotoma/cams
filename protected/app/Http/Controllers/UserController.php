@@ -62,6 +62,7 @@ class UserController extends Controller
                 'role_id' => 'required',
                 'phone' => 'required',
             ]);
+            
             if ($validator->fails()) {
                 return Response::json(array(
                     'success' => false,

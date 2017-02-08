@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssessmentinterviewsTable extends Migration
+class CreateAssessmentInterviewsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateAssessmentinterviewsTable extends Migration
      */
     public function up()
     {
-        Schema::table('assessmentinterviews', function (Blueprint $table) {
+        Schema::create('assessment_interviews', function (Blueprint $table) {
                $table->increments('id');
 			   $table->integer('wc_assessment_id')->unsigned();
 			   $table->string('assess_interview_diagnosis_qn_1', 100 )->nullable();
@@ -24,7 +24,7 @@ class CreateAssessmentinterviewsTable extends Migration
 			   $table->text('assess_interview_physical_issues_qn_3_describe')->nullable();
 			   $table->string('assess_interview_physical_issues_qn_4', 100 )->nullable();
 			   $table->string('assess_interview_physical_issues_qn_5', 100 )->nullable();
-			   $table->string('assess_interview_physical_issues_qn_6', 100 ->nullable());
+			   $table->string('assess_interview_physical_issues_qn_6', 100 )->nullable();
 			   $table->text('assess_interview_lifestyle_env_qn_1_describe')->nullable();
 			   $table->string('assess_interview_lifestyle_env_qn_1', 100 )->nullable();
 			   $table->string('assess_interview_lifestyle_env_qn_2', 100 )->nullable();
@@ -41,7 +41,7 @@ class CreateAssessmentinterviewsTable extends Migration
 			   $table->string('assess_interview_existing_wheelchair_qn_5')->nullable();
 			   $table->string('assess_interview_existing_wheelchair_qn_6')->nullable();
 			   $table->timestamps();
-               $table->foreign('wc_assessment_id')->references('id')->on('wheelchairassessments')
+               $table->foreign('wc_assessment_id')->references('id')->on('wheel_chair_assessments')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }

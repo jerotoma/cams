@@ -2,9 +2,7 @@
         <div class="col-xs-12">
             <div class="col-md-12 well text-center">
                 <h1> STEP 1</h1>
-                
-                        <form id="assessmentClient"  action="{{url('/assessments/wheelchair/assessmentClient')}}" method="POST" >                
-                        <div class="form-group">
+                    <div class="form-group">
                             <div class="row clearfix">
                                 <div class="col-md-12 column">
                                       <table class="table table-bordered table-hover" id="tab_logic">
@@ -54,7 +52,7 @@
                                                    January 2nd, 2017
                                                 </td>
                                                 <td class="text-center">
-                                                    <label><input type="radio" name="optradio"></label>
+                                                    <label><input type="radio" name="client_id" value="1"></label>
                                                 </td>
                                             </tr>
                                             <tr id='addr1'></tr>
@@ -65,9 +63,9 @@
                         </div>
                             <!-- <a id="add_row" class="btn btn-success pull-left">Add Row</a><a id='delete_row' class="btn btn-danger pull-right">Delete Row</a> -->
                    <div class="form-group">
-                    <button id="activate-step-2" type="submit" class="btn btn-primary btn-md">Submit Client</button>
+                    <button id="activate-step-2" class="btn btn-primary btn-md">Submit Client</button>
                   </div>
-               </form>
+              
               </div>
         </div>
     </div>
