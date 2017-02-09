@@ -120,19 +120,19 @@
                                                </div>
                                               <div class="col-md-3 col-md-pull-0">
                                                  <div class="radio">
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_2" value="Right arm">Right arm</label>
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_2" value="Both legs">Both legs</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" value="Right arm">Right arm</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" value="Both legs">Both legs</label>
                                                   </div>
                                               </div>
                                              <div class="col-md-3 col-md-pull-0">
                                                     <div class="radio">
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_2" value="Left leg">Left leg</label>
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_2" value="Right leg">Right leg</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" value="Left leg">Left leg</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" value="Right leg">Right leg</label>
                                                     </div>
                                             </div>
                                            <div class="col-md-3 col-md-pull-0">
                                                     <div class="radio">
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_2" value="Pushed by helpe">Pushed by helper</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" value="Pushed by helpe">Pushed by helper</label>
                                                     </div>
                                             </div>
                                         </div>

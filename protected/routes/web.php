@@ -112,6 +112,7 @@ Route::get('inventory/disbursement/import/errors','ItemsDisbursementController@s
 //WheelChairAssessment
  Route::resource('assessments/wheelchair','WheelChairAssessmentController@index');
  Route::post('assessments/wheelchair/wheelchairassessment','WheelChairAssessmentController@postData');
+ Route::post('assessments/wheelchair/edit/{id}','WheelChairAssessmentController@update');
  Route::get('wheelchair/view/{id}','WheelChairAssessmentController@show');
  
 //ItemsReceivingController

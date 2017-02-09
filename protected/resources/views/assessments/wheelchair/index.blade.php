@@ -38,7 +38,7 @@
         <div class="col-md-12 text-right">
             <a  href="{{url('clients-va')}}" class=" btn"><i class="fa fa-search text-success"></i> <span>Search Client</span></a>
             <a class="btn  btn-lg" data-toggle="modal" data-target="#client_wheelchair_assessment"><i class="fa fa-plus text-success" aria-hidden="true"></i> <span> Assess Client</span></span></a>
-<a  href="{{url('assessments/vulnerability')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All</span></a>
+<a  href="{{url('assessments/wheelchair')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All</span></a>
             <a  href="{{url('import/assessments/vulnerability')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
             
 		</div>

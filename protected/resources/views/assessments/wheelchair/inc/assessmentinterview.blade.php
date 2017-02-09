@@ -32,9 +32,9 @@
                                    </div> 
                                    <div class="col-md-4 col-md-pull-3">
                                        <div class="checkbox">
-                                           <label class="checkbox text-left "><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" value="">Stroke</label>
-                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="">Unknown</label>
-                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="">Other</label> 
+                                           <label class="checkbox text-left "><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" value="Stroke">Stroke</label>
+                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="Unknown">Unknown</label>
+                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="Other">Other</label> 
                                        </div>
                                    </div>
                                </div>
@@ -92,7 +92,7 @@
                                    </div>
                                    <div class="col-md-4 col-md-pull-2">
                                        <div class="checkbox">
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="">Epilepsy</label>
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="Epilepsy">Epilepsy</label>
                                        </div>
                                    </div>
                                </div>
