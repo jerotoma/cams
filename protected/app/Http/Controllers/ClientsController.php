@@ -274,27 +274,6 @@ class ClientsController extends Controller
         //
         return view('clients.create');
     }
-    /*public function createClient(){
-		        $client=new Client;
-                $client->client_number = '28';
-                $client->full_name =ucwords('Otoman Nkomanya');
-                $client->sex =ucwords('male');
-                $client->age ='34';
-                $client->birth_date ='1980-1-3';
-                $client->civil_status ='Civilized';
-                $client->spouse_name = 'Grace Oduk';
-                $client->care_giver ='Care giver';
-                $client->origin =ucwords('Uganda');
-                $client->country_id = '67';
-                $client->date_arrival ='2016-1-3';;
-                $client->present_address ='23 Kigoma';
-                $client->household_number ='5';
-                $client->ration_card_number =34;
-                $client->assistance_received =1;
-                $client->problem_specification = 1;
-                $client->created_by ='Otoman Nkomanya';
-                $client->save();
-	}*/
     /**
      * Store a newly created resource in storage.
      *

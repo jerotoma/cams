@@ -23,4 +23,28 @@ class PaediatricAssessment extends Model
     {
         return $this::belongsTo('\App\User','reviewed_by');
     }
+    public function assessmentHistory()
+    {
+        return $this::hasOne('\App\PaediatricAssessmentHistory','assessment_id');
+    }
+    public function childHistory()
+    {
+        return $this::hasOne('\App\PaediatricChildHistory','assessment_id');
+    }
+    public function childGrowth()
+    {
+        return $this::hasOne('\App\PaediatricChildGrowth','assessment_id');
+    }
+    public function childInspection()
+    {
+        return $this::hasMany('\App\PaediatricChildInspection','assessment_id');
+    }
+    public function childInspectionResult()
+    {
+        return $this::hasOne('\App\PaediatricChildInspectionResult','assessment_id');
+    }
+    public function country()
+    {
+        return $this::belongsTo('\App\Country','nationality','id');
+    }
 }
