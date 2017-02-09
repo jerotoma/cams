@@ -76,6 +76,46 @@ class WheelChairAssessmentController extends Controller
 
         echo json_encode($records);
     }
+	
+	public function getJSonWCListAllClientData(){
+		 $parts          = $this->parts;
+		 $clients        = Client::all();
+         $wc_assessment  = WheelChairAssessment::all();
+		$iTotalRecords =count(Client::all());
+         $sEcho = intval(10);
+
+        $records = array();
+        $records["data"] = array();
+		
+		
+		$count=1;
+		foreach( $wc_assessment as $key => $assessed ){
+			$assessed->client_id;
+		    $client   = Client::find($assessed->client_id);
+			$assessor = User::find($assessed->assessor_id);
+		    $origin="";
+            if(!empty($client ) && !empty($assessor)):
+					
+			         if(is_object($client->nationality) && $client->nationality != null ){
+						$origin=$client->nationality->country_name;
+					 }	
+					 $records["data"][] = array(
+						$count++,
+						$client->client_number,
+						$client->full_name,
+						$client->sex,
+						$origin,
+						date('d M Y',strtotime($client->date_arrival)),
+						$assessor->full_name,
+						'<label><a href="'.url("wheelchair/view").'/'.$assessed->id.'">View</a></label>',
+					);
+			
+		  endif;
+		
+		}
+		
+	echo json_encode($records);
+	}
     /**
      * Display a listing of the resource.
      *
@@ -135,6 +175,7 @@ class WheelChairAssessmentController extends Controller
 		
 		
     }
+	
 
     /**
      * Show the form for creating a new resource.
@@ -255,7 +296,13 @@ class WheelChairAssessmentController extends Controller
 
             }        
 
-        }
+        }else{
+	    return response()->json([
+							'success' => false,
+							'message' => "<div class='alert alert-danger'><strong>Error!</strong> Sorry, No such Wheelchair Assessment in our system</div>"
+						   ], 200);
+
+		}
         
     }
     /**

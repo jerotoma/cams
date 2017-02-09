@@ -26,24 +26,44 @@
             $('#activate-step-2').on('click', function(e) {
                 $('ul.setup-panel li:eq(1)').removeClass('disabled');
                 $('ul.setup-panel li a[href="#step-2"]').trigger('click');
-                $(this).remove();
+                //$(this).remove();
              return false;
 			});
 	   
             $('#activate-step-3').on('click', function(e) {
                 $('ul.setup-panel li:eq(2)').removeClass('disabled');
                 $('ul.setup-panel li a[href="#step-3"]').trigger('click');
-                $(this).remove();
+                //$(this).remove();
             	return false;
 			});
 
             $('#activate-step-4').on('click', function(e) {
                 $('ul.setup-panel li:eq(3)').removeClass('disabled');
                 $('ul.setup-panel li a[href="#step-4"]').trigger('click');
-                $(this).remove();
+                //$(this).hide();
                	return false;
 			});
-            $('#wheelchairassessment').on('submit',function(){
+            
+	       $('#go-back-step-1').on('click', function(e) {
+                $('ul.setup-panel li:eq(1)').removeClass('disabled');
+                $('ul.setup-panel li a[href="#step-1"]').trigger('click');
+                $('#activate-step-2').show();
+               	return false;
+			});
+           $('#go-back-step-2').on('click', function(e) {
+                $('ul.setup-panel li:eq(2)').removeClass('disabled');
+                $('ul.setup-panel li a[href="#step-2"]').trigger('click');
+                $('#activate-step-3').show();
+               	return false;
+			});
+           $('#go-back-step-3').on('click', function(e) {
+                $('ul.setup-panel li:eq(2)').removeClass('disabled');
+                $('ul.setup-panel li a[href="#step-3"]').trigger('click');
+                $('#activate-step-4').show();
+               	return false;
+			});
+           
+	       $('#wheelchairassessment').on('submit',function(){
                 $('.load_hidden-spinner').css('display', 'inline-block');
                 var postData = $(this).serializeArray();
                 var formURL = $(this).attr("action");
@@ -72,6 +92,7 @@
 						dataType: "JSON",
 						success:function(response){
                             $('.load_hidden-spinner').css('display', 'none');
+							
 							if(response.success === true ){
 
 								$('.inform_assessor').html(response.message);
@@ -84,6 +105,7 @@
 								
 
 							}else{
+								
 								$('.inform_assessor').html(response.message);
 							}
 

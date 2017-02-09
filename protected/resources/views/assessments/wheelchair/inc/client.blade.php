@@ -69,7 +69,7 @@
                         </div>
                             <!-- <a id="add_row" class="btn btn-success pull-left">Add Row</a><a id='delete_row' class="btn btn-danger pull-right">Delete Row</a> -->
                    <div class="form-group">
-                    <button id="activate-step-2" class="btn btn-primary btn-md">Continue to Assessment Interview</button>
+                    <button id="activate-step-2" class="btn btn-info btn-md">Continue to Assessment Interview</button>
                   </div>
               
               </div>

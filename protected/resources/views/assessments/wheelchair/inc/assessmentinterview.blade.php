@@ -366,11 +366,12 @@
                 <div class="form-group" id="inform_assessor"> 
                  
                </div>
-				<div class="form-group text-center"> 
-                 <button id="activate-step-3" class="btn btn-primary btn-md legitRipple">Continue to Physical Assessment</button>
-               </div>
-            
-            </div>
+			   <div class="form-group text-center">
+				  			 <button id="go-back-step-1" class="btn btn-default btn-md legitRipple">Back</button>
+					         <button id="activate-step-3" class="btn btn-info btn-md legitRipple">Continue to Physical Assessment</button>
+				</div>
+			   
+			</div>
         </div>
     </div>    
 

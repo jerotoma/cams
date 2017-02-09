@@ -56,6 +56,8 @@ Route::get('download/referrals/form/{id}','ReferralController@downloadPDF');
 
 //inclusion Assessments
 Route::resource('assessments/functional','FunctionalAssessmentController');
+
+
 //vulnerability Assessments
 Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
 Route::get('clients-va','VulnerabilityAssessmentController@showClients');
@@ -113,7 +115,8 @@ Route::get('inventory/disbursement/import/errors','ItemsDisbursementController@s
 //WheelChairAssessment
 
 Route::get('getwaclientsjson','WheelChairAssessmentController@getJSonClientData');
-Route::resource('assessments/wheelchair','WheelChairAssessmentController@index');
+Route::get('getwaclientsjson-wc-list-all','WheelChairAssessmentController@getJSonWCListAllClientData');
+Route::resource('assessments/wheelchair','WheelChairAssessmentController');
 Route::post('assessments/wheelchair/wheelchairassessment','WheelChairAssessmentController@postData');
 Route::get('wheelchair/view/{id}','WheelChairAssessmentController@show');
 Route::post('assessments/wheelchair/{id}/edit','WheelChairAssessmentController@update');
