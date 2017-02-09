@@ -806,7 +806,7 @@
                                                     <td><label><input type="radio" name ="r_knee" <?php if($wca->isCheckedRadio($hsimulation->r_knee, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
                                                     <td><label><input type="radio" name ="r_knee" <?php if($wca->isCheckedRadio($hsimulation->r_knee, 'No')){echo 'checked';}?> value="No"></label></td>
                                                     <td class="text-center">
-                                                         <input type="text" name="r_knee_7" class="form-control" id="pwd">
+                                                         <input type="text" name="r_knee_7" value="{{$wca->getTextInputValue($hsimulation->r_knee_7)}}" class="form-control" id="pwd">
                                                     </td>
                                                </tr>
                                               <tr >
@@ -814,7 +814,7 @@
                                                     <td><label><input type="radio" name ="l_ankle" <?php if($wca->isCheckedRadio($hsimulation->l_ankle, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
                                                     <td><label><input type="radio" name ="l_ankle" <?php if($wca->isCheckedRadio($hsimulation->l_ankle, 'No')){echo 'checked';}?> value="No"></label></td>
                                                     <td class="text-center">
-                                                         <input type="text" name="l_ankle_8" class="form-control" id="pwd">
+                                                         <input type="text" name="l_ankle_8" value="{{$wca->getTextInputValue($hsimulation->l_ankle_8)}}" class="form-control" id="pwd">
                                                     </td>
                                                </tr>
                                                
@@ -823,7 +823,7 @@
                                                     <td><label><input type="radio" name ="r_ankle" <?php if($wca->isCheckedRadio($hsimulation->r_ankle, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
                                                     <td><label><input type="radio" name ="r_ankle" <?php if($wca->isCheckedRadio($hsimulation->r_ankle, 'No')){echo 'checked';}?> value="No"></label></td>
                                                     <td class="text-center">
-                                                         <input type="text" name="r_ankle_9" class="form-control" id="pwd">
+                                                         <input type="text" name="r_ankle_9" class="form-control" value="{{$wca->getTextInputValue($hsimulation->r_ankle_9)}}" id="pwd">
                                                     </td>
                                                </tr>
                                               
