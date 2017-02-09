@@ -76,11 +76,10 @@ class HomeAssessmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
         //
-        $client=Client::findorfail($id);
-        return view('assessments.needs.create',compact('client'));
+        return view('assessments.needs.create');
     }
 
     /**

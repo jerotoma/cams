@@ -4,7 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\PaediatricAssessment;
+use App\PaediatricAssessmentHistory;
+use App\PaediatricChildGrowth;
+use App\PaediatricChildHistory;
+use App\PaediatricChildInspection;
+use App\PaediatricChildInspectionResult;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class PaediatricAssessmentController extends Controller
 {
@@ -120,6 +128,115 @@ class PaediatricAssessmentController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $validator = Validator::make($request->all(), [
+                'clint_id' => 'required',
+                'full_name' => 'required',
+                'rational_number' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $assessment =new PaediatricAssessment;
+                $assessment->client_id=$request->client_id;
+                $assessment->full_name=$request->full_name;
+                $assessment->rational_number=$request->rational_number;
+                $assessment->unique_number=$request->unique_number;
+                $assessment->home_name=$request->home_name;
+                $assessment->sex=$request->sex;
+                $assessment->birth_date=$request->birth_date;
+                $assessment->father_name=$request->father_name;
+                $assessment->father_job=$request->father_job;
+                $assessment->father_phone=$request->father_phone;
+                $assessment->father_age=$request->father_age;
+                $assessment->mother_name=$request->mother_name;
+                $assessment->mother_job=$request->mother_job;
+                $assessment->mother_phone=$request->mother_phone;
+                $assessment->mother_age=$request->mother_age;
+                $assessment->permanent_address=$request->permanent_address;
+                $assessment->school_status=$request->school_status;
+                $assessment->school_reasons=$request->school_reasons;
+                $assessment->nationality=$request->nationality;
+                $assessment->domicile=$request->domicile;
+                $assessment->communication=$request->communication;
+                $assessment->total_children=$request->total_children;
+                $assessment->total_children_alive=$request->total_children_alive;
+                $assessment->total_children_dead=$request->total_children_dead;
+                $assessment->created_by=Auth::user()->id;
+                $assessment->save();
+
+                $history=new PaediatricAssessmentHistory;
+                $history->assessment_id=$assessment->id;
+                $history->place_born=$request->place_born;
+                $history->mother_pregnant_complications=$request->mother_pregnant_complications;
+                $history->mother_birth_complications=$request->mother_birth_complications;
+                $history->child_birth_condition=$request->child_birth_condition;
+                $history->mother_labor_days=$request->mother_labor_days;
+                $history->was_child_cry=$request->was_child_cry;
+                $history->save();
+
+                $childHistory=new PaediatricChildHistory;
+                $childHistory->assessment_id=$assessment->id;
+                $childHistory->child_complications=$request->child_complications;
+                $childHistory->child_complication_1=$request->child_complication_1;
+                $childHistory->child_complication_2=$request->child_complication_2;
+                $childHistory->save();
+
+                $childGrowth=new PaediatricChildGrowth;
+                $childGrowth->assessment_id=$assessment->id;
+                $childGrowth->sitting=$request->sitting;
+                $childGrowth->crowing=$request->crowing;
+                $childGrowth->standing=$request->standing;
+                $childGrowth->walking=$request->walking;
+                $childGrowth->talking=$request->talking;
+                $childGrowth->child_self_expression=$request->child_self_expression;
+                $childGrowth->save();
+
+                $count=0;
+                foreach ($request->area as $area) {
+                    if($area != "" && $request->investigation_type[$count] !="") {
+                        $childInspection = new PaediatricChildInspection;
+                        $childInspection->assessment_id = $assessment->id;
+                        $childInspection->area = $area;
+                        $childInspection->investigation_type = $request->investigation_type[$count];
+                        $childInspection->results = $request->results[$count];
+                        $childInspection->save();
+                    }
+                }
+
+                $childInspectionResults=new PaediatricChildInspectionResult;
+                $childInspectionResults->assessment_id=$assessment->id;
+                $childInspectionResults->child_ability=$request->child_ability;
+                $childInspectionResults->child_special_need=$request->child_special_need;
+                $childInspectionResults->long_term_plan=$request->long_term_plan;
+                $childInspectionResults->short_term_plan=$request->short_term_plan;
+                $childInspectionResults->consultation=$request->consultation;
+                $childInspectionResults->provider_name=$request->provider_name;
+                $childInspectionResults->provider_designation=$request->provider_designation;
+                $childInspectionResults->provider_date=$request->provider_date;
+                $childInspectionResults->source_name=$request->source_name;
+                $childInspectionResults->source_designation=$request->source_designation;
+                $childInspectionResults->source_date=$request->source_date;
+                $childInspectionResults->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Record saved</span><h3>"
+                ], 200);
+
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+
     }
 
     /**

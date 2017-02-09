@@ -16,8 +16,19 @@
 <script type="text/javascript" src="{{asset("assets/js/pages/wizard_form.js")}}"></script>
 <script>
     $(function() {
+
+
+        // Table setup
+        // ------------------------------
+
+        // Setting datatable defaults
         $.extend( $.fn.dataTable.defaults, {
             autoWidth: false,
+            columnDefs: [{
+                orderable: false,
+                width: '100px',
+                targets: [ 5 ]
+            }],
             dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
             language: {
                 search: '<span>Filter:</span> _INPUT_',
@@ -33,13 +44,63 @@
         });
 
 
-        // Basic datatable
-        $('.datatable-select-clients').DataTable({
+        // Single row selection
+        var singleSelect = $('.datatable-selection-single').DataTable();
+        $('.datatable-selection-single tbody').on('click', 'tr', function() {
+            if ($(this).hasClass('success')) {
+                $(this).removeClass('success');
+            }
+            else {
+                singleSelect.$('tr.success').removeClass('success');
+                $(this).addClass('success');
+            }
+        });
+
+
+        // Multiple rows selection
+        $('.datatable-selection-multiple').DataTable();
+        $('.datatable-selection-multiple tbody').on('click', 'tr', function() {
+            $(this).toggleClass('success');
+        });
+
+
+        // Individual column searching with text inputs
+        $('.datatable-column-search-inputs tfoot td').not(':last-child').each(function () {
+            var title = $('.datatable-column-search-inputs thead th').eq($(this).index()).text();
+            $(this).html('<input type="text" class="form-control input-sm" placeholder="Search '+title+'" />');
+        });
+
+        var table = $('.datatable-column-search-inputs').DataTable({
             "scrollX": false,
             ajax: '{{url('getwaclientsjson')}}', //this url load JSON Client details to reduce loading time
             "fnDrawCallback": function (oSettings) {
             }
         });
+        table.columns().every( function () {
+            var that = this;
+            $('input', this.footer()).on('keyup change', function () {
+                that.search(this.value).draw();
+            });
+        });
+
+
+        // External table additions
+        // ------------------------------
+
+        // Add placeholder to the datatable filter option
+        $('.dataTables_filter input[type=search]').attr('placeholder','Type to filter...');
+
+
+        // Enable Select2 select for the length option
+        $('.dataTables_length select').select2({
+            minimumResultsForSearch: Infinity,
+            width: 'auto'
+        });
+
+
+        // Enable Select2 select for individual column searching
+        $('.filter-select').select2();
+
     });
 
 </script>
@@ -78,7 +139,7 @@
             <div class="form-group">
                 <div class="row clearfix">
                     <div class="col-md-12 column">
-                        <table class="table datatable-select-clients table-bordered table-hover" id="tab_logic">
+                        <table class="table datatable-column-search-inputs table-bordered table-hover" id="tab_logic">
                             <thead>
                             <tr >
                                 <th class="text-center">
@@ -106,6 +167,31 @@
                             </thead>
                             <tbody>
                             </tbody>
+                            <tfoot>
+                            <tr >
+                                <td class="text-center">
+
+                                </td>
+                                <td class="text-center">
+                                    Client Number
+                                </td>
+                                <td class="text-center">
+                                    Full Name
+                                </td>
+                                <td class="text-center">
+                                    Gender
+                                </td>
+                                <td class="text-center">
+                                    Nationality
+                                </td>
+                                <td class="text-center">
+                                    Date of Arrival
+                                </td>
+                                <td class="text-center">
+
+                                </td>
+                            </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -458,7 +544,10 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Tarehe </label>
-                        <input type="text" name="consultation" id="consultation" class="form-control">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                            <input type="text" class="form-control pickadate"  value="{{old('provider_date')}}" name="provider_date" id="provider_date">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -476,7 +565,10 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Tarehe </label>
-                        <input type="text" name="source_date" id="source_date" class="form-control">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                            <input type="text" class="form-control pickadate"  value="{{old('source_date')}}" name="source_date" id="source_date">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -488,6 +580,11 @@
         </h6>
 
     </fieldset>
+        <div class="row">
+            <div class="col-md-8 col-sm-8 pull-left" id="output">
+
+            </div>
+        </div>
         <div class="form-wizard-actions">
 
             <button class="btn btn-default" id="ajax-back" type="reset">Back</button>

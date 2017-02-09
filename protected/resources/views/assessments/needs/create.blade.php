@@ -15,6 +15,96 @@
 
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
+    $(function() {
+
+
+        // Table setup
+        // ------------------------------
+
+        // Setting datatable defaults
+        $.extend( $.fn.dataTable.defaults, {
+            autoWidth: false,
+            columnDefs: [{
+                orderable: false,
+                width: '100px',
+                targets: [ 5 ]
+            }],
+            dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
+            language: {
+                search: '<span>Filter:</span> _INPUT_',
+                lengthMenu: '<span>Show:</span> _MENU_',
+                paginate: { 'first': 'First', 'last': 'Last', 'next': '&rarr;', 'previous': '&larr;' }
+            },
+            drawCallback: function () {
+                $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').addClass('dropup');
+            },
+            preDrawCallback: function() {
+                $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').removeClass('dropup');
+            }
+        });
+
+
+        // Single row selection
+        var singleSelect = $('.datatable-selection-single').DataTable();
+        $('.datatable-selection-single tbody').on('click', 'tr', function() {
+            if ($(this).hasClass('success')) {
+                $(this).removeClass('success');
+            }
+            else {
+                singleSelect.$('tr.success').removeClass('success');
+                $(this).addClass('success');
+            }
+        });
+
+
+        // Multiple rows selection
+        $('.datatable-selection-multiple').DataTable();
+        $('.datatable-selection-multiple tbody').on('click', 'tr', function() {
+            $(this).toggleClass('success');
+        });
+
+
+        // Individual column searching with text inputs
+        $('.datatable-column-search-inputs tfoot td').not(':last-child').each(function () {
+            var title = $('.datatable-column-search-inputs thead th').eq($(this).index()).text();
+            $(this).html('<input type="text" class="form-control input-sm" placeholder="Search '+title+'" />');
+        });
+
+        var table = $('.datatable-column-search-inputs').DataTable({
+            "scrollX": false,
+            ajax: '{{url('getwaclientsjson')}}', //this url load JSON Client details to reduce loading time
+            "fnDrawCallback": function (oSettings) {
+            }
+        });
+        table.columns().every( function () {
+            var that = this;
+            $('input', this.footer()).on('keyup change', function () {
+                that.search(this.value).draw();
+            });
+        });
+
+
+        // External table additions
+        // ------------------------------
+
+        // Add placeholder to the datatable filter option
+        $('.dataTables_filter input[type=search]').attr('placeholder','Type to filter...');
+
+
+        // Enable Select2 select for the length option
+        $('.dataTables_length select').select2({
+            minimumResultsForSearch: Infinity,
+            width: 'auto'
+        });
+
+
+        // Enable Select2 select for individual column searching
+        $('.filter-select').select2();
+
+    });
+
+</script>
+<script>
     $('.pickadate').pickadate();
     tinymce.init({ selector:'textarea' });
 </script>
@@ -26,6 +116,69 @@
 
 
             <div class="panel-body">
+                <fieldset class="scheduler-border">
+                    <legend class="text-bold">Select client to assess</legend>
+                    <div class="form-group">
+                        <div class="row clearfix">
+                            <div class="col-md-12 column">
+                                <table class="table datatable-column-search-inputs table-bordered table-hover" id="tab_logic">
+                                    <thead>
+                                    <tr >
+                                        <th class="text-center">
+                                            #
+                                        </th>
+                                        <th class="text-center">
+                                            Client Number
+                                        </th>
+                                        <th class="text-center">
+                                            Full Name
+                                        </th>
+                                        <th class="text-center">
+                                            Gender
+                                        </th>
+                                        <th class="text-center">
+                                            Nationality
+                                        </th>
+                                        <th class="text-center">
+                                            Date of Arrival
+                                        </th>
+                                        <th class="text-center">
+                                            Check client
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr >
+                                        <td class="text-center">
+
+                                        </td>
+                                        <td class="text-center">
+                                            Client Number
+                                        </td>
+                                        <td class="text-center">
+                                            Full Name
+                                        </td>
+                                        <td class="text-center">
+                                            Gender
+                                        </td>
+                                        <td class="text-center">
+                                            Nationality
+                                        </td>
+                                        <td class="text-center">
+                                            Date of Arrival
+                                        </td>
+                                        <td class="text-center">
+
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
                 <fieldset class="scheduler-border">
                     <legend class="text-bold">PSN Needs/Home assessment Details</legend>
                     <div class="form-group ">
@@ -47,7 +200,7 @@
                             <div class="form-group ">
                                 <label class="control-label">Ration card number (if any)</label>
                                 <input type="text" class="form-control" placeholder="" name="case_code" id="case_code"
-                                       value="{{$client->ration_card_number}}" readonly>
+                                       value="" readonly>
                             </div>
                         </div>
                     </div>
@@ -58,14 +211,11 @@
                         <div class="form-group ">
                             <label class="control-label">Name of PSN</label>
                             <input type="text" class="form-control" placeholder="Name of PSN" name="psn_name" id="psn_name"
-                                   value="{{$client->full_name}}" readonly>
+                                   value="" readonly>
                         </div>
                      <div class="form-group ">
                         <label class="control-label">Nationality</label>
                         <select class="select" name="nationality" id="nationality" data-placeholder="Choose an option..." readonly="">
-                            @if(is_object($client->nationality) && $client->nationality != null )
-                                <option value="{{$client->nationality->id}}">{{$client->nationality->country_name}}</option>
-                                @endif
                             <option></option>
                             @foreach(\App\Country::all() as $item)
                                 <option value="{{$item->id}}">{{$item->country_name}}</option>
@@ -77,14 +227,14 @@
                             <div class="form-group ">
                                 <label class="control-label">Name of caregiver/Parent/household head(if different):</label>
                                 <input type="text" class="form-control" placeholder="" name="care_giver" id="care_giver"
-                                       value="{{$client->care_giver}}" readonly>
+                                       value="" readonly>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Address</label>
                                 <input type="text" class="form-control" placeholder="" name="address" id="address"
-                                       value="{{$client->present_address}}" readonly>
+                                       value="" readonly>
                             </div>
                         </div>
                     </div>
@@ -93,9 +243,7 @@
                             <div class="form-group ">
                                 <label class="control-label">Camp Name</label>
                                 <select class="select" name="camp_id" id="camp_id" data-placeholder="Choose an option..." readonly="">
-                                    @if(is_object($client->camp) && $client->camp != null)
-                                        <option value="{{$client->camp->id}}">{{$camp->camp->camp_name}}</option>
-                                    @endif
+
                                     <option ></option>
                                     @foreach(\App\Camp::all() as $item)
                                         <option value="{{$item->id}}">{{$item->camp_name}}</option>
@@ -107,7 +255,7 @@
                             <div class="form-group ">
                                 <label class="control-label">District</label>
                                 <input type="text" class="form-control" placeholder="" name="district" id="district"
-                                       value="{{$client->district}}" readonly>
+                                       value="" readonly>
                             </div>
                         </div>
                     </div>
@@ -179,7 +327,6 @@
                     </div>
                     <div class="col-md-4 col-sm-4 pull-right text-right">
                         <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                        <input type="hidden" name="client_id" value="{{$client->id}}">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
                     </div>
 
