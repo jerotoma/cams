@@ -170,6 +170,8 @@ class WheelChairAssessmentController extends Controller
                     $assessmentInterview->assess_interview_physical_issues_qn_2            = serialize($request->assess_interview_physical_issues_qn_2);
                     $assessmentInterview->assess_interview_physical_issues_qn_3            = serialize($request->assess_interview_physical_issues_qn_3);
                     $assessmentInterview->assess_interview_physical_issues_qn_3_describe   = $request->assess_interview_physical_issues_qn_3_describe;
+                    $assessmentInterview->assess_interview_physical_issues_qn_4            = serialize($request->assess_interview_physical_issues_qn_4);
+                    $assessmentInterview->assess_interview_physical_issues_qn_4_describe   = $request->assess_interview_physical_issues_qn_4_describe;
                     $assessmentInterview->assess_interview_physical_issues_qn_5            = serialize($request->assess_interview_physical_issues_qn_5);
                     $assessmentInterview->assess_interview_physical_issues_qn_6            = $request->assess_interview_physical_issues_qn_6;
                     $assessmentInterview->assess_interview_lifestyle_env_qn_1_describe     = $request->assess_interview_lifestyle_env_qn_1_describe;
@@ -337,7 +339,9 @@ class WheelChairAssessmentController extends Controller
                         $assessmentInterview->assess_interview_physical_issues_qn_2            = serialize($request->assess_interview_physical_issues_qn_2);
                         $assessmentInterview->assess_interview_physical_issues_qn_3            = serialize($request->assess_interview_physical_issues_qn_3);
                         $assessmentInterview->assess_interview_physical_issues_qn_3_describe   = $request->assess_interview_physical_issues_qn_3_describe;
-                        $assessmentInterview->assess_interview_physical_issues_qn_5            = serialize($request->assess_interview_physical_issues_qn_5);
+                        $assessmentInterview->assess_interview_physical_issues_qn_4            = serialize($request->assess_interview_physical_issues_qn_4);
+                        $assessmentInterview->assess_interview_physical_issues_qn_4_describe   = $request->assess_interview_physical_issues_qn_4_describe;
+                    	$assessmentInterview->assess_interview_physical_issues_qn_5            = serialize($request->assess_interview_physical_issues_qn_5);
                         $assessmentInterview->assess_interview_physical_issues_qn_6            = $request->assess_interview_physical_issues_qn_6;
                         $assessmentInterview->assess_interview_lifestyle_env_qn_1_describe     = $request->assess_interview_lifestyle_env_qn_1_describe;
                         $assessmentInterview->assess_interview_lifestyle_env_qn_1              = $request->assess_interview_lifestyle_env_qn_1;

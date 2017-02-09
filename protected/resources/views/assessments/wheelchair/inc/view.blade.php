@@ -3,8 +3,25 @@
     .form-control{
         width:100% !important;
     }
+	.load_hidden-spinner{
+            display: none;
+            width:40px;
+            height:40px;
+            border: 2px solid #BB0F18;
+            border-top-color:#68bc45;
+            border-radius: 100%;
+            position:absolute;
+            left:400px;
+            margin:auto;
+            z-index: 9999;
+            animation: round 2s linear infinite;
+     }
+	@keyframes round{
+            from{transform: rotate(0deg)}
+            to{transform: rotate(360deg)}  
+     }
 </style>
- <form id="wheelchairassessment-edit" action="{{url('assessments/wheelchair/edit')}}/{{$wc_assessment->id}}" method="POST" enctype="multipart/form-data">
+ <form id="wheelchairassessment-edit" action="{{url('assessments/wheelchair')}}/{{$wc_assessment->id}}/edit" method="POST" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="row">
 	<div class="col-xs-12">
@@ -12,14 +29,14 @@
 			 <div class="row">
 				 <div class="col-md-6">
 					 <div class="form-group form-inline">
-                         <label>Assessor’s name:  </label> 
-							<input class="form-control" type="text" name="assessor_name" value="{{$assessor->full_name}}">  
+                         <label>Assessor’s name: &nbsp;&nbsp;&nbsp; {{$assessor->full_name}}</label> 
+						<!--	<input class="form-control" type="text" name="assessor_name" value="{{$assessor->full_name}}">  -->
 			           </div>
 			     </div>
 			     <div class="col-md-6">
 					 <div class="form-group form-inline">
-                          <label>Date of assessment:  </label> 
-                           <input class="form-control" type="text" name="assessor_name" value="{{$wc_assessment->created_at}}">  
+                          <label>Date of assessment:  &nbsp;&nbsp;&nbsp; {{$wc_assessment->created_at}} </label> 
+                          <!-- <input class="form-control" type="text" name="assessor_name" value="{{$wc_assessment->created_at}}">  -->
 					</div>
 				</div>
 			 </div>
@@ -513,7 +530,7 @@
                                                   <div class="col-md-6 col-md-pull-0">
                                                         <div class="checkbox">
                                                           <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_2" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_2, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_2" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_2, 'No')){echo 'checked';}?>value="No">No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_2" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_2, 'No')){echo 'checked';}?>  value="No">No</label>
                                                         </div>
                                                   </div>
                                             </div> 
@@ -562,7 +579,7 @@
                                     <div class="col-md-3 col-md-pull-0">
                                         <div class="checkbox">
                                           <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_6" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_6, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
-                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_6" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_6, 'Yes')){echo 'checked';}?> value="No">No</label>
+                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_6" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_6, 'No')){echo 'checked';}?> value="No">No</label>
                                         </div>
                                     </div>
                                 </div> 
@@ -605,7 +622,7 @@
                                             </div>
                                            <div class="col-md-3 col-md-pull-0">
                                                     <div class="radio">
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_method_of_pushing_qn_1, 'Pushed by helper')){echo 'checked';}?>  value="Pushed by helpe">Pushed by helper</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_method_of_pushing_qn_1, 'Pushed by helper')){echo 'checked';}?>  value="Pushed by helper">Pushed by helper</label>
                                                     </div>
                                             </div>
                                         </div>
@@ -663,7 +680,7 @@
                                            <div class="col-md-4 col-md-pull-2">
                                                 <div class="radio">
                                                       <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_pelvis_hip_posture_screen_qn_1, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
-                                                      <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_pelvis_hip_posture_screen_qn_1, 'No')){echo 'checked';}?>value="No">No</label>
+                                                      <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_pelvis_hip_posture_screen_qn_1, 'No')){echo 'checked';}?>  value="No">No</label>
                                                 </div> 
                                            </div>
                                         </div>
@@ -992,7 +1009,7 @@
                         <div class="form-group inform_assessor">
                         </div>
                         <div class="form-group">
-                             <button  type="submit" id="" class="btn btn-primary btn-md">Save Assessment</button>
+							<button  type="submit" id="" class="btn btn-primary btn-md">Save Assessment Changes</button> <span class="load_hidden-spinner"></span>
                         </div>
                </div>
            </div>

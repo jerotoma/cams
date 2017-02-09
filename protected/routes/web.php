@@ -116,6 +116,7 @@ Route::get('getwaclientsjson','WheelChairAssessmentController@getJSonClientData'
 Route::resource('assessments/wheelchair','WheelChairAssessmentController@index');
 Route::post('assessments/wheelchair/wheelchairassessment','WheelChairAssessmentController@postData');
 Route::get('wheelchair/view/{id}','WheelChairAssessmentController@show');
+Route::post('assessments/wheelchair/{id}/edit','WheelChairAssessmentController@update');
 
  
 //ItemsReceivingController

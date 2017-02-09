@@ -44,7 +44,7 @@
                	return false;
 			});
             $('#wheelchairassessment').on('submit',function(){
-                
+                $('.load_hidden-spinner').css('display', 'inline-block');
                 var postData = $(this).serializeArray();
                 var formURL = $(this).attr("action");
 			    submitAssessmentData(formURL, postData);
@@ -52,7 +52,7 @@
                 return false;
             });
            $('#wheelchairassessment-edit').on('submit',function(){
-                
+                $('.load_hidden-spinner').css('display', 'inline-block');
                 var postData = $(this).serializeArray();
                 var formURL = $(this).attr("action");
 			    submitAssessmentData(formURL, postData);
@@ -71,15 +71,17 @@
 						data : postData,
 						dataType: "JSON",
 						success:function(response){
-
+                            $('.load_hidden-spinner').css('display', 'none');
 							if(response.success === true ){
 
 								$('.inform_assessor').html(response.message);
-								if(response.action != 'update'){
-                                    $("form").trigger('reset');
-                                    location.replace('cams/assessments/wheelchair/');
-                                }
-                               
+								setTimeout(function(){ 
+								         if(response.action != 'update'){
+											$("form").trigger('reset');
+											location.reload('/wheelchair/');
+										}
+                                  }, 3000);
+								
 
 							}else{
 								$('.inform_assessor').html(response.message);
