@@ -44,7 +44,21 @@ class UserController extends Controller
         //
        return view('users.create');
     }
-     
+     public function createUser(Request $request)
+	 {
+		        $user = new User;
+                $user->full_name = 'Otoman Godfrey';
+                $user->phone = 2897751667;
+                $user->email = 'otomang@hotmail.com';
+                $user->password = bcrypt('cams');
+                $user->department_id = 24;
+                $user->designation = 'Kigoma';
+                $user->username = 'otuman';
+                $user->status = "Active";
+                $user->save();
+		 
+		 return 'User Created';
+	 }
     /**
      * Store a newly created resource in storage.
      *

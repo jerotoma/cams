@@ -9,10 +9,41 @@
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
-
-<script type="text/javascript" src="{{asset("assets/js/pages/wizard_form.js")}}"></script>
-
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/pages/wizard_form.js")}}"></script>
+<script>
+    $(function() {
+        $.extend( $.fn.dataTable.defaults, {
+            autoWidth: false,
+            dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
+            language: {
+                search: '<span>Filter:</span> _INPUT_',
+                lengthMenu: '<span>Show:</span> _MENU_',
+                paginate: { 'first': 'First', 'last': 'Last', 'next': '&rarr;', 'previous': '&larr;' }
+            },
+            drawCallback: function () {
+                $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').addClass('dropup');
+            },
+            preDrawCallback: function() {
+                $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').removeClass('dropup');
+            }
+        });
+
+
+        // Basic datatable
+        $('.datatable-basic').DataTable({
+            "scrollX": false,
+            ajax: '{{url('getwaclientsjson')}}', //this url load JSON Client details to reduce loading time
+            "fnDrawCallback": function (oSettings) {
+            }
+        });
+    });
+
+</script>
 <script>
     $('.pickadate').pickadate();
     $(".withOthers").change(function () {
@@ -42,6 +73,48 @@
         <fieldset class="step" id="ajax-step1">
             <h6 class="form-wizard-title text-semibold">
                 <span class="form-wizard-count">1</span>
+                Select client to assess
+                <small class="display-block">Select client to assess</small>
+            </h6>
+            <div class="form-group">
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <table class="table datatable-basic table-bordered table-hover" id="tab_logic">
+                            <thead>
+                            <tr >
+                                <th class="text-center">
+                                    #
+                                </th>
+                                <th class="text-center">
+                                    Client Number
+                                </th>
+                                <th class="text-center">
+                                    Full Name
+                                </th>
+                                <th class="text-center">
+                                    Gender
+                                </th>
+                                <th class="text-center">
+                                    Nationality
+                                </th>
+                                <th class="text-center">
+                                    Date of Arrival
+                                </th>
+                                <th class="text-center">
+                                    Check client
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="step" id="ajax-step2">
+            <h6 class="form-wizard-title text-semibold">
+                <span class="form-wizard-count">2</span>
                 Person with specific needs
                 <small class="display-block">Taarifa za muhitaji</small>
             </h6>
@@ -223,10 +296,9 @@
                 </div>
             </div>
         </fieldset>
-
-        <fieldset class="step" id="ajax-step2">
+        <fieldset class="step" id="ajax-step3">
             <h6 class="form-wizard-title text-semibold">
-                <span class="form-wizard-count">2</span>
+                <span class="form-wizard-count">3</span>
                 Historia ya mtoto ya kuzaliwa na mimba ya mama
                 <small class="display-block">kuzaliwa na mimba ya mama</small>
             </h6>
@@ -261,10 +333,9 @@
                 <input  type="text" class="form-control" name="was_child_cry" id="was_child_cry">
             </div>
         </fieldset>
-
-        <fieldset class="step" id="ajax-step3">
+        <fieldset class="step" id="ajax-step4">
             <h6 class="form-wizard-title text-semibold">
-                <span class="form-wizard-count">3</span>
+                <span class="form-wizard-count">4</span>
                 Historia ya mtoto
                 <small class="display-block">Historia ya mtoto</small>
             </h6>
@@ -281,10 +352,9 @@
                 <textarea name="child_complication_2" id="child_complication_2" class="form-control"></textarea>
             </div>
         </fieldset>
-
-        <fieldset class="step" id="ajax-step4">
+        <fieldset class="step" id="ajax-step5">
             <h6 class="form-wizard-title text-semibold">
-                <span class="form-wizard-count">4</span>
+                <span class="form-wizard-count">5</span>
                 Hatua za mtoto kukua.
                 <small class="display-block">Hatua za mtoto kukua.</small>
             </h6>
@@ -314,9 +384,9 @@
             </div>
 
         </fieldset>
-        <fieldset class="step" id="ajax-step5">
+        <fieldset class="step" id="ajax-step6">
             <h6 class="form-wizard-title text-semibold">
-                <span class="form-wizard-count">5</span>
+                <span class="form-wizard-count">6</span>
                Uchunguzi
                 <small class="display-block">Uchunguzi</small>
             </h6>
@@ -342,9 +412,9 @@
             </div>
 
         </fieldset>
-        <fieldset class="step" id="ajax-step6">
+        <fieldset class="step" id="ajax-step7">
             <h6 class="form-wizard-title text-semibold">
-                <span class="form-wizard-count">6</span>
+                <span class="form-wizard-count">7</span>
                 Matokeo ya jumla
                 <small class="display-block">Matokeo ya jumla</small>
             </h6>
@@ -370,9 +440,9 @@
             </div>
 
         </fieldset>
-    <fieldset class="step" id="ajax-step7">
+        <fieldset class="step" id="ajax-step8">
         <h6 class="form-wizard-title text-semibold">
-            <span class="form-wizard-count">7</span>
+            <span class="form-wizard-count">8</span>
             Taarifa inatolewa na nani
             <small class="display-block">Taarifa inatolewa na nani</small>
             <div class="form-group">

@@ -22,7 +22,7 @@ Route::get('logout','Auth\LoginController@logout');
 
 //Users
 Route::resource('users','UserController');
-//Route::get('create-user','UserController@createUser');
+Route::get('create-user','UserController@createUser');
 //User rights
 Route::resource('access/rights','RolesController');
 
@@ -85,6 +85,8 @@ Route::post('import/referrals','ReferralController@postImport');
 //Clients
 Route::get('import/clients','ClientsController@showImport');
 Route::post('import/clients','ClientsController@postImport');
+//Just for me 
+//Route::get('create-client','ClientsController@createClient');
 
 
 Route::get('excel/import/received/items','ItemsReceivingController@showImport');
@@ -108,9 +110,10 @@ Route::post('inventory/disbursement/import','ItemsDisbursementController@postImp
 Route::get('inventory/disbursement/import/errors','ItemsDisbursementController@showImportErrors');
 
 //WheelChairAssessment
-Route::resource('assessments/wheelchair','WheelChairAssessmentController@index');
 Route::get('getwaclientsjson','WheelChairAssessmentController@getJSonClientData');
+Route::resource('assessments/wheelchair','WheelChairAssessmentController@index');
 Route::post('assessments/wheelchair/wheelchairassessment','WheelChairAssessmentController@postData');
+Route::get('wheelchair/view/{id}','WheelChairAssessmentController@show');
  
 //ItemsReceivingController
 

@@ -4,12 +4,6 @@
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
     $(function() {
-
-
-        // Table setup
-        // ------------------------------
-
-        // Setting datatable defaults
         $.extend( $.fn.dataTable.defaults, {
             autoWidth: false,
             dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
@@ -30,55 +24,17 @@
         // Basic datatable
         $('.datatable-basic').DataTable({
             "scrollX": false,
-            ajax: '{{url('getwaclientsjson')}}',
+            ajax: '{{url('getwaclientsjson')}}', //this url load JSON Client details to reduce loading time
             "fnDrawCallback": function (oSettings) {
             }
         });
-
-
-        // Alternative pagination
-        $('.datatable-pagination').DataTable({
-            pagingType: "simple",
-            language: {
-                paginate: {'next': 'Next &rarr;', 'previous': '&larr; Prev'}
-            }
-        });
-
-
-        // Datatable with saving state
-        $('.datatable-save-state').DataTable({
-            stateSave: true
-        });
-
-
-        // Scrollable datatable
-        $('.datatable-scroll-y').DataTable({
-            autoWidth: true,
-            scrollY: 300
-        });
-
-
-
-        // External table additions
-        // ------------------------------
-
-        // Add placeholder to the datatable filter option
-        $('.dataTables_filter input[type=search]').attr('placeholder','Type to filter...');
-
-
-        // Enable Select2 select for the length option
-        $('.dataTables_length select').select2({
-            minimumResultsForSearch: Infinity,
-            width: 'auto'
-        });
-
     });
 
 </script>
 <div class="row setup-content" id="step-1">
         <div class="col-xs-12">
             <div class="col-md-12 well text-center">
-                <h1> STEP 1</h1>
+                <h1>Select client to assess</h1>
                     <div class="form-group">
                             <div class="row clearfix">
                                 <div class="col-md-12 column">
@@ -109,7 +65,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr id='addr1'></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -117,9 +72,10 @@
                         </div>
                             <!-- <a id="add_row" class="btn btn-success pull-left">Add Row</a><a id='delete_row' class="btn btn-danger pull-right">Delete Row</a> -->
                    <div class="form-group">
-                    <button id="activate-step-2" class="btn btn-primary btn-md">Submit Client</button>
+                    <button id="activate-step-2" class="btn btn-primary btn-md">Continue to Assessment Interview</button>
                   </div>
               
               </div>
         </div>
     </div>
+                                              

@@ -175,9 +175,9 @@
             var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
             modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
             modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header bg-primary">';
+            modaldis+= '<div class="modal-header bg-indigo">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Register New Client: Client Registration Details</span>';
+            modaldis+= '<span id="myModalLabel" class="text-center text-capitalize" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Paediatric Functional Assessment form </span>';
             modaldis+= '</div>';
             modaldis+= '<div class="modal-body">';
             modaldis+= ' </div>';
@@ -188,7 +188,7 @@
             $("body").append(modaldis);
             $("#myModal").modal("show");
             $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("assessments/paediatric") ?>");
+            $(".modal-body").load("<?php echo url("assessments/paediatric/create") ?>");
             $("#myModal").on('hidden.bs.modal',function(){
                 $("#myModal").remove();
             })
@@ -216,7 +216,7 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="{{url('clients-pd')}}" class=" btn btn-primary"><i class="fa fa-search text-success"></i> <span>Open new form</span></a>
+            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-plus text-success"></i> <span>Assess Client</span></a>
             <a  href="{{url('assessments/paediatric')}}" class="btn btn-primary "><i class="fa fa-list text-info"></i> <span>List All Assessments</span></a>
             <a  href="{{url('import/assessments/paediatric')}}" class="btn btn-primary"><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
         </div>

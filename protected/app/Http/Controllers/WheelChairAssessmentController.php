@@ -11,6 +11,7 @@ use App\PhysicalAssessment;
 use App\HandSimulation;
 use App\TakeMeasurement;
 use App\Client;
+use App\User;
 
 class WheelChairAssessmentController extends Controller
 {
@@ -33,7 +34,8 @@ class WheelChairAssessmentController extends Controller
         $this->middleware('auth');
     }
 
-    //This function load on background the list of clients to be shown on client selection
+    //This function load on background the list of clients to be shown on client selection this minimize load time for the
+    //Situation having many clients
     public function  getJSonClientData()
     {
         //
@@ -53,20 +55,6 @@ class WheelChairAssessmentController extends Controller
             if(is_object($client->nationality) && $client->nationality != null )
             {
                 $origin=$client->nationality->country_name;
-            }
-            if(strtolower($client->status) =="incomplete")
-            {
-                $status=' <a href="#" class="label label-danger">'.$client->status.'</a>';
-            }
-            else
-            {
-                $status=' <a href="#" class="label label-success">'.$client->status.'</a>';
-            }
-            $vcolor="label-danger";
-
-            if(is_object($client->vulAssessment) && count($client->vulAssessment) >0)
-            {
-                $vcolor="label-success";
             }
             $records["data"][] = array(
                 $count++,
@@ -93,8 +81,56 @@ class WheelChairAssessmentController extends Controller
      */
     public function index()
     {
-		$parts = $this->parts;
-        return view('assessments.wheelchair.index', compact('parts'));
+		 $parts          = $this->parts;
+		 $clients        = Client::all();
+         $wc_assessment  = WheelChairAssessment::all();
+		 $hasValue       = false;
+		 $tr             = '';
+		 $count          = 1;
+		
+		foreach( $wc_assessment as $key => $assessed ){
+			$assessed->client_id;
+		    $client = Client::find($assessed->client_id);
+			$assessor = User::find($assessed->assessor_id);
+		    if(!empty($client ) && !empty($assessor)):
+				 $hasValue = true;
+			            $tr .=  '<tr>
+						         <td class="text-center">'.($count + $key).'</td>
+								<td class="text-center">
+									'.$client->client_number.'
+								</td>
+								<td class="text-center">
+									'.$client->full_name.'
+								</td>
+								<td class="text-center">
+									'.$client->sex.'
+								</td>
+							   <td class="text-center">
+								   '.$client->origin.'
+								</td>
+								<td class="text-center">
+								   '.$client->date_arrival.'
+								</td>
+								<td class="text-center">
+									'.$assessor->full_name.'
+								</td>
+								<td class="text-center">
+									<label><a href="'.url("wheelchair/view").'/'.$assessed->id.'">View</a></label>
+								</td>
+							</tr>';
+
+												
+			 endif;
+		
+		}
+		if($hasValue){
+			$table_rows = $tr;
+			return view('assessments.wheelchair.index', compact('parts', 'clients', 'table_rows'));
+		}else{
+			return view('assessments.wheelchair.index', compact('parts', 'clients'));
+		}
+		
+		
     }
 
     /**
@@ -238,7 +274,16 @@ class WheelChairAssessmentController extends Controller
      */
     public function show($id)
     {
-        //
+         $parts          = $this->parts;
+		 $clients        = Client::all();
+         $wc_assessment  = WheelChairAssessment::find($id);;
+		 $assessed       = $wc_assessment;
+				
+			$assessed->client_id;
+		    $assessedClient   = Client::find($assessed->client_id);
+			$assessor = User::find($assessed->assessor_id);
+	
+		return view('assessments.wheelchair.view', compact('parts','clients','assessedClient','assessor','wc_assessment'));
     }
 
     /**

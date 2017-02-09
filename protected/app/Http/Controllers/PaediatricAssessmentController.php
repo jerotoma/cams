@@ -104,10 +104,10 @@ class PaediatricAssessmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
         //
-        return view('assessments.paediatric.create',compact('client'));
+        return view('assessments.paediatric.create');
 
     }
 
