@@ -104,7 +104,7 @@
                                   }, 3000);
 								setTimeout(function(){ 
 									 $('.remove-alert').hide();
-									 $('.remove-alert').fadeIn('slow');
+									 $('.remove-alert').fadeOut('slow');
 								  }, 5000);
 
 							}else{
@@ -125,7 +125,7 @@
 									errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
 								});
 								errorsHtml += '</ul></di>';
-								$('#inform_assessor').html(errorsHtml); 
+								$('.inform_assessor').html(errorsHtml); 
 							}
 							else
 							{
