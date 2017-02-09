@@ -5,7 +5,7 @@
                         <div class="form-group inform_assessor">
                         </div>
                         <div class="form-group">
-                             <button  type="submit" id="activate-step-4" class="btn btn-primary btn-md">Submit Assessment</button>
+                             <button  type="submit" id="activate-step-4" class="btn btn-primary btn-md">Submit Assessment</button><span class="load_hidden-spinner"></span>
                         </div>
                </div>
            </div>
