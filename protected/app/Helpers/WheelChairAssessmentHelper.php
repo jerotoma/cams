@@ -26,7 +26,23 @@
            return $found;
       }
     public function _e($args){
-     return (string)$args;        
-    }
+    
+		return (string)$args;        
+    
+	
+	}
+	
+	public function getTextInputValue($inputText){
+         if(!empty($inputText)){
+			 
+			 return $inputText;   
+		 
+		 }else{
+			 
+			$inputText = ''; 
+			 
+		   return $inputText; 
+		 }
+   }
 
   }
