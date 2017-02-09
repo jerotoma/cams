@@ -129,7 +129,7 @@
         <h6 class="panel-title">Paediatric Functional Assessment Form</h6>
 
     </div>
-    {!! Form::open(array('url'=>'assessments/paediatric','role'=>'form','class'=>'form-ajax','id'=>'formClients')) !!}
+    {!! Form::open(array('url'=>'assessments/paediatric','role'=>'form','class'=>'form-ajax','id'=>'formAssessment')) !!}
         <fieldset class="step" id="ajax-step1">
             <h6 class="form-wizard-title text-semibold">
                 <span class="form-wizard-count">1</span>
@@ -530,6 +530,7 @@
             <span class="form-wizard-count">8</span>
             Taarifa inatolewa na nani
             <small class="display-block">Taarifa inatolewa na nani</small>
+        </h6>
             <div class="form-group">
                 <label>Jina </label>
                 <input type="text" name="provider_name" id="provider_name" class="form-control">
@@ -700,21 +701,44 @@
             rules: {
                 client_id:"required",
             },
+            messages: {
+                client_id: "Please select client first",
+            },
             formOptions :{
+                dataType: 'json',
+                resetForm: true,
                 success: function(data){
-                    swal({title: "Form Submitted successful!", text: "Vulnerability form is now saved! ", type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
+                    swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                     setTimeout(function() {
                         location.replace("{{url('assessments/paediatric')}}");
                         $("#output").html("");
                     }, 2000);
                 },
-                dataType: 'json',
-                resetForm: true
+                error: function(jqXhr,status, response) {
+                    console.log(jqXhr);
+                    if( jqXhr.status === 401 ) {
+                        location.replace('{{url('login')}}');
+                    }
+                    if( jqXhr.status === 400 ) {
+                        var errors = jqXhr.responseJSON.errors;
+                        errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                        $.each(errors, function (key, value) {
+                            errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                        });
+                        errorsHtml += '</ul></di>';
+                        $('#output').html(errorsHtml);
+                    }
+                    else
+                    {
+                        $('#output').html(jqXhr.message);
+                    }
+
+                }
             }
         });
     });
     // Update single file input state
-    $(".form-validation").on("step_shown", function(event, data) {
+    $(".form-ajax").on("step_shown", function(event, data) {
         $.uniform.update();
     });
 </script>

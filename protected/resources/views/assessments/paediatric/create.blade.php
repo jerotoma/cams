@@ -1,4 +1,5 @@
 <script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/tinymce/js/tinymce/tinymce.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form_wizard.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
@@ -106,6 +107,7 @@
 </script>
 <script>
     $('.pickadate').pickadate();
+    tinymce.init({ selector:"textarea.editable" });
     $(".withOthers").change(function () {
         var id1 =  $(this[this.selectedIndex]).val();
         var txt = $(this[this.selectedIndex]).text();
@@ -399,11 +401,11 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Mama aliwahi kupata shida angali mjamzito au kuumwa</label>
-                <textarea  class="form-control" name="mother_pregnant_complications" id="mother_pregnant_complications"></textarea>
+                <textarea  class="form-control editable" name="mother_pregnant_complications" id="mother_pregnant_complications"></textarea>
             </div>
             <div class="form-group">
                 <label class="control-label">Mama alipata shida wakati wakujifungua?</label>
-                <textarea  class="form-control" name="mother_birth_complications" id="mother_birth_complications"></textarea>
+                <textarea  class="form-control editable" name="mother_birth_complications" id="mother_birth_complications"></textarea>
             </div>
             <div class="form-group">
                 <label>Mtoto alizaliwa bila kutimiza siku?  </label>
@@ -426,7 +428,7 @@
             </h6>
             <div class="form-group">
                 <label>Mtoto anashida gani? </label>
-                <textarea name="child_complications" id="child_complications" class="form-control"></textarea>
+                <textarea name="child_complications" id="child_complications" class="form-control editable"></textarea>
             </div>
             <div class="form-group">
                 <label>Mtoto alishawa kupata shida yeyoye/ kuumwa sana?  </label>
@@ -434,7 +436,7 @@
             </div>
             <div class="form-group">
                 <label>Mtoto anashida nyingine tofauti na ya mwanzo?  </label>
-                <textarea name="child_complication_2" id="child_complication_2" class="form-control"></textarea>
+                <textarea name="child_complication_2" id="child_complication_2" class="form-control editable"></textarea>
             </div>
         </fieldset>
         <fieldset class="step" id="ajax-step5">
@@ -445,27 +447,27 @@
             </h6>
             <div class="form-group">
                 <label>Kukaa  </label>
-                <textarea name="sitting" id="sitting" class="form-control"></textarea>
+                <textarea name="sitting" id="sitting" class="form-control editable"></textarea>
             </div>
             <div class="form-group">
                 <label>Kutambaa </label>
-                <textarea name="crowing" id="crowing" class="form-control"></textarea>
+                <textarea name="crowing" id="crowing" class="form-control editable"></textarea>
             </div>
             <div class="form-group">
                 <label>Kusimama  </label>
-                <textarea name="standing" id="standing" class="form-control"></textarea>
+                <textarea name="standing" id="standing" class="form-control editable"></textarea>
             </div>
             <div class="form-group">
                 <label>Kutembea  </label>
-                <textarea name="walking" id="walking" class="form-control"></textarea>
+                <textarea name="walking" id="walking" class="form-control editable"></textarea>
             </div>
             <div class="form-group">
                 <label>Kuongea  </label>
-                <textarea name="talking" id="talking" class="form-control"></textarea>
+                <textarea name="talking" id="talking" class="form-control editable"></textarea>
             </div>
             <div class="form-group">
                 <label>Mtoto anaweza kujieleza shida yake kwa namna gani?   </label>
-                <textarea name="child_self_expression" id="child_self_expression" class="form-control"></textarea>
+                <textarea name="child_self_expression" id="child_self_expression" class="form-control editable"></textarea>
             </div>
 
         </fieldset>
@@ -505,23 +507,23 @@
             </h6>
             <div class="form-group">
                 <label>Uwezo wa mtoto   </label>
-                <textarea name="child_ability" id="child_ability" class="form-control"></textarea>
+                <textarea name="child_ability" id="child_ability" class="form-control editable"></textarea>
             </div>
             <div class="form-group">
                 <label>Shughuli za kufanyia / mazoezi / ushauri  </label>
-                <textarea name="activities" id="activities" class="form-control"></textarea>
+                <textarea name="activities" id="activities" class="form-control editable"></textarea>
             </div>
             <div class="form-group">
                 <label>Mpango wa muda mrefu juu ya mtoto </label>
-                <textarea name="long_term_plan" id="long_term_plan" class="form-control"></textarea>
+                <textarea name="long_term_plan" id="long_term_plan" class="form-control editable"></textarea>
             </div>
             <div class="form-group">
                 <label>Mpango wa muda mfupi juu ya mtoto</label>
-                <textarea name="short_term_plan" id="short_term_plan" class="form-control"></textarea>
+                <textarea name="short_term_plan" id="short_term_plan" class="form-control editable"></textarea>
             </div>
             <div class="form-group">
                 <label>Ushauri</label>
-                <textarea name="consultation" id="consultation" class="form-control"></textarea>
+                <textarea name="consultation" id="consultation" class="form-control editable"></textarea>
             </div>
 
         </fieldset>
@@ -530,6 +532,7 @@
             <span class="form-wizard-count">8</span>
             Taarifa inatolewa na nani
             <small class="display-block">Taarifa inatolewa na nani</small>
+        </h6>
             <div class="form-group">
                 <label>Jina </label>
                 <input type="text" name="provider_name" id="provider_name" class="form-control">
@@ -700,21 +703,44 @@
             rules: {
                 client_id:"required",
             },
+            messages: {
+                client_id: "Please select client first",
+            },
             formOptions :{
+                dataType: 'json',
+                resetForm: true,
                 success: function(data){
-                    swal({title: "Form Submitted successful!", text: "Vulnerability form is now saved! ", type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
+                    swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                     setTimeout(function() {
                         location.replace("{{url('assessments/paediatric')}}");
                         $("#output").html("");
                     }, 2000);
                 },
-                dataType: 'json',
-                resetForm: true
+                error: function(jqXhr,status, response) {
+                    console.log(jqXhr);
+                    if( jqXhr.status === 401 ) {
+                        location.replace('{{url('login')}}');
+                    }
+                    if( jqXhr.status === 400 ) {
+                        var errors = jqXhr.responseJSON.errors;
+                        errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                        $.each(errors, function (key, value) {
+                            errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                        });
+                        errorsHtml += '</ul></di>';
+                        $('#output').html(errorsHtml);
+                    }
+                    else
+                    {
+                        $('#output').html(jqXhr.message);
+                    }
+
+                }
             }
         });
     });
     // Update single file input state
-    $(".form-validation").on("step_shown", function(event, data) {
+    $(".form-ajax").on("step_shown", function(event, data) {
         $.uniform.update();
     });
 </script>
