@@ -1,4 +1,5 @@
 <script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/tinymce/js/tinymce/tinymce.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form_wizard.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
@@ -14,7 +15,98 @@
 
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
+    $(function() {
+
+
+        // Table setup
+        // ------------------------------
+
+        // Setting datatable defaults
+        $.extend( $.fn.dataTable.defaults, {
+            autoWidth: false,
+            columnDefs: [{
+                orderable: false,
+                width: '100px',
+                targets: [ 5 ]
+            }],
+            dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
+            language: {
+                search: '<span>Filter:</span> _INPUT_',
+                lengthMenu: '<span>Show:</span> _MENU_',
+                paginate: { 'first': 'First', 'last': 'Last', 'next': '&rarr;', 'previous': '&larr;' }
+            },
+            drawCallback: function () {
+                $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').addClass('dropup');
+            },
+            preDrawCallback: function() {
+                $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').removeClass('dropup');
+            }
+        });
+
+
+        // Single row selection
+        var singleSelect = $('.datatable-selection-single').DataTable();
+        $('.datatable-selection-single tbody').on('click', 'tr', function() {
+            if ($(this).hasClass('success')) {
+                $(this).removeClass('success');
+            }
+            else {
+                singleSelect.$('tr.success').removeClass('success');
+                $(this).addClass('success');
+            }
+        });
+
+
+        // Multiple rows selection
+        $('.datatable-selection-multiple').DataTable();
+        $('.datatable-selection-multiple tbody').on('click', 'tr', function() {
+            $(this).toggleClass('success');
+        });
+
+
+        // Individual column searching with text inputs
+        $('.datatable-column-search-inputs tfoot td').not(':last-child').each(function () {
+            var title = $('.datatable-column-search-inputs thead th').eq($(this).index()).text();
+            $(this).html('<input type="text" class="form-control input-sm" placeholder="Search '+title+'" />');
+        });
+
+        var table = $('.datatable-column-search-inputs').DataTable({
+            "scrollX": false,
+            ajax: '{{url('getwaclientsjson')}}', //this url load JSON Client details to reduce loading time
+            "fnDrawCallback": function (oSettings) {
+            }
+        });
+        table.columns().every( function () {
+            var that = this;
+            $('input', this.footer()).on('keyup change', function () {
+                that.search(this.value).draw();
+            });
+        });
+
+
+        // External table additions
+        // ------------------------------
+
+        // Add placeholder to the datatable filter option
+        $('.dataTables_filter input[type=search]').attr('placeholder','Type to filter...');
+
+
+        // Enable Select2 select for the length option
+        $('.dataTables_length select').select2({
+            minimumResultsForSearch: Infinity,
+            width: 'auto'
+        });
+
+
+        // Enable Select2 select for individual column searching
+        $('.filter-select').select2();
+
+    });
+
+</script>
+<script>
     $('.pickadate').pickadate();
+    tinymce.init({ selector:'textarea' });
 </script>
 
 <div class="portlet light bordered">
@@ -25,35 +117,70 @@
 
             <div class="panel-body">
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold">Client Details</legend>
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th>Client No</th>
-                            <th>Full Name</th>
-                            <th>Sex</th>
-                            <th>Age</th>
-                            <th>Origin</th>
-                            <th>Arrival Date</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>{{$client->client_number}}</td>
-                            <td>{{$client->full_name}}</td>
-                            <td>{{$client->sex}}</td>
-                            <td>{{$client->age}}</td>
-                            <td>@if(is_object($client->nationality) && $client->nationality != null )
-                                    {{$client->nationality->country_name}}
-                                @endif</td>
-                            <td>{{date('d M Y',strtotime($client->date_arrival))}}</td>
+                    <legend class="text-bold"><h3 class="text-center text-bold">Select client requesting referral</h3></legend>
+                    <div class="form-group">
+                        <div class="row clearfix">
+                            <div class="col-md-12 column">
+                                <table class="table datatable-column-search-inputs table-bordered table-hover" id="tab_logic">
+                                    <thead>
+                                    <tr >
+                                        <th class="text-center">
+                                            #
+                                        </th>
+                                        <th class="text-center">
+                                            Client Number
+                                        </th>
+                                        <th class="text-center">
+                                            Full Name
+                                        </th>
+                                        <th class="text-center">
+                                            Gender
+                                        </th>
+                                        <th class="text-center">
+                                            Nationality
+                                        </th>
+                                        <th class="text-center">
+                                            Date of Arrival
+                                        </th>
+                                        <th class="text-center">
+                                            Check client
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr >
+                                        <td class="text-center">
 
-                        </tr>
-                        </tbody>
-                    </table>
+                                        </td>
+                                        <td class="text-center">
+                                            Client Number
+                                        </td>
+                                        <td class="text-center">
+                                            Full Name
+                                        </td>
+                                        <td class="text-center">
+                                            Gender
+                                        </td>
+                                        <td class="text-center">
+                                            Nationality
+                                        </td>
+                                        <td class="text-center">
+                                            Date of Arrival
+                                        </td>
+                                        <td class="text-center">
+
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </fieldset>
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold">Referral Details</legend>
+                    <legend class="text-bold"><h3 class="text-center text-bold">Referral Details</h3></legend>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
@@ -88,7 +215,7 @@
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Name of Client Concerned</label>
-                        <input type="text" class="form-control"  placeholder="Name of Client Concerned" value="{{$client->full_name}}" readonly>
+                        <input type="text" class="form-control"  placeholder="Name of Client Concerned" value="" >
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Location the referral originated</label>
@@ -97,19 +224,17 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Age</label>
+                                <label class="control-label">Age (At the time of incident)</label>
                                 <input type="number" class="form-control" placeholder="Age" name="age" id="age" value="{{old('age')}}">
-                                <span class="label label-block label-danger">(At the time of incident)</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Birth date</label>
+                                <label class="control-label">Birth date (At the time of incident)</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="icon-calendar22"></i></span>
                                     <input type="text" class="form-control pickadate" placeholder="Date" value="{{old('birth_date')}}" name="birth_date" id="birth_date">
                                 </div>
-                                <span class="label label-block label-danger">(At the time of incident)</span>
                             </div>
                         </div>
 
@@ -169,13 +294,12 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
-                                <label class="control-label">Parental Consent provided </label>
+                                <label class="control-label">Parental Consent provided (if Client is Under 18 years of Age)</label>
                                 <select name="parental_consent" data-placeholder="Choose an option..." class="select">
                                     <option></option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
                                 </select>
-                                <span class="label label-block label-danger">if Client is Under 18 years of Age</span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -259,7 +383,6 @@
                     </div>
                     <div class="col-md-4 col-sm-4 pull-right text-right">
                         <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                        <input type="hidden" name="client_id" value="{{$client->id}}">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
                     </div>
 
@@ -302,10 +425,10 @@
         errorElement:'div',
         rules: {
             organization: "required",
+            progress_number: "required",
             referral_date: "required",
             completed_by: "required",
             age: {
-                required: true,
                 number: true
             },
             case_name: "required",
@@ -315,19 +438,21 @@
             org_email:{
                 email:true,
             },
-            location: "required"
+            location: "required",
+            primary_concern: "required",
         },
         messages: {
             organization: "Please this field is required",
+            progress_number: "Please this field is required",
             referral_date: "Please field is required",
             completed_by: "Please this field is required",
             age:{
-                required:"Please this field is required",
-                number:"Please enter valid data",
+                number:"Please enter valid age",
             } ,
             case_name: "Please this field is required",
             referred_to: "Please this field is required",
             referred_to_position: "Please this field is required",
+            primary_concern: "Please this field is required",
             org_phone: "Please this field is required",
             org_email:{
                 email:"Please enter valid data",
@@ -343,21 +468,31 @@
                     url : formURL,
                     type: "POST",
                     data : postData,
-                    success:function(data)
-                    {
-                        console.log(data);
-                        //data: return data from server
-                        $("#output").html(data);
+                    success: function(data){
+                        swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                         setTimeout(function() {
-                            location.replace('{{url('referrals')}}');
+                            location.replace("{{url('referrals')}}");
                             $("#output").html("");
                         }, 2000);
                     },
-                    error: function(data)
-                    {
-                        console.log(data.responseJSON);
-                        //in the responseJSON you get the form validation back.
-                        $("#output").html("<h3><span class='text-danger'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
+                    error: function(jqXhr,status, response) {
+                        console.log(jqXhr);
+                        if( jqXhr.status === 401 ) {
+                            location.replace('{{url('login')}}');
+                        }
+                        if( jqXhr.status === 400 ) {
+                            var errors = jqXhr.responseJSON.errors;
+                            errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                            $.each(errors, function (key, value) {
+                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                            });
+                            errorsHtml += '</ul></di>';
+                            $('#output').html(errorsHtml);
+                        }
+                        else
+                        {
+                            $('#output').html(jqXhr.message);
+                        }
 
                     }
                 });

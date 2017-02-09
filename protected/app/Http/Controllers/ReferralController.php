@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\Referral;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class ReferralController extends Controller
 {
@@ -101,11 +103,10 @@ class ReferralController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
         //
-        $client=Client::findorfail($id);
-        return view('referrals.create',compact('client'));
+        return view('referrals.create');
     }
 
     /**
@@ -118,42 +119,68 @@ class ReferralController extends Controller
     {
         //
         try {
-            $referral = new Referral;
-            $referral->client_id = $request->client_id;
-            $referral->progress_number = $request->progress_number;
-            $referral->case_name = $request->case_name;
-            $referral->referral_date = date("Y-m-d", strtotime($request->referral_date));
-            $referral->completed_by = $request->completed_by;
-            $referral->location = $request->location;
-            $referral->age = $request->age;
-            $referral->birth_date = date("Y-m-d", strtotime($request->birth_date));
-            $referral->disabilities = $request->disabilities;
-            $referral->ethnic_background = $request->ethnic_background;
-            $referral->contact = $request->contact;
-            $referral->phone = $request->phone;
-            $referral->person_name = $request->person_name;
-            $referral->person_name_contact = $request->person_name_contact;
-            $referral->relationship = $request->relationship;
-            $referral->person_name_address = $request->person_name_address;
-            $referral->consent = $request->consent;
-            $referral->parental_consent = $request->parental_consent;
-            $referral->attachment = $request->attachment;
-            $referral->initial_action = $request->initial_action;
-            $referral->time_frames = $request->time_frames;
-            $referral->additional_comments = $request->additional_comments;
-            $referral->primary_concern = $request->primary_concern;
-            $referral->print_name = $request->print_name;
-            $referral->referred_to = $request->referred_to;
-            $referral->referred_to_position = $request->referred_to_position;
-            $referral->organization = $request->organization;
-            $referral->org_phone = $request->org_phone;
-            $referral->org_email = $request->org_email;
-            $referral->save();
-            return "<h3><span class='text-success'><i class='fa fa-info'></i> Saved successful</span><h3>";
+            $validator = Validator::make($request->all(), [
+                'client_id' => 'required',
+                'organization' => 'required',
+                'progress_number' => 'required',
+                'referral_date' => 'required',
+                'completed_by' => 'required',
+                'age' => 'numeric',
+                'case_name' => 'required',
+                'referred_to' => 'required',
+                'primary_concern' => 'required',
+                'org_email'=> 'email'
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $referral = new Referral;
+                $referral->client_id = $request->client_id;
+                $referral->progress_number = $request->progress_number;
+                $referral->case_name = $request->case_name;
+                $referral->referral_date = date("Y-m-d", strtotime($request->referral_date));
+                $referral->completed_by = $request->completed_by;
+                $referral->location = $request->location;
+                $referral->age = $request->age;
+                $referral->birth_date = date("Y-m-d", strtotime($request->birth_date));
+                $referral->disabilities = $request->disabilities;
+                $referral->ethnic_background = $request->ethnic_background;
+                $referral->contact = $request->contact;
+                $referral->phone = $request->phone;
+                $referral->person_name = $request->person_name;
+                $referral->person_name_contact = $request->person_name_contact;
+                $referral->relationship = $request->relationship;
+                $referral->person_name_address = $request->person_name_address;
+                $referral->consent = $request->consent;
+                $referral->parental_consent = $request->parental_consent;
+                $referral->attachment = $request->attachment;
+                $referral->initial_action = $request->initial_action;
+                $referral->time_frames = $request->time_frames;
+                $referral->additional_comments = $request->additional_comments;
+                $referral->primary_concern = $request->primary_concern;
+                $referral->print_name = $request->print_name;
+                $referral->referred_to = $request->referred_to;
+                $referral->referred_to_position = $request->referred_to_position;
+                $referral->organization = $request->organization;
+                $referral->org_phone = $request->org_phone;
+                $referral->org_email = $request->org_email;
+                $referral->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => "Record saved"
+                ], 200);
+
+            }
         }
-        catch (\Exception $e)
+        catch (\Exception $ex)
         {
-            return "<h3><span class='text-danger'><i class='fa fa-info'></i> $e->getMessage()</span><h3>";
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
         }
     }
 
@@ -194,6 +221,24 @@ class ReferralController extends Controller
     {
         //
         try {
+            $validator = Validator::make($request->all(), [
+                'client_id' => 'required',
+                'organization' => 'required',
+                'progress_number' => 'required',
+                'referral_date' => 'required',
+                'completed_by' => 'required',
+                'age' => 'numeric',
+                'case_name' => 'required',
+                'referred_to' => 'required',
+                'primary_concern' => 'required',
+                'org_email'=> 'email'
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
             $referral =  Referral::find($id);
             $referral->progress_number = $request->progress_number;
             $referral->case_name = $request->case_name;
@@ -224,12 +269,19 @@ class ReferralController extends Controller
             $referral->org_phone = $request->org_phone;
             $referral->org_email = $request->org_email;
             $referral->save();
-            return "<h3><span class='text-success'><i class='fa fa-info'></i> Saved successful</span><h3>";
-        }
-        catch (\Exception $e)
-        {
-            return "<h3><span class='text-danger'><i class='fa fa-info'></i> $e->getMessage()</span><h3>";
+                return response()->json([
+                    'success' => true,
+                    'message' => "Record saved"
+                ], 200);
 
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
         }
     }
 
