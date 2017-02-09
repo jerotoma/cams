@@ -284,14 +284,14 @@ class WheelChairAssessmentController extends Controller
             return response()->json([
                     'success' => true,
                     'action' => 'add',
-                    'message' => "<div class='alert alert-success'><strong>Success!</strong> Wheelchair Assessment was submitted successifully</div>"
+                    'message' => "<div class='alert alert-success remove-alert'><strong>Success!</strong> Wheelchair Assessment was submitted successifully</div>"
                 ], 200);
 
             }else{
 
                return response()->json([
                     'success' => false,
-                    'message' => "Something went wrong, failed to submit your client Wheel Chair Assessment",
+                    'message' => "<div class='alert alert-success remove-alert'><strong>Error!</strong> Something went wrong, failed to submit your client Wheel Chair Assessment</div>",
                 ], 400);
 
             }        
@@ -299,7 +299,7 @@ class WheelChairAssessmentController extends Controller
         }else{
 	    return response()->json([
 							'success' => false,
-							'message' => "<div class='alert alert-danger'><strong>Error!</strong> Sorry, No such Wheelchair Assessment in our system</div>"
+							'message' => "<div class='alert alert-danger remove-alert'><strong>Error!</strong> Sorry, No such Wheelchair Assessment in our system</div>"
 						   ], 200);
 
 		}
@@ -460,13 +460,13 @@ class WheelChairAssessmentController extends Controller
                         return response()->json([
                                                 'success' => true,
                                                 'action' => 'update',
-                                                'message' => "<div class='alert alert-success'><strong>Success!</strong> Wheelchair Assessment was submitted successifully</div>"
+                                                'message' => "<div class='alert alert-success remove-alert'><strong>Success!</strong> Wheelchair Assessment was submitted successifully</div>"
                                                ], 200);
 
                      }else{
                             return response()->json([
                                                 'success' => true,
-                                                'message' => "<div class='alert alert-danger'><strong>Error!</strong> Sorry, No such Wheelchair Assessment in our system</div>"
+                                                'message' => "<div class='alert alert-danger remove-alert'><strong>Error!</strong> Sorry, No such Wheelchair Assessment in our system</div>"
                                                ], 200);
 
                         }

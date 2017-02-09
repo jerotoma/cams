@@ -102,11 +102,18 @@
 											location.reload('/wheelchair/');
 										}
                                   }, 3000);
-								
+								setTimeout(function(){ 
+									 $('.remove-alert').hide();
+									 $('.remove-alert').fadeIn('slow');
+								  }, 5000);
 
 							}else{
-								
 								$('.inform_assessor').html(response.message);
+								setTimeout(function(){ 
+									 $('.remove-alert').hide();
+									 $('.remove-alert').fadeOut('slow');
+								  }, 5000);
+								
 							}
 
 						},
