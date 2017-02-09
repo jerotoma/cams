@@ -32,6 +32,11 @@
         label{
             font-weight:400 !important;
         }
+	  .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+		background-color: #66BB6A;
+		border-color: #66BB6A;
+		color: #fff;
+	 }
     </style>
    
     <div class="row" style="margin-bottom: 5px">
