@@ -110,10 +110,12 @@ Route::post('inventory/disbursement/import','ItemsDisbursementController@postImp
 Route::get('inventory/disbursement/import/errors','ItemsDisbursementController@showImportErrors');
 
 //WheelChairAssessment
+
 Route::get('getwaclientsjson','WheelChairAssessmentController@getJSonClientData');
 Route::resource('assessments/wheelchair','WheelChairAssessmentController@index');
 Route::post('assessments/wheelchair/wheelchairassessment','WheelChairAssessmentController@postData');
 Route::get('wheelchair/view/{id}','WheelChairAssessmentController@show');
+
  
 //ItemsReceivingController
 

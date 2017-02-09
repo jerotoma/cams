@@ -165,6 +165,11 @@ return [
 
 
         /*
+         * Package Service Providers by Otoman
+         */
+        App\Providers\HelperServiceProvider::class,
+       
+        /*
          * Package Service Providers...
          */
 

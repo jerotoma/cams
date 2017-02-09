@@ -1,17 +1,25 @@
-<div class="row">
+<?php $wca = new WheelChairAssessmentHelper(); ?>
+<style>
+    .form-control{
+        width:100% !important;
+    }
+</style>
+ <form id="wheelchairassessment-edit" action="{{url('assessments/wheelchair/edit')}}/{{$wc_assessment->id}}" method="POST" enctype="multipart/form-data">
+    {{ csrf_field() }}
+    <div class="row">
 	<div class="col-xs-12">
          <div class="col-md-12 well">    
 			 <div class="row">
 				 <div class="col-md-6">
 					 <div class="form-group form-inline">
-			                <label>Assessor’s name:  </label>
+                         <label>Assessor’s name:  </label> 
 							<input class="form-control" type="text" name="assessor_name" value="{{$assessor->full_name}}">  
 			           </div>
 			     </div>
 			     <div class="col-md-6">
 					 <div class="form-group form-inline">
-					       <label>Date of assessment:  </label>
-						   <input class="form-control" type="text" name="assessor_name" value="{{$wc_assessment->created_at}}">  
+                          <label>Date of assessment:  </label> 
+                           <input class="form-control" type="text" name="assessor_name" value="{{$wc_assessment->created_at}}">  
 					</div>
 				</div>
 			 </div>
@@ -83,10 +91,10 @@
                                 </div>
                             </div>
                         </div>
-                            <!-- <a id="add_row" class="btn btn-success pull-left">Add Row</a><a id='delete_row' class="btn btn-danger pull-right">Delete Row</a> -->
-                   <div class="form-group">
-                   <label>Goals : </label> <input class="form-control" type="text" name="cliend_goal" value="{{$wc_assessment->id}}">
-	
+
+                   <div class="form-group form-inline">
+                       <label>Goals : </label>
+                       <input class="form-control" type="text" name="cliend_goal" value="{{$wc_assessment->id}}">  
                   </div>
               
               </div>
@@ -113,23 +121,23 @@
                                    <div class="col-md-4 col-md-pull-1">
                                       
                                        <div class="checkbox">
-                                           <label class="checkbox text-left"><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" value="Brain Injury">Brain Injury</label>
-                                           <label class="checkbox text-left"><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" value="Cerebral Palsy">Cerebral Palsy </label>
-                                           <label class="checkbox text-left"><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" value="Muscular Dystrophy">Muscular Dystrophy</label> 
+                                           <label class="checkbox text-left"><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_diagnosis_qn_1,'Brain Injury')){ echo "checked"; } ?> value="Brain Injury">Brain Injury</label>
+                                           <label class="checkbox text-left"><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_diagnosis_qn_1,'Cerebral Palsy')){ echo "checked"; } ?> value="Cerebral Palsy">Cerebral Palsy </label>
+                                           <label class="checkbox text-left"><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_diagnosis_qn_1,'Muscular Dystrophy')){ echo "checked"; } ?> value="Muscular Dystrophy">Muscular Dystrophy</label> 
                                        </div>
                                    </div>
                                    <div class="col-md-4 col-md-pull-2">
                                       <div class="checkbox">
-                                           <label class="checkbox text-left "><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="Polio">Polio</label>
-                                           <label class="checkbox text-left"><input type="checkbox"   name="assess_interview_diagnosis_qn_1[]" value="Spina Bifida">Spina Bifida</label>
-                                           <label class="checkbox text-left"><input type="checkbox"   name="assess_interview_diagnosis_qn_1[]" value="Spinal Cord Injury">Spinal Cord Injury </label> 
+                                           <label class="checkbox text-left "><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_diagnosis_qn_1,'Polio')){ echo "checked"; } ?> value="Polio">Polio</label>
+                                           <label class="checkbox text-left"><input type="checkbox"   name="assess_interview_diagnosis_qn_1[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_diagnosis_qn_1,'Spina Bifida')){ echo "checked"; } ?> value="Spina Bifida">Spina Bifida</label>
+                                           <label class="checkbox text-left"><input type="checkbox"   name="assess_interview_diagnosis_qn_1[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_diagnosis_qn_1,'Spinal Cord Injury')){ echo "checked"; } ?> value="Spinal Cord Injury">Spinal Cord Injury </label> 
                                        </div>
                                    </div> 
                                    <div class="col-md-4 col-md-pull-3">
                                        <div class="checkbox">
-                                           <label class="checkbox text-left "><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" value="">Stroke</label>
-                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="">Unknown</label>
-                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="">Other</label> 
+                                           <label class="checkbox text-left "><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_diagnosis_qn_1,'Stroke')){ echo "checked"; } ?> value="Stroke">Stroke</label>
+                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_diagnosis_qn_1,'Unknown')){ echo "checked"; } ?> value="Unknown">Unknown</label>
+                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_diagnosis_qn_1,'Other')){ echo "checked"; } ?> value="Other">Other</label> 
                                        </div>
                                    </div>
                                </div>
@@ -141,8 +149,8 @@
                                    </div>
                                 <div class="col-md-6 col-md-pull-2">
                                     <div class="checkbox">
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_diagnosis_qn_2" value="Yes">Yes</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_diagnosis_qn_2" value="No">No</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_diagnosis_qn_2" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_diagnosis_qn_2, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_diagnosis_qn_2"  <?php if($wca->isCheckedRadio($assessInterview->assess_interview_diagnosis_qn_2, 'No')){echo 'checked';}?> value="No">No</label>
                                     </div>
                                 </div>
                             </div> 
@@ -157,9 +165,9 @@
                                <div class="row">
                                    <div class="col-md-12 col-md-pull-1">
                                        <div class="checkbox">
-                                           <label class="checkbox-inline text-left move-left"><input type="checkbox" name ="assess_interview_physical_issues_qn_1[]" value="Frail">Frail</label>
-                                           <label class="checkbox-inline text-left move-left"><input type="checkbox" name ="assess_interview_physical_issues_qn_1[]" value="Spasms/uncontrolled movements">Spasms/uncontrolled movements</label>
-                                           <label class="checkbox-inline text-left move-left"><input type="checkbox" name ="assess_interview_physical_issues_qn_1[]" value="Muscle tone (high/low)">Muscle tone (high/low)</label> 
+                                           <label class="checkbox-inline text-left move-left"><input type="checkbox" name ="assess_interview_physical_issues_qn_1[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_1,'Frail')){ echo "checked"; } ?> value="Frail">Frail</label>
+                                           <label class="checkbox-inline text-left move-left"><input type="checkbox" name ="assess_interview_physical_issues_qn_1[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_1,'Spasms/uncontrolled movements')){ echo "checked"; } ?> value="Spasms/uncontrolled movements">Spasms/uncontrolled movements</label>
+                                           <label class="checkbox-inline text-left move-left"><input type="checkbox" name ="assess_interview_physical_issues_qn_1[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_1,'Muscle tone (high/low)')){ echo "checked"; } ?> value="Muscle tone (high/low)">Muscle tone (high/low)</label> 
                                       </div> 
                                    </div>
                                </div>
@@ -173,21 +181,21 @@
                                <div class="row">
                                    <div class="col-md-4 col-md-pull-1">
                                     <div class="checkbox">
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="R above knee">R above knee</label> 
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="R below knee">R below knee</label>
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="L above knee">L above knee</label>
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_2,'R above knee')){ echo "checked"; } ?> value="R above knee">R above knee</label> 
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_2,'R below knee')){ echo "checked"; } ?> value="R below knee">R below knee</label>
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_2,'L above knee')){ echo "checked"; } ?> value="L above knee">L above knee</label>
                                     </div>
                                    </div>
                                    <div class="col-md-4 col-md-pull-1">
                                      <div class="checkbox">
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="L above knee">L above knee</label>
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="Fatigue">Fatigue</label> 
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="Hip dislocation">Hip dislocation</label>
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_2,'L above knee')){ echo "checked"; } ?> value="L above knee">L above knee</label>
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_2,'Fatigue')){ echo "checked"; } ?> value="Fatigue">Fatigue</label> 
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_2,'Hip dislocation')){ echo "checked"; } ?> value="Hip dislocation">Hip dislocation</label>
                                      </div>
                                    </div>
                                    <div class="col-md-4 col-md-pull-2">
                                        <div class="checkbox">
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="">Epilepsy</label>
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_2,'Epilepsy')){ echo "checked"; } ?> value="Epilepsy">Epilepsy</label>
                                        </div>
                                    </div>
                                </div>
@@ -199,7 +207,7 @@
                                  </div>
                                  <div class="col-md-3 col-md-pull-1">
                                     <div class="checkbox">
-                                      <label class="checkbox-inline"><input type="checkbox" name ="assess_interview_physical_issues_qn_3[]" value="Problems with eating, drinking and swallowing"></label>
+                                      <label class="checkbox-inline"><input type="checkbox" name ="assess_interview_physical_issues_qn_3[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_3,'Problems with eating, drinking and swallowing')){ echo "checked"; } ?> value="Problems with eating, drinking and swallowing"></label>
                                     </div>
                                  
                                  </div>
@@ -212,7 +220,7 @@
                               <div class="row">
                                  <div class="col-md-4 col-md-pull-1">
                                     <div class="checkbox">
-                                      <label class="checkbox-inline"><input type="checkbox" name ="assess_interview_physical_issues_qn_4[]" value="Pain">Pain</label>
+                                      <label class="checkbox-inline"><input type="checkbox" name ="assess_interview_physical_issues_qn_4[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_4,'Pain')){ echo "checked"; } ?> value="Pain">Pain</label>
                                     </div>
                                 </div>
                                 <div class="col-md-8 col-md-pull-3">
@@ -224,8 +232,8 @@
                               <div class="row">
                                  <div class="col-md-6 col-md-pull-1">
                                     <div class="checkbox">
-                                      <label class="checkbox-inline"><input type="checkbox" name ="assess_interview_physical_issues_qn_5[]" value="Bladder problems">Bladder problems</label>
-                                      <label class="checkbox-inline"><input type="checkbox" name ="assess_interview_physical_issues_qn_5[]" value="Bowel problems">Bowel problems</label>
+                                      <label class="checkbox-inline"><input type="checkbox" name ="assess_interview_physical_issues_qn_5[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_5,'Bladder problems')){ echo "checked"; } ?> value="Bladder problems">Bladder problems</label>
+                                      <label class="checkbox-inline"><input type="checkbox" name ="assess_interview_physical_issues_qn_5[]" <?php if($wca->isCheckedBox($assessInterview->assess_interview_physical_issues_qn_5,'Bowel problems')){ echo "checked"; } ?> value="Bowel problems">Bowel problems</label>
                                      </div>
                                 </div>
                               </div>
@@ -237,8 +245,8 @@
                                    </div>
                                 <div class="col-md-4 col-md-pull-1">
                                     <div class="checkbox">
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_physical_issues_qn_6" value="Yes">Yes</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_physical_issues_qn_6" value="No">No</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_physical_issues_qn_6" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_physical_issues_qn_6, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_physical_issues_qn_6" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_physical_issues_qn_6, 'No')){echo 'checked';}?> value="No">No</label>
                                     </div>
                                 </div>
                             </div> 
@@ -269,9 +277,9 @@
                                    </div>
                                 <div class="col-md-6 col-md-pull-0">
                                     <div class="radio">
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_1" value="Up to 1km">Up to 1km</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_1" value="1-5km">1-5km</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_1" value="More than 5km">More than 5km</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_1" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_1, 'Up to 1km')){echo 'checked';}?> value="Up to 1km">Up to 1km</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_1" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_1, '1-5km')){echo 'checked';}?>  value="1-5km">1-5km</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_1" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_1, 'Mor than 5km')){echo 'checked';}?> value="More than 5km">More than 5km</label>
                                     </div>
                                 </div>
                                </div> 
@@ -283,11 +291,11 @@
                                    </div>
                                 <div class="col-md-6 col-md-pull-0">
                                     <div class="radio">
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_2" value="Less than 1">Less than 1 </label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_2" value="1-3">1-3</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_2" value="3-5">3-5</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_2" value="5-8">5-8</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_2" value="more than 8">more than 8</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_2" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_2, 'Less than 1')){echo 'checked';}?> value="Less than 1">Less than 1 </label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_2" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_2, '1-3')){echo 'checked';}?>  value="1-3">1-3</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_2" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_2, '3-5')){echo 'checked';}?> value="3-5">3-5</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_2" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_2, '5-8')){echo 'checked';}?> value="5-8">5-8</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_2" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_2, 'more than 8')){echo 'checked';}?> value="more than 8">more than 8</label>
                                     </div>
                                 </div>
                                </div>
@@ -307,12 +315,12 @@
                                    </div>
                                 <div class="col-md-8 col-md-pull-0">
                                     <div class="radio">
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_4" value="Independent">Independent</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_4" value="Assisted">Assisted</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_4" value="Standing">Standing</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_4" value="Non-standing">Non-standing </label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_4" value="Lifted">Lifted</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_4" value="Other">Other</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_4"  <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_4, 'Independent')){echo 'checked';}?> value="Independent">Independent</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_4"  <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_4, 'Assisted')){echo 'checked';}?> value="Assisted">Assisted</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_4"  <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_4, 'Standing')){echo 'checked';}?> value="Standing">Standing</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_4"  <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_4, 'Non-standing')){echo 'checked';}?> value="Non-standing">Non-standing </label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_4"  <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_4, 'Lifted')){echo 'checked';}?> value="Lifted">Lifted</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_4"  <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_4, 'Other')){echo 'checked';}?> value="Other">Other</label>
                                     </div>
                                 </div>
                                </div>
@@ -324,9 +332,9 @@
                                    </div>
                                 <div class="col-md-6 col-md-pull-1">
                                     <div class="radio">
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_5" value="Squat">Squat</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_5" value="Western">Western </label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_5" value="Adapted">Adapted</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_5"   <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_5, 'Squat')){echo 'checked';}?> value="Squat">Squat</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_5"   <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_5, 'Western')){echo 'checked';}?> value="Western">Western </label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_5"   <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_5, 'Adapted')){echo 'checked';}?> value="Adapted">Adapted</label>
                                     </div>
                                 </div>
                                </div>
@@ -338,8 +346,8 @@
                                    </div>
                                 <div class="col-md-6 col-md-pull-1">
                                     <div class="radio">
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_6" value="Yes">Yes</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_6" value="No">No</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_6" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_6, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_6" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_6, 'No')){echo 'checked';}?> value="No">No</label>
                                     </div>
                                 </div>
                                </div>
@@ -351,9 +359,9 @@
                                    </div>
                                 <div class="col-md-6 col-md-pull-2">
                                     <div class="radio">
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_7" value="Car">Car</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_7" value="Tax">Tax</label>
-                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_7" value="Bus">Bus</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_7" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_7, 'Car')){echo 'checked';}?> value="Car">Car</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_7" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_7, 'Tax')){echo 'checked';}?> value="Tax">Tax</label>
+                                      <label class="radio-inline"><input type="radio" name ="assess_interview_lifestyle_env_qn_7" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_lifestyle_env_qn_7, 'Bus')){echo 'checked';}?> value="Bus">Bus</label>
                                     </div>
                                     <div clas="form-group"> 
                                         <label for="describe1">Other</label>
@@ -381,8 +389,8 @@
                                    </div>
                                     <div class="col-md-6 col-md-pull-0">
                                         <div class="radio">
-                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_1" value="Yes">Yes</label>
-                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_1" value="No">No</label>
+                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_1" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_existing_wheelchair_qn_1, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
+                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_1" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_existing_wheelchair_qn_1, 'No')){echo 'checked';}?> value="No">No</label>
                                         </div>
                                     </div>
                                </div>
@@ -394,8 +402,8 @@
                                    </div>
                                     <div class="col-md-6 col-md-pull-0">
                                         <div class="radio">
-                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_2" value="Yes">Yes</label>
-                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_2" value="No">No</label>
+                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_2" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_existing_wheelchair_qn_2, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
+                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_2" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_existing_wheelchair_qn_2, 'No')){echo 'checked';}?>  value="No">No</label>
                                         </div>
                                     </div>
                                </div>
@@ -407,8 +415,8 @@
                                    </div>
                                     <div class="col-md-6 col-md-pull-0">
                                         <div class="radio">
-                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_3" value="Yes">Yes</label>
-                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_3" value="No">No</label>
+                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_3" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_existing_wheelchair_qn_3, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
+                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_3" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_existing_wheelchair_qn_3, 'No')){echo 'checked';}?> value="No">No</label>
                                         </div>
                                     </div>
                                </div>
@@ -420,8 +428,8 @@
                                    </div>
                                     <div class="col-md-6 col-md-pull-0">
                                         <div class="radio">
-                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_4" value="Yes">Yes</label>
-                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_4" value="No">No</label>
+                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_4" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_existing_wheelchair_qn_4, 'Yes')){echo 'checked';}?>  value="Yes">Yes</label>
+                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_4" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_existing_wheelchair_qn_4, 'No')){echo 'checked';}?> value="No">No</label>
                                         </div>
                                     </div>
                                </div>
@@ -433,8 +441,8 @@
                                    </div>
                                     <div class="col-md-6 col-md-pull-0">
                                         <div class="radio">
-                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_5" value="Yes">Yes</label>
-                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_5" value="No">No</label>
+                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_5" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_existing_wheelchair_qn_5, 'Yes')){echo 'checked';}?>  value="Yes">Yes</label>
+                                          <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_5" <?php if($wca->isCheckedRadio($assessInterview->assess_interview_existing_wheelchair_qn_5, 'No')){echo 'checked';}?>  value="No">No</label>
                                         </div>
                                     </div>
                              </div>
@@ -491,8 +499,8 @@
                                                    </div>
                                                   <div class="col-md-6 col-md-pull-0">
                                                         <div class="checkbox">
-                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_1" value="Yes">Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_1" value="No">No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_1, 'Yes')){echo 'checked';}?>  value="Yes">Yes</label>
+                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_1, 'No')){echo 'checked';}?> value="No">No</label>
                                                         </div>
                                                   </div>
                                             </div> 
@@ -504,8 +512,8 @@
                                                    </div>
                                                   <div class="col-md-6 col-md-pull-0">
                                                         <div class="checkbox">
-                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_2" value="Yes">Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_2" value="No">No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_2" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_2, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
+                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_2" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_2, 'No')){echo 'checked';}?>value="No">No</label>
                                                         </div>
                                                   </div>
                                             </div> 
@@ -517,8 +525,8 @@
                                                    </div>
                                                   <div class="col-md-6 col-md-pull-0">
                                                         <div class="checkbox">
-                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_3" value="Yes">Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_3" value="No">No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_3" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_3, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
+                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_3" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_3, 'No')){echo 'checked';}?> value="No">No</label>
                                                         </div>
                                                   </div>
                                             </div> 
@@ -530,8 +538,8 @@
                                                    </div>
                                                   <div class="col-md-6 col-md-pull-0">
                                                         <div class="checkbox">
-                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_4" value="Yes">Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_4" value="No">No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_4" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_4, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
+                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_4" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_4, 'No')){echo 'checked';}?> value="No">No</label>
                                                         </div>
                                                   </div>
                                             </div>
@@ -553,8 +561,8 @@
                                        </div>
                                     <div class="col-md-3 col-md-pull-0">
                                         <div class="checkbox">
-                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_6" value="Yes">Yes</label>
-                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_6" value="No">No</label>
+                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_6" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_6, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
+                                          <label class="radio-inline"><input type="radio" name ="physical_assess_presence_risk_qn_6" <?php if($wca->isCheckedRadio($passessment->physical_assess_presence_risk_qn_6, 'Yes')){echo 'checked';}?> value="No">No</label>
                                         </div>
                                     </div>
                                 </div> 
@@ -578,26 +586,26 @@
                                               <div class="col-md-3">
                                                  <div class="radio">
                                                       <div class="radio">
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" value="Both arms">Both arms</label>
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" value="Left arm">Left arm</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_method_of_pushing_qn_1, 'Both arms')){echo 'checked';}?> value="Both arms">Both arms</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_method_of_pushing_qn_1, 'Left arm')){echo 'checked';}?> value="Left arm">Left arm</label>
                                                      </div>
                                                  </div>  
                                                </div>
                                               <div class="col-md-3 col-md-pull-0">
                                                  <div class="radio">
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_2" value="Right arm">Right arm</label>
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_2" value="Both legs">Both legs</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_method_of_pushing_qn_1, 'Right arm')){echo 'checked';}?> value="Right arm">Right arm</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_method_of_pushing_qn_1, 'Both legs')){echo 'checked';}?> value="Both legs">Both legs</label>
                                                   </div>
                                               </div>
                                              <div class="col-md-3 col-md-pull-0">
                                                     <div class="radio">
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_2" value="Left leg">Left leg</label>
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_2" value="Right leg">Right leg</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_method_of_pushing_qn_1, 'Left leg')){echo 'checked';}?>  value="Left leg">Left leg</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_method_of_pushing_qn_1, 'Right leg')){echo 'checked';}?>  value="Right leg">Right leg</label>
                                                     </div>
                                             </div>
                                            <div class="col-md-3 col-md-pull-0">
                                                     <div class="radio">
-                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_2" value="Pushed by helpe">Pushed by helper</label>
+                                                      <label class="radio"><input type="radio" name ="physical_assess_method_of_pushing_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_method_of_pushing_qn_1, 'Pushed by helper')){echo 'checked';}?>  value="Pushed by helpe">Pushed by helper</label>
                                                     </div>
                                             </div>
                                         </div>
@@ -654,8 +662,8 @@
                                             </div>
                                            <div class="col-md-4 col-md-pull-2">
                                                 <div class="radio">
-                                                      <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_1" value="Yes">Yes</label>
-                                                      <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_1" value="No">No</label>
+                                                      <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_pelvis_hip_posture_screen_qn_1, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
+                                                      <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_1" <?php if($wca->isCheckedRadio($passessment->physical_assess_pelvis_hip_posture_screen_qn_1, 'No')){echo 'checked';}?>value="No">No</label>
                                                 </div> 
                                            </div>
                                         </div>
@@ -669,16 +677,16 @@
                                               <div class="col-md-3">
                                                  <div class="radio">
                                                          <span class="text-left">Right hip: </span>
-                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_2" value="Yes">Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_2" value="No">No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_2" <?php if($wca->isCheckedRadio($passessment->physical_assess_pelvis_hip_posture_screen_qn_2, 'Yes')){echo 'checked';}?> value="Yes">Yes</label>
+                                                          <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_2" <?php if($wca->isCheckedRadio($passessment->physical_assess_pelvis_hip_posture_screen_qn_2, 'No')){echo 'checked';}?> value="No">No</label>
                                                           <label class="radio">Angle <input type="text" name ="physical_assess_pelvis_hip_posture_screen_qn_2_angle" value=""class="form-control"></label>
                                                  </div>  
                                                </div>
                                               <div class="col-md-3 col-md-pull-0">
                                                  <div class="radio">
                                                       <span class="text-left" >Left hip: </span>
-                                                      <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_3" value="">Yes</label>
-                                                      <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_3" value="">No</label>
+                                                      <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_3" <?php if($wca->isCheckedRadio($passessment->physical_assess_pelvis_hip_posture_screen_qn_3, 'Yes')){echo 'checked';}?> value="">Yes</label>
+                                                      <label class="radio-inline"><input type="radio" name ="physical_assess_pelvis_hip_posture_screen_qn_3" <?php if($wca->isCheckedRadio($passessment->physical_assess_pelvis_hip_posture_screen_qn_3, 'No')){echo 'checked';}?> value="">No</label>
                                                       <label class="radio">Angle <input type="text" name ="physical_assess_pelvis_hip_posture_screen_qn_3_angle" class="form-control" value=""></label>
                                                   </div>
                                               </div>
@@ -719,19 +727,90 @@
                                                </tr> 
                                              </thead>
                                             <tbody>
-
-                                                <?php $count = 0; ?>
-                                                @while( $count < count($parts) )
-                                                <tr >
-                                                    <td width="100px" >{{$parts[$count]['name']}}</td>
-                                                    <td><label><input type="radio" name ="{{$parts[$count]['slug']}}" value="Yes"></label></td>
-                                                    <td><label><input type="radio" name ="{{$parts[$count]['slug']}}" value="No"></label></td>
+                             
+                                               <tr >
+                                                    <td width="100px" >Perlvis</td>
+                                                    <td><label><input type="radio" name ="perlvis" <?php if($wca->isCheckedRadio($hsimulation->perlvis, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
+                                                    <td><label><input type="radio" name ="perlvis" <?php if($wca->isCheckedRadio($hsimulation->perlvis, 'No')){echo 'checked';}?> value="No"></label></td>
                                                     <td class="text-center">
-                                                         <input type="text" name="{{$parts[$count]['slug']}}_{{$count}}" class="form-control" id="pwd">
+                                                         <input type="text" name="perlvis_0" class="form-control" id="pwd">
                                                     </td>
                                                </tr>
-                                               <?php $count++; ?>
-                                             @endwhile
+                                               <tr >
+                                                    <td width="100px" >Truck</td>
+                                                    <td><label><input type="radio" name ="truck" <?php if($wca->isCheckedRadio($hsimulation->truck, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
+                                                    <td><label><input type="radio" name ="truck" <?php if($wca->isCheckedRadio($hsimulation->truck, 'No')){echo 'checked';}?> value="No"></label></td>
+                                                    <td class="text-center">
+                                                         <input type="text" name="truck_1" class="form-control" id="pwd">
+                                                    </td>
+                                               </tr>
+                                               <tr >
+                                                    <td width="100px" >Head</td>
+                                                    <td><label><input type="radio" name ="head" <?php if($wca->isCheckedRadio($hsimulation->head, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
+                                                    <td><label><input type="radio" name ="head" <?php if($wca->isCheckedRadio($hsimulation->head, 'No')){echo 'checked';}?> value="No"></label></td>
+                                                    <td class="text-center">
+                                                         <input type="text" name="head_2" class="form-control" id="pwd">
+                                                    </td>
+                                               </tr>
+                                               <tr >
+                                                    <td width="100px" >L Hip</td>
+                                                    <td><label><input type="radio" name ="l_hip" <?php if($wca->isCheckedRadio($hsimulation->l_hip, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
+                                                    <td><label><input type="radio" name ="l_hip" <?php if($wca->isCheckedRadio($hsimulation->l_hip, 'No')){echo 'checked';}?> value="No"></label></td>
+                                                    <td class="text-center">
+                                                         <input type="text" name="l_hip_3" class="form-control" id="pwd">
+                                                    </td>
+                                               </tr>
+                                               <tr >
+                                                    <td width="100px" >R Hip</td>
+                                                    <td><label><input type="radio" name ="r_hip" <?php if($wca->isCheckedRadio($hsimulation->r_hip, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
+                                                    <td><label><input type="radio" name ="r_hip" <?php if($wca->isCheckedRadio($hsimulation->r_hip, 'No')){echo 'checked';}?> value="No"></label></td>
+                                                    <td class="text-center">
+                                                         <input type="text" name="r_hip_4" class="form-control" id="pwd">
+                                                    </td>
+                                               </tr>
+                                               <tr >
+                                                    <td width="100px" >Thighs</td>
+                                                    <td><label><input type="radio" name ="thighs" <?php if($wca->isCheckedRadio($hsimulation->thighs, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
+                                                    <td><label><input type="radio" name ="thighs" <?php if($wca->isCheckedRadio($hsimulation->thighs, 'No')){echo 'checked';}?> value="No"></label></td>
+                                                    <td class="text-center">
+                                                         <input type="text" name="thighs_5" class="form-control" id="pwd">
+                                                    </td>
+                                               </tr>
+                                               <tr >
+                                                    <td width="100px" >L Knee</td>
+                                                    <td><label><input type="radio" name ="l_knee" <?php if($wca->isCheckedRadio($hsimulation->l_knee, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
+                                                    <td><label><input type="radio" name ="l_knee" <?php if($wca->isCheckedRadio($hsimulation->l_knee, 'No')){echo 'checked';}?> value="No"></label></td>
+                                                    <td class="text-center">
+                                                         <input type="text" name="l_knee_6" class="form-control" id="pwd">
+                                                    </td>
+                                               </tr>
+                                               <tr >
+                                                    <td width="100px" >R Knee</td>
+                                                    <td><label><input type="radio" name ="r_knee" <?php if($wca->isCheckedRadio($hsimulation->r_knee, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
+                                                    <td><label><input type="radio" name ="r_knee" <?php if($wca->isCheckedRadio($hsimulation->r_knee, 'No')){echo 'checked';}?> value="No"></label></td>
+                                                    <td class="text-center">
+                                                         <input type="text" name="r_knee_7" class="form-control" id="pwd">
+                                                    </td>
+                                               </tr>
+                                              <tr >
+                                                    <td width="100px" >L Ankle</td>
+                                                    <td><label><input type="radio" name ="l_ankle" <?php if($wca->isCheckedRadio($hsimulation->l_ankle, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
+                                                    <td><label><input type="radio" name ="l_ankle" <?php if($wca->isCheckedRadio($hsimulation->l_ankle, 'No')){echo 'checked';}?> value="No"></label></td>
+                                                    <td class="text-center">
+                                                         <input type="text" name="l_ankle_8" class="form-control" id="pwd">
+                                                    </td>
+                                               </tr>
+                                               
+                                               <tr >
+                                                    <td width="100px" >R Ankle</td>
+                                                    <td><label><input type="radio" name ="r_ankle" <?php if($wca->isCheckedRadio($hsimulation->r_ankle, 'Yes')){echo 'checked';}?> value="Yes"></label></td>
+                                                    <td><label><input type="radio" name ="r_ankle" <?php if($wca->isCheckedRadio($hsimulation->r_ankle, 'No')){echo 'checked';}?> value="No"></label></td>
+                                                    <td class="text-center">
+                                                         <input type="text" name="r_ankle_9" class="form-control" id="pwd">
+                                                    </td>
+                                               </tr>
+                                              
+                                              
                                            </tbody>
                                         </table>
                                     </div>
@@ -817,7 +896,7 @@
                                                         <td></td>
                                                         <td rowspan="3" >= distance between top of the seat to top of backrest <br>(measure D, E or F –depending on the wheelchair user’s need)</td>
                                                         <td rowspan="3" >6</td>
-                                                        <td rowspan="3" >6</td>
+                                                        <td rowspan="3" ></td>
 
 
                                                 </tr>
@@ -918,3 +997,4 @@
                </div>
            </div>
       </div>
+</form>

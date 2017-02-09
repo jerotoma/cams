@@ -35,5 +35,9 @@ class Client extends Model
     {
         return $this::hasMany('\App\Referral','client_id');
     }
+    public function wheelChairAssessment()
+    {
+        return $this::hasMany('\App\WheelChairAssessment','client_id');
+    }
 
 }
