@@ -16,7 +16,7 @@
                 <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
                 <ul>
                     <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
-                    <li><a href="{{url('assessments/inclusion')}}">Inclusion assessment</a></li>
+                    <li><a href="{{url('assessments/functional')}}">Function Assessment</a></li>
                     <li><a href="{{url('assessments/wheelchair')}}">Wheelchair Assessment</a></li>
                     <li><a href="{{url('assessments/home')}}">PSN Needs/Home Assessment </a></li>
                     <li><a href="{{url('assessments/paediatric')}}">Paediatric Assessment </a></li>

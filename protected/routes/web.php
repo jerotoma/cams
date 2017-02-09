@@ -53,8 +53,9 @@ Route::get('list-all-referrals','ReferralController@getReferralList');
 Route::get('referrals-request','ReferralController@getReferralClientList');
 Route::get('referrals-request/{id}','ReferralController@create');
 Route::get('download/referrals/form/{id}','ReferralController@downloadPDF');
+
 //inclusion Assessments
-Route::resource('assessments/inclusion','VulnerabilityAssessmentController@inclusion');
+Route::resource('assessments/functional','FunctionalAssessmentController');
 //vulnerability Assessments
 Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
 Route::get('clients-va','VulnerabilityAssessmentController@showClients');

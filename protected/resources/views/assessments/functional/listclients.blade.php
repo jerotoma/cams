@@ -34,16 +34,16 @@
             // Basic datatable
             $('.datatable-basic').DataTable({
                 "scrollX": true,
-                ajax: '{{url('getpdlist')}}',
+                ajax: '{{url('getclientslist')}}',
                 "fnDrawCallback": function (oSettings) {
-                    $(".showRecord").click(function(){
+                    $(".showVulnerability").click(function(){
                         var id1 = $(this).parent().attr('id');
-                        var modaldis = '<div class="modal fade"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+                        var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
                         modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Paediatric Functional Assessment Details</span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Paediatric Function Assessments </span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -54,7 +54,31 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("assessments/paediatric") ?>/"+id1);
+                        $(".modal-body").load("<?php echo url("client/assessments/paediatric") ?>/"+id1+"");
+                        $("#myModal").on('hidden.bs.modal',function(){
+                            $("#myModal").remove();
+                        })
+
+                    });
+                    $(".showRecord").click(function(){
+                        var id1 = $(this).parent().attr('id');
+                        var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+                        modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+                        modaldis+= '<div class="modal-content">';
+                        modaldis+= '<div class="modal-header bg-primary">';
+                        modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Individual Paediatric Function Assessment Details</span>';
+                        modaldis+= '</div>';
+                        modaldis+= '<div class="modal-body">';
+                        modaldis+= ' </div>';
+                        modaldis+= '</div>';
+                        modaldis+= '</div>';
+                        $('body').css('overflow','hidden');
+
+                        $("body").append(modaldis);
+                        $("#myModal").modal("show");
+                        $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+                        $(".modal-body").load("<?php echo url("assessments/vulnerability") ?>/"+id1);
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
@@ -66,9 +90,9 @@
                         var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
                         modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
                         modaldis+= '<div class="modal-content">';
-                        modaldis+= '<div class="modal-header bg-indigo">';
+                        modaldis+= '<div class="modal-header bg-primary">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Paediatric Functional Assessment Details </span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Paediatric Function Assessment Details </span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -149,6 +173,8 @@
 
         });
         // AJAX sourced data
+
+
         function closePrint () {
             document.body.removeChild(this.__container__);
         }
@@ -171,29 +197,6 @@
             oHiddFrame.src = sURL;
             document.body.appendChild(oHiddFrame);
         }
-        $(".addRecord").click(function(){
-            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
-            modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header bg-indigo">';
-            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="text-center text-capitalize" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Paediatric Functional Assessment form </span>';
-            modaldis+= '</div>';
-            modaldis+= '<div class="modal-body">';
-            modaldis+= ' </div>';
-            modaldis+= '</div>';
-            modaldis+= '</div>';
-            $('body').css('overflow','hidden');
-
-            $("body").append(modaldis);
-            $("#myModal").modal("show");
-            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("assessments/paediatric/create") ?>");
-            $("#myModal").on('hidden.bs.modal',function(){
-                $("#myModal").remove();
-            })
-
-        });
     </script>
 
 @stop
@@ -204,26 +207,26 @@
     Paediatric Functional Assessment
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Paediatric Functional Assessment  </span> </h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Paediatric Functional Assessment </span> </h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li><a href="{{url('assessments/paediatric')}}">Paediatric Functional Assessment </a></li>
+        <li><a href="{{url('assessments/paediatric')}}">Paediatric Functional Assessment</a></li>
     </ul>
 @stop
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="#" class="addRecord btn "><i class="fa fa-plus text-success"></i> <span>Assess Client</span></a>
-            <a  href="{{url('assessments/paediatric')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All Assessments</span></a>
-            <a  href="{{url('import/assessments/paediatric')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
+            <a  href="{{url('clients-pd')}}" class=" btn btn-primary"><i class="fa fa-search text-success"></i> <span>Search Client</span></a>
+            <a  href="{{url('assessments/paediatric')}}" class="btn btn-primary "><i class="fa fa-list text-info"></i> <span>List All Assessments</span></a>
+            <a  href="{{url('import/assessments/paediatric')}}" class="btn btn-primary"><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
         </div>
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-bold">Paediatric Functional Assessments</h5>
+            <h5 class="panel-title text-bold"> <i class="fa fa-users"></i> Clients Search</h5>
         </div>
 
         <div class="panel-body">
@@ -237,8 +240,9 @@
                 <th>Full Name</th>
                 <th>Sex</th>
                 <th>Age</th>
-                <th>Form Details</th>
-                <th class="text-center">Actions</th>
+                <th>Origin</th>
+                <th>Date arrival</th>
+                <th class="text-center">Form Details</th>
             </tr>
             </thead>
 

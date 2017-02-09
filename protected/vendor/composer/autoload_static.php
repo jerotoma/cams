@@ -400,6 +400,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'CreateFormsFieldsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_27_164700_create_forms_fields_table.php',
         'CreateFormsGroupFieldsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_27_164647_create_forms_group_fields_table.php',
         'CreateFormsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_27_164135_create_forms_table.php',
+        'CreateFunctionalAssessmentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_09_124355_create_functional_assessments_table.php',
         'CreateHandSimulationsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_07_163248_create_hand_simulations_table.php',
         'CreateHomeAssessmentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_01_002744_create_home_assessments_table.php',
         'CreateHousholdProfilesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_20_103359_create_houshold_profiles_table.php',

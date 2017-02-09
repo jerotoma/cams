@@ -43,7 +43,7 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Paediatric Functional Assessment Details</span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i>  Functional Assessment Details</span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -54,7 +54,7 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("assessments/paediatric") ?>/"+id1);
+                        $(".modal-body").load("<?php echo url("assessments/functional") ?>/"+id1);
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
@@ -68,7 +68,7 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Paediatric Functional Assessment Details </span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Functional Assessment Details </span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -79,7 +79,7 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("assessments/paediatric") ?>/"+id1+"/edit");
+                        $(".modal-body").load("<?php echo url("assessments/functional") ?>/"+id1+"/edit");
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
@@ -98,7 +98,7 @@
                         $("#yes").click(function(){
                             $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
                             $.ajax({
-                                url:"<?php echo url('assessments/paediatric') ?>/"+id1,
+                                url:"<?php echo url('assessments/functional') ?>/"+id1,
                                 type: 'post',
                                 data: {_method: 'delete', _token :"{{csrf_token()}}"},
                                 success:function(msg){
@@ -177,7 +177,7 @@
             modaldis+= '<div class="modal-content">';
             modaldis+= '<div class="modal-header bg-indigo">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="text-center text-capitalize" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Paediatric Functional Assessment form </span>';
+            modaldis+= '<span id="myModalLabel" class="text-center text-capitalize" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Functional Assessment form </span>';
             modaldis+= '</div>';
             modaldis+= '<div class="modal-body">';
             modaldis+= ' </div>';
@@ -188,7 +188,7 @@
             $("body").append(modaldis);
             $("#myModal").modal("show");
             $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("assessments/paediatric/create") ?>");
+            $(".modal-body").load("<?php echo url("assessments/functional/create") ?>");
             $("#myModal").on('hidden.bs.modal',function(){
                 $("#myModal").remove();
             })
@@ -201,29 +201,29 @@
     @include('inc.main_navigation')
 @stop
 @section('page_title')
-    Paediatric Functional Assessment
+    Functional Assessment
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Paediatric Functional Assessment  </span> </h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Functional Assessment  </span> </h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li><a href="{{url('assessments/paediatric')}}">Paediatric Functional Assessment </a></li>
+        <li><a href="{{url('assessments/functional')}}">Functional Assessment </a></li>
     </ul>
 @stop
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="#" class="addRecord btn "><i class="fa fa-plus text-success"></i> <span>Assess Client</span></a>
-            <a  href="{{url('assessments/paediatric')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All Assessments</span></a>
-            <a  href="{{url('import/assessments/paediatric')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
+            <a  href="#" class="addRecord btn"><i class="fa fa-plus text-success"></i> <span>Assess Client</span></a>
+            <a  href="{{url('assessments/functional')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All Assessments</span></a>
+            <a  href="{{url('import/assessments/functional')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
         </div>
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-bold">Paediatric Functional Assessments</h5>
+            <h5 class="panel-title text-bold">Functional Assessments</h5>
         </div>
 
         <div class="panel-body">

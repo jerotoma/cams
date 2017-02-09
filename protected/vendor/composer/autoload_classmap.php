@@ -29,6 +29,7 @@ return array(
     'CreateFormsFieldsTable' => $baseDir . '/database/migrations/2017_01_27_164700_create_forms_fields_table.php',
     'CreateFormsGroupFieldsTable' => $baseDir . '/database/migrations/2017_01_27_164647_create_forms_group_fields_table.php',
     'CreateFormsTable' => $baseDir . '/database/migrations/2017_01_27_164135_create_forms_table.php',
+    'CreateFunctionalAssessmentsTable' => $baseDir . '/database/migrations/2017_02_09_124355_create_functional_assessments_table.php',
     'CreateHandSimulationsTable' => $baseDir . '/database/migrations/2017_02_07_163248_create_hand_simulations_table.php',
     'CreateHomeAssessmentsTable' => $baseDir . '/database/migrations/2017_02_01_002744_create_home_assessments_table.php',
     'CreateHousholdProfilesTable' => $baseDir . '/database/migrations/2017_01_20_103359_create_houshold_profiles_table.php',
