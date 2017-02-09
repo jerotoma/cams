@@ -1,3 +1,36 @@
+<script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
+<script>
+    $(function() {
+        $.extend( $.fn.dataTable.defaults, {
+            autoWidth: false,
+            dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
+            language: {
+                search: '<span>Filter:</span> _INPUT_',
+                lengthMenu: '<span>Show:</span> _MENU_',
+                paginate: { 'first': 'First', 'last': 'Last', 'next': '&rarr;', 'previous': '&larr;' }
+            },
+            drawCallback: function () {
+                $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').addClass('dropup');
+            },
+            preDrawCallback: function() {
+                $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').removeClass('dropup');
+            }
+        });
+
+
+        // Basic datatable
+        $('.datatable-basic').DataTable({
+            "scrollX": false,
+            ajax: '{{url('getwaclientsjson')}}', //this url load JSON Client details to reduce loading time
+            "fnDrawCallback": function (oSettings) {
+            }
+        });
+    });
+
+</script>
 <div class="row setup-content" id="step-1">
         <div class="col-xs-12">
             <div class="col-md-12 well text-center">
@@ -5,7 +38,7 @@
                     <div class="form-group">
                             <div class="row clearfix">
                                 <div class="col-md-12 column">
-                                      <table class="table table-bordered table-hover" id="tab_logic">
+                                      <table class="table datatable-basic table-bordered table-hover" id="tab_logic">
                                         <thead>
                                             <tr >
                                                 <th class="text-center">
@@ -32,36 +65,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-											<?php $count = 1; ?>
-										@if(!empty($clients ))
-											@foreach($clients as $key => $client)
-
-												<tr id='addr0'>
-													<td class="text-center">
-														{{$count + $key }}
-													</td>
-													<td class="text-center">
-														{{$client->client_number}}
-													</td>
-													<td class="text-center">
-														{{$client->full_name}}
-													</td>
-													<td class="text-center">
-														{{$client->sex}}
-													</td>
-												   <td class="text-center">
-													   {{$client->origin}}
-													</td>
-													<td class="text-center">
-													   {{$client->date_arrival}}
-													</td>
-													<td class="text-center">
-														<label><input type="checkbox" name="client_id" value="{{$client->id}}"></label>
-													</td>
-												</tr>
-											       											
-												@endforeach
-											@endif
                                         </tbody>
                                     </table>
                                 </div>

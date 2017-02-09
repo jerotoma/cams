@@ -35,7 +35,47 @@ class WheelChairAssessmentController extends Controller
 	public function __construct(){
         $this->middleware('auth');
     }
-    
+
+    //This function load on background the list of clients to be shown on client selection this minimize load time for the
+    //Situation having many clients
+    public function  getJSonClientData()
+    {
+        //
+        $clients=Client::orderBy('full_name','ASC')->get();
+        $iTotalRecords =count(Client::all());
+        $sEcho = intval(10);
+
+        $records = array();
+        $records["data"] = array();
+
+
+        $count=1;
+        foreach($clients as $client) {
+            $origin="";
+            $status="";
+
+            if(is_object($client->nationality) && $client->nationality != null )
+            {
+                $origin=$client->nationality->country_name;
+            }
+            $records["data"][] = array(
+                $count++,
+                $client->client_number,
+                $client->full_name,
+                $client->sex,
+                $origin,
+                date('d M Y',strtotime($client->date_arrival)),
+                '<label><input type="radio" name="client_id" value="'.$client->id.' "></label>',
+            );
+        }
+
+
+        $records["draw"] = $sEcho;
+        $records["recordsTotal"] = $iTotalRecords;
+        $records["recordsFiltered"] = $iTotalRecords;
+
+        echo json_encode($records);
+    }
     /**
      * Display a listing of the resource.
      *

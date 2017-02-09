@@ -18,8 +18,8 @@
 			     </div>
 			     <div class="col-md-6">
 					 <div class="form-group form-inline">
-                         <label>Date of assessment:  </label> 
-						   <input class="form-control" type="text" name="assessor_name" value="{{$wc_assessment->created_at}}">  
+                          <label>Date of assessment:  </label> 
+                           <input class="form-control" type="text" name="assessor_name" value="{{$wc_assessment->created_at}}">  
 					</div>
 				</div>
 			 </div>
@@ -91,11 +91,10 @@
                                 </div>
                             </div>
                         </div>
-                            <!-- <a id="add_row" class="btn btn-success pull-left">Add Row</a><a id='delete_row' class="btn btn-danger pull-right">Delete Row</a> -->
+
                    <div class="form-group form-inline">
                        <label>Goals : </label>
                        <input class="form-control" type="text" name="cliend_goal" value="{{$wc_assessment->id}}">  
-	
                   </div>
               
               </div>

@@ -24,7 +24,6 @@ class PaediatricAssessmentController extends Controller
         return view('assessments.paediatric.index',compact('assessments'));
 
     }
-
     public function showClients()
     {
         return view('assessments.paediatric.listclients');
@@ -105,10 +104,10 @@ class PaediatricAssessmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
         //
-        return view('assessments.paediatric.create',compact('client'));
+        return view('assessments.paediatric.create');
 
     }
 

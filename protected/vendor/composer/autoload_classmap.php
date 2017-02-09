@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddcentreNametopaediatric' => $baseDir . '/database/migrations/2017_02_08_225621_addcentre_nametopaediatric.php',
     'Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
     'CreateAssessmentEconomicSituationsTable' => $baseDir . '/database/migrations/2017_01_23_151245_create_assessment_economic_situations_table.php',
     'CreateAssessmentHousholdProfilesTable' => $baseDir . '/database/migrations/2017_01_23_145703_create_assessment_houshold_profiles_table.php',

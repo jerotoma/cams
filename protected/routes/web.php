@@ -66,7 +66,7 @@ Route::get('vulnerability-assessment/download/{id}','VulnerabilityAssessmentCont
 Route::resource('assessments/paediatric','PaediatricAssessmentController');
 Route::get('clients-pd','PaediatricAssessmentController@showClients');
 Route::get('getpdlist','PaediatricAssessmentController@getJSonDataSearch');
-Route::get('client/assessments/paediatric/{id}','PaediatricAssessmentController@showClientVulnerability');
+Route::get('client/assessments/paediatric/{id}','PaediatricAssessmentController@showClientPaediatric');
 Route::get('paediatric-assessment/download/{id}','PaediatricAssessmentController@downloadForm');
 
 //PSN Needs/Home assessment Form
@@ -110,10 +110,12 @@ Route::post('inventory/disbursement/import','ItemsDisbursementController@postImp
 Route::get('inventory/disbursement/import/errors','ItemsDisbursementController@showImportErrors');
 
 //WheelChairAssessment
- Route::resource('assessments/wheelchair','WheelChairAssessmentController@index');
- Route::post('assessments/wheelchair/wheelchairassessment','WheelChairAssessmentController@postData');
- Route::post('assessments/wheelchair/edit/{id}','WheelChairAssessmentController@update');
- Route::get('wheelchair/view/{id}','WheelChairAssessmentController@show');
+
+Route::get('getwaclientsjson','WheelChairAssessmentController@getJSonClientData');
+Route::resource('assessments/wheelchair','WheelChairAssessmentController@index');
+Route::post('assessments/wheelchair/wheelchairassessment','WheelChairAssessmentController@postData');
+Route::get('wheelchair/view/{id}','WheelChairAssessmentController@show');
+
  
 //ItemsReceivingController
 

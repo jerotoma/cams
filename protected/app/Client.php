@@ -23,6 +23,10 @@ class Client extends Model
     {
         return $this::hasOne('\App\VulnerabilityAssessment','client_id');
     }
+    public function pdlAssessment()
+    {
+        return $this::hasOne('\App\PaediatricAssessment','client_id');
+    }
     public function needs()
     {
         return $this::hasOne('\App\HomeAssessment','client_id');

@@ -18,10 +18,10 @@ class CreatePaediatricAssessmentsTable extends Migration
             $table->integer('client_id')->unsigned();
             $table->string('full_name')->nullable();
             $table->string('rational_number')->nullable();
-            $table->string('unique_number')->nullable();
+            $table->string('unique_number')->unique();
             $table->string('home_name')->nullable();
             $table->string('sex')->nullable();
-            $table->string('birth_date')->nullable();
+            $table->date('birth_date')->nullable();
             $table->string('father_name')->nullable();
             $table->string('father_job')->nullable();
             $table->string('father_phone')->nullable();
