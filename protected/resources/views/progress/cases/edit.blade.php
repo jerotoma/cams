@@ -21,7 +21,7 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'referrals','role'=>'form','id'=>'formClients')) !!}
+        {!! Form::model($case, array('route' => array('cases.update', $case->id), 'method' => 'PUT','role'=>'form','id'=>'formCase')) !!}
         <div class="panel panel-flat">
 
 
@@ -34,38 +34,41 @@
                                 <label class="control-label">Open Date</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                    <input type="text" class="form-control pickadate"  value="{{old('open_date')}}" name="open_date" id="open_date">
+                                    <input type="text" class="form-control pickadate"  value="{{$case->open_date}}" name="open_date" id="open_date">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Case Type</label>
-                                <input type="text" class="form-control" name="case_type" id="case_type"  value="{{old('case_type')}}">
+                                <input type="text" class="form-control" name="case_type" id="case_type"  value="{{$case->case_type}}">
                             </div>
                         </div>
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Descriptions</label>
-                        <textarea  class="form-control" name="descriptions" id="descriptions" ></textarea>
+                        <textarea  class="form-control" name="descriptions" id="descriptions" ><?php echo $case->descriptions;?></textarea>
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Initial Action</label>
-                        <textarea  class="form-control" name="initial_action" id="initial_action" ></textarea>
+                        <textarea  class="form-control" name="initial_action" id="initial_action" ><?php echo $case->initial_action;?></textarea>
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Feedback</label>
-                        <textarea  class="form-control" name="feedback" id="feedback" ></textarea>
+                        <textarea  class="form-control" name="feedback" id="feedback" ><?php echo $case->feedback;?></textarea>
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Planning</label>
-                        <textarea  class="form-control" name="feedback" id="feedback" ></textarea>
+                        <textarea  class="form-control" name="planning" id="planning" ><?php echo $case->feedback;?></textarea>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Camp</label>
                                 <select name="camp_id" id="camp_id" data-placeholder="Choose an option..." class="select withOthers">
+                                    @if(is_object($case->camp) && $case->camp != null )
+                                        <option value="{{$case->camp->id}}" selected>{{$case->camp->camp_name}}</option>
+                                        @endif
                                     <option></option>
                                     @foreach(\App\Camp::all() as $camp)
                                         <option value="{{$camp->id}}">{{$camp->camp_name}}</option>
@@ -77,6 +80,9 @@
                             <div class="form-group ">
                                 <label class="control-label">Status</label>
                                 <select name="status" id="status" data-placeholder="Choose an option..." class="select withOthers">
+                                    @if($case->status !="" && $case->status != null )
+                                        <option value="{{$case->status}}" selected>{{$case->status}}</option>
+                                    @endif
                                     <option></option>
                                     <option value="Open Case">Open Case</option>
                                     <option value="Assessment">Assessment</option>
@@ -89,7 +95,7 @@
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Case Worker Name</label>
-                        <input type="number" class="form-control" placeholder="case_worker_name" name="case_worker_name" id="case_worker_name" value="{{old('case_worker_name')}}">
+                        <input type="text" class="form-control" placeholder="case_worker_name" name="case_worker_name" id="case_worker_name" value="{{$case->case_worker_name}}">
                     </div>
                 </fieldset>
                 <div class="row">
@@ -98,7 +104,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 pull-right text-right">
                         <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-refresh"></i> Sumbit Form </button>
                     </div>
 
                 </div>
@@ -127,7 +133,7 @@
         }
     });
 
-    $("#formClients").validate({
+    $("#formCase").validate({
         ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
         errorClass: 'validation-error-label',
         successClass: 'validation-valid-label',
@@ -137,47 +143,73 @@
         unhighlight: function(element, errorClass) {
             $(element).removeClass(errorClass);
         },
+        errorPlacement: function(error, element) {
+
+            // Styled checkboxes, radios, bootstrap switch
+            if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container') ) {
+                if(element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                    error.appendTo( element.parent().parent().parent().parent() );
+                }
+                else {
+                    error.appendTo( element.parent().parent().parent().parent().parent() );
+                }
+            }
+
+            // Unstyled checkboxes, radios
+            else if (element.parents('div').hasClass('checkbox') || element.parents('div').hasClass('radio')) {
+                error.appendTo( element.parent().parent().parent() );
+            }
+
+            // Input with icons and Select2
+            else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
+                error.appendTo( element.parent() );
+            }
+
+            // Inline checkboxes, radios
+            else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                error.appendTo( element.parent().parent() );
+            }
+
+            // Input group, styled file input
+            else if (element.parent().hasClass('uploader') || element.parents().hasClass('input-group')) {
+                error.appendTo( element.parent().parent() );
+            }
+
+            else {
+                error.insertAfter(element);
+            }
+        },
         errorElement:'div',
         rules: {
-            organization: "required",
-            progress_number: "required",
-            referral_date: "required",
-            completed_by: "required",
-            age: {
-                number: true
-            },
+            open_date: "required",
+            case_type: "required",
+            descriptions: "required",
+            initial_action: "required",
             case_name: "required",
-            referred_to: "required",
-            referred_to_position: "required",
-            org_phone: "required",
-            org_email:{
-                email:true,
-            },
+            feedback: "required",
+            planning: "required",
+            case_worker_name: "required",
             location: "required",
-            primary_concern: "required",
+            status: "required",
+            camp_id: "required",
         },
         messages: {
-            organization: "Please this field is required",
-            progress_number: "Please this field is required",
-            referral_date: "Please field is required",
+            open_date: "Please this field is required",
+            case_type: "Please this field is required",
+            descriptions: "Please field is required",
             completed_by: "Please this field is required",
-            age:{
-                number:"Please enter valid age",
-            } ,
             case_name: "Please this field is required",
-            referred_to: "Please this field is required",
-            referred_to_position: "Please this field is required",
+            feedback: "Please this field is required",
+            planning: "Please this field is required",
             primary_concern: "Please this field is required",
-            org_phone: "Please this field is required",
-            org_email:{
-                email:"Please enter valid data",
-            },
-            location: "Please this field is required"
+            case_worker_name: "Please this field is required",
+            status: "Please this field is required",
+            camp_id: "Please this field is required"
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-            var postData = $('#formClients').serializeArray();
-            var formURL = $('#formClients').attr("action");
+            var postData = $('#formCase').serializeArray();
+            var formURL = $('#formCase').attr("action");
             $.ajax(
                 {
                     url : formURL,
@@ -186,7 +218,7 @@
                     success: function(data){
                         swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                         setTimeout(function() {
-                            location.replace("{{url('referrals')}}");
+                            location.replace("{{url('cases')}}");
                             $("#output").html("");
                         }, 2000);
                     },

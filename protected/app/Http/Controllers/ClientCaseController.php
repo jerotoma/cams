@@ -47,7 +47,11 @@ class ClientCaseController extends Controller
         foreach($cases as $case) {
             $origin="";
             $status="";
-
+            $camp="";
+            if(is_object($case->camp) && $case->camp != null )
+            {
+                $camp=$case->camp->camp_name;
+            }
             $vcolor="label-danger";
 
 
@@ -55,9 +59,10 @@ class ClientCaseController extends Controller
                 $count++,
                 $case->reference_number,
                 $case->client->full_name,
-                $case->client->sex,
                 $case->client->age,
+                $case->client->sex,
                 $case->open_date,
+                $camp,
                 $case->case_type,
                 $case->status,
                 '<ul class="icons-list text-center">
@@ -163,6 +168,8 @@ class ClientCaseController extends Controller
     public function show($id)
     {
         //
+        $case=ClientCase::findorfail($id);
+        return view('progress.cases.show',compact('case'));
     }
 
     /**
@@ -174,6 +181,8 @@ class ClientCaseController extends Controller
     public function edit($id)
     {
         //
+        $case=ClientCase::findorfail($id);
+        return view('progress.cases.edit',compact('case'));
     }
 
     /**
@@ -186,6 +195,48 @@ class ClientCaseController extends Controller
     public function update(Request $request, $id)
     {
         //
+        try {
+            $validator = Validator::make($request->all(), [
+                'open_date' => 'required',
+                'case_type' => 'required',
+                'descriptions' => 'required',
+                'case_worker_name' => 'required',
+                'camp_id' => 'required',
+                'status' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $case= ClientCase::findorfail($id);
+                $case->open_date= date("Y-m-d",strtotime($request->open_date));
+                $case->case_type= $request->case_type;
+                $case->descriptions= $request->descriptions;
+                $case->initial_action= $request->initial_action;
+                $case->feedback= $request->feedback;
+                $case->planning= $request->planning;
+                $case->case_worker_name= $request->case_worker_name;
+                $case->status= $request->status;
+                $case->updated_by= Auth::user()->id;
+                $case->status= $request->status;
+                $case->camp_id= $request->camp_id;
+                $case->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => "Record saved"
+                ], 200);
+
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**
@@ -197,5 +248,7 @@ class ClientCaseController extends Controller
     public function destroy($id)
     {
         //
+        $case= ClientCase::findorfail($id);
+        $case->delete();
     }
 }

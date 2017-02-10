@@ -212,7 +212,7 @@
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Planning</label>
-                        <textarea  class="form-control" name="feedback" id="feedback" ></textarea>
+                        <textarea  class="form-control" name="planning" id="planning" ></textarea>
                     </div>
                     <div class="row">
                         <div class="col-md-6">

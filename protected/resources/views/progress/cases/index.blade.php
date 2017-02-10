@@ -236,11 +236,26 @@
                 <th>Age</th>
                 <th>Sex</th>
                 <th>Open Date</th>
+                <th>Camp</th>
                 <th>Case Type</th>
                 <th>Status</th>
                 <th class="text-center">Actions</th>
             </tr>
             </thead>
+            <tfoot>
+            <tr>
+                <th></th>
+                <th>Reference #</th>
+                <th>Full Name</th>
+                <th>Age</th>
+                <th>Sex</th>
+                <th>Open Date</th>
+                <th>Camp</th>
+                <th>Case Type</th>
+                <th>Status</th>
+                <th class="text-center"></th>
+            </tr>
+            </tfoot>
 
         </table>
     </div>
