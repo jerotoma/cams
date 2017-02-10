@@ -1,20 +1,118 @@
-<div class="row setup-content" id="inclusion-step-2">
-        <div class="col-xs-12">
-            <div class="col-md-12 well text-center">
-                <h1>Select client to assess</h1>
-                    <div class="form-group">
-                            <div class="row clearfix">
-                                <div class="col-md-12 column">
-                                      2
-                                </div>
-                            </div>
-                        </div>
-                            <!-- <a id="add_row" class="btn btn-success pull-left">Add Row</a><a id='delete_row' class="btn btn-danger pull-right">Delete Row</a> -->
-                   <div class="form-group">
-                    <button id="inclusion-activate-step-3" class="btn btn-info btn-md">Continue to Assessment Interview</button>
-                  </div>
-              
-              </div>
-        </div>
-    </div>
-             
+ <fieldset>
+	<div class="form-top">
+		<div class="form-top-left">
+			<h3 class="text-center section-info"></span>Section <span class="section">2</span> out of <span class="section">6</span> sections </h3>
+			<h1 class="text-center section-title ">Individual Particulars</h1>
+		</div>
+	</div>
+	<div class="form-bottom">
+		<div class="row">
+			 <div class="col-md-12 well">
+				  <div class="form-group">
+						<div class="row">
+							<div class="col-md-3 first table-client"> 
+								<span class="table-title">Client Name :</span>
+							</div>
+							<div class="col-md-3 table-client">
+							   Otoman Nkomanya 
+							</div>
+							<div class="col-md-3 table-client">
+							 <span class="table-title"> Ration Card No:</span>			
+							</div>
+							<div class="col-md-3 last table-client">
+							   5656	
+							</div>
+					    </div>
+					    <div class="row">
+							<div class="col-md-3 first table-client"> 
+								<span class="table-title">Gender :</span>
+							</div>
+							<div class="col-md-3 table-client">
+							   Otoman Nkomanya 
+							</div>
+							<div class="col-md-3 table-client">
+							 <span class="table-title">Age:</span>			
+							</div>
+							<div class="col-md-3 last table-client">
+							   5656	
+							</div>
+					    </div>
+				         <div class="row">
+							<div class="col-md-3 first table-client"> 
+								<span class="table-title">Camp :</span>
+							</div>
+							<div class="col-md-3 table-client">
+							   Otoman Nkomanya 
+							</div>
+							<div class="col-md-3 table-client">
+							 <span class="table-title">&nbsp;</span>			
+							</div>
+							<div class="col-md-3 last table-client">
+							   5656	
+							</div>
+					    </div>
+				         <div class="row">
+							<div class="col-md-3 first table-client"> 
+								<span class="table-title"> Address:</span>
+							</div>
+							<div class="col-md-3 table-client">
+							   Otoman Nkomanya 
+							</div>
+							<div class="col-md-3 table-client">
+							 <span class="table-title"> Unique No :</span>			
+							</div>
+							<div class="col-md-3 last table-client">
+							   5656	
+							</div>
+					    </div>
+					    <div class="row">
+							<div class="col-md-3 first table-client"> 
+								<span class="table-title">Religion :</span>
+							</div>
+							<div class="col-md-3 table-client">
+							   Otoman Nkomanya 
+							</div>
+							<div class="col-md-3 table-client">
+							 <span class="table-title"> Country of Origin:</span>			
+							</div>
+							<div class="col-md-3 last table-client">
+							   5656	
+							</div>
+					    </div>
+				         <div class="row">
+							<div class="col-md-3 first table-client"> 
+								<span class="table-title">Gadian Name :</span>
+							</div>
+							<div class="col-md-3 table-client">
+							   Otoman Nkomanya 
+							</div>
+							<div class="col-md-3 table-client">
+							 <span class="table-title"> Age of Guardian:</span>			
+							</div>
+							<div class="col-md-3 last table-client">
+							   5656	
+							</div>
+					    </div>
+				        <div class="row">
+							<div class="col-md-3 first table-client"> 
+								<span class="table-title">Date of Assessment :</span>
+							</div>
+							<div class="col-md-3 table-client">
+							   Otoman Nkomanya 
+							</div>
+							<div class="col-md-3 table-client">
+							 <span class="table-title"> Assessor's Name:</span>			
+							</div>
+							<div class="col-md-3 last table-client">
+							   5656	
+							</div>
+					    </div>
+				 </div>
+				 <div class="form-group"> 
+					<button type="button" class="btn btn-previous">Previous</button>
+					<button type="button" class="btn btn-next">Next</button>
+				</div>
+		      </div>
+		</div>
+  </div>
+</fieldset>

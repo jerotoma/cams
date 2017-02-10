@@ -23,7 +23,11 @@
     <script type="text/javascript" src="{{asset("assets/js/plugins/loaders/blockui.min.js")}}"></script>
     <!-- /core JS files -->
 
-    <!-- Theme JS files -->
+    <!-- Theme css files -->
+    @yield('page_css')
+
+    <!-- /theme css files -->
+<!-- Theme JS files -->
     @yield('page_js')
 
     <!-- /theme JS files -->

@@ -1,4 +1,7 @@
 @extends('site.master')
+@section('page_css')
+   @include('assessments.inclusion.inc.inclusion_css') 
+@stop
 @section('page_js')
     @include('inc.page_js')
 @stop
@@ -32,7 +35,7 @@
             <h5 class="panel-title">Inclusion Assessments</h5>
         </div>
         <div class="panel-body">
-            @include('assessments.inclusion.inc.list_all')
+           
         </div>
     </div>
    <!-- Modal -->
@@ -46,7 +49,7 @@
         <h4 class="modal-title text-center">Client Inclusion Assessment</h4>
       </div>
       <div class="modal-body">
-         @include('assessments.inclusion.inc.inclusionassessment')
+            @include('assessments.inclusion.inc.inclusionassessment')
       </div>
       <div class="modal-footer">
         <button type="button" class="btn bg-indigo" data-dismiss="modal">Close</button>
@@ -55,6 +58,5 @@
 
   </div>
 </div>
-  @include('assessments.inclusion.inc.inclusion_js')
-
+ @include('assessments.inclusion.inc.inclusion_js') 
 @stop
