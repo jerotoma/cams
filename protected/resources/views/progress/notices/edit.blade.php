@@ -21,54 +21,54 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::model($case, array('route' => array('cases.update', $case->id), 'method' => 'PUT','role'=>'form','id'=>'formCase')) !!}
+        {!! Form::model($notice, array('route' => array('notices.update', $notice->id), 'method' => 'PUT','role'=>'form','id'=>'formNotice')) !!}
         <div class="panel panel-flat">
 
 
             <div class="panel-body">
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold"><h3 class="text-center text-bold">Case Details</h3></legend>
+                    <legend class="text-bold"><h3 class="text-center text-bold">Notice Details</h3></legend>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Open Date</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                    <input type="text" class="form-control pickadate"  value="{{$case->open_date}}" name="open_date" id="open_date">
+                                    <input type="text" class="form-control pickadate"  value="{{$notice->open_date}}" name="open_date" id="open_date">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Case Type</label>
-                                <input type="text" class="form-control" name="case_type" id="case_type"  value="{{$case->case_type}}">
+                                <label class="control-label">Case Worker Name</label>
+                                <input type="text" class="form-control" placeholder="case_worker_name" name="case_worker_name" id="case_worker_name" value="{{$notice->case_worker_name}}">
                             </div>
                         </div>
                     </div>
                     <div class="form-group ">
-                        <label class="control-label">Descriptions</label>
-                        <textarea  class="form-control" name="descriptions" id="descriptions" ><?php echo $case->descriptions;?></textarea>
+                        <label class="control-label">Subjective Information</label>
+                        <textarea  class="form-control" name="subjective_information" id="subjective_information" ><?php echo $notice->subjective_information;?></textarea>
                     </div>
                     <div class="form-group ">
-                        <label class="control-label">Initial Action</label>
-                        <textarea  class="form-control" name="initial_action" id="initial_action" ><?php echo $case->initial_action;?></textarea>
+                        <label class="control-label">Objective Information</label>
+                        <textarea  class="form-control" name="objective_information" id="objective_information" ><?php echo $notice->objective_information;?></textarea>
                     </div>
                     <div class="form-group ">
-                        <label class="control-label">Feedback</label>
-                        <textarea  class="form-control" name="feedback" id="feedback" ><?php echo $case->feedback;?></textarea>
+                        <label class="control-label">Analysis</label>
+                        <textarea  class="form-control" name="analysis" id="analysis" ><?php echo $notice->analysis;?></textarea>
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Planning</label>
-                        <textarea  class="form-control" name="planning" id="planning" ><?php echo $case->planning;?></textarea>
+                        <textarea  class="form-control" name="planning" id="planning" ><?php echo $notice->planning;?></textarea>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Camp</label>
                                 <select name="camp_id" id="camp_id" data-placeholder="Choose an option..." class="select withOthers">
-                                    @if(is_object($case->camp) && $case->camp != null )
-                                        <option value="{{$case->camp->id}}" selected>{{$case->camp->camp_name}}</option>
-                                        @endif
+                                    @if(is_object($notice->camp) && $notice->camp != null )
+                                        <option value="{{$notice->camp->id}}" selected>{{$notice->camp->camp_name}}</option>
+                                    @endif
                                     <option></option>
                                     @foreach(\App\Camp::all() as $camp)
                                         <option value="{{$camp->id}}">{{$camp->camp_name}}</option>
@@ -80,8 +80,8 @@
                             <div class="form-group ">
                                 <label class="control-label">Status</label>
                                 <select name="status" id="status" data-placeholder="Choose an option..." class="select withOthers">
-                                    @if($case->status !="" && $case->status != null )
-                                        <option value="{{$case->status}}" selected>{{$case->status}}</option>
+                                    @if($notice->status !="" && $notice->status != null )
+                                        <option value="{{$notice->status}}" selected>{{$notice->status}}</option>
                                     @endif
                                     <option></option>
                                     <option value="Open Case">Open Case</option>
@@ -93,10 +93,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group ">
-                        <label class="control-label">Case Worker Name</label>
-                        <input type="text" class="form-control" placeholder="case_worker_name" name="case_worker_name" id="case_worker_name" value="{{$case->case_worker_name}}">
-                    </div>
                 </fieldset>
                 <div class="row">
                     <div class="col-md-8 col-sm-8 pull-left" id="output">
@@ -104,7 +100,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 pull-right text-right">
                         <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-refresh"></i> Sumbit Form </button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
                     </div>
 
                 </div>
@@ -133,7 +129,7 @@
         }
     });
 
-    $("#formCase").validate({
+    $("#formNotice").validate({
         ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
         errorClass: 'validation-error-label',
         successClass: 'validation-valid-label',
@@ -182,34 +178,26 @@
         errorElement:'div',
         rules: {
             open_date: "required",
-            case_type: "required",
-            descriptions: "required",
-            initial_action: "required",
-            case_name: "required",
-            feedback: "required",
+            subjective_information: "required",
+            objective_information: "required",
+            analysis: "required",
             planning: "required",
             case_worker_name: "required",
-            location: "required",
-            status: "required",
-            camp_id: "required",
+            status: "required"
         },
         messages: {
             open_date: "Please this field is required",
-            case_type: "Please this field is required",
-            descriptions: "Please field is required",
-            completed_by: "Please this field is required",
-            case_name: "Please this field is required",
-            feedback: "Please this field is required",
+            subjective_information: "Please this field is required",
+            objective_information: "Please field is required",
+            analysis: "Please this field is required",
             planning: "Please this field is required",
-            primary_concern: "Please this field is required",
             case_worker_name: "Please this field is required",
-            status: "Please this field is required",
-            camp_id: "Please this field is required"
+            status: "Please this field is required"
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-            var postData = $('#formCase').serializeArray();
-            var formURL = $('#formCase').attr("action");
+            var postData = $('#formNotice').serializeArray();
+            var formURL = $('#formNotice').attr("action");
             $.ajax(
                 {
                     url : formURL,
@@ -218,7 +206,7 @@
                     success: function(data){
                         swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                         setTimeout(function() {
-                            location.replace("{{url('cases')}}");
+                            location.replace("{{url('progressive/notices')}}");
                             $("#output").html("");
                         }, 2000);
                     },

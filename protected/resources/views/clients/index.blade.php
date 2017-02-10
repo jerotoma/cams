@@ -306,6 +306,7 @@
         <table class="table datatable-basic table-hover">
             <thead>
             <tr>
+                <th>No</th>
                 <th>Client No</th>
                 <th>Full Name</th>
                 <th>Sex</th>

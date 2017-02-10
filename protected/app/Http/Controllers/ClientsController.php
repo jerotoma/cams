@@ -123,7 +123,7 @@ class ClientsController extends Controller
                 $vcolor="label-success";
             }
             $records["data"][] = array(
-
+                $count++,
                 $client->client_number,
                 $client->full_name,
                 $client->sex,

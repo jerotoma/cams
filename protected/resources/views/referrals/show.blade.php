@@ -8,6 +8,12 @@
 <div class="portlet-body form">
     <div class="row">
         <div class="col-md-12 col-xs-12 text-center">
+            <img src="{{asset('assets/images/helpage.png')}}" width="100px" height="100px"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-xs-12 text-center">
+            <h3><strong>HelpAge International</strong></h3>
             <h4><strong>
                     INTER – AGENCY REFERRAL FORM
                 </strong></h4>
@@ -29,9 +35,6 @@
                     <th class="col-md-2">Completed by: </th>
                     <td class="col-md-5">{{$referral->completed_by}} </td>
                 </tr>
-
-            </table>
-            <table class="table table-bordered" border="1" cellspacing="0" cellpadding="0">
                 <tr>
                     <th class="col-md-3">Name of Client Concerned: </th>
                     <td class="col-md-9" colspan="3">@if(is_object($referral->client) && $referral->client != null){{$referral->client->full_name}} @endif</td>
@@ -72,42 +75,36 @@
                     <th class="col-md-3"> Approached for assistance with plot/address: </th>
                     <td class="col-md-3" >{{$referral->person_name_address }}</td>
                 </tr>
-
-            </table>
-            <table class="table table-bordered">
                 <tr>
                     <th class="col-md-6">Consent Obtained to Share Information: </th>
                     <td class="col-md-6" colspan="3">{{$referral->consent}} </td>
                 </tr>
                 <tr>
                     <th class="col-md-6">Parental Consent provided if Client is Under 18 years of Age: </th>
-                    <td class="col-md-6">{{$referral->parental_consent}} </td>
+                    <td class="col-md-6" colspan="3">{{$referral->parental_consent}} </td>
                 </tr>
                 <tr>
                     <th class="col-md-6">Any Attachment included:  </th>
-                    <td class="col-md-6">{{$referral->attachment}} </td>
+                    <td class="col-md-6" colspan="3">{{$referral->attachment}} </td>
                 </tr>
-
-            </table>
-            <table class="table table-bordered">
                 <tr>
                     <th class="col-md-6">Initial Action Recommended or Taken: </th>
-                    <td class="col-md-6" colspan="3">{{$referral->initial_action}} </td>
+                    <td class="col-md-6" colspan="3"><?php echo $referral->initial_action; ?></td>
                 </tr>
                 <tr>
                     <th class="col-md-6">Timeframes agreed/proposed: </th>
-                    <td class="col-md-6" colspan="3">{{$referral->time_frames}} </td>
+                    <td class="col-md-6" colspan="3"><?php echo $referral->time_frames; ?></td>
                 </tr>
                 <tr>
                     <th class="col-md-12" colspan="4">Additional Comments Regarding Concern [any information volunteered by client]:  </th>
 
                 </tr>
                 <tr>
-                    <td class="col-md-12" colspan="4">{{$referral->additional_comments}} </td>
+                    <td class="col-md-12" colspan="4"><?php echo $referral->additional_comments; ?> </td>
                 </tr>
                 <tr>
                     <th class="col-md-3">Primary Concern: </th>
-                    <td class="col-md-9" colspan="3">{{$referral->primary_concern}} </td>
+                    <td class="col-md-9" colspan="3"><?php echo $referral->primary_concern; ?></td>
                 </tr>
 
             </table>

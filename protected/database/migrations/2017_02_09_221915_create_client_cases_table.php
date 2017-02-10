@@ -32,6 +32,8 @@ class CreateClientCasesTable extends Migration
             $table->integer('camp_id')->unsigned()->nullable();
             $table->foreign('client_id')->references('id')->on('clients')
                 ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('camp_id')->references('id')->on('camps')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
