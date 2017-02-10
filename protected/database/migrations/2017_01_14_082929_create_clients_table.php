@@ -23,7 +23,7 @@ class CreateClientsTable extends Migration
             $table->string('civil_status')->nullable();
             $table->string('spouse_name')->nullable();
             $table->string('care_giver')->nullable();
-            $table->integer('country_id')->nullable();
+            $table->integer('country_id')->unsigned()->nullable();
             $table->string('origin')->nullable();
             $table->string('district')->nullable();
             $table->date('date_arrival')->nullable();
@@ -34,7 +34,7 @@ class CreateClientsTable extends Migration
             $table->string('ration_card_number')->nullable();
             $table->string('assistance_received')->nullable();
             $table->string('problem_specification')->nullable();
-            $table->integer('camp_id')->nullable();
+            $table->integer('camp_id')->unsigned()->nullable();
             $table->string('status')->nullable();
             $table->string('created_by')->nullable();
             $table->string('auth_by')->nullable();

@@ -15,7 +15,7 @@ class CreateClientCasesTable extends Migration
     {
         Schema::create('client_cases', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('reference_number')->unique()->index();
+            $table->string('reference_number')->nullable();
             $table->date('open_date')->nullable();
             $table->string('case_type')->nullable();
             $table->text('descriptions')->nullable();

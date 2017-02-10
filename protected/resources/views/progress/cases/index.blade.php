@@ -2,6 +2,7 @@
 @section('page_js')
     <script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
@@ -33,7 +34,7 @@
 
             // Basic datatable
             $('.datatable-basic').DataTable({
-                "scrollX": true,
+                "scrollX": false,
                 ajax: '{{url('list-all-cases')}}',
                 "fnDrawCallback": function (oSettings) {
                     $(".showRecord").click(function(){
@@ -43,7 +44,7 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Progress Case Management  </span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-file-d font-blue-sharp"></i> Progress Case Management  </span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -85,26 +86,21 @@
                         })
 
                     });
-
-                    $(".deleteRecord").click(function(){
+                    // Confirmation dialog
+                    $('.deleteRecord').on('click', function() {
                         var id1 = $(this).parent().attr('id');
-                        $(".deleteModule").show("slow").parent().parent().find("span").remove();
-                        var btn = $(this).parent().parent();
-                        $(this).hide("slow").parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
-                        $("#no").click(function(){
-                            $(this).parent().parent().find(".deleteRecord").show("slow");
-                            $(this).parent().parent().find("span").remove();
-                        });
-                        $("#yes").click(function(){
-                            $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
-                            $.ajax({
-                                url:"<?php echo url('cases') ?>/"+id1,
-                                type: 'post',
-                                data: {_method: 'delete', _token :"{{csrf_token()}}"},
-                                success:function(msg){
-                                    btn.hide("slow").next("hr").hide("slow");
-                                }
-                            });
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to delete record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('cases') ?>/"+id1,
+                                    type: 'post',
+                                    data: {_method: 'delete', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        btn.hide("slow").next("hr").hide("slow");
+                                    }
+                                });
+                            }
                         });
                     });
                 }
@@ -231,16 +227,17 @@
         <div class="panel-body">
         </div>
 
-        <table class="table datatable-basic table-hover">
+        <table class="table datatable-basic">
             <thead>
             <tr>
                 <th>SNO</th>
-                <th>Client No</th>
+                <th>Reference #</th>
                 <th>Full Name</th>
-                <th>Progress Number</th>
-                <th>Case name</th>
-                <th>Date</th>
-                <th>Details</th>
+                <th>Age</th>
+                <th>Sex</th>
+                <th>Open Date</th>
+                <th>Case Type</th>
+                <th>Status</th>
                 <th class="text-center">Actions</th>
             </tr>
             </thead>

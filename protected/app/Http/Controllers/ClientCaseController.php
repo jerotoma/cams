@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\ClientCase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class ClientCaseController extends Controller
 {
@@ -20,6 +23,14 @@ class ClientCaseController extends Controller
     {
         //
          return view('progress.cases.index');
+    }
+    public function downloadPDF($id)
+    {
+        $case=ClientCase::find($id);
+        $pdf = \PDF::loadView('progress.cases.pdf', compact('case'))
+            ->setOption('footer-center', '[page]')
+            ->setOption('page-offset', 0);
+        return $pdf->download('Client_Referral_form.pdf');
     }
     public function getCasesList()
     {
@@ -43,21 +54,26 @@ class ClientCaseController extends Controller
             $records["data"][] = array(
                 $count++,
                 $case->reference_number,
-                $case->client->client_number,
                 $case->client->full_name,
-                $case->progress_number,
-                $case->case_name,
-                $case->referral_date,
-                '<span class="text-center" id="'.$case->id.'">
-                                        <a href="#" class="showRecord btn " > <i class="fa fa-eye green "></i> </a>
-                                        <a href="#" class=" btn "> <i class="fa fa-print green " onclick="printPage(\''.url('cases').'/'.$case->id.'\');" ></i> </a>
-                                        <a href="'.url('download/cases/form').'/'.$case->id.'" class=" btn  "> <i class="fa fa-download text-danger "></i> </a>
-                </span>',
-                '<span id="'.$cases->id.'">
-                
-                    <a href="#" title="Edit" class="btn btn-icon-only editRecord"> <i class="fa fa-edit text-primary">  </i> </a>
-                    <a href="#" title="Delete" class="btn btn-icon-only  deleteRecord"> <i class="fa fa-trash text-danger"></i> </a>
-                 </span>',
+                $case->client->sex,
+                $case->client->age,
+                $case->open_date,
+                $case->case_type,
+                $case->status,
+                '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                                <li id="'.$case->id.'"><a href="#" class="showRecord label"><i class="fa fa-eye "></i> View </a></li>
+                                <li id="'.$case->id.'"><a href="#" class=" label"><i class="fa fa-print "></i> Print</a></li>
+                                <li id="'.$case->id.'"><a href="'.url('download/cases/form').'/'.$case->id.'" class="label"><i class="fa fa-file-pdf-o "></i> pdf</a></li>
+                                <li id="'.$case->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                                <li id="'.$case->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
             );
         }
 
@@ -76,6 +92,7 @@ class ClientCaseController extends Controller
     public function create()
     {
         //
+        return view('progress.cases.create');
     }
 
     /**
@@ -87,6 +104,54 @@ class ClientCaseController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $validator = Validator::make($request->all(), [
+                'client_id' => 'required',
+                'open_date' => 'required',
+                'case_type' => 'required',
+                'descriptions' => 'required',
+                'case_worker_name' => 'required',
+                'camp_id' => 'required',
+                'status' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $case=new ClientCase;
+                $case->open_date= date("Y-m-d",strtotime($request->open_date));
+                $case->case_type= $request->case_type;
+                $case->descriptions= $request->descriptions;
+                $case->initial_action= $request->initial_action;
+                $case->feedback= $request->feedback;
+                $case->planning= $request->planning;
+                $case->case_worker_name= $request->case_worker_name;
+                $case->status= $request->status;
+                $case->created_by= Auth::user()->id;
+                $case->status= $request->status;
+                $case->camp_id= $request->camp_id;
+                $case->client_id= $request->client_id;
+                $case->save();
+
+                //Create references
+                $case->reference_number="CBR/".date("Y")."/CS-".str_pad($case->id,4,'0',STR_PAD_LEFT);
+                $case->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => "Record saved"
+                ], 200);
+
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**
