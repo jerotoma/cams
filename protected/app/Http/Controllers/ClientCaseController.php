@@ -72,7 +72,7 @@ class ClientCaseController extends Controller
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
                                 <li id="'.$case->id.'"><a href="#" class="showRecord label"><i class="fa fa-eye "></i> View </a></li>
-                                <li id="'.$case->id.'"><a href="#" class=" label"><i class="fa fa-print "></i> Print</a></li>
+                                <li id="'.$case->id.'"><a href="#" onclick="printPage(\''.url("cases").'/'.$case->id.'\');" class=" label"><i class="fa fa-print "></i> Print</a></li>
                                 <li id="'.$case->id.'"><a href="'.url('download/cases/form').'/'.$case->id.'" class="label"><i class="fa fa-file-pdf-o "></i> pdf</a></li>
                                 <li id="'.$case->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
                                 <li id="'.$case->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>

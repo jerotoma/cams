@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-md-12 col-xs-12 text-center">
             <h3><strong>HelpAge International</strong></h3>
-            <h5><strong> Progress Case Management</strong></h5>
+            <h5><strong> CBR Progressive Notice</strong></h5>
         </div>
     </div>
     <div class="row">
@@ -30,12 +30,12 @@
                     <th>Date Arrived</th>
                 </tr>
                 <tr>
-                    <td>@if(is_object($case->client) && $case->client != null ){{$case->client->client_number}}@endif</td>
-                    <td>@if(is_object($case->client) && $case->client != null ){{$case->client->full_name}}@endif</td>
-                    <td>@if(is_object($case->client) && $case->client != null ){{$case->client->sex}}@endif</td>
-                    <td>@if(is_object($case->client) && $case->client != null ){{$case->client->age}}@endif</td>
-                    <td>@if(is_object($case->client) && $case->client->nationality != null ){{$case->client->nationality->country_name}}@endif</td>
-                    <td>@if(is_object($case->client) && $case->client != null ){{date('d-M-Y',strtotime($case->client->date_arrival))}}@endif</td>
+                    <td>@if(is_object($notice->client) && $notice->client != null ){{$notice->client->client_number}}@endif</td>
+                    <td>@if(is_object($notice->client) && $notice->client != null ){{$notice->client->full_name}}@endif</td>
+                    <td>@if(is_object($notice->client) && $notice->client != null ){{$notice->client->sex}}@endif</td>
+                    <td>@if(is_object($notice->client) && $notice->client != null ){{$notice->client->age}}@endif</td>
+                    <td>@if(is_object($notice->client) && $notice->client->nationality != null ){{$notice->client->nationality->country_name}}@endif</td>
+                    <td>@if(is_object($notice->client) && $notice->client != null ){{date('d-M-Y',strtotime($notice->client->date_arrival))}}@endif</td>
                 </tr>
             </table>
         </div>
@@ -52,37 +52,37 @@
                     <th>Status</th>
                 </tr>
                 <tr>
-                    <td>{{$case->reference_number}}</td>
-                    <td>{{date('d-M-Y',strtotime($case->open_date))}}</td>
-                    <td>@if(is_object($case->camp) && $case->camp != null ){{$case->camp->camp_name}}@endif</td>
-                    <td>{{$case->case_type}}</td>
-                    <td>{{$case->status}}</td>
+                    <td>{{$notice->reference_number}}</td>
+                    <td>{{date('d-M-Y',strtotime($notice->open_date))}}</td>
+                    <td>@if(is_object($notice->camp) && $notice->camp != null ){{$notice->camp->camp_name}}@endif</td>
+                    <td>{{$notice->case_type}}</td>
+                    <td>{{$notice->status}}</td>
                 </tr>
             </table>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12 col-xs-12">
-            <h6><strong>Descriptions</strong></h6>
-            <p class="text-justify"><?php echo $case->descriptions;?></p>
+            <h6><strong>Subjective Information</strong></h6>
+            <p class="text-justify"><?php echo $notice->subjective_information;?></p>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12 col-xs-12">
-            <h6><strong>Initial Action</strong></h6>
-            <p class="text-justify"><?php echo $case->initial_action;?></p>
+            <h6><strong>Objective Information</strong></h6>
+            <p class="text-justify"><?php echo $notice->objective_information;?></p>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12 col-xs-12">
-            <h6><strong>Feedback</strong></h6>
-            <p class="text-justify"><?php echo $case->feedback;?></p>
+            <h6><strong>Analysis</strong></h6>
+            <p class="text-justify"><?php echo $notice->analysis;?></p>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12 col-xs-12">
             <h6><strong>Planning</strong></h6>
-            <p class="text-justify"><?php echo $case->planning;?></p>
+            <p class="text-justify"><?php echo $notice->planning;?></p>
         </div>
     </div>
     <div class="row">
@@ -92,7 +92,7 @@
                     <th>Case Worker Name</th>
                 </tr>
                 <tr>
-                    <th><?php echo $case->case_worker_name;?></th>
+                    <th><?php echo $notice->case_worker_name;?></th>
                 </tr>
             </table>
         </div>

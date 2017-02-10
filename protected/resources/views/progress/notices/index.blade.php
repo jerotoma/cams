@@ -2,6 +2,7 @@
 @section('page_js')
     <script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
@@ -33,8 +34,8 @@
 
             // Basic datatable
             $('.datatable-basic').DataTable({
-                "scrollX": true,
-                ajax: '{{url('list-all-notes')}}',
+                "scrollX": false,
+                ajax: '{{url('list-all-notices')}}',
                 "fnDrawCallback": function (oSettings) {
                     $(".showRecord").click(function(){
                         var id1 = $(this).parent().attr('id');
@@ -43,7 +44,7 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> CBR Progressive Note </span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> CBR Progressive Notice </span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -54,7 +55,7 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("progressive/notes") ?>/"+id1);
+                        $(".modal-body").load("<?php echo url("progressive/notices") ?>/"+id1);
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
@@ -68,7 +69,7 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> CBR Progressive Note </span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> CBR Progressive Notice </span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -79,32 +80,28 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("progressive/notes") ?>/"+id1+"/edit");
+                        $(".modal-body").load("<?php echo url("progressive/notices") ?>/"+id1+"/edit");
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
 
                     });
 
-                    $(".deleteRecord").click(function(){
+                    // Confirmation dialog
+                    $('.deleteRecord').on('click', function() {
                         var id1 = $(this).parent().attr('id');
-                        $(".deleteModule").show("slow").parent().parent().find("span").remove();
-                        var btn = $(this).parent().parent();
-                        $(this).hide("slow").parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
-                        $("#no").click(function(){
-                            $(this).parent().parent().find(".deleteRecord").show("slow");
-                            $(this).parent().parent().find("span").remove();
-                        });
-                        $("#yes").click(function(){
-                            $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
-                            $.ajax({
-                                url:"<?php echo url('progressive/notes') ?>/"+id1,
-                                type: 'post',
-                                data: {_method: 'delete', _token :"{{csrf_token()}}"},
-                                success:function(msg){
-                                    btn.hide("slow").next("hr").hide("slow");
-                                }
-                            });
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to delete record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('progressive/notices') ?>/"+id1,
+                                    type: 'post',
+                                    data: {_method: 'delete', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        btn.hide("slow").next("hr").hide("slow");
+                                    }
+                                });
+                            }
                         });
                     });
                 }
@@ -168,7 +165,7 @@
             $("body").append(modaldis);
             $("#myModal").modal("show");
             $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("progressive/notes/create") ?>");
+            $(".modal-body").load("<?php echo url("progressive/notices/create") ?>");
             $("#myModal").on('hidden.bs.modal',function(){
                 $("#myModal").remove();
             })
@@ -203,29 +200,29 @@
     @include('inc.main_navigation')
 @stop
 @section('page_title')
-    CBR Progressive Note
+    CBR Progressive Notice
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">CBR Progressive Note </span> </h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">CBR Progressive Notice </span> </h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li><a href="{{url('progressive/notes')}}">CBR Progressive Note</a></li>
+        <li><a href="{{url('progressive/notices')}}">CBR Progressive Notice</a></li>
     </ul>
 @stop
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="#" class="addRecord btn"><i class="fa fa-plus text-success"></i> <span>Client Referral</span></a>
-            <a  href="{{url('progressive/notes')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List AllProgressive Note</span></a>
-            <a  href="{{url('import/progressive/notes')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import Referrals data </span></a>
+            <a  href="#" class="addRecord btn"><i class="fa fa-plus text-success"></i> <span>Register new Notice</span></a>
+            <a  href="{{url('progressive/notices')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List AllProgressive Notice</span></a>
+            <a  href="{{url('import/progressive/notices')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import data </span></a>
         </div>
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-bold text-center"></i>List of All CBR Progressive Note</h5>
+            <h5 class="panel-title text-bold text-center"></i>List of All CBR Progressive Notice</h5>
         </div>
 
         <div class="panel-body">
@@ -235,15 +232,29 @@
             <thead>
             <tr>
                 <th>SNO</th>
-                <th>Client No</th>
+                <th>Reference #</th>
                 <th>Full Name</th>
-                <th>Progress Number</th>
-                <th>Case name</th>
-                <th>Date</th>
-                <th>Details</th>
+                <th>Age</th>
+                <th>Sex</th>
+                <th>Open Date</th>
+                <th>Case Worker Name</th>
+                <th>Status</th>
                 <th class="text-center">Actions</th>
             </tr>
             </thead>
+            <tfoot>
+            <tr>
+                <th>SNO</th>
+                <th>Reference #</th>
+                <th>Full Name</th>
+                <th>Age</th>
+                <th>Sex</th>
+                <th>Open Date</th>
+                <th>Case Worker Name</th>
+                <th>Status</th>
+                <th class="text-center">Actions</th>
+            </tr>
+            </tfoot>
 
         </table>
     </div>

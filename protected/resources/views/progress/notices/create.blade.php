@@ -111,7 +111,7 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'referrals','role'=>'form','id'=>'formClients')) !!}
+        {!! Form::open(array('url'=>'progressive/notices','role'=>'form','id'=>'formNotice')) !!}
         <div class="panel panel-flat">
 
 
@@ -180,7 +180,7 @@
                     </div>
                 </fieldset>
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold"><h3 class="text-center text-bold">Case Details</h3></legend>
+                    <legend class="text-bold"><h3 class="text-center text-bold">Notice Details</h3></legend>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
@@ -193,26 +193,26 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Case Type</label>
-                                <input type="text" class="form-control" name="case_type" id="case_type"  value="{{old('case_type')}}">
+                                <label class="control-label">Case Worker Name</label>
+                                <input type="text" class="form-control" placeholder="case_worker_name" name="case_worker_name" id="case_worker_name" value="{{old('case_worker_name')}}">
                             </div>
                         </div>
                     </div>
                     <div class="form-group ">
-                        <label class="control-label">Descriptions</label>
-                        <textarea  class="form-control" name="descriptions" id="descriptions" ></textarea>
+                        <label class="control-label">Subjective Information</label>
+                        <textarea  class="form-control" name="subjective_information" id="subjective_information" ></textarea>
                     </div>
                     <div class="form-group ">
-                        <label class="control-label">Initial Action</label>
-                        <textarea  class="form-control" name="initial_action" id="initial_action" ></textarea>
+                        <label class="control-label">Ojective Information</label>
+                        <textarea  class="form-control" name="objective_information" id="objective_information" ></textarea>
                     </div>
                     <div class="form-group ">
-                        <label class="control-label">Feedback</label>
-                        <textarea  class="form-control" name="feedback" id="feedback" ></textarea>
+                        <label class="control-label">Analysis</label>
+                        <textarea  class="form-control" name="analysis" id="analysis" ></textarea>
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Planning</label>
-                        <textarea  class="form-control" name="feedback" id="feedback" ></textarea>
+                        <textarea  class="form-control" name="planning" id="planning" ></textarea>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -231,18 +231,14 @@
                                 <label class="control-label">Status</label>
                                 <select name="status" id="status" data-placeholder="Choose an option..." class="select withOthers">
                                     <option></option>
-                                    <option value="Open Case">Open Case</option>
+                                    <option value="Open Notice">Open Notice</option>
                                     <option value="Assessment">Assessment</option>
-                                    <option value="Case Planning">Case Planning</option>
-                                    <option value="Case Followup">Case Followup</option>
-                                    <option value="Case Closed">Case Closed</option>
+                                    <option value="Notice Planning">Notice Planning</option>
+                                    <option value="Notice Followup">Notice Followup</option>
+                                    <option value="Notice Closed">Notice Closed</option>
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Case Worker Name</label>
-                        <input type="number" class="form-control" placeholder="case_worker_name" name="case_worker_name" id="case_worker_name" value="{{old('case_worker_name')}}">
                     </div>
                 </fieldset>
                 <div class="row">
@@ -280,7 +276,7 @@
         }
     });
 
-    $("#formClients").validate({
+    $("#formNotice").validate({
         ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
         errorClass: 'validation-error-label',
         successClass: 'validation-valid-label',
@@ -290,47 +286,65 @@
         unhighlight: function(element, errorClass) {
             $(element).removeClass(errorClass);
         },
+        errorPlacement: function(error, element) {
+
+            // Styled checkboxes, radios, bootstrap switch
+            if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container') ) {
+                if(element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                    error.appendTo( element.parent().parent().parent().parent() );
+                }
+                else {
+                    error.appendTo( element.parent().parent().parent().parent().parent() );
+                }
+            }
+
+            // Unstyled checkboxes, radios
+            else if (element.parents('div').hasClass('checkbox') || element.parents('div').hasClass('radio')) {
+                error.appendTo( element.parent().parent().parent() );
+            }
+
+            // Input with icons and Select2
+            else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
+                error.appendTo( element.parent() );
+            }
+
+            // Inline checkboxes, radios
+            else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                error.appendTo( element.parent().parent() );
+            }
+
+            // Input group, styled file input
+            else if (element.parent().hasClass('uploader') || element.parents().hasClass('input-group')) {
+                error.appendTo( element.parent().parent() );
+            }
+
+            else {
+                error.insertAfter(element);
+            }
+        },
         errorElement:'div',
         rules: {
-            organization: "required",
-            progress_number: "required",
-            referral_date: "required",
-            completed_by: "required",
-            age: {
-                number: true
-            },
-            case_name: "required",
-            referred_to: "required",
-            referred_to_position: "required",
-            org_phone: "required",
-            org_email:{
-                email:true,
-            },
-            location: "required",
-            primary_concern: "required",
+            open_date: "required",
+            subjective_information: "required",
+            objective_information: "required",
+            analysis: "required",
+            planning: "required",
+            case_worker_name: "required",
+            status: "required"
         },
         messages: {
-            organization: "Please this field is required",
-            progress_number: "Please this field is required",
-            referral_date: "Please field is required",
-            completed_by: "Please this field is required",
-            age:{
-                number:"Please enter valid age",
-            } ,
-            case_name: "Please this field is required",
-            referred_to: "Please this field is required",
-            referred_to_position: "Please this field is required",
-            primary_concern: "Please this field is required",
-            org_phone: "Please this field is required",
-            org_email:{
-                email:"Please enter valid data",
-            },
-            location: "Please this field is required"
+            open_date: "Please this field is required",
+            subjective_information: "Please this field is required",
+            objective_information: "Please field is required",
+            analysis: "Please this field is required",
+            planning: "Please this field is required",
+            case_worker_name: "Please this field is required",
+            status: "Please this field is required"
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-            var postData = $('#formClients').serializeArray();
-            var formURL = $('#formClients').attr("action");
+            var postData = $('#formNotice').serializeArray();
+            var formURL = $('#formNotice').attr("action");
             $.ajax(
                 {
                     url : formURL,
@@ -339,7 +353,7 @@
                     success: function(data){
                         swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                         setTimeout(function() {
-                            location.replace("{{url('progressive/notes')}}");
+                            location.replace("{{url('progressive/notices')}}");
                             $("#output").html("");
                         }, 2000);
                     },

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProgressiveNote extends Model
+class ProgressiveNotice extends Model
 {
     //
     public function client()

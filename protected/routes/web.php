@@ -86,8 +86,9 @@ Route::get('download/cases/form/{id}','ClientCaseController@downloadPDF');
 
 
 //Progressive note
-Route::resource('progressive/notes','ProgressiveNoteController');
-Route::get('list-all-notes','ProgressiveNoteController@getNoteList');
+Route::resource('progressive/notices','ProgressiveNoticeController');
+Route::get('list-all-notices','ProgressiveNoticeController@getNoticeList');
+Route::get('download/notice/pdf/{id}','ProgressiveNoticeController@downloadPDF');
 
 //Import
 Route::get('inventory-import','ItemInventoryController@showImport');

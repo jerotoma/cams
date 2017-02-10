@@ -48,7 +48,7 @@
                 <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
                 <ul>
                     <li><a href="{{url('cases')}}">Case Management</a></li>
-                    <li><a href="{{url('progressive/notes')}}">Progressive Notes</a></li>
+                    <li><a href="{{url('progressive/notices')}}">Progressive Notice</a></li>
                 </ul>
             </li>
             <!-- /forms -->
