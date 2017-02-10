@@ -78,6 +78,15 @@ Route::get('clients-hm','HomeAssessmentController@showClients');
 Route::get('list/assessments/home','HomeAssessmentController@getJSonAssessmentList');
 Route::get('client/assessments/home/{id}','HomeAssessmentController@create');
 
+//Progress monitoring
+//Case management
+Route::resource('cases','ClientCaseController');
+Route::get('list-all-cases','ClientCaseController@getCasesList');
+
+//Progressive note
+Route::resource('progressive/notes','ProgressiveNoteController');
+Route::get('list-all-notes','ProgressiveNoteController@getNoteList');
+
 //Import
 Route::get('inventory-import','ItemInventoryController@showImport');
 Route::post('inventory-import','ItemInventoryController@postImport');

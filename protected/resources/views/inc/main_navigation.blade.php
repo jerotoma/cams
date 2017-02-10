@@ -48,7 +48,8 @@
             <li>
                 <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
                 <ul>
-                    <li><a href="#"></a></li>
+                    <li><a href="{{url('cases')}}">Case Management</a></li>
+                    <li><a href="{{url('progressive/notes')}}">Progressive Notes</a></li>
                 </ul>
             </li>
             <!-- /forms -->
@@ -59,7 +60,7 @@
                 <ul>
                     <li><a href="{{url('reports/clients')}}">Registration</a></li>
                     <li><a href="{{url('reports/clients')}}">Assessments</a></li>
-                    <li><a href="{{url('reports/clients')}}">Refferal</a></li>
+                    <li><a href="{{url('reports/clients')}}">Referral</a></li>
                 </ul>
             </li>
             <!-- /data visualization -->
