@@ -78,10 +78,10 @@ class WheelChairAssessmentController extends Controller
     }
 	
 	public function getJSonWCListAllClientData(){
-		 $parts          = $this->parts;
-		 $clients        = Client::all();
+		 
+		 
          $wc_assessment  = WheelChairAssessment::all();
-		$iTotalRecords =count(Client::all());
+		$iTotalRecords   =count($wc_assessment);
          $sEcho = intval(10);
 
         $records = array();
@@ -90,7 +90,7 @@ class WheelChairAssessmentController extends Controller
 		
 		$count=1;
 		foreach( $wc_assessment as $key => $assessed ){
-			$assessed->client_id;
+		
 		    $client   = Client::find($assessed->client_id);
 			$assessor = User::find($assessed->assessor_id);
 		    $origin="";
