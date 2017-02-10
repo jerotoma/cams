@@ -54,18 +54,18 @@ Route::get('referrals-request','ReferralController@getReferralClientList');
 Route::get('referrals-request/{id}','ReferralController@create');
 Route::get('download/referrals/form/{id}','ReferralController@downloadPDF');
 
-//inclusion Assessments
+//Functional Assessments
 Route::resource('assessments/functional','FunctionalAssessmentController');
 
 
-//vulnerability Assessments
+//Vulnerability Assessments
 Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
 Route::get('clients-va','VulnerabilityAssessmentController@showClients');
 Route::get('getvalist','VulnerabilityAssessmentController@getJSonDataSearch');
 Route::get('client/assessments/vulnerability/{id}','VulnerabilityAssessmentController@showClientVulnerability');
 Route::get('vulnerability-assessment/download/{id}','VulnerabilityAssessmentController@downloadForm');
 
-//paediatric Assessments
+//Paediatric Assessments
 Route::resource('assessments/paediatric','PaediatricAssessmentController');
 Route::get('clients-pd','PaediatricAssessmentController@showClients');
 Route::get('getpdlist','PaediatricAssessmentController@getJSonDataSearch');
@@ -157,6 +157,9 @@ Route::get('reports/clients',[
       'as'   => 'reports/clients'
 ]);
 
+
+//Inclusion Assessments
+Route::resource('assessments/inclusion','InclusionAssessmentController');
 
 
 
