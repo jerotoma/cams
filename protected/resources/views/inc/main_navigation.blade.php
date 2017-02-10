@@ -16,7 +16,6 @@
                 <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
                 <ul>
                     <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
-                    <li><a href="{{url('assessments/functional')}}">Function Assessment</a></li>
                     <li><a href="{{url('assessments/inclusion')}}">Inclusion Assessment</a></li>
                     <li><a href="{{url('assessments/wheelchair')}}">Wheelchair Assessment</a></li>
                     <li><a href="{{url('assessments/home')}}">PSN Needs/Home Assessment </a></li>
@@ -31,7 +30,7 @@
             </li>
             <!-- /main -->
             <!-- Forms -->
-            <li class="navigation-header"><span>Material Distribution</span> <i class="icon-menu" title="Material Distribution"></i></li>
+            <li class="navigation-header"><span>NFIs Distribution</span> <i class="icon-menu" title="Material Distribution"></i></li>
             <li>
                 <a href="#"><i class="icon-popout"></i> <span>Material Distribution</span></a>
                 <ul>

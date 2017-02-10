@@ -21,14 +21,14 @@
         <div class="col-md-12 col-xs-12">
             <h6><strong>Client Information</strong></h6>
             <table class="table table-bordered">
-                 <tr>
-                     <th>Client #</th>
-                     <th>Name</th>
-                     <th>Sex</th>
-                     <th>Age</th>
-                     <th>Nationality</th>
-                     <th>Date Arrived</th>
-                 </tr>
+                <tr>
+                    <th>Client #</th>
+                    <th>Name</th>
+                    <th>Sex</th>
+                    <th>Age</th>
+                    <th>Nationality</th>
+                    <th>Date Arrived</th>
+                </tr>
                 <tr>
                     <td>@if(is_object($case->client) && $case->client != null ){{$case->client->client_number}}@endif</td>
                     <td>@if(is_object($case->client) && $case->client != null ){{$case->client->full_name}}@endif</td>

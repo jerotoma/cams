@@ -30,7 +30,7 @@ class ClientCaseController extends Controller
         $pdf = \PDF::loadView('progress.cases.pdf', compact('case'))
             ->setOption('footer-center', '[page]')
             ->setOption('page-offset', 0);
-        return $pdf->download('Client_Referral_form.pdf');
+        return $pdf->download('progress_case_management.pdf');
     }
     public function getCasesList()
     {

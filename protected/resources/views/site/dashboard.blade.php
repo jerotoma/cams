@@ -183,7 +183,7 @@
                                     <a href="#" class="btn border-teal text-teal btn-flat btn-rounded btn-icon btn-xs valign-text-bottom"><i class="icon-users"></i></a>
                                 </li>
                                 <li class="text-left">
-                                    <div class="text-semibold">Clients</div>
+                                    <div class="text-semibold">Users</div>
                                     <div class="text-muted">{{count(\App\Client::all())}}</div>
                                 </li>
                             </ul>
@@ -199,7 +199,7 @@
                                     <a href="#" class="btn border-warning-400 text-warning-400 btn-flat btn-rounded btn-icon btn-xs valign-text-bottom"><i class="icon-watch2"></i></a>
                                 </li>
                                 <li class="text-left">
-                                    <div class="text-semibold">Females</div>
+                                    <div class="text-semibold">Cases</div>
                                     <div class="text-muted">{{count(\App\Client::where('sex','=','Female')->get())}}</div>
                                 </li>
                             </ul>
@@ -215,7 +215,7 @@
                                     <a href="#" class="btn border-indigo-400 text-indigo-400 btn-flat btn-rounded btn-icon btn-xs valign-text-bottom"><i class="icon-people"></i></a>
                                 </li>
                                 <li class="text-left">
-                                    <div class="text-semibold">Males</div>
+                                    <div class="text-semibold">PSN</div>
                                     <div class="text-muted"> {{count(\App\Client::where('sex','=','Male')->get())}}</div>
                                 </li>
                             </ul>
@@ -226,14 +226,14 @@
                         </div>
                         <div class="col-md-2">
                             <div class="content-group">
-                                <h5 class="text-semibold no-margin"><i class="icon-calendar5 position-left text-slate"></i>{{count(\App\Referral::all())}}</h5>
+                                <h5 class="text-semibold no-margin"><i class="icon-calendar5  position-left text-slate"></i>{{count(\App\Referral::all())}}</h5>
                                 <span class="text-muted text-size-small">Referrals</span>
                             </div>
                         </div>
 
                         <div class="col-md-2">
                             <div class="content-group">
-                                <h5 class="text-semibold no-margin"><i class="icon-calendar52 position-left text-slate"></i> {{count(\App\ItemsDisbursement::all())}}</h5>
+                                <h5 class="text-semibold no-margin"><i class="icon-calendar52 bg-indigo position-left text-slate"></i> {{count(\App\ItemsDisbursement::all())}}</h5>
                                 <span class="text-muted text-size-small">NFI Distribution</span>
                             </div>
                         </div>

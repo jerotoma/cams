@@ -82,6 +82,8 @@ Route::get('client/assessments/home/{id}','HomeAssessmentController@create');
 //Case management
 Route::resource('cases','ClientCaseController');
 Route::get('list-all-cases','ClientCaseController@getCasesList');
+Route::get('download/cases/form/{id}','ClientCaseController@downloadPDF');
+
 
 //Progressive note
 Route::resource('progressive/notes','ProgressiveNoteController');
