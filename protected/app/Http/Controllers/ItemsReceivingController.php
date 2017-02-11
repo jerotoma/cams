@@ -181,7 +181,7 @@ class ItemsReceivingController extends Controller
     {
         //
         $item=InventoryReceived::find($id);
-        return view('inventory.received.pdf',compact('item'));
+        return view('inventory.received.show',compact('item'));
     }
     public function loadPrintForm($id)
     {

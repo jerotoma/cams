@@ -2,6 +2,7 @@
 @section('page_js')
     <script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
@@ -17,6 +18,11 @@
             // Setting datatable defaults
             $.extend( $.fn.dataTable.defaults, {
                 autoWidth: false,
+                columnDefs: [{
+                    orderable: false,
+                    width: '100px',
+                    targets: [ 5 ]
+                }],
                 dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
                 language: {
                     search: '<span>Filter:</span> _INPUT_',
@@ -32,9 +38,35 @@
             });
 
 
-            // Basic datatable
-            $('.datatable-basic').DataTable({
+            // Single row selection
+            var singleSelect = $('.datatable-selection-single').DataTable();
+            $('.datatable-selection-single tbody').on('click', 'tr', function() {
+                if ($(this).hasClass('success')) {
+                    $(this).removeClass('success');
+                }
+                else {
+                    singleSelect.$('tr.success').removeClass('success');
+                    $(this).addClass('success');
+                }
+            });
+
+
+            // Multiple rows selection
+            $('.datatable-selection-multiple').DataTable();
+            $('.datatable-selection-multiple tbody').on('click', 'tr', function() {
+                $(this).toggleClass('success');
+            });
+
+
+            // Individual column searching with text inputs
+            $('.datatable-column-search-inputs tfoot td').not(':last-child').each(function () {
+                var title = $('.datatable-column-search-inputs thead th').eq($(this).index()).text();
+                $(this).html('<input type="text" class="form-control input-sm" placeholder="Search '+title+'" />');
+            });
+
+            var table = $('.datatable-column-search-inputs').DataTable({
                 "scrollX": false,
+               // ajax: '{{url('getwaclientsjson')}}this url load JSON Client details to reduce loading time
                 "fnDrawCallback": function (oSettings) {
                     $(".viewRecord").click(function(){
                         var id1 = $(this).parent().attr('id');
@@ -86,52 +118,31 @@
 
                     });
 
-                    $(".deleteRecord").click(function(){
+                    // Confirmation dialog
+                    $('.deleteRecord').on('click', function() {
                         var id1 = $(this).parent().attr('id');
-                        $(".deleteModule").show("slow").parent().parent().find("span").remove();
-                        var btn = $(this).parent().parent();
-                        $(this).hide("slow").parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
-                        $("#no").click(function(){
-                            $(this).parent().parent().find(".deleteRecord").show("slow");
-                            $(this).parent().parent().find("span").remove();
-                        });
-                        $("#yes").click(function(){
-                            $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
-                            $.ajax({
-                                url:"<?php echo url('inventory') ?>/"+id1,
-                                type: 'post',
-                                data: {_method: 'delete', _token :"{{csrf_token()}}"},
-                                success:function(msg){
-                                    btn.hide("slow").next("hr").hide("slow");
-                                }
-                            });
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to delete record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('inventory') ?>/"+id1,
+                                    type: 'post',
+                                    data: {_method: 'delete', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        btn.hide("slow").next("hr").hide("slow");
+                                    }
+                                });
+                            }
                         });
                     });
                 }
             });
-
-
-            // Alternative pagination
-            $('.datatable-pagination').DataTable({
-                pagingType: "simple",
-                language: {
-                    paginate: {'next': 'Next &rarr;', 'previous': '&larr; Prev'}
-                }
+            table.columns().every( function () {
+                var that = this;
+                $('input', this.footer()).on('keyup change', function () {
+                    that.search(this.value).draw();
+                });
             });
-
-
-            // Datatable with saving state
-            $('.datatable-save-state').DataTable({
-                stateSave: true
-            });
-
-
-            // Scrollable datatable
-            $('.datatable-scroll-y').DataTable({
-                autoWidth: true,
-                scrollY: 300
-            });
-
 
 
             // External table additions
@@ -147,9 +158,35 @@
                 width: 'auto'
             });
 
-        });
-        // AJAX sourced data
 
+            // Enable Select2 select for individual column searching
+            $('.filter-select').select2();
+
+        });
+
+        $(".addRecord").click(function(){
+            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+            modaldis+= '<div class="modal-content">';
+            modaldis+= '<div class="modal-header bg-indigo">';
+            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i>Add new Item</span>';
+            modaldis+= '</div>';
+            modaldis+= '<div class="modal-body">';
+            modaldis+= ' </div>';
+            modaldis+= '</div>';
+            modaldis+= '</div>';
+            $('body').css('overflow','hidden');
+
+            $("body").append(modaldis);
+            $("#myModal").modal("show");
+            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+            $(".modal-body").load("<?php echo url("inventory/create") ?>");
+            $("#myModal").on('hidden.bs.modal',function(){
+                $("#myModal").remove();
+            })
+
+        });
 
         $(".addRecord").click(function(){
             var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
@@ -178,154 +215,7 @@
     </script>
 @stop
 @section('main_navigation')
-    <div class="sidebar-category sidebar-category-visible">
-        <div class="category-content no-padding">
-            <ul class="navigation navigation-main navigation-accordion">
-                <li class="active"><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
-                <!-- Main -->
-                <li class="navigation-header">Registration desk<span></span> <i class="icon-menu" title="Main pages"></i></li>
-                <li>
-                    <a href="#"><i class="icon-users"></i>Clients <span></span></a>
-                    <ul>
-                        <li ><a href="{{url('clients')}}">List All Clients</a></li>
-                        <li><a href="{{url('search/clients')}}">Search Clients</a></li>
-                        <li><a href="{{url('import/clients')}}">Import Clients</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
-                    <ul>
-                        <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
-                        <li><a href="{{url('assessments/inclusion')}}">Inclusion assessment</a></li>
-                        <li><a href="{{url('assessments/wheelchair')}}">Wheelchair Assessment</a></li>
-                        <li><a href="{{url('assessments/home')}}">PSN Needs/Home Assessment </a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-stack"></i> <span>Client Referrals</span></a>
-                    <ul>
-                        <li ><a href="{{url('referrals')}}">Referrals</a></li>
-                    </ul>
-                </li>
-                <!-- /main -->
-                <!-- Forms -->
-                <li class="navigation-header"><span>Material Distribution</span> <i class="icon-menu" title="Material Distribution"></i></li>
-                <li>
-                    <a href="#"><i class="icon-popout"></i> <span>Material Distribution</span></a>
-                    <ul>
-                        <li><a href="{{url('inventory-received')}}">Item Distribution</a></li>
-                        <li><a href="{{url('inventory-received')}}">Received Items</a></li>
-                        <li><a href="{{url('inventory')}}">Items Inventory</a></li>
-                        <li><a href="{{url('inventory-categories')}}">Items Categories</a></li>
-                    </ul>
-                </li>
-
-                <!-- /forms -->
-                <!-- Forms -->
-                <li class="navigation-header"><span>Rehabilitation</span> <i class="icon-menu" title="Forms"></i></li>
-                <li>
-                    <a href="#"><i class="icon-grid"></i> <span>Rehabilitation Service</span></a>
-                    <ul>
-                        <li><a href="{{url('rehabilitation/register')}}">Open Register</a></li>
-                        <li><a href="{{url('rehabilitation/progress')}}">Progress</a></li>
-                        <li><a href="{{url('rehabilitation/register')}}">Search</a></li>
-                        <li><a href="{{url('rehabilitation/Import')}}">Import</a></li>
-                        <li><a href="{{url('rehabilitation/export')}}">Export</a></li>
-                    </ul>
-                </li>
-                <!-- /forms -->
-                <!-- Data visualization -->
-                <li class="navigation-header"><span>Data visualization</span> <i class="icon-menu" title="Data visualization"></i></li>
-                <li>
-                    <a href="#"><i class="icon-graph"></i> <span>Clients Reports</span></a>
-                    <ul>
-                        <li><a href="{{url('reports/clients')}}">Registration</a></li>
-                        <li><a href="{{url('reports/clients')}}">Assessments</a></li>
-                        <li><a href="{{url('reports/clients')}}">Refferal</a></li>
-                    </ul>
-                </li>
-                <!-- /data visualization -->
-                <!-- Appearance -->
-                <li class="navigation-header"><span>Settings</span> <i class="icon-menu" title="Settings"></i></li>
-                <li>
-                    <a href="#"><i class="icon-list"></i> <span>Countries</span></a>
-                    <ul>
-                        <li><a href="{{url('countries/create')}}">Add New Country</a></li>
-                        <li><a href="{{url('countries')}}">List All Countries</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-list"></i> <span>Regions</span></a>
-                    <ul>
-                        <li><a href="{{url('regions/create')}}">Add New Region</a></li>
-                        <li><a href="{{url('regions')}}">List All Regions</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#"><i class="icon-grid"></i> <span>Camps</span></a>
-                    <ul>
-                        <li><a href="{{url('camps/create')}}">Add New Camp</a></li>
-                        <li><a href="{{url('camps')}}">List All camps</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-puzzle4"></i> <span>PSN Codes</span></a>
-                    <ul>
-                        <li><a href="{{url('psncodes/create')}}">Add New Code</a></li>
-                        <li><a href="{{url('psncodes')}}">List All Codes</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-list"></i> <span>Departments</span></a>
-                    <ul>
-                        <li><a href="{{url('departments/create')}}">Add New Code</a></li>
-                        <li><a href="{{url('departments')}}">List All Departments</a></li>
-                    </ul>
-                </li>
-                <!-- /appearance -->
-
-                <!-- Layout -->
-                <li class="navigation-header"><span>Users Managements</span> <i class="icon-menu" title="Users Managements"></i></li>
-
-                <li>
-                    <a href="#"><i class="icon-users"></i> <span>Users</span></a>
-                    <ul>
-                        <li><a href="{{url('users')}}">Add New User</a></li>
-                        <li><a href="{{url('users')}}">List All Users</a></li>
-                        <li><a href="{{url('reports/users')}}">User Reports</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-popout"></i> <span>Users Rights</span></a>
-                    <ul>
-                        <li><a href="{{url('access/rights/create')}}">Add New</a></li>
-                        <li><a href="{{url('access/rights')}}">List All</a></li>
-                    </ul>
-                </li>
-                <!-- /layout -->
-
-
-
-                <!-- Extensions -->
-                <li class="navigation-header"><span>Data Sharing</span> <i class="icon-menu" title="Data Sharing"></i></li>
-                <li>
-                    <a href="#"><i class="icon-puzzle4"></i> <span>Data import</span></a>
-                    <ul>
-                        <li><a href="{{url('backup/import')}}">Import</a></li>
-                        <li><a href="{{url('backup/export')}}">Export</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-popout"></i> <span>Data Approval</span></a>
-                    <ul>
-                        <li><a href="{{url('approval/pending')}}">Pending</a></li>
-                    </ul>
-                </li>
-                <!-- /extensions -->
-            </ul>
-        </div>
-    </div>
+    @include('inc.main_navigation')
 @stop
 @section('page_title')
     Item Inventory
@@ -351,64 +241,109 @@
             </div>
             <div class="panel panel-flat">
                 <div class="panel-heading">
-                    <h5 class="panel-title text-uppercase text-bold">NFIs Item Inventory</h5>
+                    <h5 class="panel-title text-uppercase text-bold text-center">List of All NFIs Item Inventory</h5>
                 </div>
 
                 <div class="panel-body">
-                </div>
-            <table class="table datatable-basic table-hover">
-                <thead>
-                <tr>
-                    <th> SNO </th>
-                    <th> Item Name </th>
-                    <th> Descriptions </th>
-                    <th> Category </th>
-                    <th> Quantity </th>
-                    <th> Remarks </th>
-                    <th> Status </th>
-                    <th class="text-center"> Action </th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php $count=1;?>
-                @if(count($items)>0)
-                    @foreach($items as $item)
-                        <tr class="odd gradeX">
-                            <td> {{$count++}} </td>
-                            <td>
-                                {{$item->item_name	}}
+                    <table class="table datatable-column-search-inputs table-bordered table-hover" >
+                        <thead>
+                        <tr >
+                            <th class="text-center">
+                                #
+                            </th>
+                            <th class="text-center">
+                                Item Name
+                            </th>
+                            <th class="text-center">
+                                Descriptions
+                            </th>
+                            <th class="text-center">
+                                Category
+                            </th>
+                            <th class="text-center">
+                                Quantity
+                            </th>
+                            <th class="text-center">
+                                Status
+                            </th>
+                            <th class="text-center">
+                                Action
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php $count=1;?>
+                        @if(count($items)>0)
+                            @foreach($items as $item)
+                                <tr>
+                                    <td> {{$count++}} </td>
+                                    <td>
+                                        {{$item->item_name	}}
+                                    </td>
+                                    <td>
+                                        {{$item->description}}
+                                    </td>
+                                    <td>
+                                        @if(is_object($item->category) && $item->category != null && $item->category !="")
+                                            {{$item->category->category_name}}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        {{$item->quantity}}
+                                    </td>
+                                    <td>@if(strtolower($item->status) )
+                                            <span class="label label-success">{{$item->status}}</span>
+                                        @else
+                                            <span class="label label-danger">{{$item->status}}</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        <ul class="icons-list text-center">
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="icon-menu9"></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li id="{{$item->id}}"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                                                    <li id="{{$item->id}}"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+
+
+                        </tbody>
+                        <tfoot>
+                        <tr >
+                            <td class="text-center">
+                                #
                             </td>
-                            <td>
-                                {{$item->description}}
+                            <td class="text-center">
+                                Item Name
                             </td>
-                            <td>
-                                @if(is_object($item->category) && $item->category != null && $item->category !="")
-                                    {{$item->category->category_name}}
-                                @endif
+                            <td class="text-center">
+                                Descriptions
                             </td>
-                            <td>
-                                {{$item->quantity}}
+                            <td class="text-center">
+                                Category
                             </td>
-                            <td>
-                                {{$item->remarks}}
+                            <td class="text-center">
+                                Quantity
                             </td>
-                            <td>@if(strtolower($item->status) )
-                                <span class="label label-success">{{$item->status}}</span>
-                                    @else
-                                    <span class="label label-danger">{{$item->status}}</span>
-                                @endif
+                            <td class="text-center">
+                                Status
                             </td>
-                            <td class="text-center" id="{{$item->id}}">
-                                <a href="#"  title="Edit Item details" class="btn btn-icon-only  editRecord"> <i class="fa fa-edit text-primary"></i> </a>
-                                <a href="#" title="Delete Item" class="btn btn-icon-only  deleteRecord"> <i class="fa fa-trash text-danger"></i> </a>
+                            <td class="text-center">
+
                             </td>
                         </tr>
-                    @endforeach
-                @endif
+                        </tfoot>
+                    </table>
+                </div>
 
-
-                </tbody>
-            </table>
             <!-- END EXAMPLE TABLE PORTLET-->
         </div>
 @stop

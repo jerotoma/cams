@@ -362,7 +362,7 @@
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-uppercase text-bold"> NFIs Received Items</h5>
+            <h5 class="panel-title text-uppercase text-bold text-center"> List of All NFIs Received Items</h5>
         </div>
 
         <div class="panel-body">

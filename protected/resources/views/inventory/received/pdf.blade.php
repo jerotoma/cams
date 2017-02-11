@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset("assets/css/bootstrap_print.css")}}"  media='all'>
 </head>
 <body style="border-color: #fff">
-<div class="portlet-body form">
+<div class="form-body">
     <div class="row">
         <div class="col-md-12 col-xs-12 text-center">
             <img src="{{asset('assets/images/helpage.png')}}" width="100px" height="100px"/>
@@ -14,6 +14,7 @@
 
     <div class="row">
         <div class="col-md-12 col-xs-12 text-center text-uppercase">
+            <h3><strong>HelpAge International</strong></h3>
             <h4><strong>
                     GOODS RECEIVED NOTE
                 </strong></h4>
@@ -21,7 +22,7 @@
     </div>
     <div class="row" style="margin-top: 20px">
         <div class="col-md-12">
-            <table class="table " border="0" cellpadding="0" cellspacing="0">
+            <table class="table table-bordered">
                 <tr>
                     <th> No:</th>
                     <td colspan="3" class="text-left">{{$item->reference_number}}</td>
@@ -77,34 +78,29 @@
         </div>
     </div>
     <div class="row" style="margin-top: 30px">
-        <div class="col-md-12">
-            <table class="table" border="0" cellpadding="0" cellspacing="0">
+        <div class="col-md-12 col-xs-12">
+            <h6><strong>Comments</strong></h6>
+            <p class="text-justify"><?php echo $item->comments;?></p>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 30px">
+        <div class="col-md-12 col-xs-12">
+            <table class="table table-bordered">
                 <tr>
-                    <th>Comments:</th>
+                    <th class="col-md-3 col-xs-3">Signature of Recipient:</th>
+                    <th class="col-md-3 col-xs-3"></th>
+                    <th class="col-md-3 col-xs-3">Checked by:</th>
+                    <th class="col-md-3 col-xs-3"></th>
                 </tr>
                 <tr>
-                    <td style="border-bottom: solid 1px">{{$item->comments}}</td>
+                    <th>Date:</th>
+                    <th></th>
+                    <th>Date:</th>
+                    <th></th>
                 </tr>
             </table>
         </div>
     </div>
-    <div class="row" style="margin-top: 30px">
-        <table class="table" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-                <th class="col-md-3"> Signature of Recipient:</th>
-                <th class="col-md-3" style="border-bottom: solid 1px"></th>
-                <th class="col-md-3">Checked by:</th>
-                <th class="col-md-3" style="border-bottom: solid 1px"></th>
-            </tr>
-            <tr>
-                <th class="col-md-3"> Date:</th>
-                <th class="col-md-3" style="border-bottom: solid 1px"></th>
-                <th class="col-md-3">Date:</th>
-                <th class="col-md-3" style="border-bottom: solid 1px"></th>
-            </tr>
-        </table>
-    </div>
-
 </div>
 </body>
 </html>
