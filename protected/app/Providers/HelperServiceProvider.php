@@ -24,5 +24,6 @@ class HelperServiceProvider extends ServiceProvider
     public function register()
     {
         require_once base_path().'/app/Helpers/WheelChairAssessmentHelper.php';
+        require_once base_path().'/app/Helpers/InclusionAssessmentHelper.php';
     }
 }

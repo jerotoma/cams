@@ -35,7 +35,8 @@
             <h5 class="panel-title">Inclusion Assessments</h5>
         </div>
         <div class="panel-body">
-           
+           <!-- @include('assessments.inclusion.inc.list_all') -->
+             @include('assessments.inclusion.inc.inclusionassessment')
         </div>
     </div>
    <!-- Modal -->
