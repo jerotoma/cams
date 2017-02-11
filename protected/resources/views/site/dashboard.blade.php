@@ -281,6 +281,9 @@
             title: {
                 text: 'NFIs Item Distributions May, 2015'
             },
+            credits: {
+                enabled: false
+            },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
             },
@@ -298,28 +301,25 @@
                 }
             },
             series: [{
-                name: 'IItems',
+                name: 'Items',
                 colorByPoint: true,
-                data: [{
-                    name: 'Microsoft Internet Explorer',
-                    y: 56.33
-                }, {
-                    name: 'Chrome',
-                    y: 24.03,
+                data: [ {
+                    name: 'Open Case',
+                    y: 29,
                     sliced: true,
                     selected: true
                 }, {
-                    name: 'Firefox',
-                    y: 10.38
+                    name: 'Assessment',
+                    y: 1000
                 }, {
-                    name: 'Safari',
-                    y: 4.77
+                    name: 'Case Planning',
+                    y: 300
                 }, {
-                    name: 'Opera',
-                    y: 0.91
+                    name: 'Case Followup',
+                    y: 5000
                 }, {
-                    name: 'Proprietary or Undetectable',
-                    y: 0.2
+                    name: 'Case Closed',
+                    y: 10564
                 }]
             }]
         });

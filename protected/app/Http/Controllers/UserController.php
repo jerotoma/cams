@@ -87,7 +87,7 @@ class UserController extends Controller
                 $user->full_name = $request->full_name;
                 $user->phone = $request->phone;
                 $user->email = $request->email;
-                $user->password = bcrypt($request->pass);
+                $user->password = bcrypt($request->password);
                 $user->department_id = $request->department_id;
                 $user->designation = $request->designation;
                 $user->status = $request->status;
