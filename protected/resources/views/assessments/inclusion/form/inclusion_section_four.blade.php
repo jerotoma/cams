@@ -111,12 +111,329 @@
 						  </div>
 					   </div>
 				 </div>
+                  <hr>
 			     <div class="form-group">
-					 <div class="row">
-						 
-					</div>
-				 </div>
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <h3 class="text-center">Range of motion (ROM) & Muscle strength </h3>
+                              </div>
+                            </div>
+                             <hr>
+                            <div class="row">
+                              <div class="row clearfix">
+                                <div class="col-md-12">
+                                    <label>1.  {{strtoupper("Lower Limb")}}</label>
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr >
+                                                <th class="text-center" rowspan="3" colspan="2">
+                                                  <p> </p>
+                                                </th>
+                                                <th class="text-center" colspan="6">
+                                                  <p>Range of Motion</p>
+                                                </th>
+                                                <th class="text-center" colspan="6">
+                                                  <p>Mascle Stregnth (St) or Spasticity (Sp)</p>
+                                                </th>
+                                            </tr>
+                                            <tr >
+                                                <th class="text-center" colspan="3">
+                                                  <p>L</p>
+                                                </th>
+                                                <th class="text-center" colspan="3">
+                                                  <p>R</p>
+                                                </th>
+                                                <th class="text-center" colspan="3">
+                                                  <p>L</p>
+                                                </th>
+                                                <th class="text-center" colspan="3">
+                                                  <p>R</p>
+                                                </th>
+                                                
+                                           </tr>
+                                           <tr >
+                                                <th class="text-center">
+                                                  Date
+                                                </th>
+                                                <th class="text-center">
+                                                   Date
+                                                </th>
+                                                <th class="text-center">
+                                                  Date
+                                                </th>
+                                                 <th class="text-center">
+                                                  Date
+                                                </th>
+                                                <th class="text-center">
+                                                   Date
+                                                </th>
+                                                <th class="text-center">
+                                                   Date
+                                                </th>
+                                                 <th class="text-center">
+                                                   Date
+                                                </th>
+                                                <th class="text-center">
+                                                  Date
+                                                </th>
+                                                <th class="text-center">
+                                                  Date
+                                                </th>
+                                                 <th class="text-center">
+                                                   Date
+                                                </th>
+                                                <th class="text-center">
+                                                   Date
+                                                </th>
+                                                <th class="text-center">
+                                                  Date
+                                                </th>
+                                          
+                                           </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php echo $inclhelper ->getTableRow($inclhelper->arrLowerLimb); ?>
+                                        </tbody>
+                                 </table>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+             
 				 <div class="form-group">
+                       
+                            <div class="row">
+                              <div class="row clearfix">
+                                <div class="col-md-12">
+                                    <label>2.  {{strtoupper("Upper Limb")}}</label>
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr >
+                                                <th class="text-center" rowspan="3" colspan="2">
+                                                  <p> </p>
+                                                </th>
+                                                <th class="text-center" colspan="6">
+                                                  <p>Range of Motion</p>
+                                                </th>
+                                                <th class="text-center" colspan="6">
+                                                  <p>Mascle Stregnth (St) or Spasticity (Sp)</p>
+                                                </th>
+                                            </tr>
+                                            <tr >
+                                                <th class="text-center" colspan="3">
+                                                  <p>L</p>
+                                                </th>
+                                                <th class="text-center" colspan="3">
+                                                  <p>R</p>
+                                                </th>
+                                                <th class="text-center" colspan="3">
+                                                  <p>L</p>
+                                                </th>
+                                                <th class="text-center" colspan="3">
+                                                  <p>R</p>
+                                                </th>
+                                                
+                                           </tr>
+                                           <tr >
+                                                <th class="text-center">
+                                                  Date
+                                                </th>
+                                                <th class="text-center">
+                                                   Date
+                                                </th>
+                                                <th class="text-center">
+                                                  Date
+                                                </th>
+                                                 <th class="text-center">
+                                                  Date
+                                                </th>
+                                                <th class="text-center">
+                                                   Date
+                                                </th>
+                                                <th class="text-center">
+                                                   Date
+                                                </th>
+                                                 <th class="text-center">
+                                                   Date
+                                                </th>
+                                                <th class="text-center">
+                                                  Date
+                                                </th>
+                                                <th class="text-center">
+                                                  Date
+                                                </th>
+                                                 <th class="text-center">
+                                                   Date
+                                                </th>
+                                                <th class="text-center">
+                                                   Date
+                                                </th>
+                                                <th class="text-center">
+                                                  Date
+                                                </th>
+                                          
+                                           </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php echo $inclhelper ->getTableRow($inclhelper->arrUpperLimb); ?>
+                                        </tbody>
+                                 </table>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+                 <div class="form-group">
+                      <div class="row">
+                          <div class="col-md-4 col-md-pull-0">
+                             <div class="radio">
+                                  <p>Muscle Strength: </p>
+                             </div>  
+                          </div>
+                          <div class="col-md-8 col-md-pull-2">
+                                <div class="radio">
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_9" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_9" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_9" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_9" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_9" value="Level 5">Level 5</label>
+                                </div>
+                           </div>
+				     </div>
+                 </div>
+                 <div class="form-group">
+                      <div class="row">
+                          <div class="col-md-4 col-md-pull-0">
+                             <div class="radio">
+                                  <p>Tone: </p>
+                             </div>  
+                          </div>
+                          <div class="col-md-8 col-md-pull-2">
+                                <div class="radio">
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_10" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_10" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_10" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_10" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_10" value="Level 5">Level 5</label>
+                                </div>
+                          </div>
+				     </div>
+                 </div>
+                 <div class="form-group">
+                      <div class="row">
+                          <div class="col-md-4 col-md-pull-0">
+                             <div class="radio">
+                                  <p>Endurance: </p>
+                             </div>  
+                          </div>
+                          <div class="col-md-8 col-md-pull-2">
+                                <div class="radio">
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_11" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_11" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_11" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_11" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_11" value="Level 5">Level 5</label>
+                                </div>
+                          </div>
+				     </div>
+                 </div>
+                 <div class="form-group">
+                     <textarea rows="2" class="form-control" name="med_performance_comp_qn_10_remark" id="med_performance_comp_qn_1_remark" placeholder="Remark"></textarea>
+                  </div>
+                 <div class="form-group">
+                      <div class="row">
+                          <div class="col-md-4 col-md-pull-0">
+                             <div class="radio">
+                                  <p>Balance: </p>
+                             </div>  
+                          </div>
+                          <div class="col-md-8 col-md-pull-2">
+                                <div class="radio">
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_12" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_12" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_12" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_12" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_12" value="Level 5">Level 5</label>
+                                </div>
+                          </div>
+				     </div>
+                 </div>
+                 <div class="form-group">
+                      <div class="row">
+                          <div class="col-md-4 col-md-pull-0">
+                             <div class="radio">
+                                  <p>Lying to sitting (prone/supine): </p>
+                             </div>  
+                          </div>
+                          <div class="col-md-8 col-md-pull-2">
+                                <div class="radio">
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_13" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_13" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_13" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_13" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_13" value="Level 5">Level 5</label>
+                                </div>
+                          </div>
+				     </div>
+                 </div>
+                 <div class="form-group">
+                      <div class="row">
+                          <div class="col-md-4 col-md-pull-0">
+                             <div class="radio">
+                                  <p>Sitting: </p>
+                             </div>  
+                          </div>
+                          <div class="col-md-8 col-md-pull-2">
+                                <div class="radio">
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_14" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_14" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_14" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_14" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_14" value="Level 5">Level 5</label>
+                                </div>
+                          </div>
+				     </div>
+                 </div>
+                  <div class="form-group">
+                      <div class="row">
+                          <div class="col-md-4 col-md-pull-0">
+                             <div class="radio">
+                                  <p>Squatting: </p>
+                             </div>  
+                          </div>
+                          <div class="col-md-8 col-md-pull-2">
+                                <div class="radio">
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_15" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_15" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_15" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_15" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_15" value="Level 5">Level 5</label>
+                                </div>
+                          </div>
+				     </div>
+                 </div>
+                  <div class="form-group">
+                      <div class="row">
+                          <div class="col-md-4 col-md-pull-0">
+                             <div class="radio">
+                                  <p>Standing: </p>
+                             </div>  
+                          </div>
+                          <div class="col-md-8 col-md-pull-2">
+                                <div class="radio">
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_16" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_16" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_16" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_16" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_16" value="Level 5">Level 5</label>
+                                </div>
+                          </div>
+				     </div>
+                 </div>
+                 <div class="form-group">
+                     <textarea rows="2" class="form-control" name="med_performance_comp_qn_16_remark" id="med_performance_comp_qn_15_remark" placeholder="Remarks"></textarea>
+                  </div>
+                 <hr>
+				 <div class="form-group text-center">
 					 <button type="button" class="btn btn-previous">Previous</button>
 		             <button type="button" class="btn btn-next">Next</button>
 			     </div>

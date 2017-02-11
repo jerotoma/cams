@@ -108,7 +108,7 @@
 							</div>
 					    </div>
 				 </div>
-				 <div class="form-group"> 
+				 <div class="form-group text-center"> 
 					<button type="button" class="btn btn-previous">Previous</button>
 					<button type="button" class="btn btn-next">Next</button>
 				</div>

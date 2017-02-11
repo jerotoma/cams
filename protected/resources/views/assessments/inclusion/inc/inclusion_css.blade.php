@@ -276,20 +276,22 @@ h3 {
  }
 .table-title{
 	font-weight: 700;	
-	}	
+	}
+
+h1 .small,
 .section-title,
 .section-info{
 	color: #fff;
 	font-weight: 300;
 	}
 .section{
-	width: 30px;
-	height: 30px;
+	width:40px;
+	height:40px;
+    font-size:20px;
     border: 1px solid #FFF;
     border-radius: 50%;
 	padding: 5px;
 }
-
 .form-top h3 {
     color: #fff;
 }
@@ -302,15 +304,31 @@ body {
 }
 .form-bottom {
     padding: 25px 25px 30px 25px;
-    background: #eee;
-    -moz-border-radius: 0 0 4px 4px;
+      -moz-border-radius: 0 0 4px 4px;
     -webkit-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
     text-align: left;
     transition: all .4s ease-in-out;
 }
+.rotate-vertically{
+    transform: rotate(90deg);
+	transform-origin: left top 0;
+    float: inherit;
+} 
 
-.form-bottom:hover {
+    
+.table > thead > tr > th, 
+.table > tbody > tr > th, 
+.table > tfoot > tr > th, 
+.table > thead > tr > td, 
+.table > tbody > tr > td, 
+.table > tfoot > tr > td {
+    padding: 8px;
+    line-height: 1.5384616;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+.form-bottom{
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }

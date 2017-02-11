@@ -1,4 +1,4 @@
-
+     <?php $inclhelper = new InclusionAssessmentHelper(); ?>
     <div class="assessment-container">
         <div class="row">
             <div class="col-md-12 form-box">
