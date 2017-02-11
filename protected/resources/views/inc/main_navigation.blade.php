@@ -32,7 +32,7 @@
             <!-- Forms -->
             <li class="navigation-header"><span>NFIs Distribution</span> <i class="icon-menu" title="Material Distribution"></i></li>
             <li>
-                <a href="#"><i class="icon-popout"></i> <span>Material Distribution</span></a>
+                <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
                 <ul>
                     <li><a href="{{url('inventory-received')}}">Item Distribution</a></li>
                     <li><a href="{{url('inventory-received')}}">Received Items</a></li>
