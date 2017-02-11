@@ -31,7 +31,7 @@
                 type: 'pie'
             },
             title: {
-                text: 'Progress case management'
+                text: 'CBR Case status'
             },
             credits: {
                 enabled: false
@@ -54,21 +54,21 @@
                 colorByPoint: true,
                 data: [{
                     name: 'Open Case',
-                    y: 56
+                    y: {{getHighChatCasesCountByStatus('Open Case')}}
                 }, {
                     name: 'Assessment',
-                    y: 200,
+                    y: {{getHighChatCasesCountByStatus('Assessment')}},
                     sliced: true,
                     selected: true
                 }, {
                     name: 'Case Planning',
-                    y: 100
+                    y: {{getHighChatCasesCountByStatus('Case Planning')}}
                 }, {
                     name: 'Case Followup',
-                    y: 300
+                    y: {{getHighChatCasesCountByStatus('Case Followup')}}
                 }, {
                     name: 'Case Closed',
-                    y: 1940
+                    y: {{getHighChatCasesCountByStatus('Case Closed')}}
                 }]
             }]
         });
@@ -102,7 +102,7 @@
                 }]
             },
             tooltip: {
-                valueSuffix: 'Case'
+                valueSuffix: ' Case(s)'
             },
             legend: {
                 layout: 'vertical',
@@ -112,19 +112,19 @@
             },
             series: [{
                 name: 'Open Case',
-                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                data: [<?php echo getHighChatMonthlyCasesCountByStatus('Open Case',date('Y'));?>]
             }, {
                 name: 'Assessment',
-                data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+                data: [<?php echo getHighChatMonthlyCasesCountByStatus('Assessment',date('Y'));?>]
             }, {
                 name: 'Case Planning',
-                data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+                data: [<?php echo getHighChatMonthlyCasesCountByStatus('Case Planning',date('Y'));?>]
             }, {
                 name: 'Case Followup',
-                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+                data: [<?php echo getHighChatMonthlyCasesCountByStatus('Case Followup',date('Y'));?>]
             }, {
                 name: 'Case Closed',
-                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+                data: [<?php echo getHighChatMonthlyCasesCountByStatus('Case Closed',date('Y'));?>]
             }]
 
 
@@ -134,7 +134,11 @@
                 type: 'column'
             },
             title: {
-                text: 'Client Registration per month for year {{date("Y")}}'
+                text: 'Monthly Client Registration for year {{date("Y")}}'
+            },
+            subtitle: {
+                text: 'Number of Registered Clients year {{date('Y')}}',
+                x: -20
             },
             credits: {
                 enabled: false
@@ -166,7 +170,7 @@
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                '<td style="padding:0"><b>{point.y:.0f} </b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -177,101 +181,10 @@
                     borderWidth: 0
                 }
             },
-            <?php
-                $series1="";
 
-                $series1 .="{ ";
-                $series1 .=" name: 'Clients',";
-
-                $MonthCount="";
-                $monthData="";
-                for($i=1; $i<= 12; $i++)
-                {
-                    $MonthCount.=count(\App\Client::where(\DB::raw('Month(date_arrival)'),'=',$i)->where(\DB::raw('Year(date_arrival)'),'=',date('Y'))->get()).",";
-                }
-                $monthData.=substr($MonthCount,0,strlen($MonthCount)-1);
-                $series1 .=" data:[".$monthData."]";
-                $series1 .="  },";
-
-
-                $seriesdata1=substr($series1,0,strlen($series1)-1);
-
-                ?>
-
-            series: [<?php echo $seriesdata1;?>]
+            series: [<?php echo getHighChatClientMonthlyCountByYear(date('Y'));?>]
         });
         $('#nfidistribution').highcharts({
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Number of NFI distributed per month for year {{date("Y")}}'
-            },
-            credits: {
-                enabled: false
-            },
-
-            xAxis: {
-                categories: [
-                    'Jan',
-                    'Feb',
-                    'Mar',
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec'
-                ],
-                crosshair: true
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Number of Items'
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                }
-            },
-            <?php
-                $series1="";
-
-                $series1 .="{ ";
-                $series1 .=" name: 'Items',";
-
-                $MonthCount="";
-                $monthData="";
-                for($i=1; $i<= 12; $i++)
-                {
-                    $MonthCount.=count(\App\Client::where(\DB::raw('Month(date_arrival)'),'=',$i)->where(\DB::raw('Year(date_arrival)'),'=',date('Y'))->get()).",";
-                }
-                $monthData.=substr($MonthCount,0,strlen($MonthCount)-1);
-                $series1 .=" data:[".$monthData."]";
-                $series1 .="  },";
-
-
-                $seriesdata1=substr($series1,0,strlen($series1)-1);
-
-                ?>
-
-            series: [<?php echo $seriesdata1;?>]
-        });
-        $('#NFIsdistribution').highcharts({
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -279,48 +192,28 @@
                 type: 'pie'
             },
             title: {
-                text: 'NFIs Item Distributions May, 2015'
+                text: 'Client Registration Per Nationality'
             },
             credits: {
                 enabled: false
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
             },
             plotOptions: {
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        style: {
-                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                        }
-                    }
+                        enabled: false
+                    },
+                    showInLegend: true
                 }
             },
             series: [{
-                name: 'Items',
+                name: 'Clients',
                 colorByPoint: true,
-                data: [ {
-                    name: 'Open Case',
-                    y: 29,
-                    sliced: true,
-                    selected: true
-                }, {
-                    name: 'Assessment',
-                    y: 1000
-                }, {
-                    name: 'Case Planning',
-                    y: 300
-                }, {
-                    name: 'Case Followup',
-                    y: 5000
-                }, {
-                    name: 'Case Closed',
-                    y: 10564
-                }]
+                data: [<?php echo getHighChatClientMonthlyCountByNationality();?>]
             }]
         });
         $('#MothNFIsdistribution').highcharts({
@@ -331,11 +224,11 @@
                 enabled: false
             },
             title: {
-                text: 'Monthly Average Cases ',
+                text: 'Monthly Average NFIs Items Distribution ',
                 x: -20 //center
             },
             subtitle: {
-                text: 'Number of cases per status for year {{date('Y')}}',
+                text: 'Number of Items per month for year {{date('Y')}}',
                 x: -20
             },
             xAxis: {
@@ -344,7 +237,7 @@
             },
             yAxis: {
                 title: {
-                    text: 'Cases'
+                    text: 'NFIs Items'
                 },
                 plotLines: [{
                     value: 0,
@@ -353,7 +246,7 @@
                 }]
             },
             tooltip: {
-                valueSuffix: 'Case'
+                valueSuffix: ' Items'
             },
             legend: {
                 layout: 'vertical',
@@ -362,20 +255,8 @@
                 borderWidth: 0
             },
             series: [{
-                name: 'Open Case',
-                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-            }, {
-                name: 'Assessment',
-                data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-            }, {
-                name: 'Case Planning',
-                data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-            }, {
-                name: 'Case Followup',
-                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-            }, {
-                name: 'Case Closed',
-                data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+                name: 'Items',
+                data: [<?php echo getHighChatItemsDistributionByYear(date('Y'));?>]
             }]
 
 
@@ -484,12 +365,10 @@
         </div>
     </div>
     <div class="row" style="margin-top: 20px">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div style="min-width: 310px; height: 400px; margin: 0 auto" id="MothNFIsdistribution"></div>
         </div>
-        <div class="col-md-6">
-            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="NFIsdistribution"></div>
-        </div>
+
 
     </div>
 @stop

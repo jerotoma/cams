@@ -16,6 +16,8 @@
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/moment/moment.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
 
 <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
@@ -109,36 +111,32 @@
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Camp</label>
-                                <select class="select" name="camp_id" id="camp_id">
+                                <select class="select" name="camp_id" id="camp_id" data-placeholder="Choose an option...">
                                     @if($client->camp_id !="")
                                         <?php $camp=\App\Camp::find($client->camp_id);?>
                                         <option value="{{$client->camp_id}}">{{$camp->camp_name}}</option>
                                     @endif
-                                    <option value="">Camp</option>
+                                    <option ></option>
                                     @foreach(\App\Camp::all() as $item)
                                         <option value="{{$item->id}}">{{$item->camp_name}}</option>
                                     @endforeach
                                 </select>
-                                @if($errors->first('camp_id') !="")
-                                    <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
-                                @endif
+
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Nationality</label>
-                                <select class="select" name="nationality" id="nationality">
+                                <select class="select" name="nationality" id="nationality" data-placeholder="Choose an option...">
                                     @if(is_object($client->nationality) && $client->nationality)
                                         <option value="{{$client->nationality->id}}">{{$client->nationality->country_name}}</option>
                                     @endif
-                                    <option value="">Origin</option>
+                                    <option></option>
                                     @foreach(\App\Country::all() as $item)
                                         <option value="{{$item->id}}">{{$item->country_name}}</option>
                                     @endforeach
                                 </select>
-                                @if($errors->first('nationality') !="")
-                                    <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('nationality') }}</label>
-                                @endif
+
                             </div>
                         </div>
 
@@ -147,28 +145,22 @@
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Civil Status</label>
-                                <select class="select" name="civil_status" id="civil_status">
+                                <select class="select" name="civil_status" id="civil_status" data-placeholder="Choose an option...">
                                     @if($client->civil_status)
                                         <option value="{{$client->civil_status}}" selected>{{$client->civil_status}}</option>
                                     @endif
-                                    <option value="">Civil Status</option>
+                                    <option></option>
                                     <option value="Single">Single</option>
                                     <option value="Married">Married</option>
                                     <option value="Divorced">Divorced</option>
                                     <option value="Widow">Widow</option>
                                 </select>
-                                @if($errors->first('civil_status') !="")
-                                    <label id="civil_status-error" class="validation-error-label" for="address">{{ $errors->first('civil_status') }}</label>
-                                @endif
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Name of Spouse</label>
                                 <input type="text" class="form-control" placeholder="Name of Spouse" name="spouse_name" id="spouse_name" readonly value="{{$client->spouse_name}}">
-                                @if($errors->first('spouse_name') !="")
-                                    <label id="address-error" class="validation-error-label" for="spouse_name">{{ $errors->first('spouse_name') }}</label>
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -263,7 +255,17 @@
                         <label id="address-error" class="validation-error-label" for="problem_specification">{{ $errors->first('problem_specification') }}</label>
                     @endif
                 </div>
-
+                <div class="form-group ">
+                    <label class="control-label">Client Status</label>
+                    <select class="select" name="status" id="status" data-placeholder="Choose an option...">
+                        @if($client->status)
+                            <option value="{{$client->status}}" selected>{{$client->status}}</option>
+                        @endif
+                        <option></option>
+                        <option value="Active">Active</option>
+                        <option value="In Active">In Active</option>
+                    </select>
+                </div>
                 <div class="row">
                     <div class="col-md-8 col-sm-8 pull-left" id="output">
 
@@ -291,6 +293,42 @@
         unhighlight: function(element, errorClass) {
             $(element).removeClass(errorClass);
         },
+        errorPlacement: function(error, element) {
+
+            // Styled checkboxes, radios, bootstrap switch
+            if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container') ) {
+                if(element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                    error.appendTo( element.parent().parent().parent().parent() );
+                }
+                else {
+                    error.appendTo( element.parent().parent().parent().parent().parent() );
+                }
+            }
+
+            // Unstyled checkboxes, radios
+            else if (element.parents('div').hasClass('checkbox') || element.parents('div').hasClass('radio')) {
+                error.appendTo( element.parent().parent().parent() );
+            }
+
+            // Input with icons and Select2
+            else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
+                error.appendTo( element.parent() );
+            }
+
+            // Inline checkboxes, radios
+            else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                error.appendTo( element.parent().parent() );
+            }
+
+            // Input group, styled file input
+            else if (element.parent().hasClass('uploader') || element.parents().hasClass('input-group')) {
+                error.appendTo( element.parent().parent() );
+            }
+
+            else {
+                error.insertAfter(element);
+            }
+        },
         errorElement:'div',
         rules: {
             client_number: "required",
@@ -311,11 +349,13 @@
             date_arrival: "required",
             ration_card_number: "required",
             vulnerability_code:"required",
+            status:"required",
             camp_id:"required"
         },
         messages: {
             client_number: "Please client number is required",
             full_name: "Please full name is required",
+            status: "Please full name is required",
             sex: "Please sex is required",
             age:{
                 required:"Please age is required",
@@ -343,21 +383,31 @@
                     url : formURL,
                     type: "POST",
                     data : postData,
-                    success:function(data)
-                    {
-                        console.log(data);
-                        //data: return data from server
-                        $("#output").html(data);
+                    success: function(data){
+                        swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                         setTimeout(function() {
-                            location.reload();
+                            location.replace("{{url('clients')}}");
                             $("#output").html("");
                         }, 2000);
                     },
-                    error: function(data)
-                    {
-                        console.log(data.responseJSON);
-                        //in the responseJSON you get the form validation back.
-                        $("#output").html("<h3><span class='text-danger'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
+                    error: function(jqXhr,status, response) {
+                        console.log(jqXhr);
+                        if( jqXhr.status === 401 ) {
+                            location.replace('{{url('login')}}');
+                        }
+                        if( jqXhr.status === 400 ) {
+                            var errors = jqXhr.responseJSON.errors;
+                            errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                            $.each(errors, function (key, value) {
+                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                            });
+                            errorsHtml += '</ul></di>';
+                            $('#output').html(errorsHtml);
+                        }
+                        else
+                        {
+                            $('#output').html(jqXhr.message);
+                        }
 
                     }
                 });

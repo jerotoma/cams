@@ -9,6 +9,8 @@ use App\PSNCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ClientsController extends Controller
@@ -280,64 +282,76 @@ class ClientsController extends Controller
     public function store(Request $request)
     {
         //
-        $this->validate($request, [
-            'client_number' => 'required|unique:clients',
-            'full_name' => 'required',
-            'sex' => 'required',
-            'age' => 'required',
-            'civil_status' => 'required',
-            'nationality' => 'required',
-            'date_arrival' => 'required',
-            'ration_card_number' => 'required',
-            'camp_id'=>'required',
-            'vulnerability_code'=>'required',
-            'females_total'=>'required',
-            'males_total'=>'required',
+        try {
+            $validator = Validator::make($request->all(), [
+                'client_number' => 'required|unique:clients',
+                'full_name' => 'required',
+                'sex' => 'required',
+                'age' => 'required',
+                'civil_status' => 'required',
+                'nationality' => 'required',
+                'date_arrival' => 'required',
+                'ration_card_number' => 'required',
+                'camp_id' => 'required',
+                'vulnerability_code' => 'required',
+                'females_total' => 'required',
+                'males_total' => 'required',
 
-        ]);
-        if(count(Client::where('client_number','=',strtoupper($request->client_number))->get()) >0)
-        {
-            return redirect()->back()->withInput()->with('clients_error',"Duplicate client name ".$request->country_name);
-        }
-        else{
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
 
-                $client=new Client;
-                $client->client_number =strtoupper($request->client_number);
-                $client->full_name =ucwords($request->full_name);
-                $client->sex =ucwords($request->sex);
-                $client->age =$request->age;
-               if($request->birth_date != null){
-                $client->birth_date =date("Y-m-d",strtotime($request->birth_date));}
-                $client->civil_status =$request->civil_status;
-                $client->spouse_name=$request->spouse_name;
-                $client->care_giver =$request->care_giver;
-                $client->origin =ucwords($request->origin);
-                $client->country_id =$request->nationality;
-                $client->date_arrival =date("Y-m-d",strtotime("$request->date_arrival"));
-                $client->present_address =$request->present_address;
-                $client->household_number =$request->household_number;
-                $client->ration_card_number =$request->ration_card_number;
-                $client->assistance_received =$request->assistance_received;
-                $client->problem_specification =$request->problem_specification;
-                $client->camp_id =$request->camp_id;
-                $client->created_by =Auth::user()->username;
+                $client = new Client;
+                $client->client_number = strtoupper($request->client_number);
+                $client->full_name = ucwords($request->full_name);
+                $client->sex = ucwords($request->sex);
+                $client->age = $request->age;
+                if ($request->birth_date != null) {
+                    $client->birth_date = date("Y-m-d", strtotime($request->birth_date));
+                }
+                $client->civil_status = $request->civil_status;
+                $client->spouse_name = $request->spouse_name;
+                $client->care_giver = $request->care_giver;
+                $client->origin = ucwords($request->origin);
+                $client->country_id = $request->nationality;
+                $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
+                $client->present_address = $request->present_address;
+                $client->household_number = $request->household_number;
+                $client->ration_card_number = $request->ration_card_number;
+                $client->assistance_received = $request->assistance_received;
+                $client->problem_specification = $request->problem_specification;
+                $client->camp_id = $request->camp_id;
+                $client->created_by = Auth::user()->username;
                 $client->save();
 
-            //Save validation codes
-            foreach (ClientVulnerabilityCode::where('client_id','=',$client->id)->get() as $item)
-            {
-                $item->delete();
-            }
+                //Save validation codes
+                foreach (ClientVulnerabilityCode::where('client_id', '=', $client->id)->get() as $item) {
+                    $item->delete();
+                }
 
-            foreach ($request->vulnerability_code as $item )
-            {
-                $codes=new ClientVulnerabilityCode;
-                $codes->client_id=$client->id;
-                $codes->code_id=$item;
-                $codes->save();
-            }
+                foreach ($request->vulnerability_code as $item) {
+                    $codes = new ClientVulnerabilityCode;
+                    $codes->client_id = $client->id;
+                    $codes->code_id = $item;
+                    $codes->save();
+                }
+                return response()->json([
+                    'success' => true,
+                    'message' => " Saved Successful"
+                ], 200);
 
-            return "<h3><span class='text-success'><i class='fa fa-spinner fa-spin'></i> Saved Successful</span><h3>";
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
         }
     }
 
@@ -377,59 +391,78 @@ class ClientsController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $this->validate($request, [
-            'client_number' => 'required|unique:clients',
-            'full_name' => 'required',
-            'sex' => 'required',
-            'age' => 'required',
-            'civil_status' => 'required',
-            'nationality' => 'required',
-            'date_arrival' => 'required',
-            'ration_card_number' => 'required',
-            'camp_id'=>'required',
-            'vulnerability_code'=>'required',
-        ]);
-        if(count(Client::where('client_number','=',strtoupper($request->client_number))->where('id','=',$id)->get()) >0)
-        {
-            return redirect()->back()->withInput()->with('clients_error',"Duplicate Client name ".$request->country_name);
+        try {
+            $validator = Validator::make($request->all(), [
+                'client_number' => 'required|unique:clients,client_number,'.$id,
+                'full_name' => 'required',
+                'sex' => 'required',
+                'age' => 'required',
+                'civil_status' => 'required',
+                'nationality' => 'required',
+                'date_arrival' => 'required',
+                'ration_card_number' => 'required',
+                'camp_id' => 'required',
+                'vulnerability_code' => 'required',
+                'females_total' => 'required',
+                'males_total' => 'required',
+                'status' => 'required',
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $client = Client::find($id);
+                $client->client_number = strtoupper($request->client_number);
+                $client->full_name = ucwords($request->full_name);
+                $client->sex = ucwords($request->sex);
+                $client->age = $request->age;
+                if ($request->birth_date != null) {
+                    $client->birth_date = date("Y-m-d", strtotime($request->birth_date));
+                }
+                $client->civil_status = $request->civil_status;
+                $client->spouse_name = $request->spouse_name;
+                $client->care_giver = $request->care_giver;
+                $client->origin = ucwords($request->origin);
+                $client->country_id = $request->nationality;
+                $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
+                $client->present_address = $request->present_address;
+                $client->household_number = $request->household_number;
+                $client->ration_card_number = $request->ration_card_number;
+                $client->assistance_received = $request->assistance_received;
+                $client->problem_specification = $request->problem_specification;
+                $client->camp_id = $request->camp_id;
+                $client->created_by = Auth::user()->username;
+                $client->status=$request->status;
+                $client->save();
+
+                //Save validation codes
+                foreach (ClientVulnerabilityCode::where('client_id', '=', $client->id)->get() as $item) {
+                    $item->delete();
+                }
+
+                foreach ($request->vulnerability_code as $item) {
+                    $codes = new ClientVulnerabilityCode;
+                    $codes->client_id = $client->id;
+                    $codes->code_id = $item;
+                    $codes->save();
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => "Saved Successful"
+                ], 200);
+            }
         }
-        else{$client= Client::find($id);
-            $client->client_number =strtoupper($request->client_number);
-            $client->full_name =ucwords($request->full_name);
-            $client->sex =ucwords($request->sex);
-            $client->age =$request->age;
-            if($request->birth_date != null){
-                $client->birth_date =date("Y-m-d",strtotime($request->birth_date));}
-            $client->civil_status =$request->civil_status;
-            $client->spouse_name=$request->spouse_name;
-            $client->care_giver =$request->care_giver;
-            $client->origin =ucwords($request->origin);
-            $client->country_id =$request->nationality;
-            $client->date_arrival =date("Y-m-d",strtotime("$request->date_arrival"));
-            $client->present_address =$request->present_address;
-            $client->household_number =$request->household_number;
-            $client->ration_card_number =$request->ration_card_number;
-            $client->assistance_received =$request->assistance_received;
-            $client->problem_specification =$request->problem_specification;
-            $client->camp_id =$request->camp_id;
-            $client->created_by =Auth::user()->username;
-            $client->save();
-
-            //Save validation codes
-            foreach (ClientVulnerabilityCode::where('client_id','=',$client->id)->get() as $item)
-            {
-                $item->delete();
-            }
-
-            foreach ($request->vulnerability_code as $item )
-            {
-                $codes=new ClientVulnerabilityCode;
-                $codes->client_id=$client->id;
-                $codes->code_id=$item;
-                $codes->save();
-            }
-
-            return redirect('clients');}
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**

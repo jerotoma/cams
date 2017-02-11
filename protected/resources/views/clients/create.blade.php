@@ -275,6 +275,42 @@
         unhighlight: function(element, errorClass) {
             $(element).removeClass(errorClass);
         },
+        errorPlacement: function(error, element) {
+
+            // Styled checkboxes, radios, bootstrap switch
+            if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container') ) {
+                if(element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                    error.appendTo( element.parent().parent().parent().parent() );
+                }
+                else {
+                    error.appendTo( element.parent().parent().parent().parent().parent() );
+                }
+            }
+
+            // Unstyled checkboxes, radios
+            else if (element.parents('div').hasClass('checkbox') || element.parents('div').hasClass('radio')) {
+                error.appendTo( element.parent().parent().parent() );
+            }
+
+            // Input with icons and Select2
+            else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
+                error.appendTo( element.parent() );
+            }
+
+            // Inline checkboxes, radios
+            else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                error.appendTo( element.parent().parent() );
+            }
+
+            // Input group, styled file input
+            else if (element.parent().hasClass('uploader') || element.parents().hasClass('input-group')) {
+                error.appendTo( element.parent().parent() );
+            }
+
+            else {
+                error.insertAfter(element);
+            }
+        },
         errorElement:'div',
         rules: {
             client_number: "required",
@@ -327,21 +363,31 @@
                     url : formURL,
                     type: "POST",
                     data : postData,
-                    success:function(data)
-                    {
-                        console.log(data);
-                        //data: return data from server
-                        $("#output").html(data);
+                    success: function(data){
+                        swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                         setTimeout(function() {
-                            location.reload();
+                            location.replace("{{url('clients')}}");
                             $("#output").html("");
                         }, 2000);
                     },
-                    error: function(data)
-                    {
-                        console.log(data.responseJSON);
-                        //in the responseJSON you get the form validation back.
-                        $("#output").html("<h3><span class='text-danger'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
+                    error: function(jqXhr,status, response) {
+                        console.log(jqXhr);
+                        if( jqXhr.status === 401 ) {
+                            location.replace('{{url('login')}}');
+                        }
+                        if( jqXhr.status === 400 ) {
+                            var errors = jqXhr.responseJSON.errors;
+                            errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                            $.each(errors, function (key, value) {
+                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                            });
+                            errorsHtml += '</ul></di>';
+                            $('#output').html(errorsHtml);
+                        }
+                        else
+                        {
+                            $('#output').html(jqXhr.message);
+                        }
 
                     }
                 });

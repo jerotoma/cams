@@ -52,7 +52,6 @@ return array(
     'CreatePaediatricChildInspectionsTable' => $baseDir . '/database/migrations/2017_02_08_173038_create_paediatric_child_inspections_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreatePhyscalAssessmentsTable' => $baseDir . '/database/migrations/2017_02_07_153514_create_physcal_assessments_table.php',
-    'CreateProgressiveNotesTable' => $baseDir . '/database/migrations/2017_02_09_221329_create_progressive_notes_table.php',
     'CreateProgressiveNoticesTable' => $baseDir . '/database/migrations/2017_02_10_165529_create_progressive_notices_table.php',
     'CreateReferralsTable' => $baseDir . '/database/migrations/2017_01_24_080636_create_referrals_table.php',
     'CreateRegionsTable' => $baseDir . '/database/migrations/2017_01_19_144922_create_regions_table.php',
