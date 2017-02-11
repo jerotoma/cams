@@ -79,18 +79,18 @@ class InclusionAssessmentHelper{
                 $deg    = $arrArg[$count]['deg'];
               
             $tr    .=  '<td class="text-center" width="23px">'.$title.' <br>'.$deg.'</td>
-                        <td class="text-center"><input type="checkbox" name="rom_l_'.strtolower($key).'_'.$count.'_1" class="form-control"></td>
-                        <td class="text-center"><input type="checkbox" name="rom_l_'.strtolower($key).'_'.$count.'_2" class="form-control"></td>
-                        <td class="text-center"><input type="checkbox" name="rom_l_'.strtolower($key).'_'.$count.'_3" class="form-control"></td>
-                        <td class="text-center"><input type="checkbox" name="rom_r_'.strtolower($key).'_'.$count.'_1" class="form-control"></td>
-                        <td class="text-center"><input type="checkbox" name="rom_r_'.strtolower($key).'_'.$count.'_2" class="form-control"></td>
-                        <td class="text-center"><input type="checkbox" name="rom_r_'.strtolower($key).'_'.$count.'_3" class="form-control"></td>
-                        <td class="text-center"><input type="checkbox" name="ms_l_'.strtolower($key).'_'.$count.'_1" class="form-control"></td>
-                        <td class="text-center"><input type="checkbox" name="ms_l_'.strtolower($key).'_'.$count.'_2" class="form-control"></td>
-                        <td class="text-center"><input type="checkbox" name="ms_l_'.strtolower($key).'_'.$count.'_3" class="form-control"></td>
-                        <td class="text-center"><input type="checkbox" name="ms_r_'.strtolower($key).'_'.$count.'_1" class="form-control"></td>
-                        <td class="text-center"><input type="checkbox" name="ms_r_'.strtolower($key).'_'.$count.'_2" class="form-control"></td>
-                        <td class="text-center"><input type="checkbox" name="ms_r_'.strtolower($key).'_'.$count.'_3" class="form-control"></td>
+                        <td class="text-center"><input type="checkbox" name="rom_l_'.strtolower($key).'_'.$count.'_1" ></td>
+                        <td class="text-center"><input type="checkbox" name="rom_l_'.strtolower($key).'_'.$count.'_2" </td>
+                        <td class="text-center"><input type="checkbox" name="rom_l_'.strtolower($key).'_'.$count.'_3" </td>
+                        <td class="text-center"><input type="checkbox" name="rom_r_'.strtolower($key).'_'.$count.'_1" </td>
+                        <td class="text-center"><input type="checkbox" name="rom_r_'.strtolower($key).'_'.$count.'_2" </td>
+                        <td class="text-center"><input type="checkbox" name="rom_r_'.strtolower($key).'_'.$count.'_3" </td>
+                        <td class="text-center"><input type="checkbox" name="ms_l_'.strtolower($key).'_'.$count.'_1" </td>
+                        <td class="text-center"><input type="checkbox" name="ms_l_'.strtolower($key).'_'.$count.'_2" </td>
+                        <td class="text-center"><input type="checkbox" name="ms_l_'.strtolower($key).'_'.$count.'_3" </td>
+                        <td class="text-center"><input type="checkbox" name="ms_r_'.strtolower($key).'_'.$count.'_1" </td>
+                        <td class="text-center"><input type="checkbox" name="ms_r_'.strtolower($key).'_'.$count.'_2" </td>
+                        <td class="text-center"><input type="checkbox" name="ms_r_'.strtolower($key).'_'.$count.'_3" </td>
                        </tr>';
            $count++;
             } 

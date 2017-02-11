@@ -120,118 +120,85 @@
                 <div clas="form-group"> 
                   <div class="row">
                           <div class="col-md-6 col-md-pull-0">
-                             <div class="radio">
-                                  <p>Head Control</p>
-                             </div>  
-                           </div>
-                          <div class="col-md-6 col-md-pull-0">
-                                <div clas="form-group"> 
+                                <div clas="form-group">
+                                    <label>Head Control</label>
                                     <input type="text" class="form-control" id="describe1" placeholder="Remark:" name ="med_history_info_qn_10_remark" value="">                                    
                                 </div>
                           </div>
                     </div>
                    <div class="row">
                           <div class="col-md-6 col-md-pull-0">
-                             <div class="radio">
-                                  <p>Trunk Control</p>
-                             </div>  
-                           </div>
-                          <div class="col-md-6 col-md-pull-0">
                                 <div clas="form-group"> 
+                                    <label>Trunk Control</label>
                                     <input type="text" class="form-control" id="describe1" placeholder="Remark:" name ="med_history_info_qn_10_remark" value="">                                    
                                 </div>
                           </div>
                     </div>
                      <div class="row">
                           <div class="col-md-6 col-md-pull-0">
-                             <div class="radio">
-                                  <p>Spinal deformities</p>
-                             </div>  
-                           </div>
-                          <div class="col-md-6 col-md-pull-0">
-                                <div clas="form-group"> 
+                                <div clas="form-group">
+                                    <label>Spinal deformities</label>
                                     <input type="text" class="form-control" id="describe1" placeholder="Remark:" name ="med_history_info_qn_10_remark" value="">                                    
                                 </div>
                           </div>
                     </div>
                     <div class="row">
-                          <div class="col-md-6 col-md-pull-0">
-                             <div class="radio">
-                                  <p>Sysmmetry(equ)</p>
-                             </div>  
-                           </div>
-                          <div class="col-md-6 col-md-pull-0">
-                                <div clas="form-group"> 
+                        <div class="col-md-6 col-md-pull-0">
+                                <div clas="form-group">
+                                    <label>Sysmmetry(equ)</label>
                                     <input type="text" class="form-control" id="describe1" placeholder="Remark:" name ="med_history_info_qn_10_remark" value="">                                    
                                 </div>
                           </div>
                     </div>
+                    
                 </div>
+                <div class="form-group">
+                    <textarea rows="2" class="form-control" name="med_performance_comp_qn_16_remark" id="med_performance_comp_qn_15_remark" placeholder="Remarks"></textarea>
+                  </div>
                  <div clas="form-group"> 
                   <div class="row">
                           <div class="col-md-6 col-md-pull-0">
-                             <div class="radio">
-                                  <p>Subluxation</p>
-                             </div>  
-                           </div>
-                          <div class="col-md-6 col-md-pull-0">
                                 <div clas="form-group"> 
+                                     <label>Subluxation</label>
                                     <input type="text" class="form-control" id="describe1" placeholder="Remark:" name ="med_history_info_qn_10_remark" value="">                                    
                                 </div>
                           </div>
                     </div>
                    <div class="row">
                           <div class="col-md-6 col-md-pull-0">
-                             <div class="radio">
-                                  <p>Hand function</p>
-                             </div>  
-                           </div>
-                          <div class="col-md-6 col-md-pull-0">
+                                <label>Hand function</label>
                                 <div clas="form-group"> 
                                     <input type="text" class="form-control" id="describe1" placeholder="Remark:" name ="med_history_info_qn_10_remark" value="">                                    
                                 </div>
                           </div>
                     </div>
                      <div class="row">
-                          <div class="col-md-6 col-md-pull-0">
-                             <div class="radio">
-                                  <p>Coordination</p>
-                             </div>  
-                           </div>
-                          <div class="col-md-6 col-md-pull-0">
+                            <div class="col-md-6 col-md-pull-0">
                                 <div clas="form-group"> 
+                                     <label>Coordination</label>
                                     <input type="text" class="form-control" id="describe1" placeholder="Remark:" name ="med_history_info_qn_10_remark" value="">                                    
                                 </div>
                           </div>
                     </div>
                     <div class="row">
-                          <div class="col-md-6 col-md-pull-0">
-                             <div class="radio">
-                                  <p>Eye hand coordination</p>
-                             </div>  
-                           </div>
-                          <div class="col-md-6 col-md-pull-0">
+                           <div class="col-md-6 col-md-pull-0">
                                 <div clas="form-group"> 
+                                    <label>Eye hand coordination</label>
                                     <input type="text" class="form-control" id="describe1" placeholder="Remark:" name ="med_history_info_qn_10_remark" value="">                                    
                                 </div>
                           </div>
                     </div>
                      <div class="row">
                           <div class="col-md-6 col-md-pull-0">
-                             <div class="radio">
-                                  <p>Hand to hand coordination</p>
-                             </div>  
-                           </div>
-                          <div class="col-md-6 col-md-pull-0">
-                                <div clas="form-group"> 
+                                <div clas="form-group">
+                                    <label>Hand to hand coordination</label>
                                     <input type="text" class="form-control" id="describe1" placeholder="Remark:" name ="med_history_info_qn_10_remark" value="">                                    
                                 </div>
                           </div>
                     </div>
                 </div>
                 <div class="form-group">
-                     <label>For Adult (Describe): </label>
-                     <textarea rows="2" class="form-control" name="med_performance_comp_qn_16_remark" id="med_performance_comp_qn_15_remark" placeholder="Remarks"></textarea>
+                    <textarea rows="2" class="form-control" name="med_performance_comp_qn_16_remark" id="med_performance_comp_qn_15_remark" placeholder="Remarks"></textarea>
                   </div>
                <div class="form-group">
                    <button type="button" class="btn btn-previous">Previous</button>
