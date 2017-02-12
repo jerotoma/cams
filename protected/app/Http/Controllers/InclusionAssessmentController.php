@@ -40,7 +40,24 @@ class InclusionAssessmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Tables to be made
+        /********************************
+          1.InclusionAssessment 
+          2.InclusionMedicalHistory
+          3.MedicalPerfomanceComponentPartA
+          4.MedicalPerfomanceComponentPartB
+          6.MedicalPerfomanceComponentPartC
+          7.MedicalPerfomanceComponentPartD
+          8.MedicalPerfomanceComponentPartE
+          9.MedicalPerfomanceComponentPartF
+          10.MedicalPerfomanceComponentPerformanceArea
+          11.MedicalPerfomanceComponentContext
+          13.MedicalPerfomanceComponentSwot
+          14.MedicalPerfomanceComponentShortRehab
+          15.MedicalPerfomanceComponentLongRehab
+          16.MedicalPerfomanceComponentRangeOfMotionLowerLimb
+          17.MedicalPerfomanceComponentRangeOfMotionLowerLimb
+          ********************************/
     }
 
     /**

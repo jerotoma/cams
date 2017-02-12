@@ -16,9 +16,7 @@ class CreateInclusionAssesmentsTable extends Migration
         Schema::create('inclusion_assesments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('client_id')->unsigned();
-            $table->string('medical_information')->nullable();
-            $table->string('present_medical_history')->nullable();
-            $table->string('other_services')->nullable();
+            $table->string('assessor_id')->nullable();
             $table->timestamps();
         });
     }

@@ -1,4 +1,5 @@
 <fieldset>
+<div class="well">
 	<div class="form-top">
 		<div class="form-top-left">
 			<h3 class="text-center section-info"></span>Section <span class="section">3</span> out of <span class="section">6</span> sections </h3>
@@ -154,11 +155,11 @@
 															<input type="text" class="form-control" id="describe1" placeholder="Remark:" name ="med_history_info_qn_10_remark" value="">                                    
 														</div>
                                                   </div>
-                                            </div>
                                         </div>
-                                   </div>
-					          </div> 
-					     </div> 
+                                 </div>
+                            </div>
+				        </div> 
+				   </div> 
 				 </div>
 				 <div class="form-group text-center"> 
 					<button type="button" class="btn btn-previous">Previous</button>
@@ -166,5 +167,6 @@
 				</div>
 		      </div>
 		</div>
-		</div>
+     </div>
+</div>
 </fieldset>
