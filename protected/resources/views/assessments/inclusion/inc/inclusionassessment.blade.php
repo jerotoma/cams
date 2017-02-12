@@ -9,6 +9,7 @@
 				   @include('assessments.inclusion.form.inclusion_section_four')
 				   @include('assessments.inclusion.form.inclusion_section_five')
 				   @include('assessments.inclusion.form.inclusion_section_six')
+				   @include('assessments.inclusion.form.inclusion_section_seven')
 					
                 </form>
             </div>

@@ -1,13 +1,14 @@
 <fieldset>
+    <div class="well">
 	<div class="form-top">
 		<div class="form-top-left">
-			<h3 class="text-center section-info"></span>Section <span class="section">4</span> out of <span class="section">6</span> sections </h3>
+			<h3 class="text-center section-info"></span>Section <span class="section">4</span> out of <span class="section">7</span> sections </h3>
 			<h1 class="text-center section-title ">Physical Performance Components</h1>
 		</div>
 	</div>
 	<div class="form-bottom">
 		<div class="row">
-			 <div class="col-md-12 well">
+			 <div class="col-md-12">
 				 <div class="form-group">
 					 <div class="row">
 						<div class="col-md-4 col-md-pull-0">
@@ -17,17 +18,17 @@
 						</div>
 						<div class="col-md-8 col-md-pull-0">
 							<div class="radio">
-							  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_1" value="Level 1">Level 1</label>
-							  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_1" value="Level 2">Level 2</label>
-							  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_1" value="Level 3">Level 3</label>
-							  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_1" value="Level 4">Level 4</label>
-							  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_1" value="Level 5">Level 5</label>
+							  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_1" value="Level 1">Level 1</label>
+							  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_1" value="Level 2">Level 2</label>
+							  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_1" value="Level 3">Level 3</label>
+							  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_1" value="Level 4">Level 4</label>
+							  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_1" value="Level 5">Level 5</label>
 							</div>
 							<div class="form-group">
-							   <textarea rows="3" class="form-control" name="med_performance_comp_qn_1_remark" id="med_performance_comp_qn_1_remark" placeholder="Remark"></textarea>
+							   <textarea rows="3" class="form-control" name="med_performance_comp_qn_a_1_remark" id="med_performance_comp_qn_a_1_remark" placeholder="Remark"></textarea>
 							</div>
 						</div>
-						</div>
+				     </div>
 					  <div class="row">
 						  <div class="col-md-6 col-md-pull-0">
 							 <div class="radio">
@@ -36,10 +37,10 @@
 						   </div>
 						  <div class="col-md-6 col-md-pull-0">
 								<div class="checkbox">
-								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_2" value="0">0</label>
+								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_a_2" value="0">0</label>
 								</div>
 								<div clas="form-group"> 
-									<input type="text" class="form-control" id="" placeholder="Remark:" name ="med_performance_comp_qn_2_remark" value="">                                    
+									<input type="text" class="form-control" id="" placeholder="Remark:" name ="med_performance_comp_qn_a_2_remark" value="">                                    
 								</div>
 						  </div>
 					   </div>
@@ -51,7 +52,7 @@
 						   </div>
 						  <div class="col-md-6 col-md-pull-0">
 								<div class="checkbox">
-								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_3" value="1">1</label>
+								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_a_3" value="1">1</label>
 								</div>
 						  </div>
 					   </div>
@@ -63,7 +64,7 @@
 						   </div>
 						  <div class="col-md-6 col-md-pull-0">
 								<div class="checkbox">
-								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_4" value="2">2</label>
+								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_a_4" value="2">2</label>
 								</div>
 						 </div>
 					   </div>
@@ -75,7 +76,7 @@
 						   </div>
 						  <div class="col-md-6 col-md-pull-0">
 								<div class="checkbox">
-								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_5" value="3">3</label>
+								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_a_5" value="3">3</label>
 								</div>
 						  </div>
 					   </div>
@@ -87,7 +88,7 @@
 						   </div>
 						  <div class="col-md-6 col-md-pull-0">
 								<div class="checkbox">
-								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_6" value="4">4</label>
+								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_a_6" value="4">4</label>
 								</div>
 						</div>
 					   </div>
@@ -99,14 +100,14 @@
 						   </div>
 						  <div class="col-md-6 col-md-pull-0">
 								<div class="checkbox">
-								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_7" value="5">5</label>
+								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_a_7" value="5">5</label>
 								</div>
 						  </div>
 					   </div>
 					   <div class="row">
 						  <div class="col-md-10 col-md-push-2">
 								<div clas="form-group"> 
-									<textarea rows="3" class="form-control" name="med_performance_comp_qn_8_remark" id="med_performance_comp_qn_1_remark" placeholder="Remark"></textarea>
+									<textarea rows="3" class="form-control" name="med_performance_comp_qn_a_8_remark" id="med_performance_comp_qn_a_1_remark" placeholder="Remark"></textarea>
 								</div>
 						  </div>
 					   </div>
@@ -291,11 +292,11 @@
                           </div>
                           <div class="col-md-8 col-md-pull-2">
                                 <div class="radio">
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_9" value="Level 1">Level 1</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_9" value="Level 2">Level 2</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_9" value="Level 3">Level 3</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_9" value="Level 4">Level 4</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_9" value="Level 5">Level 5</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_9" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_9" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_9" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_9" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_9" value="Level 5">Level 5</label>
                                 </div>
                            </div>
 				     </div>
@@ -309,11 +310,11 @@
                           </div>
                           <div class="col-md-8 col-md-pull-2">
                                 <div class="radio">
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_10" value="Level 1">Level 1</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_10" value="Level 2">Level 2</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_10" value="Level 3">Level 3</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_10" value="Level 4">Level 4</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_10" value="Level 5">Level 5</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_10" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_10" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_10" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_10" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_10" value="Level 5">Level 5</label>
                                 </div>
                           </div>
 				     </div>
@@ -327,17 +328,17 @@
                           </div>
                           <div class="col-md-8 col-md-pull-2">
                                 <div class="radio">
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_11" value="Level 1">Level 1</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_11" value="Level 2">Level 2</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_11" value="Level 3">Level 3</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_11" value="Level 4">Level 4</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_11" value="Level 5">Level 5</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_11" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_11" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_11" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_11" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_11" value="Level 5">Level 5</label>
                                 </div>
                           </div>
 				     </div>
                  </div>
                  <div class="form-group">
-                     <textarea rows="2" class="form-control" name="med_performance_comp_qn_10_remark" id="med_performance_comp_qn_1_remark" placeholder="Remark"></textarea>
+                     <textarea rows="2" class="form-control" name="med_performance_comp_qn_a_10_remark" id="med_performance_comp_qn_a_1_remark" placeholder="Remark"></textarea>
                   </div>
                  <div class="form-group">
                       <div class="row">
@@ -346,13 +347,13 @@
                                   <p>Balance: </p>
                              </div>  
                           </div>
-                          <div class="col-md-8 col-md-pull-2">
+                          <div class="col-md-8 col-md-pull-1">
                                 <div class="radio">
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_12" value="Level 1">Level 1</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_12" value="Level 2">Level 2</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_12" value="Level 3">Level 3</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_12" value="Level 4">Level 4</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_12" value="Level 5">Level 5</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_12" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_12" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_12" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_12" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_12" value="Level 5">Level 5</label>
                                 </div>
                           </div>
 				     </div>
@@ -364,13 +365,13 @@
                                   <p>Lying to sitting (prone/supine): </p>
                              </div>  
                           </div>
-                          <div class="col-md-8 col-md-pull-2">
+                          <div class="col-md-8 col-md-pull-1">
                                 <div class="radio">
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_13" value="Level 1">Level 1</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_13" value="Level 2">Level 2</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_13" value="Level 3">Level 3</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_13" value="Level 4">Level 4</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_13" value="Level 5">Level 5</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_13" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_13" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_13" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_13" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_13" value="Level 5">Level 5</label>
                                 </div>
                           </div>
 				     </div>
@@ -382,13 +383,13 @@
                                   <p>Sitting: </p>
                              </div>  
                           </div>
-                          <div class="col-md-8 col-md-pull-2">
+                          <div class="col-md-8 col-md-pull-1">
                                 <div class="radio">
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_14" value="Level 1">Level 1</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_14" value="Level 2">Level 2</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_14" value="Level 3">Level 3</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_14" value="Level 4">Level 4</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_14" value="Level 5">Level 5</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_14" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_14" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_14" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_14" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_14" value="Level 5">Level 5</label>
                                 </div>
                           </div>
 				     </div>
@@ -400,13 +401,13 @@
                                   <p>Squatting: </p>
                              </div>  
                           </div>
-                          <div class="col-md-8 col-md-pull-2">
+                          <div class="col-md-8 col-md-pull-1">
                                 <div class="radio">
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_15" value="Level 1">Level 1</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_15" value="Level 2">Level 2</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_15" value="Level 3">Level 3</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_15" value="Level 4">Level 4</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_15" value="Level 5">Level 5</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_15" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_15" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_15" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_15" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_15" value="Level 5">Level 5</label>
                                 </div>
                           </div>
 				     </div>
@@ -418,19 +419,19 @@
                                   <p>Standing: </p>
                              </div>  
                           </div>
-                          <div class="col-md-8 col-md-pull-2">
+                          <div class="col-md-8 col-md-pull-1">
                                 <div class="radio">
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_16" value="Level 1">Level 1</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_16" value="Level 2">Level 2</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_16" value="Level 3">Level 3</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_16" value="Level 4">Level 4</label>
-                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_16" value="Level 5">Level 5</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_16" value="Level 1">Level 1</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_16" value="Level 2">Level 2</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_16" value="Level 3">Level 3</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_16" value="Level 4">Level 4</label>
+                                  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_16" value="Level 5">Level 5</label>
                                 </div>
                           </div>
 				     </div>
                  </div>
                  <div class="form-group">
-                     <textarea rows="2" class="form-control" name="med_performance_comp_qn_16_remark" id="med_performance_comp_qn_15_remark" placeholder="Remarks"></textarea>
+                     <textarea rows="2" class="form-control" name="med_performance_comp_qn_a_16_remark" id="med_performance_comp_qn_a_15_remark" placeholder="Remarks"></textarea>
                   </div>
                  <hr>
 				 <div class="form-group text-center">
@@ -440,4 +441,5 @@
 			</div>
 		</div>
 	</div>
+</div>
 </fieldset>

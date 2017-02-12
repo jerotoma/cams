@@ -1,13 +1,14 @@
  <fieldset>
+    <div class="well">
 	<div class="form-top">
 		<div class="form-top-left">
-			<h3 class="text-center section-info"></span>Section <span class="section">2</span> out of <span class="section">6</span> sections </h3>
+			<h3 class="text-center section-info"></span>Section <span class="section">2</span> out of <span class="section">7</span> sections </h3>
 			<h1 class="text-center section-title ">Individual Particulars</h1>
 		</div>
 	</div>
 	<div class="form-bottom">
 		<div class="row">
-			 <div class="col-md-12 well">
+			 <div class="col-md-12">
 				  <div class="form-group">
 						<div class="row">
 							<div class="col-md-3 first table-client"> 
@@ -114,5 +115,6 @@
 				</div>
 		      </div>
 		</div>
+     </div>
   </div>
 </fieldset>
