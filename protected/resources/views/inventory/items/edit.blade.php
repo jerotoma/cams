@@ -1,4 +1,21 @@
-<!-- BEGIN SAMPLE FORM PORTLET-->
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form_wizard.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
+
+<script type="text/javascript" src="{{asset("assets/js/pages/wizard_form.js")}}"></script>
+
+<script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
+<script>
+    $('.pickadate').pickadate();
+</script>
 <div class="portlet light bordered">
     <div class="portlet-body form">
         {!! Form::model($item, array('route' => array('inventory.update', $item->id), 'method' => 'PUT','role'=>'form','id'=>'formInventory')) !!}
@@ -13,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label>Category</label>
-                <select name="category_id" class="form-control" id="category_id">
+                <select name="category_id" class="select" id="category_id" data-placeholder="Choose an option..." >
                     @if($item->category_id !="" && is_object($item->category) && count($item->category) >0)
                     <option value="{{$item->category_id}}">{{$item->category->category_name}}</option>
                     @else
@@ -22,34 +39,45 @@
                     @foreach(\App\ItemsCategories::all() as $cat)
                         <option value="{{$cat->id}}">{{$cat->category_name}}</option>
                     @endforeach
+                        <option value="newCat">New Category</option>
                 </select>
             </div>
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                    <div class="form-group">
                         <label>Quantity</label>
-                        <input type="text" class="form-control" name="quantity" id="quantity" value="{{$item->quantity}}">
+                        <input type="text" class="form-control" name="quantity" id="quantity" value="{{$item->quantity}}" >
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                    <div class="form-group">
+                        <label>Unit</label>
+                        <input type="text" class="form-control" name="unit" id="unit" placeholder="Item Unit e.g PIC, BOX" value="{{$item->unit}}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                    <div class="form-group">
                         <label>Status</label>
-                        <select name="status" class="form-control" id="status">
+                        <select name="status" class="select" id="status" data-placeholder="Choose an option...">
                             @if($item->status !="" )
                                 <option value="{{$item->status}}">{{$item->status}}</option>
-                            @else
-                                <option value="">--Select--</option>
                             @endif
+                            <option></option>
                             <option value="Available">Available</option>
                             <option value="Available">Not available</option>
                         </select>
                     </div>
                 </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        <input type="text" class="form-control" name="remarks" id="remarks" value="{{$item->remarks}}">
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Remarks</label>
-                <input type="text" class="form-control" name="remarks" id="remarks" value="{{$item->remarks}}">
-            </div>
-
-            <hr/>
             <div class="row">
                 <div class="col-md-8 col-sm-8 pull-left" id="output">
 
@@ -130,11 +158,13 @@
         rules: {
             item_name: "required",
             status: "required",
+            unit: "required",
             quantity: "required"
         },
         messages: {
             item_name: "Please enter item name",
             status: "Please select status",
+            unit: "Please enter item unit",
             quantity: "Please enter quantity"
         },
         submitHandler: function(form) {
@@ -142,31 +172,40 @@
             var postData = $('#formInventory').serializeArray();
             var formURL = $('#formInventory').attr("action");
             $.ajax(
+                {
+                    url : formURL,
+                    type: "POST",
+                    data : postData,
+                    dataType: 'json',
+                    success:function(data)
                     {
-                        url : formURL,
-                        type: "POST",
-                        data : postData,
-                        success:function(data)
-                        {
-                            console.log(data);
-                            //data: return data from server
-                            $("#output").html(data);
-                            setTimeout(function() {
-                                location.reload();
-                                $("#output").html("");
-                            }, 2000);
-                        },
-                        error: function(data)
-                        {
-                            console.log(data.responseJSON);
-                            //in the responseJSON you get the form validation back.
-                            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
+                        $("#output").html(data.message);
+                        setTimeout(function() {
+                            location.replace('{{url('inventory')}}');
+                            $("#output").html("");
+                        }, 2000);
 
-                            setTimeout(function() {
-                                $("#output").html("");
-                            }, 2000);
+                    },
+                    error: function(jqXhr,status, response) {
+                        if( jqXhr.status === 401 ) {
+                            location.replace('{{url('login')}}');
                         }
-                    });
+                        if( jqXhr.status === 400 ) {
+                            var errors = jqXhr.responseJSON.errors;
+                            errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                            $.each(errors, function (key, value) {
+                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                            });
+                            errorsHtml += '</ul></di>';
+                            $('#output').html(errorsHtml);
+                        }
+                        else
+                        {
+                            $('#output').html("");
+                        }
+
+                    }
+                });
         }
     });
 

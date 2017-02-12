@@ -109,20 +109,11 @@ Route::post('excel/import/received/items','ItemsReceivingController@postImport')
 
 
 //ItemsDisbursementController
-Route::get('inventory/disbursement','ItemsDisbursementController@index');
-Route::get('inventory/disbursement/beneficiaries','ItemsDisbursementController@showBeneficiaries');
-Route::get('inventory/disbursement/create/{id}','ItemsDisbursementController@create');
-Route::post('inventory/disbursement/create','ItemsDisbursementController@store');
-Route::get('inventory/disbursement/edit/{id}','ItemsDisbursementController@edit');
-Route::get('inventory/disbursement/print/{id}','ItemsDisbursementController@show');
-Route::get('inventory/disbursement/pdf/{id}','ItemsDisbursementController@downloadPdf');
-Route::post('inventory/disbursement/edit','ItemsDisbursementController@update');
-Route::get('inventory/disbursement/show/{id}','ItemsDisbursementController@show');
-Route::get('inventory/disbursement/remove/{id}','ItemsDisbursementController@destroy');
-Route::get('inventory/disbursement/reports','ItemsDisbursementController@reports');
+Route::resource('items/distributions','ItemsDisbursementController');
 Route::get('inventory/disbursement/import','ItemsDisbursementController@showImport');
 Route::post('inventory/disbursement/import','ItemsDisbursementController@postImport');
 Route::get('inventory/disbursement/import/errors','ItemsDisbursementController@showImportErrors');
+Route::get('inventory/disbursement/pdf/{id}','ItemsDisbursementController@downloadPdf');
 
 //WheelChairAssessment
 

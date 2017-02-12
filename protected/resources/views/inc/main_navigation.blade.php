@@ -8,8 +8,6 @@
                 <a href="#"><i class="icon-users"></i>Clients <span></span></a>
                 <ul>
                     <li ><a href="{{url('clients')}}">List All Clients</a></li>
-                    <li><a href="{{url('search/clients')}}">Search Clients</a></li>
-                    <li><a href="{{url('import/clients')}}">Import Clients</a></li>
                 </ul>
             </li>
             <li>
@@ -34,7 +32,7 @@
             <li>
                 <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
                 <ul>
-                    <li><a href="{{url('inventory-received')}}">Item Distribution</a></li>
+                    <li><a href="{{url('items/distributions')}}">Item Distribution</a></li>
                     <li><a href="{{url('inventory-received')}}">Received Items</a></li>
                     <li><a href="{{url('inventory')}}">Items Inventory</a></li>
                     <li><a href="{{url('inventory-categories')}}">Items Categories</a></li>

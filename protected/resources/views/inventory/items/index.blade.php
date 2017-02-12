@@ -264,6 +264,9 @@
                                 Quantity
                             </th>
                             <th class="text-center">
+                                Unity
+                            </th>
+                            <th class="text-center">
                                 Status
                             </th>
                             <th class="text-center">
@@ -290,6 +293,9 @@
                                     </td>
                                     <td>
                                         {{$item->quantity}}
+                                    </td>
+                                    <td>
+                                        {{$item->unit}}
                                     </td>
                                     <td>@if(strtolower($item->status) )
                                             <span class="label label-success">{{$item->status}}</span>
@@ -333,6 +339,9 @@
                             <td class="text-center">
                                 Quantity
                             </td>
+                            <th class="text-center">
+                                Unity
+                            </th>
                             <td class="text-center">
                                 Status
                             </td>

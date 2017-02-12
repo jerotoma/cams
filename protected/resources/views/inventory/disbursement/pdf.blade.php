@@ -2,119 +2,105 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title></title>
 <head>
-    <link rel="stylesheet" type="text/css" href="{{asset("assets/global/plugins/bootstrap/css/bootstrap.min.css")}}"  media='all'>
+    <link rel="stylesheet" type="text/css" href="{{asset("assets/css/bootstrap_print.css")}}"  media='all'>
 </head>
-<body>
-<div class="portlet-body form">
+<body style="border-color: #fff">
+<div class="form-body">
     <div class="row">
         <div class="col-md-12 col-xs-12 text-center">
-            <img src="{{asset('assets/logo.png')}}" width="100px" height="100px"/>
+            <img src="{{asset('assets/images/helpage.png')}}" width="100px" height="100px"/>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-md-12 col-xs-12 text-center">
-            <h3><strong>INTERNATIONAL RESCUE COMMITTEE</strong></h3> <br/>
-            Box 259, Kasulu Field Office<br/>
-            Tel : 028 2810705 ;  Fax : 028 2810706<br/>
-            Email : irc.kasulu@tanzania.theirc.org
-        </div>
-    </div>
-    <hr style="background-color: #e7ecf1 ; border-color: #e7ecf1 ;margin-bottom: 20px"/>
-    <div class="row">
-        <div class="col-md-12 col-xs-12 text-center">
+        <div class="col-md-12 col-xs-12 text-center text-uppercase">
+            <h3><strong>HelpAge International</strong></h3>
             <h4><strong>
-                    COMMUNITY BASED REHABILITATION PROGRAMME (CBR)<br/>
-                    PROGRAMME DE REHABILITATION SUR BASE COMMUNAUTAIRE (PRBC)<br/>
-                    <br/>
-                    Material Supports Form
+                    GOODS RECEIVED NOTE
                 </strong></h4>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
+    <div class="row" style="margin-top: 20px">
+        <div class="col-md-12">
             <table class="table table-bordered">
+                <tr>
+                    <th> No:</th>
+                    <td colspan="3" class="text-left">{{$item->reference_number}}</td>
 
-                <tbody>
-                <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">Date</th>
-                    <td class="col-md-10 col-sm-10 col-xs-10">
-                        {{$disbursement->distributed_date}}
-                    </td>
                 </tr>
                 <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">Progress Number</th>
-                    <td class="col-md-10 col-sm-10 col-xs-10">
-                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null)
-                            {{$disbursement->beneficiary->progress_number}}
-                        @endif
-                    </td>
+                    <th>  Date Received:</th>
+                    <td class="text-left">{{$item->date_received}}</td>
+                    <th>Donor Ref:</th>
+                    <td class="text-left">{{$item->donor_ref}}</td>
                 </tr>
                 <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">Name:</th>
-                    <td class="col-md-10 col-sm-10 col-xs-10">
-                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null)
-                            {{$disbursement->beneficiary->full_name}}
-                        @endif
-                    </td>
+                    <th> Received From/Supplier:</th>
+                    <td class="text-left">{{$item->received_from}}</td>
+                    <th>Project:</th>
+                    <td class="text-left">{{$item->project}}</td>
                 </tr>
                 <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">Sex</th>
-                    <td class="col-md-10 col-sm-10 col-xs-10">
-                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null)
-                            {{$disbursement->beneficiary->sex}}
-                        @endif
-
-                    </td>
+                    <th>HAI Receiving Officer:</th>
+                    <td class="text-left">{{$item->receiving_officer}}</td>
+                    <th>Onward Delivery to:</th>
+                    <td class="text-left">{{$item->onward_delivery}}</td>
                 </tr>
-                <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">Age</th>
-                    <td class="col-md-10 col-sm-10 col-xs-10">
-                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null)
-                            {{$disbursement->beneficiary->age}}
-                        @endif
-
-                    </td>
-                </tr>
-                <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">Location/Address: </th>
-                    <td class="col-md-10 col-sm-10 col-xs-10">
-                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null)
-                            {{$disbursement->beneficiary->address}}
-                        @endif
-                    </td>
-                </tr>
-
-
-                </tbody>
             </table>
-
-            <table class="table table-bordered">
-
-                <tbody>
-                <tr>
-                    <th colspan="4" class="col-md-12 col-sm-12 col-xs-12 text-center">Material Supported</th>
-                </tr>
-                <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">SNO </th>
-                    <th >Item/materials distributed</th>
-                    <th >Quantity</th>
-                    <th >Donor type</th>
-                </tr>
-                <tr>
-                    <td class="col-md-2 col-sm-2 col-xs-2">1. </td>
-                    <td >@if(is_object($disbursement->item) && $disbursement->item != null )
-                            {{$disbursement->item->item_name}}
-                        @endif</td>
-                    <td >{{ $disbursement->quantity}}</td>
-                    <td >{{ $disbursement->donor_type}}</td>
-                </tr>
-
-                </tbody>
-            </table>
-
         </div>
     </div>
+    <div class="row" style="margin-top: 20px">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="col-md-1">SNO</th>
+                    <th class="col-md-4">Item</th>
+                    <th class="col-md-1">Quantity</th>
+                    <th class="col-md-6">Descriptions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @if(is_object($item->items) && $item->items != null)
+                    <?php $c=1;?>
+                    @foreach($item->items as $itm)
+                        <tr>
+                            <td>{{$c++}}</td>
+                            <td>@if(is_object($itm->item) && $itm->item != null){{$itm->item->item_name}}@endif</td>
+                            <td>{{$itm->quantity}}</td>
+                            <td>{{$itm->description}}</td>
+                        </tr>
+                    @endforeach
+                @endif
+                </tbody>
 
+            </table>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 30px">
+        <div class="col-md-12 col-xs-12">
+            <h6><strong>Comments</strong></h6>
+            <p class="text-justify"><?php echo $item->comments;?></p>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 30px">
+        <div class="col-md-12 col-xs-12">
+            <table class="table table-bordered">
+                <tr>
+                    <th class="col-md-3 col-xs-3">Signature of Recipient:</th>
+                    <th class="col-md-3 col-xs-3"></th>
+                    <th class="col-md-3 col-xs-3">Checked by:</th>
+                    <th class="col-md-3 col-xs-3"></th>
+                </tr>
+                <tr>
+                    <th>Date:</th>
+                    <th></th>
+                    <th>Date:</th>
+                    <th></th>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
 </body>
 </html>
