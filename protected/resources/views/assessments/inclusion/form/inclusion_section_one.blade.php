@@ -2,7 +2,7 @@
      <div class="well">
 	<div class="form-top">
 		<div class="form-top-left">
-			<h3 class="text-center section-info"></span>Section <span class="section">1</span> out of <span class="section">6</span> sections </h3>
+			<h3 class="text-center section-info"></span>Section <span class="section">1</span> out of <span class="section">7</span> sections </h3>
 			<h1 class="text-center section-title ">Select client to assess </h1>
 		</div>
 	</div>
