@@ -9,6 +9,9 @@
 	<div class="form-bottom">
 		<div class="row">
 			 <div class="col-md-12">
+                 <div class="form-group">
+                     <label>A. Motor Skill</label>
+                 </div>
 				 <div class="form-group">
 					 <div class="row">
 						<div class="col-md-4 col-md-pull-0">
@@ -16,7 +19,7 @@
 								  <p>Gross motor skills : </p>
 							 </div>  
 						</div>
-						<div class="col-md-8 col-md-pull-0">
+						<div class="col-md-8 col-md-pull-1">
 							<div class="radio">
 							  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_1" value="Level 1">Level 1</label>
 							  <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_1" value="Level 2">Level 2</label>
@@ -35,7 +38,7 @@
 								  <p>Moving limited in the Bed</p>
 							 </div>  
 						   </div>
-						  <div class="col-md-6 col-md-pull-0">
+						  <div class="col-md-6 col-md-pull-2">
 								<div class="checkbox">
 								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_a_2" value="0">0</label>
 								</div>
@@ -50,7 +53,7 @@
 								  <p>Moving out of the Bed</p>
 							 </div>  
 						   </div>
-						  <div class="col-md-6 col-md-pull-0">
+						  <div class="col-md-6 col-md-pull-2">
 								<div class="checkbox">
 								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_a_3" value="1">1</label>
 								</div>
@@ -62,7 +65,7 @@
 								  <p>Moving in the House</p>
 							 </div>  
 						   </div>
-						  <div class="col-md-6 col-md-pull-0">
+						  <div class="col-md-6 col-md-pull-2">
 								<div class="checkbox">
 								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_a_4" value="2">2</label>
 								</div>
@@ -74,7 +77,7 @@
 								  <p>Moving Around the House</p>
 							 </div>  
 						   </div>
-						  <div class="col-md-6 col-md-pull-0">
+						  <div class="col-md-6 col-md-pull-2">
 								<div class="checkbox">
 								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_a_5" value="3">3</label>
 								</div>
@@ -86,7 +89,7 @@
 								  <p>Moving in the village</p>
 							 </div>  
 						   </div>
-						  <div class="col-md-6 col-md-pull-0">
+						  <div class="col-md-6 col-md-pull-2">
 								<div class="checkbox">
 								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_a_6" value="4">4</label>
 								</div>
@@ -98,7 +101,7 @@
 								  <p>Moving long distance</p>
 							 </div>  
 						   </div>
-						  <div class="col-md-6 col-md-pull-0">
+						  <div class="col-md-6 col-md-pull-2">
 								<div class="checkbox">
 								  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_a_7" value="5">5</label>
 								</div>
@@ -116,8 +119,10 @@
 			     <div class="form-group">
                            <div class="row">
                               <div class="col-md-12">
-                                 <h3 class="text-center">Range of motion (ROM) & Muscle strength </h3>
-                              </div>
+                                  <div class="form-group">
+                                    <label>Range of motion (ROM) & Muscle strength </label>
+                                  </div> 
+                               </div>
                             </div>
                              <hr>
                             <div class="row">

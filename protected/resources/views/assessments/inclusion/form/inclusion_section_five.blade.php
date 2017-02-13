@@ -118,16 +118,19 @@
 						</div>
 				   </div>
                 </div>
+                <div class="form-group">
+                     <label>FOR ADULT (Describe)</label>
+                 </div>
                 <div class="form-group"> 
                    <div class="row">
                       <div class="col-md-4 ">
                             <div class="form-group">
-                                <label>Head Control</label>
+                                <p>Head Control</p>
                             </div>
                       </div>
                       <div class="col-md-6 col-md-pull-1">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="" placeholder="Remark:" name ="med_performance_comp_qn_a_25_remark" value="">                                    
+                                <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_25_remark" value="">                                    
                             </div>
                       </div>
                    </div>
@@ -136,12 +139,12 @@
                    <div class="row">
                       <div class="col-md-4 col-md-pull-0">
                             <div class="form-group"> 
-                                <label>Trunk Control</label>
+                                <pl>Trunk Control</p>
                             </div>
                       </div>
                       <div class="col-md-6 col-md-pull-1">
                             <div class="form-group"> 
-                                 <input type="text" class="form-control" id="" placeholder="Remark:" name ="med_performance_comp_qn_a_26_remark" value="">                                    
+                                 <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_26_remark" value="">                                    
                             </div>
                       </div>
                     </div> 
@@ -150,12 +153,12 @@
                      <div class="row">
                           <div class="col-md-4 col-md-pull-0">
                                 <div class="form-group">
-                                    <label>Spinal deformities</label>
+                                    <p>Spinal deformities</p>
                                 </div>
                           </div>
                           <div class="col-md-6 col-md-pull-1">
                                 <div class="form-group">
-                                   <input type="text" class="form-control" id="" placeholder="Remark:" name ="med_performance_comp_qn_a_27_remark" value="">                                    
+                                   <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_27_remark" value="">                                    
                                 </div>
                           </div>
                     </div>
@@ -164,12 +167,12 @@
                     <div class="row">
                           <div class="col-md-4 col-md-pull-0">
                                 <div class="form-group">
-                                    <label>Sysmmetry(equ)</label>
+                                    <p>Sysmmetry(equ)</p>
                                 </div>
                           </div>
                           <div class="col-md-6 col-md-pull-1">
                                 <div class="form-group">
-                                     <input type="text" class="form-control" id="" placeholder="Remark:" name ="med_performance_comp_qn_a_28_remark" value="">                                    
+                                     <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_28_remark" value="">                                    
                                 </div>
                           </div>
                     </div>
@@ -181,7 +184,7 @@
                   <div class="row">
                           <div class="col-md-4 col-md-pull-0">
                                 <div class="form-group"> 
-                                     <label>Subluxation</label>
+                                     <p>Subluxation</p>
                                 </div>
                           </div>
                           <div class="col-md-6 col-md-pull-1">
@@ -194,19 +197,19 @@
                    <div class="row">
                           <div class="col-md-4 col-md-pull-0">
                                  <div class="form-group"> 
-                                   <label>Hand function</label> 
+                                   <p>Hand function</pp> 
                                </div>
                           </div> 
                           <div class="col-md-6 col-md-pull-1">
                                 <div class="form-group"> 
-                                    <input type="text" class="form-control" id="" placeholder="Remark:" name ="med_performance_comp_qn_a_31_remark" value="">                                    
+                                    <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_31_remark" value="">                                    
                                 </div>
                           </div>
                     </div>
                      <div class="row">
                            <div class="col-md-4 col-md-pull-0">
                                 <div class="form-group"> 
-                                     <label>Coordination</label>
+                                     <p>Coordination</p>
                                  </div>
                            </div>
                            <div class="col-md-6 col-md-pull-1">
@@ -219,7 +222,7 @@
                     <div class="row">
                            <div class="col-md-4 col-md-pull-0">
                                 <div class="form-group"> 
-                                    <label>Eye hand coordination</label>
+                                    <p>Eye hand coordination</p>
                                  </div>
                           </div>
                           <div class="col-md-6 col-md-pull-1">
@@ -232,7 +235,7 @@
                      <div class="row">
                           <div class="col-md-4 col-md-pull-0">
                                 <div class="form-group">
-                                    <label>Hand to hand coordination</label>
+                                    <p>Hand to hand coordination</p>
                                 </div>
                           </div>
                           <div class="col-md-6 col-md-pull-1">
@@ -246,7 +249,7 @@
                     <textarea rows="2" class="form-control" name="med_performance_comp_qn_a_16_remark" id="med_performance_comp_qn_a_35_remark" placeholder="Remarks"></textarea>
                  </div>
                  <div class="form-group">
-                     <p>Grasp</p>
+                     <label>Grasp</label>
                  </div>
                  <div class="form-group">
 					 <div class="row">
@@ -329,19 +332,15 @@
 				    </div>  
                 </div>
                 <div class="form-group">
-                    <textarea rows="2" class="form-control" name="med_performance_comp_qn_a_40_remark" id="med_performance_comp_qn_a_40_remark" placeholder="Remarks"></textarea>
+                    <textarea rows="2" class="form-control" name="med_performance_comp_qn_a_40_remark" id="med_performance_comp_qn_a_40_remark" placeholder="Comment"></textarea>
                 </div>
                 <hr>
                 <div class="form-group">
-					 <div class="row">
-						<div class="col-md-12 col-md-pull-0">
-							 <div class="radio">
-								   <label>{{strtoupper("Moving Pattern")}}</label>
-							 </div>  
-						</div>
-				  </div>
-               </div>
-              <div class="form-group">
+				    <label>{{strtoupper("Moving Pattern")}}</label>
+					
+                </div>
+                <hr>
+                <div class="form-group">
 				    <div class="row">
                          <div class="col-md-12 col-md-pull-0">
                               <div class="form-group">

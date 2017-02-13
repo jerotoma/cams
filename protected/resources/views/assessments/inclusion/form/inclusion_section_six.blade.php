@@ -19,8 +19,8 @@
                 <div class="form-group"> 
                       <div class="row">
                           <div class="col-md-4 col-md-pull-0">
-                                <div class="form-group"> 
-                                     <label>Vision : </label>
+                                <div class="checkbox"> 
+                                     <p>Vision : </p>
                                 </div>
                           </div>
                           <div class="col-md-8 col-md-pull-1">
@@ -39,8 +39,8 @@
                  <div class="form-group"> 
                       <div class="row">
                           <div class="col-md-4 col-md-pull-0">
-                                <div class="form-group"> 
-                                     <label>Hearing : </label>
+                                <div class="checkbox"> 
+                                     <p>Hearing : </p>
                                 </div>
                           </div>
                           <div class="col-md-8 col-md-pull-1">
@@ -58,8 +58,8 @@
                  <div class="form-group"> 
                       <div class="row">
                           <div class="col-md-3 col-md-pull-0">
-                                <div class="form-group"> 
-                                     <label>Communication : </label>
+                                <div class="checkbox"> 
+                                     <p>Communication : </p>
                                 </div>
                           </div>
                           <div class="col-md-9 col-md-pull-1">

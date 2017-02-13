@@ -14,7 +14,7 @@
                   <div class="row">
                       <div class="col-md-4 col-md-pull-0">
                             <div class="form-group"> 
-                                 <label>Physical : </label>
+                                 <p>Physical : </p>
                             </div>
                       </div>
                       <div class="col-md-8 col-md-pull-1">
@@ -26,7 +26,7 @@
                 <div class="row">
                       <div class="col-md-4 col-md-pull-0">
                             <div class="form-group"> 
-                                 <label>Social : </label>
+                                 <p>Social : </p>
                             </div>
                       </div>
                       <div class="col-md-8 col-md-pull-1">
@@ -38,7 +38,7 @@
              </div>
 
              <div class="form-group">
-                 <label>Cultural (Attitude, beliefs, Norms, traditionals)</label>
+                 <p>Cultural (Attitude, beliefs, Norms, traditionals)</p>
                  <textarea rows="2" class="form-control" name="med_performance_comp_qn_context_3_remark" id="med_performance_comp_qn_context_3_remark" placeholder="Other"></textarea>
              </div>
                <div class="form-group">
@@ -87,7 +87,7 @@
                   <div class="row">
                       <div class="col-md-4 col-md-pull-0">
                             <div class="checkbox"> 
-                                 <label>Mother/Child relation </label>
+                                 <p>Mother/Child relation </p>
                             </div>
                       </div>
                       <div class="col-md-8 col-md-pull-1">
@@ -317,16 +317,16 @@
 				   </div> 	 
              </div>
              <div class="form-group">
-                 <label>Main concerns of client</label>
-                 <textarea rows="2" class="form-control" name="med_performance_comp_qn_swot_5_remark" id="med_performance_comp_qn_swot_5_remark" placeholder="Other"></textarea>
+                 <p>Main concerns of client</p>
+                 <textarea rows="2" class="form-control" name="med_performance_comp_qn_swot_5_remark" id="med_performance_comp_qn_swot_5_remark" placeholder="Describe"></textarea>
              </div>
              <div class="form-group">
-                 <label>Parents main concerns</label>
-                 <textarea rows="2" class="form-control" name="med_performance_comp_qn_swot_6_remark" id="med_performance_comp_qn_swot_6_remark" placeholder="Other"></textarea>
+                 <p>Parents main concerns</p>
+                 <textarea rows="2" class="form-control" name="med_performance_comp_qn_swot_6_remark" id="med_performance_comp_qn_swot_6_remark" placeholder="Describe"></textarea>
              </div>
              <div class="form-group">
-                 <label>Prioritization of the functional problems:</label>
-                 <textarea rows="2" class="form-control" name="med_performance_comp_qn_swot_7_remark" id="med_performance_comp_qn_swot_7_remark" placeholder="Other"></textarea>
+                 <p>Prioritization of the functional problems:</p>
+                 <textarea rows="2" class="form-control" name="med_performance_comp_qn_swot_7_remark" id="med_performance_comp_qn_swot_7_remark" placeholder="Describe"></textarea>
              </div>
              <div class="form-group">
                     <label>Short Term Rehabilitation/Protection Plan (3-4Months)</label>
