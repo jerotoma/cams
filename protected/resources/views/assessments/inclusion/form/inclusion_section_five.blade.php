@@ -9,24 +9,24 @@
 	<div class="form-bottom">
         <div class="row">
             <div class="col-md-12">
-			  <div class="form-group">
-					 <div class="row">
-						<div class="col-md-12 col-md-pull-0">
-							 <div class="radio">
-								  <p>Posture (Sitting, standing,prone and supine) : </p>
-							 </div>  
-						</div>
-				  </div>
-               </div>
-               <div class="form-group">
-					 <div class="row">
-						<div class="col-md-12 col-md-pull-0">
-							 <label>1.  {{strtoupper("For Children")}}</label>
-                                    <table class="table table-bordered table-hover">
+        			  <div class="form-group">
+        					<div class="row">
+        						<div class="col-md-12 col-md-pull-0">
+        							 <div class="radio">
+        								  <p>Posture (Sitting, standing,prone and supine) : </p>
+        							 </div>
+        						</div>
+        				  </div>
+                  </div>
+                  <div class="form-group">
+        					 <div class="row">
+        						<div class="col-md-12 col-md-pull-0">
+        							 <label>1.  {{strtoupper("For Children")}}</label>
+                                  <table class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th class="text-center" >
-                                                  
+
                                                 </th>
                                                 <th class="text-center" >
                                                   <p>Good/Hands free and able to shift weight</p>
@@ -121,7 +121,7 @@
                 <div class="form-group">
                      <label>FOR ADULT (Describe)</label>
                  </div>
-                <div class="form-group"> 
+                <div class="form-group">
                    <div class="row">
                       <div class="col-md-4 ">
                             <div class="form-group">
@@ -130,24 +130,24 @@
                       </div>
                       <div class="col-md-6 col-md-pull-1">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_25_remark" value="">                                    
+                                <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_25_remark" value="">
                             </div>
                       </div>
                    </div>
                 </div>
-                <div class="form-group"> 
+                <div class="form-group">
                    <div class="row">
                       <div class="col-md-4 col-md-pull-0">
-                            <div class="form-group"> 
+                            <div class="form-group">
                                 <pl>Trunk Control</p>
                             </div>
                       </div>
                       <div class="col-md-6 col-md-pull-1">
-                            <div class="form-group"> 
-                                 <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_26_remark" value="">                                    
+                            <div class="form-group">
+                                 <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_26_remark" value="">
                             </div>
                       </div>
-                    </div> 
+                    </div>
                 </div>
                 <div class="form-group">
                      <div class="row">
@@ -158,7 +158,7 @@
                           </div>
                           <div class="col-md-6 col-md-pull-1">
                                 <div class="form-group">
-                                   <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_27_remark" value="">                                    
+                                   <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_27_remark" value="">
                                 </div>
                           </div>
                     </div>
@@ -172,18 +172,18 @@
                           </div>
                           <div class="col-md-6 col-md-pull-1">
                                 <div class="form-group">
-                                     <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_28_remark" value="">                                    
+                                     <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_28_remark" value="">
                                 </div>
                           </div>
                     </div>
                  </div>
                  <div class="form-group">
-                    <textarea rows="2" class="form-control" name="med_performance_comp_qn_a_16_remark" id="med_performance_comp_qn_a_29_remark" placeholder="Remarks"></textarea>
+                    <textarea rows="2" class="form-control" name="med_performance_comp_qn_a_29_remark" id="med_performance_comp_qn_a_29_remark" placeholder="Remarks"></textarea>
                  </div>
-                 <div clas="form-group"> 
+                 <div clas="form-group">
                   <div class="row">
                           <div class="col-md-4 col-md-pull-0">
-                                <div class="form-group"> 
+                                <div class="form-group">
                                      <p>Subluxation</p>
                                 </div>
                           </div>
@@ -196,19 +196,19 @@
                     </div>
                    <div class="row">
                           <div class="col-md-4 col-md-pull-0">
-                                 <div class="form-group"> 
-                                   <p>Hand function</pp> 
+                                 <div class="form-group">
+                                   <p>Hand function</pp>
                                </div>
-                          </div> 
+                          </div>
                           <div class="col-md-6 col-md-pull-1">
-                                <div class="form-group"> 
-                                    <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_31_remark" value="">                                    
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="" placeholder="Describe" name ="med_performance_comp_qn_a_31_remark" value="">
                                 </div>
                           </div>
                     </div>
                      <div class="row">
                            <div class="col-md-4 col-md-pull-0">
-                                <div class="form-group"> 
+                                <div class="form-group">
                                      <p>Coordination</p>
                                  </div>
                            </div>
@@ -221,7 +221,7 @@
                     </div>
                     <div class="row">
                            <div class="col-md-4 col-md-pull-0">
-                                <div class="form-group"> 
+                                <div class="form-group">
                                     <p>Eye hand coordination</p>
                                  </div>
                           </div>
@@ -246,7 +246,7 @@
                          </div>
                  </div>
                  <div class="form-group">
-                    <textarea rows="2" class="form-control" name="med_performance_comp_qn_a_16_remark" id="med_performance_comp_qn_a_35_remark" placeholder="Remarks"></textarea>
+                    <textarea rows="2" class="form-control" name="med_performance_comp_qn_a_35_remark" id="med_performance_comp_qn_a_35_remark" placeholder="Remarks"></textarea>
                  </div>
                  <div class="form-group">
                      <label>Grasp</label>
@@ -256,7 +256,7 @@
 						<div class="col-md-4 col-md-pull-0">
 							 <div class="radio">
 								  <p>Pincer grasp : </p>
-							 </div>  
+							 </div>
 						</div>
 						<div class="col-md-8 col-md-pull-1">
 							<div class="radio">
@@ -269,7 +269,7 @@
 						<div class="col-md-4 col-md-pull-0">
 							 <div class="radio">
 								  <p>Tripod grasp : </p>
-							 </div>  
+							 </div>
 						</div>
 						<div class="col-md-8 col-md-pull-1">
 							<div class="radio">
@@ -282,7 +282,7 @@
 						<div class="col-md-4 col-md-pull-0">
 							 <div class="radio">
 								  <p>Power grasp : </p>
-							 </div>  
+							 </div>
 						</div>
 						<div class="col-md-8 col-md-pull-1">
 							<div class="radio">
@@ -295,7 +295,7 @@
 						<div class="col-md-4 col-md-pull-0">
 							 <div class="radio">
 								  <p>Cyndrical grasp : </p>
-							 </div>  
+							 </div>
 						</div>
 						<div class="col-md-8 col-md-pull-1">
 							<div class="radio">
@@ -303,12 +303,12 @@
                                   <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_38" value="No">No</label>
                             </div>
 						</div>
-				    </div> 
+				    </div>
                     <div class="row">
 						<div class="col-md-4 col-md-pull-0">
 							 <div class="radio">
 								  <p>Bilateral use of hands : </p>
-							 </div>  
+							 </div>
 						</div>
 						<div class="col-md-8 col-md-pull-1">
 							<div class="radio">
@@ -321,7 +321,7 @@
 						<div class="col-md-4 col-md-pull-0">
 							 <div class="radio">
 								  <p>Hand dominance : </p>
-							 </div>  
+							 </div>
 						</div>
 						<div class="col-md-8 col-md-pull-1">
 							<div class="radio">
@@ -329,15 +329,15 @@
                                   <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_a_40" value="Left hand">Right hand</label>
                             </div>
 						</div>
-				    </div>  
+				    </div>
                 </div>
                 <div class="form-group">
-                    <textarea rows="2" class="form-control" name="med_performance_comp_qn_a_40_remark" id="med_performance_comp_qn_a_40_remark" placeholder="Comment"></textarea>
+                    <textarea rows="2" class="form-control" name="med_performance_comp_qn_a_41_remark" id="med_performance_comp_qn_a_41_remark" placeholder="Comment"></textarea>
                 </div>
                 <hr>
                 <div class="form-group">
 				    <label>{{strtoupper("Moving Pattern")}}</label>
-					
+
                 </div>
                 <hr>
                 <div class="form-group">
@@ -350,7 +350,7 @@
                     </div>
 					<div class="row">
 						<div class="col-md-12 col-md-pull-0">
-							 
+
                                     <table class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
@@ -366,7 +366,7 @@
                                                 <th class="text-center">
                                                   Trunk
                                                 </th>
-                                                
+
                                            </tr>
                                         </thead>
                                         <tbody>
@@ -376,7 +376,7 @@
                                                    Need image
                                                 </td>
                                                 <td class="text-center">
-                                                   With Assistive Device 
+                                                   With Assistive Device
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="radio">
@@ -399,7 +399,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="text-center">
-                                                   Without Assistive Device 
+                                                   Without Assistive Device
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="radio">
@@ -426,7 +426,7 @@
                                                    Need image
                                                 </td>
                                                 <td class="text-center">
-                                                   With Assistive Device 
+                                                   With Assistive Device
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="radio">
@@ -449,7 +449,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="text-center">
-                                                   Without Assistive Device 
+                                                   Without Assistive Device
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="radio">
@@ -470,7 +470,7 @@
                                                     </div>
                                                 </td>
                                            </tr>
-                                           
+
                                         </tbody>
                                  </table>
 						</div>
@@ -482,6 +482,6 @@
 		             <button type="button" class="btn btn-next">Next</button>
 			     </div>
 		  </div>
-	</div>	
+	</div>
     </div>
 </fieldset>

@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 class InclusionAssessmentController extends Controller
 {
-    
+
     public function __construct(){
         $this->middleware('auth');
     }
@@ -18,7 +18,7 @@ class InclusionAssessmentController extends Controller
      */
     public function index()
     {
-        
+
         return view('assessments.inclusion.index');
     }
 
@@ -42,10 +42,10 @@ class InclusionAssessmentController extends Controller
     {
         //Tables to be made
         /********************************
-          1.InclusionAssessment 
+          1.InclusionAssessment
           2.php artisan make:model InclusionMedicalHistory
           3.php artisan make:model MedicalPerfomanceComponentPartA
-          
+
                  1.php artisan make:model MedicalPerfomanceComponentPartARomLowerLimb
                  2.php artisan make:model MedicalPerfomanceComponentPartARomUpperLimb
                  3.php artisan make:model MedicalPerfomanceComponentPartAPosture
@@ -64,7 +64,7 @@ class InclusionAssessmentController extends Controller
           15.php artisan make:model MedicalPerfomanceComponentLongRehab
           16.
           17.
-          
+
           php artisan make:migration create_medical_performance_component_part_cs_table --table=medical_performance_component_part_cs
           php artisan make:migration create_medical_performance_component_part_ds_table --table=medical_performance_component_part_es
           php artisan make:migration create_medical_performance_component_part_es_table
@@ -80,11 +80,19 @@ class InclusionAssessmentController extends Controller
           php artisan make:migration create_medical_performance_component_part_a_moving_patterns_table
            php artisan make:migration create_medical_performance_component_part_b_com_means_assesss_table
            php artisan make:migration create_medical_performance_component_part_b_body_senses_table
-          
+           med_performance_comp_long_rehab_1_remark
+           med_performance_comp_long_rehab_2_remark
+           med_performance_comp_long_rehab_3_remark
+           med_performance_comp_long_rehab_4_remark
+           med_performance_comp_long_rehab_5_remark
+           med_performance_comp_long_rehab_6_remark
+           med_performance_comp_long_rehab_7_remark
+           med_performance_comp_long_rehab_8_remark
+           med_performance_comp_long_rehab_9_remark
           ********************************/
-    
-    
-    
+
+
+
     }
 
     /**

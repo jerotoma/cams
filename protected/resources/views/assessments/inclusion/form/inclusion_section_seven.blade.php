@@ -10,10 +10,10 @@
 	<div class="form-bottom">
        <div class="row">
          <div class="col-md-12">
-             <div class="form-group"> 
+             <div class="form-group">
                   <div class="row">
                       <div class="col-md-4 col-md-pull-0">
-                            <div class="form-group"> 
+                            <div class="form-group">
                                  <p>Physical : </p>
                             </div>
                       </div>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="row">
                       <div class="col-md-4 col-md-pull-0">
-                            <div class="form-group"> 
+                            <div class="form-group">
                                  <p>Social : </p>
                             </div>
                       </div>
@@ -44,10 +44,10 @@
                <div class="form-group">
                      <label>CHILD'S BEHAVIOR</label>
             </div>
-             <div class="form-group"> 
+             <div class="form-group">
                   <div class="row">
                       <div class="col-md-6 col-md-pull-0">
-                            <div class="checkbox"> 
+                            <div class="checkbox">
                                  <p>Does the child show interest in his environment? : </p>
                             </div>
                       </div>
@@ -59,22 +59,22 @@
                       </div>
                 </div>
              </div>
-             <div class="form-group"> 
+             <div class="form-group">
                 <div class="row">
                       <div class="col-md-1">
-                            <div class="checkbox"> 
+                            <div class="checkbox">
                                 <p>Mood : </p>
                             </div>
                       </div>
                       <div class="col-md-11">
                             <div class="checkbox">
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5" value="Passive">Passive</label>
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5" value="Active">Active</label>
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5" value="Happy">Happy</label>
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5" value="Scared">Scared</label>
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5" value="Irritable">Irritable</label>
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5" value="Crying">Crying</label>
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5" value="Holds on to mother">Holds on to mother</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5[]" value="Passive">Passive</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5[]" value="Active">Active</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5[]" value="Happy">Happy</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5[]" value="Scared">Scared</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5[]" value="Irritable">Irritable</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5[]" value="Crying">Crying</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_context_5[]" value="Holds on to mother">Holds on to mother</label>
                             </div>
                       </div>
                     </div>
@@ -83,10 +83,10 @@
                  <textarea rows="2" class="form-control" name="med_performance_comp_qn_context_5_remark" id="med_performance_comp_qn_context_5_remark" placeholder="Comment"></textarea>
             </div>
              <hr>
-            <div class="form-group"> 
+            <div class="form-group">
                   <div class="row">
                       <div class="col-md-4 col-md-pull-0">
-                            <div class="checkbox"> 
+                            <div class="checkbox">
                                  <p>Mother/Child relation </p>
                             </div>
                       </div>
@@ -105,10 +105,10 @@
              <div class="form-group">
                     <label>PARENTS' ATTITUDE :</label>
              </div>
-             <div class="form-group"> 
+             <div class="form-group">
                 <div class="row">
                       <div class="col-md-4">
-                            <div class="radio"> 
+                            <div class="radio">
                                 <p>Realistic understanding of the situation </p>
                             </div>
                       </div>
@@ -121,7 +121,7 @@
                 </div>
                 <div class="row">
                       <div class="col-md-4">
-                            <div class="radio"> 
+                            <div class="radio">
                                 <p>Realistic expectation: </p>
                             </div>
                       </div>
@@ -134,7 +134,7 @@
                 </div>
                 <div class="row">
                       <div class="col-md-4">
-                            <div class="radio"> 
+                            <div class="radio">
                                 <p>Cooperation/facilitator: </p>
                             </div>
                       </div>
@@ -152,10 +152,10 @@
              <div class="form-group">
                     <label>ACCESSIBILITIES TO FACILITIES:</label>
              </div>
-             <div class="form-group"> 
+             <div class="form-group">
                 <div class="row">
                       <div class="col-md-4">
-                            <div class="radio"> 
+                            <div class="radio">
                                 <p>Distance house / drinking water sources </p>
                             </div>
                       </div>
@@ -169,7 +169,7 @@
                 </div>
                 <div class="row">
                       <div class="col-md-4">
-                            <div class="radio"> 
+                            <div class="radio">
                                 <p>Distance house / school</p>
                             </div>
                       </div>
@@ -183,7 +183,7 @@
                 </div>
                 <div class="row">
                       <div class="col-md-4">
-                            <div class="radio"> 
+                            <div class="radio">
                                 <p>Distance house / location market</p>
                             </div>
                       </div>
@@ -197,7 +197,7 @@
                  </div>
                  <div class="row">
                       <div class="col-md-4">
-                            <div class="radio"> 
+                            <div class="radio">
                                 <p>Distance house / transportation means</p>
                             </div>
                       </div>
@@ -211,7 +211,7 @@
                  </div>
                  <div class="row">
                       <div class="col-md-4">
-                            <div class="radio"> 
+                            <div class="radio">
                                 <p>Distance house / health center</p>
                             </div>
                       </div>
@@ -231,10 +231,10 @@
                  <labe>Living environment: (Describe the environment in relation to the condition of the client)</labe>
                 <textarea rows="2" class="form-control" name="med_performance_comp_qn_context_15_remark" id="med_performance_comp_qn_context_15_remark" placeholder="Comment"></textarea>
              </div>
-             <div class="form-group"> 
+             <div class="form-group">
                 <div class="row">
                       <div class="col-md-4">
-                            <div class="radio"> 
+                            <div class="radio">
                                 <p>Describe the land around the house</p>
                             </div>
                       </div>
@@ -258,8 +258,7 @@
              <div class="form-group">
 					 <div class="row">
 						<div class="col-md-12 col-md-pull-0">
-                                  
-                                    <table class="table table-bordered table-hover">
+                        <table class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 <th class="text-left" width="50px">
@@ -314,7 +313,7 @@
                                        </tbody>
                                  </table>
 						</div>
-				   </div> 	 
+				   </div>
              </div>
              <div class="form-group">
                  <p>Main concerns of client</p>
@@ -359,9 +358,9 @@
                                             </div>
                                         </td>
                                       </tr>
-                                      <tr>  
+                                      <tr>
                                          <th class="text-left" width="80px" >
-                                           Objectives 
+                                           Objectives
                                         </th>
                                         <td class="text-center">
                                            <div class="form-group">
@@ -369,9 +368,9 @@
                                             </div>
                                         </td>
                                       </tr>
-                                      <tr>   
+                                      <tr>
                                         <th class="text-left" width="80px" >
-                                           Intervention 
+                                           Intervention
                                         </th>
                                         <td class="text-center">
                                            <div class="form-group">
@@ -379,9 +378,9 @@
                                             </div>
                                         </td>
                                       </tr>
-                                      <tr>  
+                                      <tr>
                                          <th class="text-left" width="80px" >
-                                           Rationale 
+                                           Rationale
                                          </th>
                                          <td class="text-center">
                                            <div class="form-group">
@@ -391,7 +390,7 @@
                                       </tr>
                                       <tr>
                                         <th class="text-left" width="80px" >
-                                          BY who 
+                                          BY who
                                         </th>
                                         <td class="text-center" >
                                            <div class="form-group">
@@ -409,11 +408,11 @@
                                             </div>
                                         </td>
                                     </tr>
-                                   
+
                                   </tbody>
                             </table>
 						</div>
-				   </div> 	 
+				   </div>
              </div>
              <div class="form-group">
                     <label>Long Term Rehabilitation/Protection Plan (3-4Months)</label>
@@ -446,9 +445,9 @@
                                             </div>
                                         </td>
                                       </tr>
-                                      <tr>  
+                                      <tr>
                                          <th class="text-left" width="80px" >
-                                           Objectives 
+                                           Objectives
                                         </th>
                                         <td class="text-center">
                                            <div class="form-group">
@@ -456,9 +455,9 @@
                                             </div>
                                         </td>
                                       </tr>
-                                      <tr>   
+                                      <tr>
                                         <th class="text-left" width="80px" >
-                                           Intervention 
+                                           Intervention
                                         </th>
                                         <td class="text-center">
                                            <div class="form-group">
@@ -466,9 +465,9 @@
                                             </div>
                                         </td>
                                       </tr>
-                                      <tr>  
+                                      <tr>
                                          <th class="text-left" width="80px" >
-                                           Rationale 
+                                           Rationale
                                          </th>
                                          <td class="text-center">
                                            <div class="form-group">
@@ -478,7 +477,7 @@
                                       </tr>
                                       <tr>
                                         <th class="text-left" width="80px" >
-                                          BY who 
+                                          BY who
                                         </th>
                                         <td class="text-center" >
                                            <div class="form-group">
@@ -496,19 +495,19 @@
                                             </div>
                                         </td>
                                     </tr>
-                                   
+
                                   </tbody>
                             </table>
 						</div>
-				   </div> 	 
+				   </div>
              </div>
              <div class="form-group">
                  <label>FRAME OF REFFERENCE (Biomechanical frame of reference, Neurodevelopmental approach, Bobath approach,etc) </label>
-                <textarea rows="2" class="form-control" name="med_performance_comp_qn_long_rehab_8_remark" id="med_performance_comp_qn_long_rehab_7_remark" placeholder="Describe"></textarea>
+                <textarea rows="2" class="form-control" name="med_performance_comp_qn_long_rehab_8_remark" id="med_performance_comp_qn_long_rehab_8_remark" placeholder="Describe"></textarea>
              </div>
              <div class="form-group">
                  <label>Model </label>
-                <textarea rows="2" class="form-control" name="med_performance_comp_qn_long_rehab_8_remark" id="med_performance_comp_qn_long_rehab_8_remark" placeholder="Describe"></textarea>
+                <textarea rows="2" class="form-control" name="med_performance_comp_qn_long_rehab_9_remark" id="med_performance_comp_qn_long_rehab_9_remark" placeholder="Describe"></textarea>
              </div>
              <div class="form-group">
                     <button type="button" class="btn btn-previous">Previous</button>
