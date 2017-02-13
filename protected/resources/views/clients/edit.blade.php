@@ -205,9 +205,9 @@
                 
                 <div class="form-group ">
                     <label class="control-label"> Present address (Zone, Cluster, Neibourhood etc)</label>
-                    <input type="text" class="form-control" placeholder="Present address (Zone, Cluster, Neibourhood etc)" name="address" id="address" value="{{$client->address}}">
+                    <input type="text" class="form-control" placeholder="Present address (Zone, Cluster, Neibourhood etc)" name="present_address" id="present_address" value="{{$client->present_address}}">
                     @if($errors->first('address') !="")
-                        <label id="address-error" class="validation-error-label" for="address">{{ $errors->first('address') }}</label>
+                        <label id="address-error" class="validation-error-label" for="address">{{ $errors->first('present_address') }}</label>
                     @endif
                 </div>
                 <div class="form-group ">
