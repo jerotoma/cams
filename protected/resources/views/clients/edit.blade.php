@@ -331,6 +331,7 @@
         },
         errorElement:'div',
         rules: {
+            present_address: "required",
             client_number: "required",
             full_name: "required",
             sex: "required",
@@ -353,6 +354,7 @@
             camp_id:"required"
         },
         messages: {
+            present_address: "Please client number is required",
             client_number: "Please client number is required",
             full_name: "Please full name is required",
             status: "Please full name is required",

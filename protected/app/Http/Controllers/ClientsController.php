@@ -290,12 +290,14 @@ class ClientsController extends Controller
                 'age' => 'required',
                 'civil_status' => 'required',
                 'nationality' => 'required',
-                'date_arrival' => 'required',
+                'date_arrival' => 'required|before:tomorrow',
                 'ration_card_number' => 'required',
                 'camp_id' => 'required',
                 'vulnerability_code' => 'required',
                 'females_total' => 'required',
                 'males_total' => 'required',
+                'birth_date'=>'before:tomorrow',
+                'present_address'=> 'required',
 
             ]);
             if ($validator->fails()) {
@@ -325,6 +327,9 @@ class ClientsController extends Controller
                 $client->assistance_received = $request->assistance_received;
                 $client->problem_specification = $request->problem_specification;
                 $client->camp_id = $request->camp_id;
+                $client->present_address = $request->present_address;
+                $client->females_total = $request->females_total;
+                $client->males_total = $request->males_total;
                 $client->created_by = Auth::user()->username;
                 $client->save();
 
@@ -399,13 +404,14 @@ class ClientsController extends Controller
                 'age' => 'required',
                 'civil_status' => 'required',
                 'nationality' => 'required',
-                'date_arrival' => 'required',
+                'date_arrival' => 'required|before:tomorrow',
                 'ration_card_number' => 'required',
                 'camp_id' => 'required',
                 'vulnerability_code' => 'required',
                 'females_total' => 'required',
                 'males_total' => 'required',
-                'status' => 'required',
+                'birth_date'=>'before:tomorrow',
+                'present_address'=> 'required',
 
             ]);
             if ($validator->fails()) {
@@ -434,6 +440,9 @@ class ClientsController extends Controller
                 $client->assistance_received = $request->assistance_received;
                 $client->problem_specification = $request->problem_specification;
                 $client->camp_id = $request->camp_id;
+                $client->present_address = $request->present_address;
+                $client->females_total = $request->females_total;
+                $client->males_total = $request->males_total;
                 $client->created_by = Auth::user()->username;
                 $client->status=$request->status;
                 $client->save();
