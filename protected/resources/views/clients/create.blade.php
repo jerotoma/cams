@@ -17,7 +17,8 @@
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
-
+<script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
@@ -201,7 +202,7 @@
 
         <div class="form-group ">
             <label class="control-label"> Present address (Zone, Cluster, Neibourhood etc)</label>
-            <input type="text" class="form-control" placeholder="Present address (Zone, Cluster, Neibourhood etc)" name="address" id="address" value="{{old('address')}}">
+            <input type="text" class="form-control" placeholder="Present address (Zone, Cluster, Neibourhood etc)" name="present_address" id="present_address" value="{{old('address')}}">
             @if($errors->first('address') !="")
                 <label id="address-error" class="validation-error-label" for="address">{{ $errors->first('address') }}</label>
             @endif
@@ -313,6 +314,8 @@
         },
         errorElement:'div',
         rules: {
+
+            present_address: "required",
             client_number: "required",
             full_name: "required",
             sex: "required",
@@ -334,6 +337,7 @@
             camp_id:"required"
         },
         messages: {
+            present_address: "Please client number is required",
             client_number: "Please client number is required",
             full_name: "Please full name is required",
             sex: "Please sex is required",

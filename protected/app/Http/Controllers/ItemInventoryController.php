@@ -85,6 +85,7 @@ class ItemInventoryController extends Controller
                         $item->description=$row->description;
                         $item->category_id= $cate_id;
                         $item->quantity=$row->quantity;
+                        $item->unit=$row->unit;
                         $item->remarks=$row->remarks;
                         $item->status="Available";
                         $item->save(); 
@@ -136,6 +137,7 @@ class ItemInventoryController extends Controller
                 'item_name' => 'required|unique:items_inventories',
                 'quantity' => 'required|numeric',
                 'status' => 'required',
+                'unit' => 'required',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -148,6 +150,7 @@ class ItemInventoryController extends Controller
                 $item->description = $request->description;
                 $item->category_id = $request->category_id;
                 $item->quantity = $request->quantity;
+                $item->unit = strtoupper(strtolower($request->unit));
                 $item->remarks = $request->remarks;
                 $item->status = $request->status;
                 $item->save();
@@ -207,6 +210,7 @@ class ItemInventoryController extends Controller
                 'item_name' => 'required|unique:items_inventories,item_name,'.$id,
                 'quantity' => 'required|numeric',
                 'status' => 'required',
+                'unit' => 'required',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -218,6 +222,7 @@ class ItemInventoryController extends Controller
                 $item->item_name = $request->item_name;
                 $item->description = $request->description;
                 $item->category_id = $request->category_id;
+                $item->unit = strtoupper(strtolower($request->unit));
                 $item->quantity = $request->quantity;
                 $item->remarks = $request->remarks;
                 $item->status = $request->status;

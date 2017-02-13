@@ -38,27 +38,37 @@
                    <option value="newCat">New Category</option>
                </select>
             </div>
-            <div class="form-group">
-                <div class="row">
+           <div class="row">
                     <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                        <div class="form-group">
                         <label>Quantity</label>
                         <input type="text" class="form-control" name="quantity" id="quantity">
+                        </div>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
                         <div class="form-group">
+                        <label>Unit</label>
+                            <input type="text" class="form-control" name="unit" id="unit" placeholder="Item Unit e.g PIC, BOX">
+                        </div>
+                    </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                    <div class="form-group">
                         <label>Status</label>
                         <select name="status" class="select" id="status" data-placeholder="Choose an option...">
-                                <option></option>
+                            <option></option>
                             <option value="Available">Available</option>
                             <option value="Available">Not available</option>
                         </select>
-                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label>Remarks</label>
-                <input type="text" class="form-control" name="remarks" id="remarks">
+                <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        <input type="text" class="form-control" name="remarks" id="remarks">
+                    </div>
+                </div>
             </div>
 
             <div class="row">
@@ -71,8 +81,7 @@
                 </div>
 
             </div>
-
-            </div>
+        </div>
 
         {!! Form::close() !!}
     </div>
@@ -192,10 +201,12 @@
         rules: {
             item_name: "required",
             status: "required",
+            unit: "required",
             quantity: "required"
         },
         messages: {
             item_name: "Please enter item name",
+            unit: "Please enter item unit",
             status: "Please select status",
             quantity: "Please enter quantity"
         },
