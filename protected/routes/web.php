@@ -110,10 +110,14 @@ Route::post('excel/import/received/items','ItemsReceivingController@postImport')
 
 //ItemsDisbursementController
 Route::resource('items/distributions','ItemsDisbursementController');
-Route::get('inventory/disbursement/import','ItemsDisbursementController@showImport');
-Route::post('inventory/disbursement/import','ItemsDisbursementController@postImport');
-Route::get('inventory/disbursement/import/errors','ItemsDisbursementController@showImportErrors');
-Route::get('inventory/disbursement/pdf/{id}','ItemsDisbursementController@downloadPdf');
+Route::get('distributions/items/import','ItemsDisbursementController@showImport');
+Route::post('distributions/items/import','ItemsDisbursementController@postImport');
+Route::post('distributions/items/bulk','ItemsDisbursementController@postBulk');
+Route::get('distributions/items/bulk','ItemsDisbursementController@showBulk');
+Route::get('distributions/items/import/errors','ItemsDisbursementController@showImportErrors');
+Route::get('download/pdf/items/distributions/{id}','ItemsDisbursementController@downloadPdf');
+Route::get('print/items/distributions/{id}','ItemsDisbursementController@showPrint');
+
 
 //WheelChairAssessment
 

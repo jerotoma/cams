@@ -1,7 +1,7 @@
                 <div class="sidebar-user-material">
                     <div class="category-content">
                         <div class="sidebar-user-material-content">
-                            <a href="#"><img src="{{asset("assets/images/placeholder.jpg")}}" class="img-circle img-responsive" alt=""></a>
+                            <a href="#"><img src="{{asset("assets/images/user_icon.png")}}" class="img-circle img-responsive" alt=""></a>
                            <h6>{{Auth::user()->full_name}}</h6>
                             <span class="text-size-small"> {{Auth::user()->designation}}</span>
                         </div>

@@ -17,6 +17,21 @@ if (!function_exists('getHighChatCasesCountByStatus')) {
         return count(\App\ClientCase::where('status','=',$status)->get());
     }
 }
+if (!function_exists('reduceItemQuantity')) {
+    function reduceItemQuantity($id,$q) {
+
+        $item= \App\ItemsInventory::findorfail($id);
+        if(($item->quantity - $q) >=0)
+        {
+            $item->quantity =($item->quantity -$q);
+            $item->save();
+
+            return true;
+        }
+        else
+            return false;
+    }
+}
 if (!function_exists('getHighChatClientMonthlyCountByYear')) {
     function getHighChatClientMonthlyCountByYear($year) {
 

@@ -26,8 +26,9 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'inventory-received','role'=>'form','id'=>'formItemsReceived','files'=>true)) !!}
-        <div class="form-body">
+        {!! Form::open(array('url'=>'distributions/items/bulk','role'=>'form','id'=>'formItemsReceived','files'=>true)) !!}
+        <div class="panel panel-flat">
+            <div class="panel-body">
             <fieldset class="scheduler-border">
                 <legend class="text-bold"> NFIs Items Distribution</legend>
                 <div class="row">
@@ -40,71 +41,27 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-8">
                         <div class="form-group">
-                            <label class="control-label">disbursements_by</label>
-                            <input type="text" class="form-control" name="donor_ref"  id="donor_ref" value="" >
-                            @if($errors->first('donor_ref') !="")
-                                <label id="address-error" class="validation-error-label" for="donor_ref">{{ $errors->first('donor_ref') }}</label>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="control-label">Project:</label>
-                            <input type="text" class="form-control" name="project"  id="project" value="" >
-                            @if($errors->first('project') !="")
-                                <label id="address-error" class="validation-error-label" for="project">{{ $errors->first('project') }}</label>
-                            @endif
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group ">
-                            <label class="control-label"> Received From/Supplier: </label>
-                            <input type="text" class="form-control" name="received_from" id="received_from" value="{{old('received_from')}}">
-                            @if($errors->first('received_from') !="")
-                                <label id="address-error" class="validation-error-label" for="received_from">{{ $errors->first('received_from') }}</label>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group ">
-                            <label class="control-label"> HAI Receiving Officer: </label>
-                            <input type="text" class="form-control"  name="receiving_officer" id="receiving_officer" value="{{old('receiving_officer')}}">
-                            @if($errors->first('receiving_officer') !="")
-                                <label id="address-error" class="validation-error-label" for="receiving_officer">{{ $errors->first('receiving_officer') }}</label>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group ">
-                            <label class="control-label"> Onward Delivery to: </label>
-                            <input type="text" class="form-control"  name="onward_delivery" id="onward_delivery" value="{{old('onward_delivery')}}">
-                            @if($errors->first('onward_delivery') !="")
-                                <label id="address-error" class="validation-error-label" for="onward_delivery">{{ $errors->first('onward_delivery') }}</label>
-                            @endif
+                            <label class="control-label">Items Distributed By</label>
+                            <input type="text" class="form-control" name="disbursements_by"  id="disbursements_by" value="" >
                         </div>
                     </div>
                 </div>
             </fieldset>
             <fieldset class="scheduler-border">
-                <legend class="text-bold">ITEMS</legend>
+                <legend class="text-bold">PSN CLIENTS ITEMS DISTRIBUTION LIST</legend>
                 <div class="form-group">
-                    <label>Use this template for importing Items <a href={{asset("assets/templates/item_import_template.xls")}}>Download template here</a> </label>
-                    <input type="file" class="form-control" name="items_file" id="items_file">
+                    <label>Use this template for importing Items <a href={{asset("assets/templates/bulk_item_distribution_template.xls")}}>Download template here</a> </label>
+                    <input type="file" class="form-control" name="items_distribution_file" id="items_distribution_file">
                 </div>
             </fieldset>
                 <div class="form-group ">
                     <label class="control-label"> Comments: </label>
                     <textarea class="form-control"  name="comments" id="comments">{{old('comments')}}</textarea>
-                    @if($errors->first('comments') !="")
-                        <label id="address-error" class="validation-error-label" for="comments">{{ $errors->first('comments') }}</label>
-                    @endif
                 </div>
             </fieldset>
+        </div>
         </div>
         <div class="form-actions">
             <div class="row">
@@ -174,25 +131,17 @@
         },
         errorElement:'div',
         rules: {
-            reference_number: "required",
-            date_received: "required",
-            received_from: "required",
-            donor_ref: "required",
-            receiving_officer: "required",
-            project: "required",
-            items_file:"required"
+            disbursements_date: "required",
+            disbursements_by: "required",
+            items_distribution_file:"required"
         },
         messages: {
-            reference_number: "Please field is required",
-            date_received: "Please field is required",
-            received_from: "Please field is required",
-            donor_ref: "Please field is required",
-            receiving_officer: "Please field is required",
-            project: "Please field is required",
-            items_file: "Please Upload file is required"
+            disbursements_date: "Please field is required",
+            disbursements_by: "Please field is required",
+            items_distribution_file: "Please upload file"
         },
         submitHandler: function(form) {
-            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
+            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Submitting form please wait...</span><h3>");
             var formURL = $('#formItemsReceived').attr("action");
             var formData = new FormData(form);
             $.ajax(
@@ -209,7 +158,7 @@
                     {
                         $("#output").html(data.message);
                         setTimeout(function() {
-                            location.replace('{{url('inventory-received')}}');
+                            location.replace('{{url('items/distributions')}}');
                             $("#output").html("");
                         }, 2000);
 

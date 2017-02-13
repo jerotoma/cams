@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 
+use App\Client;
 use App\ItemsCategories;
 use App\ItemsDisbursement;
+use App\ItemsDisbursementItems;
 use App\ItemsInventory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ItemsDisbursementController extends Controller
@@ -145,11 +149,115 @@ class ItemsDisbursementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
         //
-        $beneficiary=Beneficiary::find($id);
-        return view('inventory.disbursement.create',compact('beneficiary'));
+        return view('inventory.disbursement.create');
+    }
+    public function showBulk()
+    {
+        //
+        return view('inventory.disbursement.bulk');
+    }
+    public function postBulk(Request $request)
+    {
+        //
+        try {
+            $validator = Validator::make($request->all(), [
+                'disbursements_date' => 'required',
+                'items_distribution_file' => 'required|mimes:xls,xlsx',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+               if (count(ItemsDisbursement::where('disbursements_date','=',date('Y-m-d',strtotime($request->disbursements_date)))
+                                    ->where('disbursements_by','=',ucwords(strtolower($request->disbursements_by)))->get())){
+                   $distribution=ItemsDisbursement::where('disbursements_date','=',date('Y-m-d',strtotime($request->disbursements_date)))
+                       ->where('disbursements_by','=',ucwords(strtolower($request->disbursements_by)))->get()->first();
+               }
+               else {
+                   $distribution = new ItemsDisbursement;
+                   $distribution->disbursements_date = date('Y-m-d', strtotime($request->disbursements_date));
+                   $distribution->comments = $request->comments;
+                   $distribution->disbursements_by = ucwords(strtolower($request->disbursements_by));
+                   $distribution->save();
+               }
+
+                $file= $request->file('items_distribution_file');
+                $destinationPath = public_path() .'/uploads/temp/';
+                $filename   = str_replace(' ', '_', $file->getClientOriginalName());
+                $file->move($destinationPath, $filename);
+
+                Excel::load($destinationPath . $filename, function ($reader)use ($distribution) {
+                    $reader->formatDates(false, 'Y-m-d');
+                    $results= $reader->get();
+                    $results->each(function($row)use ($distribution) {
+
+                        if(count(Client::where('client_number','=',strtoupper($row->client_number))->get()) >0)
+                        {
+                            $client=Client::where('client_number','=',strtoupper($row->client_number))->get()->first();
+                        }
+                        else
+                        {
+                            $client=new Client;
+                            $client->client_number =strtoupper($row->client_number);
+                            $client->full_name =ucwords(strtolower($row->full_name));
+                            $client->sex =ucwords($row->sex);
+                            $client->age =$row->age;
+                            $client->save();
+                        }
+                        if(count(ItemsCategories::where('category_name','=',ucwords(strtolower($row->item_category)))->get()) >0) {
+                            $category =ItemsCategories::where('category_name','=',ucwords(strtolower($row->item_category)))->get()->first();
+                        }
+                        else {
+                            $category = new ItemsCategories;
+                            $category->category_name = ucwords(strtolower($row->item_category));
+                            $category->status="Available";
+                            $category->save();
+                        }
+                        if(count(ItemsInventory::where('item_name','=',ucwords(strtolower($row->item_name)))->get()) >0) {
+                            $item=ItemsInventory::where('item_name','=',ucwords(strtolower($row->item_name)))->get()->first();
+                        }else{
+                            $item=new ItemsInventory;
+                            $item->item_name=ucwords(strtolower($row->item_name));
+                            $item->category_id= $category->id;
+                            $item->status="Available";
+                            $item->save();
+                        }
+                        if(reduceItemQuantity($item->id,$row->quantity)) {
+                            if (!count(ItemsDisbursementItems::where('item_id','=',$item->id)
+                                                             ->where('distribution_id','=',$distribution->id)
+                                                             ->where('client_id','=',$client->id)
+                                                             ->where('quantity','=',$row->quantity)->get()) >0) {
+                                $dist_items = new ItemsDisbursementItems;
+                                $dist_items->client_id = $client->id;
+                                $dist_items->item_id = $item->id;
+                                $dist_items->quantity = $row->quantity;
+                                $dist_items->distribution_id = $distribution->id;
+                                $dist_items->save();
+                            }
+                        }
+
+                     });
+
+            });
+
+                return response()->json([
+                    'success' => true,
+                    'message' => "Record saved"
+                ], 200);
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**
@@ -160,57 +268,7 @@ class ItemsDisbursementController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        if(count(Beneficiary::where('progress_number','=',$request->progress_number)->get()) > 0)
-        {
-            if(count($request->item) >0 && $request->item != null)
-            {
-                  $qcount=0;
-                  $error="";
-                foreach ($request->item as $items)
-                {
-                    if($items != "" && $items != null)
-                    {
-                        if(!count(ItemsDisbursement::where('progress_number','=',$request->progress_number)->where('item_id','=',$items)->where('distributed_date','=',date("Y-m-d",strtotime($request->distributed_date)))->get()) > 0)
-                        {
-                            $disbursement = new ItemsDisbursement;
-                            $disbursement->progress_number = $request->progress_number;
-                            $disbursement->donor_type = $request->donor_type;
-                            $disbursement->item_id = $items;
-                            $disbursement->quantity = $request->quantity[$qcount];
-                            $disbursement->distributed_date = $request->distributed_date;
-                            $disbursement->beneficiary_id = $request->beneficiary_id;
-                            $disbursement->save();
-                        }
-                        else
-                        {
-                            $item=ItemsInventory::find($items);
-                            $error .= "Beneficiary [".$request->progress_number."] Has already received Item [".$item->item_name."] for date [ $request->distributed_date] <br/>" ;
-                        }
-                        
-                        $qcount++;
-                    }
-                    else
-                    {
-                        $error ="Save failed no item entered";
-                    }
 
-                }
-                if($error != "")
-                {return "<span class='text-danger'><i class='fa fa-info'></i> $error</span>";}
-                else{return "<span class='text-success'><i class='fa fa-info'></i> Saved successfully</span>";}
-
-            }
-            else
-            {
-                return "<span class='text-danger'><i class='fa fa-info'></i> Save failed no item entered</span>";
-            }
-
-        }
-        else
-        {
-            return "<span class='text-danger'><i class='fa fa-info'></i> Progress number not found in beneficiaries list</span>";
-        }
 
     }
 
@@ -224,8 +282,16 @@ class ItemsDisbursementController extends Controller
     {
         //
         $disbursement=ItemsDisbursement::find($id);
+        return view('inventory.disbursement.show',compact('disbursement'));
+    }
+    public function showPrint($id)
+    {
+        //
+        $disbursement=ItemsDisbursement::find($id);
         return view('inventory.disbursement.pdf',compact('disbursement'));
     }
+
+
     public function downloadPdf($id)
     {
         //

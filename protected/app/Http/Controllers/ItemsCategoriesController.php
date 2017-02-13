@@ -50,7 +50,7 @@ class ItemsCategoriesController extends Controller
             if (!count(ItemsCategories::where('category_name', '=', ucwords(strtolower($request->category_name)))->get()) > 0
                 && $request->category_name !="") {
                 $category = new ItemsCategories;
-                $category->category_name = $request->category_name;
+                $category->category_name = ucwords(strtolower($request->category_name));
                 $category->status = $request->status;
                 $category->description = $request->description;
                 $category->save();
@@ -93,7 +93,7 @@ class ItemsCategoriesController extends Controller
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
                 $category = new ItemsCategories;
-                $category->category_name = $request->category_name;
+                $category->category_name = ucwords(strtolower($request->category_name));
                 $category->status = $request->status;
                 $category->description = $request->description;
                 $category->save();
