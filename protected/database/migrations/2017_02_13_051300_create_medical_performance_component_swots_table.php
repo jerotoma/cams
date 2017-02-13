@@ -13,7 +13,9 @@ class CreateMedicalPerformanceComponentSwotsTable extends Migration
      */
     public function up()
     {
-        //
+         Schema::table('medical_performance_component_swots', function (Blueprint $table) {
+            //
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class CreateMedicalPerformanceComponentSwotsTable extends Migration
      */
     public function down()
     {
-        //
+       Schema::table('medical_performance_component_swots', function (Blueprint $table) {
+            //
+        });
     }
 }

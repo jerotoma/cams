@@ -13,8 +13,11 @@ class CreateMedicalPerformanceComponentLongRehabsTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('medical_performance_component_long_rehabs', function (Blueprint $table) {
+            //
+        });
     }
+   
 
     /**
      * Reverse the migrations.
@@ -23,6 +26,8 @@ class CreateMedicalPerformanceComponentLongRehabsTable extends Migration
      */
     public function down()
     {
-        //
+      Schema::table('medical_performance_component_long_rehabs', function (Blueprint $table) {
+            //
+        });
     }
 }

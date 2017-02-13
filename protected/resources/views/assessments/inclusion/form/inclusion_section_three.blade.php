@@ -16,7 +16,7 @@
 				 </div>
 				 <div class="form-group">
 						<label for="med_history_info_qn_2">Other services/ therapy received (if the client has already receive or attend any rehabilitation services or any other services concern protection issues) : </label>
-					    <textarea rows="5" class="form-control" name="med_history_info_qn_1" id="med_history_info_qn_2"></textarea>
+					    <textarea rows="5" class="form-control" name="med_history_info_qn_2" id="med_history_info_qn_2"></textarea>
 				 </div>
 				 <div class="form-group">
 						<div class="row">

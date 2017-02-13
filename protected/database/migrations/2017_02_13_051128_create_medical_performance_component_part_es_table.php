@@ -13,7 +13,7 @@ class CreateMedicalPerformanceComponentPartEsTable extends Migration
      */
     public function up()
     {
-        Schema::table('medical_performance_component_part_ds', function (Blueprint $table) {
+        Schema::table('medical_performance_component_part_es', function (Blueprint $table) {
             //
         });
     }
@@ -25,7 +25,7 @@ class CreateMedicalPerformanceComponentPartEsTable extends Migration
      */
     public function down()
     {
-        Schema::table('medical_performance_component_part_ds', function (Blueprint $table) {
+        Schema::table('medical_performance_component_part_es', function (Blueprint $table) {
             //
         });
     }

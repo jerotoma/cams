@@ -13,7 +13,10 @@ class CreateMedicalPerformanceComponentPartAMovingPatternsTable extends Migratio
      */
     public function up()
     {
-        //
+          
+        Schema::table('medical_performance_component_part_a_moving_patterns', function (Blueprint $table) {
+            //
+        });
     }
 
     /**
@@ -23,6 +26,9 @@ class CreateMedicalPerformanceComponentPartAMovingPatternsTable extends Migratio
      */
     public function down()
     {
-        //
+          
+        Schema::table('medical_performance_component_part_a_moving_patterns', function (Blueprint $table) {
+            //
+        });
     }
 }

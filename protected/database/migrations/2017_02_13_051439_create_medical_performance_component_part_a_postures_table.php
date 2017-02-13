@@ -13,7 +13,9 @@ class CreateMedicalPerformanceComponentPartAPosturesTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('medical_performance_component_part_a_postures', function (Blueprint $table) {
+            //
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class CreateMedicalPerformanceComponentPartAPosturesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('medical_performance_component_part_a_postures', function (Blueprint $table) {
+            //
+        });
     }
 }

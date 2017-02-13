@@ -45,6 +45,7 @@ class InclusionAssessmentController extends Controller
           1.InclusionAssessment 
           2.php artisan make:model InclusionMedicalHistory
           3.php artisan make:model MedicalPerfomanceComponentPartA
+          
                  1.php artisan make:model MedicalPerfomanceComponentPartARomLowerLimb
                  2.php artisan make:model MedicalPerfomanceComponentPartARomUpperLimb
                  3.php artisan make:model MedicalPerfomanceComponentPartAPosture

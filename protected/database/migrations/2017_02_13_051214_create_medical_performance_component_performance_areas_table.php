@@ -13,7 +13,9 @@ class CreateMedicalPerformanceComponentPerformanceAreasTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('medical_performance_component_performance_areas', function (Blueprint $table) {
+            //
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class CreateMedicalPerformanceComponentPerformanceAreasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('medical_performance_component_performance_areas', function (Blueprint $table) {
+            //
+        });
     }
 }

@@ -13,8 +13,14 @@ class CreateMedicalPerformanceComponentPartDsTable extends Migration
      */
     public function up()
     {
-        Schema::table('medical_performance_component_part_es', function (Blueprint $table) {
-            //
+        Schema::table('medical_performance_component_part_ds', function (Blueprint $table) {
+             $table->increments('id');
+             $table->integer('incl_assessment_id')->unsigned();
+             $table->text('med_performance_comp_qn_d_1')->nullable();
+             $table->text('med_performance_comp_qn_d_2')->nullable();
+             $table->timestamps();
+             $table->foreign('incl_assessment_id')->references('id')->on('inclusion_assessments')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -25,7 +31,7 @@ class CreateMedicalPerformanceComponentPartDsTable extends Migration
      */
     public function down()
     {
-        Schema::table('medical_performance_component_part_es', function (Blueprint $table) {
+        Schema::table('medical_performance_component_part_ds', function (Blueprint $table) {
             //
         });
     }

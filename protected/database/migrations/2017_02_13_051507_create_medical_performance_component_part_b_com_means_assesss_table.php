@@ -13,7 +13,10 @@ class CreateMedicalPerformanceComponentPartBComMeansAssesssTable extends Migrati
      */
     public function up()
     {
-        //
+       
+        Schema::table('medical_performance_component_part_b_com_means_assesss', function (Blueprint $table) {
+            //
+        });
     }
 
     /**
@@ -23,6 +26,9 @@ class CreateMedicalPerformanceComponentPartBComMeansAssesssTable extends Migrati
      */
     public function down()
     {
-        //
+        
+        Schema::table('medical_performance_component_part_b_com_means_assesss', function (Blueprint $table) {
+            //
+        });
     }
 }

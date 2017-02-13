@@ -25,16 +25,16 @@
                           </div>
                           <div class="col-md-8 col-md-pull-1">
                                 <div class="checkbox">
-                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_1" value="Normal">Normal</label>
-                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_1" value="Blind">Blind</label>
-                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_1" value="Loss of part of vision field">Loss of part of vision field</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_1[]" value="Normal">Normal</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_1[]" value="Blind">Blind</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_1[]" value="Loss of part of vision field">Loss of part of vision field</label>
                                   <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_1" value="No">Strabismus</label>
                                </div>
                           </div>
                     </div>
                  </div>
                  <div class="form-group">
-                     <textarea rows="2" class="form-control" name="med_performance_comp_qn_b_2_remark" id="med_performance_comp_qn_b_2_remark" placeholder="Other"></textarea>
+                     <textarea rows="2" class="form-control" name="med_performance_comp_qn_b_1_remark" id="med_performance_comp_qn_b_1_remark" placeholder="Other"></textarea>
                  </div>
                  <div class="form-group"> 
                       <div class="row">
@@ -45,9 +45,9 @@
                           </div>
                           <div class="col-md-8 col-md-pull-1">
                                 <div class="checkbox">
-                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_2" value="Normal">Normal</label>
-                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_2" value="Deaf">Deaf</label>
-                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_2" value="React to noise">React to noise</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_2[]" value="Normal">Normal</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_2[]" value="Deaf">Deaf</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_2[]" value="React to noise">React to noise</label>
                                 </div>
                           </div>
                     </div>
@@ -64,10 +64,10 @@
                           </div>
                           <div class="col-md-9 col-md-pull-1">
                                 <div class="checkbox">
-                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_4" value="With language">With language</label>
-                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_4" value="without language">without language</label>
-                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_4" value="body language">body language</label>
-                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_4" value="No communication">No communication</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_4[]" value="With language">With language</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_4[]" value="without language">without language</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_4[]" value="body language">body language</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_4[]" value="No communication">No communication</label>
                                 </div>
                           </div>
                     </div>
@@ -185,7 +185,7 @@
                                                 <td class="text-center">
                                                     <div class="radio">
                                                           <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_b_17" value="Yes">Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_b_18" value="No">No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="med_performance_comp_qn_b_17" value="No">No</label>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -267,13 +267,13 @@
                       </div>
                       <div class="col-md-11">
                             <div class="checkbox">
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28" value="Passive">Passive</label>
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28" value="Active">Active</label>
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28" value="Happy">Happy</label>
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28" value="Scared">Scared</label>
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28" value="Irritable">Irritable</label>
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28" value="Crying">Crying</label>
-                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28" value="Holds on to mother">Holds on to mother</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28[]" value="Passive">Passive</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28[]" value="Active">Active</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28[]" value="Happy">Happy</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28[]" value="Scared">Scared</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28[]" value="Irritable">Irritable</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28[]" value="Crying">Crying</label>
+                              <label class="checkbox-inline"><input type="checkbox" name ="med_performance_comp_qn_b_28[]" value="Holds on to mother">Holds on to mother</label>
                             </div>
                       </div>
                 </div>

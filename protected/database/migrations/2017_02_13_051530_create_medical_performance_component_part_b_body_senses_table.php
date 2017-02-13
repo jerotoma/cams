@@ -13,7 +13,9 @@ class CreateMedicalPerformanceComponentPartBBodySensesTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('medical_performance_component_part_b_body_senses', function (Blueprint $table) {
+            //
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class CreateMedicalPerformanceComponentPartBBodySensesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('medical_performance_component_part_b_body_senses', function (Blueprint $table) {
+            //
+        });
     }
 }

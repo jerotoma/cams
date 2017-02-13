@@ -13,7 +13,9 @@ class CreateMedicalPerformanceComponentContextsTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('medical_performance_component_contexts', function (Blueprint $table) {
+            //
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class CreateMedicalPerformanceComponentContextsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('medical_performance_component_contexts', function (Blueprint $table) {
+            //
+        });
     }
 }
