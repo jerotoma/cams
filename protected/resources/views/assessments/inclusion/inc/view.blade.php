@@ -176,9 +176,9 @@
                                                           <label class="radio-inline"><input type="radio" name ="med_history_info_qn_5" value="Yes">Yes</label>
                                                           <label class="radio-inline"><input type="radio" name ="med_history_info_qn_5" value="No">No</label>
                                                         </div>
-													     <div clas="form-group">
-															<input type="text" class="form-control" id="" placeholder="Remark:" name ="med_history_info_qn_5_remark" value="">
-														</div>
+                            													  <div clas="form-group">
+                            															 <input type="text" class="form-control" id="" placeholder="Remark:" name ="med_history_info_qn_5_remark" value="">
+                            														</div>
                                                   </div>
                                             </div>
                                             <div class="row">
@@ -192,12 +192,12 @@
                                                           <label class="radio-inline"><input type="radio" name ="med_history_info_qn_6" value="Yes">Yes</label>
                                                           <label class="radio-inline"><input type="radio" name ="med_history_info_qn_6" value="No">No</label>
                                                         </div>
-													   <div clas="form-group">
-															<input type="text" class="form-control" id="" placeholder="Remark:" name ="med_history_info_qn_6_remark" value="">
-														</div>
+                            													   <div clas="form-group">
+                            															   <input type="text" class="form-control" id="" placeholder="Remark:" name ="med_history_info_qn_6_remark" value="">
+                            														 </div>
                                                   </div>
                                             </div>
-										   <div class="row">
+										                        <div class="row">
                                                   <div class="col-md-6 col-md-pull-0">
                                                      <div class="radio">
                                                           <p>Malnutrition signs</p>
@@ -208,9 +208,9 @@
                                                           <label class="radio-inline"><input type="radio" name ="med_history_info_qn_7" value="Yes">Yes</label>
                                                           <label class="radio-inline"><input type="radio" name ="med_history_info_qn_7" value="No">No</label>
                                                         </div>
-													    <div clas="form-group">
-															<input type="text" class="form-control" id="" placeholder="Remark:" name ="med_history_info_qn_7_remark" value="">
-														</div>
+                      													    <div clas="form-group">
+                      															<input type="text" class="form-control" id="" placeholder="Remark:" name ="med_history_info_qn_7_remark" value="">
+                      														</div>
                                                   </div>
                                             </div>
                                             <div class="row">
@@ -224,9 +224,9 @@
                                                           <label class="radio-inline"><input type="radio" name ="med_history_info_qn_8" value="Yes">Yes</label>
                                                           <label class="radio-inline"><input type="radio" name ="med_history_info_qn_8" value="No">No</label>
                                                         </div>
-													    <div clas="form-group">
-															<input type="text" class="form-control" id="" placeholder="Remark:" name ="med_history_info_qn_8_remark" value="">
-														</div>
+                              													 <div clas="form-group">
+                              															<input type="text" class="form-control" id="" placeholder="Remark:" name ="med_history_info_qn_8_remark" value="">
+                              													</div>
                                                   </div>
                                             </div>
                                            <div class="row">
@@ -240,9 +240,9 @@
                                                           <label class="radio-inline"><input type="radio" name ="med_history_info_qn_9" value="Yes">Yes</label>
                                                           <label class="radio-inline"><input type="radio" name ="med_history_info_qn_9" value="No">No</label>
                                                         </div>
-													  	<div clas="form-group">
-															<input type="text" class="form-control" id="" placeholder="Remark:" name ="med_history_info_qn_9_remark" value="">
-														</div>
+                            													  <div clas="form-group">
+                            															<input type="text" class="form-control" id="" placeholder="Remark:" name ="med_history_info_qn_9_remark" value="">
+                            														</div>
                                                   </div>
                                             </div>
                                            <div class="row">
@@ -256,9 +256,9 @@
                                                           <label class="radio-inline"><input type="radio" name ="med_history_info_qn_10" value="Yes">Yes</label>
                                                           <label class="radio-inline"><input type="radio" name ="med_history_info_qn_10" value="No">No</label>
                                                         </div>
-													    <div clas="form-group">
-															<input type="text" class="form-control" id="describe1" placeholder="Remark:" name ="med_history_info_qn_10_remark" value="">
-														</div>
+                          													    <div clas="form-group">
+                          															      <input type="text" class="form-control" id="describe1" placeholder="Remark:" name ="med_history_info_qn_10_remark" value="">
+                          														  </div>
                                                   </div>
                                         </div>
                                  </div>
