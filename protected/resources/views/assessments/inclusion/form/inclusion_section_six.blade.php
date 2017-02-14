@@ -28,7 +28,7 @@
                                   <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_1[]" value="Normal">Normal</label>
                                   <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_1[]" value="Blind">Blind</label>
                                   <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_1[]" value="Loss of part of vision field">Loss of part of vision field</label>
-                                  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_1" value="No">Strabismus</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_1[]" value="No">Strabismus</label>
                                </div>
                           </div>
                     </div>

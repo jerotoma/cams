@@ -1,6 +1,20 @@
 <?php
 namespace App\Http\Controllers;
-use App\InclusionAssesment;
+use App\InclusionAssessment;
+use App\MpcPartA;
+use App\MpcPartB;
+use App\MpcPartC;
+use App\MpcPartD;
+use App\MpcPartE;
+use App\MpcPartF;
+use App\MpcPartAPosture;
+use App\MpcPerformanceArea;
+use App\MpcShortRehab;
+use App\MpcLongRehab;
+use App\mpcContext;
+use App\MpcSwot;
+use App\MpcPartAMovingPattern;
+use App\MpcPartBBodySense;
 use App\InclusionMedicalHistory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -79,7 +93,7 @@ class InclusionAssessmentController extends Controller
 
             if($client->id == $request->client_id ){
 
-                $inc_assessment = new InclusionAssesment;
+                $inc_assessment = new InclusionAssessment;
                 $inc_assessment->assessor_id = Auth::user()->id;
                 $inc_assessment->client_id   = $request->client_id;
                 $inc_assessment->save();
@@ -99,7 +113,7 @@ class InclusionAssessmentController extends Controller
                 $imhistory->med_history_info_qn_10_remark = $request->med_history_info_qn_10_remark;
                 $imhistory->save();
 
-                $mpc_part_a                      = new MedicalPerfomanceComponentPartA();
+                $mpc_part_a                      = new MpcPartA();
                 $mpc_part_a->incl_assessment_id  = $inc_assessment->id;
                 $mpc_part_a->mpc_qn_a_1          = $request->mpc_qn_a_1;
                 $mpc_part_a->mpc_qn_a_1_remark   = $request->mpc_qn_a_1_remark;
@@ -124,7 +138,7 @@ class InclusionAssessmentController extends Controller
                 $mpc_part_a->mpc_qn_a_16_remark  = $request->mpc_qn_a_16_remark;
                 $mpc_part_a->save();
 
-                $mpc_part_a_posture = new MedicalPerfomanceComponentPartAPosture();
+                $mpc_part_a_posture = new MpcPartAPosture();
                 $mpc_part_a_posture->mpc_part_a_id      = $mpc_part_a->id;
                 $mpc_part_a_posture->mpc_qn_a_17        = $request->mpc_qn_a_17;
                 $mpc_part_a_posture->mpc_qn_a_18        = $request->mpc_qn_a_18;
@@ -153,7 +167,7 @@ class InclusionAssessmentController extends Controller
                 $mpc_part_a_posture->mpc_qn_a_40        = $request->mpc_qn_a_40;
                 $mpc_part_a_posture->mpc_qn_a_41_remark = $request->mpc_qn_a_40_remark;
                 $mpc_part_a_posture->save();
-                $mpc_part_a_moving_pattern  = new MedicalPerfomanceComponentPartAMovingPattern();
+                $mpc_part_a_moving_pattern  = new MpcPartAMovingPattern();
                 $mpc_part_a_moving_pattern->mpc_part_a_id      = $mpc_part_a->id;
                 $mpc_part_a_moving_pattern->mpc_qn_a_42_remark = $request->mpc_qn_a_42_remark;
                 $mpc_part_a_moving_pattern->mpc_qn_a_43        = $request->mpc_qn_a_43;
@@ -169,17 +183,19 @@ class InclusionAssessmentController extends Controller
                 $mpc_part_a_moving_pattern->mpc_qn_a_53_remark  = $request->mpc_qn_a_53_remark;
                 $mpc_part_a_moving_pattern->save();
 
-                $mpc_part_b      = new MedicalPerfomanceComponentPartB();
+                $mpc_part_b      = new MpcPartB();
                 $mpc_part_b->incl_assessment_id   = $inc_assessment->id;
-                $mpc_part_b->mpc_qn_b_1           = $request->mpc_qn_b_1;
+                $mpc_part_b->mpc_qn_b_1           = serialize($request->mpc_qn_b_1);
                 $mpc_part_b->mpc_qn_b_1_remark    = $request->mpc_qn_b_1_remark;
-                $mpc_part_b->mpc_qn_b_2           = $request->mpc_qn_b_2;
+                $mpc_part_b->mpc_qn_b_2           = serialize($request->mpc_qn_b_2);
                 $mpc_part_b->mpc_qn_b_2_remark    = $request->mpc_qn_b_2_remark;
+                $mpc_part_b->mpc_qn_b_3_remark    = $request->mpc_qn_b_3_remark;
+                $mpc_part_b->mpc_qn_b_4           = serialize($request->mpc_qn_b_4);
                 $mpc_part_b->mpc_qn_b_27_remak    = $request->mpc_qn_b_27_remak;
                 $mpc_part_b->mpc_qn_b_28          = serialize($request->mpc_qn_b_28);
                 $mpc_part_b->save();
 
-                $mpc_part_b_body_sense                      =  new MedicalPerfomanceComponentPartBBodySenses();
+                $mpc_part_b_body_sense                      =  new MpcPartBBodySense();
                 $mpc_part_b_body_sense->mpc_part_b_id       =  $mpc_part_b->id;
                 $mpc_part_b_body_sense->mpc_qn_b_6          =  $request->mpc_qn_b_6;
                 $mpc_part_b_body_sense->mpc_qn_b_7          =  $request->mpc_qn_b_7;
@@ -204,24 +220,25 @@ class InclusionAssessmentController extends Controller
                 $mpc_part_b_body_sense->mpc_qn_b_26         =  $request->mpc_qn_b_26;
                 $mpc_part_b_body_sense->save();
 
-                $mpc_part_c                       =  new MedicalPerfomanceComponentPartC();
+                $mpc_part_c                       =  new MpcPartC();
                 $mpc_part_c->incl_assessment_id   =  $inc_assessment->id;
-                $mpc_part_c->mpc_qn_1             =  $request->mpc_qn_c_1;
-                $mpc_part_c->mpc_qn_2             =  $request->mpc_qn_c_2;
-                $mpc_part_c->mpc_qn_3             =  $request->mpc_qn_c_3;
-                $mpc_part_c->mpc_qn_4             =  $request->mpc_qn_c_4;
-                $mpc_part_c->mpc_qn_5             =  $request->mpc_qn_c_5;
-                $mpc_part_c->mpc_qn_6             =  $request->mpc_qn_c_6;
-                $mpc_part_c->mpc_qn_7_remark      =  $request->mpc_qn_7_remark;
+                $mpc_part_c->mpc_qn_c_1             =  $request->mpc_qn_c_1;
+                $mpc_part_c->mpc_qn_c_2             =  $request->mpc_qn_c_2;
+                $mpc_part_c->mpc_qn_c_3             =  $request->mpc_qn_c_3;
+                $mpc_part_c->mpc_qn_c_4             =  $request->mpc_qn_c_4;
+                $mpc_part_c->mpc_qn_c_5             =  $request->mpc_qn_c_5;
+                $mpc_part_c->mpc_qn_c_6             =  $request->mpc_qn_c_6;
+                $mpc_part_c->mpc_qn_c_7_remark      =  $request->mpc_qn_7_remark;
                 $mpc_part_c->save();
-                $mpc_part_d                       =  new MedicalPerfomanceComponentPartD();
+
+                $mpc_part_d                       =  new MpcPartD();
                 $mpc_part_d->incl_assessment_id   =  $inc_assessment->id;
                 $mpc_part_d->mpc_qn_d_1           =  $request->mpc_qn_d_1;
                 $mpc_part_d->mpc_qn_d_2           =  $request->mpc_qn_d_2;
                 $mpc_part_d->save();
 
 
-                $mpc_part_e            = new MedicalPerfomanceComponentPartE();
+                $mpc_part_e            = new MpcPartE();
                 $mpc_part_e->incl_assessment_id   =  $inc_assessment->id;
                 $mpc_part_e->mpc_qn_e_1             =  $request->mpc_qn_e_1;
                 $mpc_part_e->mpc_qn_e_2             =  $request->mpc_qn_e_2;
@@ -234,7 +251,7 @@ class InclusionAssessmentController extends Controller
                 $mpc_part_e->save();
 
 
-                $mpc_part_f                       =  new MedicalPerfomanceComponentPartF();
+                $mpc_part_f                       =  new MpcPartF();
                 $mpc_part_f->incl_assessment_id   =  $inc_assessment->id;
                 $mpc_part_f->mpc_qn_f_1           =  $request->mpc_qn_f_1;
                 $mpc_part_f->mpc_qn_f_2_remark    =  $request->mpc_qn_f_2_remark;
@@ -245,20 +262,20 @@ class InclusionAssessmentController extends Controller
                 $mpc_part_f->mpc_qn_f_7_remark    =  $request->mpc_qn_f_7_remark;
                 $mpc_part_f->save();
 
-                $mpc_perf_area                               = new MedicalPerfomanceComponentPerformanceArea();
-                $mpc_area->incl_assessment_id                =  $inc_assessment->id;
-                $mpc_perf_area->mpc_qn_perf_area_1           =  $request->mpc_qn_perf_area_1;
-                $mpc_perf_area->mpc_qn_perf_area_2           =  $request->mpc_qn_perf_area_2;
-                $mpc_perf_area->mpc_qn_perf_area_3           =  $request->mpc_qn_perf_area_3;
-                $mpc_perf_area->mpc_qn_perf_area_4_remark    =  $request->mpc_qn_perf_area_4_remark;
-                $mpc_perf_area->mpc_qn_perf_area_5_remark    =  $request->mpc_qn_perf_area_5_remark;
-                $mpc_perf_area->mpc_qn_perf_area_6           =  $request->mpc_qn_perf_area_6;
-                $mpc_perf_area->mpc_qn_perf_area_7           =  $request->mpc_qn_perf_area_7;
-                $mpc_perf_area->mpc_qn_perf_area_8           =  $request->mpc_qn_perf_area_8;
+                $mpc_perf_area                               = new MpcPerformanceArea();
+                $mpc_perf_area->incl_assessment_id                =  $inc_assessment->id;
+                $mpc_perf_area->mpc_perf_area_1           =  $request->mpc_qn_perf_area_1;
+                $mpc_perf_area->mpc_perf_area_2           =  $request->mpc_qn_perf_area_2;
+                $mpc_perf_area->mpc_perf_area_3           =  $request->mpc_qn_perf_area_3;
+                $mpc_perf_area->mpc_perf_area_4_remark    =  $request->mpc_qn_perf_area_4_remark;
+                $mpc_perf_area->mpc_perf_area_5_remark    =  $request->mpc_qn_perf_area_5_remark;
+                $mpc_perf_area->mpc_perf_area_6           =  $request->mpc_qn_perf_area_6;
+                $mpc_perf_area->mpc_perf_area_7           =  $request->mpc_qn_perf_area_7;
+                $mpc_perf_area->mpc_perf_area_8           =  $request->mpc_qn_perf_area_8;
                 $mpc_perf_area->save();
 
 
-                $mpc_context                           =  new MedicalPerfomanceComponentContext();
+                $mpc_context                           =  new MpcContext();
                 $mpc_context->incl_assessment_id       =  $inc_assessment->id;
                 $mpc_context->mpc_context_1            =  $request->mpc_context_1;
                 $mpc_context->mpc_context_2            =  $request->mpc_context_2;
@@ -281,7 +298,7 @@ class InclusionAssessmentController extends Controller
                 $mpc_context->mpc_context_16_remark    =  $request->mpc_context_16_remark;
                 $mpc_context->save();
 
-                $mpc_swot                        =  new MedicalPerfomanceComponentSwot();
+                $mpc_swot                        =  new MpcSwot();
                 $mpc_swot->incl_assessment_id    =  $inc_assessment->id;
                 $mpc_swot->mpc_swot_1_remark     =  $request->mpc_swot_1_remark;
                 $mpc_swot->mpc_swot_2_remark     =  $request->mpc_swot_2_remark;
@@ -293,30 +310,30 @@ class InclusionAssessmentController extends Controller
                 $mpc_swot->save();
 
 
-                $mpc_short_rehab                        =  new MedicalPerfomanceComponentShortRehab();
+                $mpc_short_rehab                        =  new MpcShortRehab();
                 $mpc_short_rehab->incl_assessment_id    =  $inc_assessment->id;
-                $mpc_short_rehab->mpc_swot_1_remark     =  $request->mpc_short_rehab_1_remark;
-                $mpc_short_rehab->mpc_swot_2_remark     =  $request->mpc_short_rehab_2_remark;
-                $mpc_short_rehab->mpc_swot_3_remark     =  $request->mpc_short_rehab_3_remark;
-                $mpc_short_rehab->mpc_swot_4_remark     =  $request->mpc_short_rehab_4_remark;
-                $mpc_short_rehab->mpc_swot_5_remark     =  $request->mpc_short_rehab_5_remark;
-                $mpc_short_rehab->mpc_swot_6_remark     =  $request->mpc_short_rehab_6_remark;
-                $mpc_short_rehab->mpc_swot_7_remark     =  $request->mpc_short_rehab_7_remark;
-                $mpc_short_reha->save();
+                $mpc_short_rehab->mpc_short_rehab_1_remark     =  $request->mpc_short_rehab_1_remark;
+                $mpc_short_rehab->mpc_short_rehab_2_remark     =  $request->mpc_short_rehab_2_remark;
+                $mpc_short_rehab->mpc_short_rehab_3_remark     =  $request->mpc_short_rehab_3_remark;
+                $mpc_short_rehab->mpc_short_rehab_4_remark     =  $request->mpc_short_rehab_4_remark;
+                $mpc_short_rehab->mpc_short_rehab_5_remark     =  $request->mpc_short_rehab_5_remark;
+                $mpc_short_rehab->mpc_short_rehab_6_remark     =  $request->mpc_short_rehab_6_remark;
+                $mpc_short_rehab->mpc_short_rehab_7_remark     =  $request->mpc_short_rehab_7_remark;
+                $mpc_short_rehab->save();
 
 
 
-                $mpc_long_rehab                        =  new MedicalPerfomanceComponentLongRehab();
+                $mpc_long_rehab                        =  new MpcLongRehab();
                 $mpc_long_rehab->incl_assessment_id    =  $inc_assessment->id;
-                $mpc_long_rehab->mpc_long_1_remark     =  $request->mpc_long_rehab_1_remark;
-                $mpc_long_rehab->mpc_long_2_remark     =  $request->mpc_long_rehab_2_remark;
-                $mpc_long_rehab->mpc_long_3_remark     =  $request->mpc_long_rehab_3_remark;
-                $mpc_long_rehab->mpc_long_4_remark     =  $request->mpc_long_rehab_4_remark;
-                $mpc_long_rehab->mpc_long_5_remark     =  $request->mpc_long_rehab_5_remark;
-                $mpc_long_rehab->mpc_long_6_remark     =  $request->mpc_long_rehab_6_remark;
-                $mpc_long_rehab->mpc_long_7_remark     =  $request->mpc_long_rehab_7_remark;
-                $mpc_long_rehab->mpc_long_8_remark     =  $request->mpc_long_rehab_8_remark;
-                $mpc_long_rehab->mpc_long_9_remark     =  $request->mpc_long_rehab_9_remark;
+                $mpc_long_rehab->mpc_long_rehab_1_remark     =  $request->mpc_long_rehab_1_remark;
+                $mpc_long_rehab->mpc_long_rehab_2_remark     =  $request->mpc_long_rehab_2_remark;
+                $mpc_long_rehab->mpc_long_rehab_3_remark     =  $request->mpc_long_rehab_3_remark;
+                $mpc_long_rehab->mpc_long_rehab_4_remark     =  $request->mpc_long_rehab_4_remark;
+                $mpc_long_rehab->mpc_long_rehab_5_remark     =  $request->mpc_long_rehab_5_remark;
+                $mpc_long_rehab->mpc_long_rehab_6_remark     =  $request->mpc_long_rehab_6_remark;
+                $mpc_long_rehab->mpc_long_rehab_7_remark     =  $request->mpc_long_rehab_7_remark;
+                $mpc_long_rehab->mpc_long_rehab_8_remark     =  $request->mpc_long_rehab_8_remark;
+                $mpc_long_rehab->mpc_long_rehab_9_remark     =  $request->mpc_long_rehab_9_remark;
                 $mpc_long_rehab->save();
 
                 //two more table remain
@@ -352,23 +369,23 @@ class InclusionAssessmentController extends Controller
 
         1.InclusionAssessment
         2.php artisan make:model InclusionMedicalHistory
-        3.php artisan make:model MedicalPerfomanceComponentPartA
-        1.php artisan make:model MedicalPerfomanceComponentPartARomLowerLimb
+        3.php artisan make:model MpcPartA
+        1.php artisan make:model MpcPartARomLowerLimb
 
-        2.php artisan make:model MedicalPerfomanceComponentPartARomUpperLimb
-        3.php artisan make:model MedicalPerfomanceComponentPartAPosture
-        4.php artisan make:model MedicalPerfomanceComponentPartAMovingPattern
-        4.php artisan make:model MedicalPerfomanceComponentPartB
-        1.php artisan make:model MedicalPerfomanceComponentPartBBodySenses
-        6.php artisan make:model MedicalPerfomanceComponentPartC
-        7.php artisan make:model MedicalPerfomanceComponentPartD
-        8.php artisan make:model MedicalPerfomanceComponentPartE
-        9.php artisan make:model MedicalPerfomanceComponentPartF
-        10.php artisan make:model MedicalPerfomanceComponentPerformanceArea
-        11.php artisan make:model MedicalPerfomanceComponentContext
-        13.php artisan make:model MedicalPerfomanceComponentSwot
-        14.php artisan make:model MedicalPerfomanceComponentShortRehab
-        15.php artisan make:model MedicalPerfomanceComponentLongRehab
+        2.php artisan make:model MpcPartARomUpperLimb
+        3.php artisan make:model MpcPartAPosture
+        4.php artisan make:model MpcPartAMovingPattern
+        4.php artisan make:model MpcPartB
+        1.php artisan make:model MpcPartBBodySenses
+        6.php artisan make:model MpcPartC
+        7.php artisan make:model MpcPartD
+        8.php artisan make:model MpcPartE
+        9.php artisan make:model MpcPartF
+        10.php artisan make:model MpcPerformanceArea
+        11.php artisan make:model MpcContext
+        13.php artisan make:model MpcSwot
+        14.php artisan make:model MpcShortRehab
+        15.php artisan make:model MpcLongRehab
          ********************************/
     }
     /**
@@ -425,98 +442,98 @@ class InclusionAssessmentController extends Controller
         }
 
         $clientView = '<div class="row">
-							<div class="col-md-3 first table-client"> 
+							<div class="col-md-3 first table-client">
 								<span class="table-title">Client Name :</span>
 							</div>
 							<div class="col-md-3 table-client">
-							  '.$client->full_name.' 
+							  '.$client->full_name.'
 							</div>
 							<div class="col-md-3 table-client">
-							 <span class="table-title"> Ration Card No:</span>			
+							 <span class="table-title"> Ration Card No:</span>
 							</div>
 							<div class="col-md-3 last table-client">
 							   '.$client->client_number.'
 							</div>
 					    </div>
 					    <div class="row">
-							<div class="col-md-3 first table-client"> 
+							<div class="col-md-3 first table-client">
 								<span class="table-title">Gender :</span>
 							</div>
 							<div class="col-md-3 table-client">
 							   '.$client->sex.'
 							</div>
 							<div class="col-md-3 table-client">
-							 <span class="table-title">Age:</span>			
+							 <span class="table-title">Age:</span>
 							</div>
 							<div class="col-md-3 last table-client">
-							   '.$client->age.'	
+							   '.$client->age.'
 							</div>
 					    </div>
 				         <div class="row">
-							<div class="col-md-3 first table-client"> 
+							<div class="col-md-3 first table-client">
 								<span class="table-title">Camp :</span>
 							</div>
 							<div class="col-md-3 table-client">
 							     '.$client->present_address.'
 							</div>
 							<div class="col-md-3 table-client">
-							 <span class="table-title">&nbsp;</span>			
+							 <span class="table-title">&nbsp;</span>
 							</div>
 							<div class="col-md-3 last table-client">
-							   5656	
+							   5656
 							</div>
 					    </div>
 				         <div class="row">
-							<div class="col-md-3 first table-client"> 
+							<div class="col-md-3 first table-client">
 								<span class="table-title"> Address:</span>
 							</div>
 							<div class="col-md-3 table-client">
 							     '.$client->present_address.'
 							</div>
 							<div class="col-md-3 table-client">
-							 <span class="table-title"> Unique No :</span>			
+							 <span class="table-title"> Unique No :</span>
 							</div>
 							<div class="col-md-3 last table-client">
 							     '.$client->present_address.'
 							</div>
 					    </div>
 					    <div class="row">
-							<div class="col-md-3 first table-client"> 
+							<div class="col-md-3 first table-client">
 								<span class="table-title">Religion :</span>
 							</div>
 							<div class="col-md-3 table-client">
-							     '.$client->present_address.' 
+							     '.$client->present_address.'
 							</div>
 							<div class="col-md-3 table-client">
-							 <span class="table-title"> Country of Origin:</span>			
+							 <span class="table-title"> Country of Origin:</span>
 							</div>
 							<div class="col-md-3 last table-client">
 							     '.$client->present_address.'
 							</div>
 					    </div>
 				         <div class="row">
-							<div class="col-md-3 first table-client"> 
+							<div class="col-md-3 first table-client">
 								<span class="table-title">Gadian Name :</span>
 							</div>
 							<div class="col-md-3 table-client">
-							    '.$client->present_address.' 
+							    '.$client->present_address.'
 							</div>
 							<div class="col-md-3 table-client">
-							 <span class="table-title"> Age of Guardian:</span>			
+							 <span class="table-title"> Age of Guardian:</span>
 							</div>
 							<div class="col-md-3 last table-client">
 							    '.$client->present_address.'
 							</div>
 					    </div>
 				        <div class="row">
-							<div class="col-md-3 first table-client"> 
+							<div class="col-md-3 first table-client">
 								<span class="table-title">Date of Assessment :</span>
 							</div>
 							<div class="col-md-3 table-client">
 							     '.date("jS \of F Y").'
 							</div>
 							<div class="col-md-3 table-client">
-							 <span class="table-title"> Assessor\'s Name:</span>			
+							 <span class="table-title"> Assessor\'s Name:</span>
 							</div>
 							<div class="col-md-3 last table-client">
 							     '.Auth::user()->full_name.'

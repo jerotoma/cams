@@ -19,21 +19,21 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    //This middleware protects unauthenticated users 
+    //This middleware protects unauthenticated users
     public function __construct()
     {
-        $this->middleware('auth',['except' => ['login','postLogin']]);
+      $this->middleware('auth',['except' => ['login','postLogin']]);
 
     }
-    
+
     public function index()
     {
         $users =  User::all();
-       
+
        return view('users.index', ['users' =>  $users  ] );
     }
-   
-   
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -56,7 +56,7 @@ class UserController extends Controller
                 $user->username = 'otuman';
                 $user->status = "Active";
                 $user->save();
-		 
+
 		 return 'User Created';
 	 }
     /**
@@ -76,7 +76,7 @@ class UserController extends Controller
                 'role_id' => 'required',
                 'phone' => 'required',
             ]);
-            
+
             if ($validator->fails()) {
                 return Response::json(array(
                     'success' => false,
@@ -109,9 +109,9 @@ class UserController extends Controller
                 'errors' => $ex->getMessage()
             ), 400); // 400 being the HTTP code for an invalid request.
         }
-       
+
     }
-    
+
     /**
      * Display the specified resource.
      *

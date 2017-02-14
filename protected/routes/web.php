@@ -38,7 +38,7 @@ Route::get('getclientsjson','ClientsController@getJSonDataSearch');
 Route::get('getclientslist','ClientsController@getJSonClientDataSearch');
 Route::get('search/clients','ClientsController@searchClient');
 Route::post('search/clients','ClientsController@postSearchClient');
-
+Route::get('create-client','ClientsController@createClient');
 //NFIs Item inventory
 Route::resource('inventory-categories','ItemsCategoriesController');
 Route::post('onflycategory','ItemsCategoriesController@onFlyCategory');
@@ -100,7 +100,7 @@ Route::post('import/referrals','ReferralController@postImport');
 //Clients
 Route::get('import/clients','ClientsController@showImport');
 Route::post('import/clients','ClientsController@postImport');
-//Just for me 
+//Just for me
 //Route::get('create-client','ClientsController@createClient');
 
 
@@ -162,8 +162,3 @@ Route::resource('assessments/inclusion','InclusionAssessmentController');
 Route::get('get-inclass-clientsjson','InclusionAssessmentController@getJSonClientData');
 Route::get('assessments/inclusion/client-to-assess/{id}','InclusionAssessmentController@getSelectedClientInfo');
 Route::post('assessments/inclusion/store-assessment','InclusionAssessmentController@postData');
-
-
-
-
-

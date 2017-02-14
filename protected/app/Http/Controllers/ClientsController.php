@@ -486,4 +486,23 @@ class ClientsController extends Controller
         $client=Client::find($id);
         $client->delete();
     }
+    //This here for testing otoman
+    public function createClient(){
+      $client = new Client;
+      $client->client_number = 45;
+      $client->full_name = "Alyoce Godson";
+      $client->sex = "Male";
+      $client->age = 23;
+      $client->civil_status = "Citizen";
+      $client->spouse_name = "Grace Otuman";
+      $client->origin = "Tanzania";
+      $client->country_id = 34;
+      $client->date_arrival = date("Y-m-d");
+      $client->present_address = "23 Hamilton";
+      $client->household_number = 3;
+      $client->ration_card_number =600;
+      $client->camp_id = 3;
+      $client->created_by = Auth::user()->username;
+      $client->save();
+    }
 }
