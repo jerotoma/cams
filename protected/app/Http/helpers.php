@@ -55,6 +55,27 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
         return $seriesdata1;
     }
 }
+if (!function_exists('getHighChatClientByCodes')) {
+    function getHighChatClientByCodes() {
+
+        $series1="";
+        $seriesdata1="";
+        foreach (\App\PSNCode::all() as $code) {
+            $series1 .= "{ ";
+            $series1 .= " name: '".$code->description."',";
+
+            $MonthCount = "";
+            $monthData = "";
+            $MonthCount .= count(\App\ClientVulnerabilityCode::where('code_id','=',$code->id)->get()) . ",";
+            $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+            $series1 .= " y:" . intval($monthData);
+            $series1 .= "  },";
+        }
+
+        $seriesdata1=substr($series1,0,strlen($series1)-1);
+        return $seriesdata1;
+    }
+}
 if (!function_exists('getHighChatClientMonthlyCountByNationality')) {
     function getHighChatClientMonthlyCountByNationality() {
 
