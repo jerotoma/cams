@@ -17,6 +17,17 @@ class DataVisualizationController extends Controller
     {
         //
     }
+    public function clients()
+    {
+        //
+        return view('reports.clients.index');
+    }
+    public function showAssessments()
+    {
+        //
+        return view('reports.assessments.index');
+    }
+
 
     /**
      * Show the form for creating a new resource.

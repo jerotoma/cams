@@ -55,9 +55,7 @@
             <li>
                 <a href="#"><i class="icon-graph"></i> <span>Clients Reports</span></a>
                 <ul>
-                    <li><a href="{{url('reports/clients')}}">Registration</a></li>
-                    <li><a href="{{url('reports/clients')}}">Assessments</a></li>
-                    <li><a href="{{url('reports/clients')}}">Referral</a></li>
+                    <li><a href="{{url('reports/clients')}}">Client Report</a></li>
                 </ul>
             </li>
             <!-- /data visualization -->

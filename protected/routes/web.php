@@ -152,19 +152,10 @@ Route::get('rehabilitation/progress',[
 
 //Data Visualization
 Route::get('reports/clients',[
-      'uses' => 'DataVisualizationController@registration',
+      'uses' => 'DataVisualizationController@clients',
       'as'   => 'reports/clients'
 ]);
-Route::get('reports/clients',[
-      'uses' => 'DataVisualizationController@assessments',
-      'as'   => 'reports/clients'
-]);
-Route::get('reports/clients',[
-      'uses' => 'DataVisualizationController@referral',
-      'as'   => 'reports/clients'
-]);
-
-
+Route::get('reports/assessments','DataVisualizationController@showAssessments');
 //Inclusion Assessments
 Route::resource('assessments/inclusion','InclusionAssessmentController');
 Route::get('get-inclass-clientsjson','InclusionAssessmentController@getJSonClientData');

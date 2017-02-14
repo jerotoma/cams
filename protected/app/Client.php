@@ -19,6 +19,10 @@ class Client extends Model
     {
         return $this::hasOne('\App\ClientVulnerabilityCode','client_id');
     }
+    public function vulnerabilityCodes()
+    {
+        return $this::hasMany('\App\ClientVulnerabilityCode','client_id');
+    }
     public function vulAssessment()
     {
         return $this::hasOne('\App\VulnerabilityAssessment','client_id');
