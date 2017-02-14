@@ -13,11 +13,11 @@ class CreateMedicalPerformanceComponentPartAMovingPatternsTable extends Migratio
      */
     public function up()
     {
-          
-        Schema::table('medical_performance_component_part_a_moving_patterns', function (Blueprint $table) {
+
+       Schema::create('medical_performance_component_part_a_moving_patterns', function (Blueprint $table) {
              $table->increments('id');
              $table->integer('mpc_part_a_id')->unsigned();
-			 $table->text('mpc_qn_a_42_remark')->nullable();
+			       $table->text('mpc_qn_a_42_remark')->nullable();
              $table->string('mpc_qn_a_43')->nullable();
              $table->string('mpc_qn_a_44')->nullable();
              $table->string('mpc_qn_a_45')->nullable();
@@ -42,8 +42,8 @@ class CreateMedicalPerformanceComponentPartAMovingPatternsTable extends Migratio
      */
     public function down()
     {
-          
-        Schema::table('medical_performance_component_part_a_moving_patterns', function (Blueprint $table) {
+
+        Schema::create('medical_performance_component_part_a_moving_patterns', function (Blueprint $table) {
             //
         });
     }

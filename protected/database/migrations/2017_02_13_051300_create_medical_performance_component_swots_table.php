@@ -13,7 +13,7 @@ class CreateMedicalPerformanceComponentSwotsTable extends Migration
      */
     public function up()
     {
-         Schema::table('medical_performance_component_swots', function (Blueprint $table) {
+         Schema::create('medical_performance_component_swots', function (Blueprint $table) {
              $table->increments('id');
              $table->integer('incl_assessment_id')->unsigned();
              $table->text('mpc_swot_1_remark')->nullable();
@@ -36,7 +36,7 @@ class CreateMedicalPerformanceComponentSwotsTable extends Migration
      */
     public function down()
     {
-       Schema::table('medical_performance_component_swots', function (Blueprint $table) {
+       Schema::create('medical_performance_component_swots', function (Blueprint $table) {
             //
         });
     }

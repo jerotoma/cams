@@ -13,8 +13,14 @@ class CreateInclusionAssessmentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('inclusion_assessment', function (Blueprint $table) {
-            //
+        Schema::create('inclusion_assessments', function (Blueprint $table) {
+             $table->increments('id');
+             $table->integer('client_id')->unsigned();
+             $table->integer('assessor_id')->unsigned();
+             $table->timestamps();
+             $table->foreign('client_id')->references('id')->on('clients')
+                ->onUpdate('cascade')->onDelete('cascade');
+            
         });
     }
 
@@ -25,7 +31,7 @@ class CreateInclusionAssessmentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('inclusion_assessment', function (Blueprint $table) {
+        Schema::create('inclusion_assessments', function (Blueprint $table) {
             //
         });
     }

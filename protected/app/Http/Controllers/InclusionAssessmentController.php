@@ -214,18 +214,127 @@ class InclusionAssessmentController extends Controller
                         $mpc_part_b_body_sense->mpc_qn_b_26         =  $request->mpc_qn_b_26;
                         $mpc_part_b_body_sense->save();
                 
-                
-                        $mpc_part_c            = new MedicalPerfomanceComponentPartC();
-                        $mpc_part_d            = new MedicalPerfomanceComponentPartD();();
-                        $mpc_part_e            = new MedicalPerfomanceComponentPartE();
-                        $mpc_part_f            = new MedicalPerfomanceComponentPartF();
-                        $mpc_part_parea        = new MedicalPerfomanceComponentPerformanceArea();
-                        $mpc_part_context      = new MedicalPerfomanceComponentContext();
-                        $mpc_part_swot         = new MedicalPerfomanceComponentSwot();
-                        $mpc_part_short_rehab  = new MedicalPerfomanceComponentShortRehab();
-                        $mpc_part_long_rehab   = new MedicalPerfomanceComponentLongRehab();
 
+                $mpc_part_c                       =  new MedicalPerfomanceComponentPartC();
+                $mpc_part_c->incl_assessment_id   =  $inc_assessment->id;
+                $mpc_part_c->mpc_qn_1             =  $request->mpc_qn_c_1;
+                $mpc_part_c->mpc_qn_2             =  $request->mpc_qn_c_2;
+                $mpc_part_c->mpc_qn_3             =  $request->mpc_qn_c_3;
+                $mpc_part_c->mpc_qn_4             =  $request->mpc_qn_c_4;
+                $mpc_part_c->mpc_qn_5             =  $request->mpc_qn_c_5;
+                $mpc_part_c->mpc_qn_6             =  $request->mpc_qn_c_6;
+                $mpc_part_c->mpc_qn_7_remark      =  $request->mpc_qn_7_remark;
+                $mpc_part_c->save();
+
+
+
+                $mpc_part_d                       =  new MedicalPerfomanceComponentPartD();
+                $mpc_part_d->incl_assessment_id   =  $inc_assessment->id;               
+                $mpc_part_d->mpc_qn_d_1           =  $request->mpc_qn_d_1;
+                $mpc_part_d->mpc_qn_d_2           =  $request->mpc_qn_d_2;
+                $mpc_part_d->save();
                 
+                
+                $mpc_part_e            = new MedicalPerfomanceComponentPartE();
+                $mpc_part_e->incl_assessment_id   =  $inc_assessment->id;               
+                $mpc_part_e->mpc_qn_e_1             =  $request->mpc_qn_e_1;
+                $mpc_part_e->mpc_qn_e_2             =  $request->mpc_qn_e_2;
+                $mpc_part_e->mpc_qn_e_3             =  $request->mpc_qn_e_3;
+                $mpc_part_e->mpc_qn_e_4             =  $request->mpc_qn_e_4;
+                $mpc_part_e->mpc_qn_e_5             =  $request->mpc_qn_e_5;
+                $mpc_part_e->mpc_qn_e_6             =  $request->mpc_qn_e_6;
+                $mpc_part_e->mpc_qn_e_7             =  $request->mpc_qn_e_7;
+                $mpc_part_e->mpc_qn_e_8             =  $request->mpc_qn_e_8;
+                $mpc_part_e->save();
+                
+                
+                $mpc_part_f                       =  new MedicalPerfomanceComponentPartF();
+                $mpc_part_f->incl_assessment_id   =  $inc_assessment->id;               
+                $mpc_part_f->mpc_qn_f_1           =  $request->mpc_qn_f_1;
+                $mpc_part_f->mpc_qn_f_2_remark    =  $request->mpc_qn_f_2_remark;
+                $mpc_part_f->mpc_qn_f_3           =  $request->mpc_qn_f_3;
+                $mpc_part_f->mpc_qn_f_4_remark    =  $request->mpc_qn_f_4_remark;
+                $mpc_part_f->mpc_qn_f_5           =  $request->mpc_qn_f_5;
+                $mpc_part_f->mpc_qn_f_6           =  $request->mpc_qn_f_6;
+                $mpc_part_f->mpc_qn_f_7_remark    =  $request->mpc_qn_f_7_remark;
+                $mpc_part_f->save();
+                
+                $mpc_perf_area                               = new MedicalPerfomanceComponentPerformanceArea();
+                $mpc_area->incl_assessment_id                =  $inc_assessment->id;               
+                $mpc_perf_area->mpc_qn_perf_area_1           =  $request->mpc_qn_perf_area_1;
+                $mpc_perf_area->mpc_qn_perf_area_2           =  $request->mpc_qn_perf_area_2;
+                $mpc_perf_area->mpc_qn_perf_area_3           =  $request->mpc_qn_perf_area_3;
+                $mpc_perf_area->mpc_qn_perf_area_4_remark    =  $request->mpc_qn_perf_area_4_remark;
+                $mpc_perf_area->mpc_qn_perf_area_5_remark    =  $request->mpc_qn_perf_area_5_remark;
+                $mpc_perf_area->mpc_qn_perf_area_6           =  $request->mpc_qn_perf_area_6;
+                $mpc_perf_area->mpc_qn_perf_area_7           =  $request->mpc_qn_perf_area_7;
+                $mpc_perf_area->mpc_qn_perf_area_8           =  $request->mpc_qn_perf_area_8;
+                $mpc_perf_area->save();
+                
+               
+                $mpc_context                           =  new MedicalPerfomanceComponentContext();
+                $mpc_context->incl_assessment_id       =  $inc_assessment->id;               
+                $mpc_context->mpc_context_1            =  $request->mpc_context_1;
+                $mpc_context->mpc_context_2            =  $request->mpc_context_2;
+                $mpc_context->mpc_context_3_remark     =  $request->mpc_context_3_remark;
+                $mpc_context->mpc_context_4            =  $request->mpc_context_4;
+                $mpc_context->mpc_context_5            =  $request->mpc_context_5;
+                $mpc_context->mpc_context_5_remark     =  $request->mpc_context_5_remark;
+                $mpc_context->mpc_context_6            =  $request->mpc_context_6;
+                $mpc_context->mpc_context_6_remark     =  $request->mpc_context_6_remark;
+                $mpc_context->mpc_context_7            =  $request->mpc_context_7;
+                $mpc_context->mpc_context_8            =  $request->mpc_context_8;
+                $mpc_context->mpc_context_9_remark     =  $request->mpc_context_9_remark;
+                $mpc_context->mpc_context_10           =  $request->mpc_context_10;
+                $mpc_context->mpc_context_11           =  $request->mpc_context_11;
+                $mpc_context->mpc_context_12           =  $request->mpc_context_12;
+                $mpc_context->mpc_context_13           =  $request->mpc_context_13;
+                $mpc_context->mpc_context_14           =  $request->mpc_context_14;
+                $mpc_context->mpc_context_15_remark    =  $request->mpc_context_15_remark;
+                $mpc_context->mpc_context_16           =  $request->mpc_context_16;
+                $mpc_context->mpc_context_16_remark    =  $request->mpc_context_16_remark;
+                $mpc_context->save();
+               
+                $mpc_swot                        =  new MedicalPerfomanceComponentSwot();
+                $mpc_swot->incl_assessment_id    =  $inc_assessment->id;               
+                $mpc_swot->mpc_swot_1_remark     =  $request->mpc_swot_1_remark;
+                $mpc_swot->mpc_swot_2_remark     =  $request->mpc_swot_2_remark;
+                $mpc_swot->mpc_swot_3_remark     =  $request->mpc_swot_3_remark;
+                $mpc_swot->mpc_swot_4_remark     =  $request->mpc_swot_4_remark;
+                $mpc_swot->mpc_swot_5_remark     =  $request->mpc_swot_5_remark;
+                $mpc_swot->mpc_swot_6_remark     =  $request->mpc_swot_6_remark;
+                $mpc_swot->mpc_swot_7_remark     =  $request->mpc_swot_7_remark;
+                $mpc_swot->save();
+                
+                
+                $mpc_short_rehab                        =  new MedicalPerfomanceComponentShortRehab();
+                $mpc_short_rehab->incl_assessment_id    =  $inc_assessment->id;               
+                $mpc_short_rehab->mpc_swot_1_remark     =  $request->mpc_short_rehab_1_remark;
+                $mpc_short_rehab->mpc_swot_2_remark     =  $request->mpc_short_rehab_2_remark;
+                $mpc_short_rehab->mpc_swot_3_remark     =  $request->mpc_short_rehab_3_remark;
+                $mpc_short_rehab->mpc_swot_4_remark     =  $request->mpc_short_rehab_4_remark;
+                $mpc_short_rehab->mpc_swot_5_remark     =  $request->mpc_short_rehab_5_remark;
+                $mpc_short_rehab->mpc_swot_6_remark     =  $request->mpc_short_rehab_6_remark;
+                $mpc_short_rehab->mpc_swot_7_remark     =  $request->mpc_short_rehab_7_remark;
+                $mpc_short_reha->save();
+               
+                
+                
+                $mpc_long_rehab                        =  new MedicalPerfomanceComponentLongRehab();
+                $mpc_long_rehab->incl_assessment_id    =  $inc_assessment->id;               
+                $mpc_long_rehab->mpc_long_1_remark     =  $request->mpc_long_rehab_1_remark;
+                $mpc_long_rehab->mpc_long_2_remark     =  $request->mpc_long_rehab_2_remark;
+                $mpc_long_rehab->mpc_long_3_remark     =  $request->mpc_long_rehab_3_remark;
+                $mpc_long_rehab->mpc_long_4_remark     =  $request->mpc_long_rehab_4_remark;
+                $mpc_long_rehab->mpc_long_5_remark     =  $request->mpc_long_rehab_5_remark;
+                $mpc_long_rehab->mpc_long_6_remark     =  $request->mpc_long_rehab_6_remark;
+                $mpc_long_rehab->mpc_long_7_remark     =  $request->mpc_long_rehab_7_remark;
+                $mpc_long_rehab->mpc_long_8_remark     =  $request->mpc_long_rehab_8_remark;
+                $mpc_long_rehab->mpc_long_9_remark     =  $request->mpc_long_rehab_9_remark;
+                $mpc_long_rehab->save();
+                 
+                //two more table remain
+
                 return response()->json([
                     'success' => true,
                     'action' => 'add',
@@ -280,18 +389,7 @@ class InclusionAssessmentController extends Controller
           13.php artisan make:model MedicalPerfomanceComponentSwot
           14.php artisan make:model MedicalPerfomanceComponentShortRehab
           15.php artisan make:model MedicalPerfomanceComponentLongRehab
-
-
-           mpc_long_rehab_1_remark
-           mpc_long_rehab_2_remark
-           mpc_long_rehab_3_remark
-           mpc_long_rehab_4_remark
-           mpc_long_rehab_5_remark
-           mpc_long_rehab_6_remark
-           mpc_long_rehab_7_remark
-           mpc_long_rehab_8_remark
-           mpc_long_rehab_9_remark
-          ********************************/
+      ********************************/
 
 
 

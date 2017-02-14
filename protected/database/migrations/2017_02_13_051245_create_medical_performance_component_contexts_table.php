@@ -13,7 +13,7 @@ class CreateMedicalPerformanceComponentContextsTable extends Migration
      */
     public function up()
     {
-        Schema::table('medical_performance_component_contexts', function (Blueprint $table) {
+        Schema::create('medical_performance_component_contexts', function (Blueprint $table) {
              $table->increments('id');
              $table->integer('incl_assessment_id')->unsigned();
              $table->text('mpc_context_1')->nullable();
@@ -48,7 +48,7 @@ class CreateMedicalPerformanceComponentContextsTable extends Migration
      */
     public function down()
     {
-        Schema::table('medical_performance_component_contexts', function (Blueprint $table) {
+        Schema::create('medical_performance_component_contexts', function (Blueprint $table) {
            
         });
     }
