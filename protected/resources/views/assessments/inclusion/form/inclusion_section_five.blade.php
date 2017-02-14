@@ -1,5 +1,5 @@
 <fieldset>
-     <div class="well">
+  <div class="well">
 	<div class="form-top">
 		<div class="form-top-left">
 			<h3 class="text-center section-info"></span>Section <span class="section">5</span> out of <span class="section">7</span> sections </h3>

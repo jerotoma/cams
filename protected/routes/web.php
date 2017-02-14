@@ -162,3 +162,5 @@ Route::resource('assessments/inclusion','InclusionAssessmentController');
 Route::get('get-inclass-clientsjson','InclusionAssessmentController@getJSonClientData');
 Route::get('assessments/inclusion/client-to-assess/{id}','InclusionAssessmentController@getSelectedClientInfo');
 Route::post('assessments/inclusion/store-assessment','InclusionAssessmentController@postData');
+Route::get('inclusion-get-assessed-clients','InclusionAssessmentController@getJSONIncAssessmentListAllClientData');
+Route::get('assessments/inclusion/view/{id}','InclusionAssessmentController@getClientData');

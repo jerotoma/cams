@@ -28,6 +28,48 @@ class InclusionAssessmentController extends Controller
     public function __construct(){
         $this->middleware('auth');
     }
+
+
+
+    public function getJSONIncAssessmentListAllClientData(){
+
+
+      $incl_assessment  = InclusionAssessment::all();
+  		$iTotalRecords    = count($incl_assessment);
+           $sEcho = intval(10);
+
+          $records = array();
+          $records["data"] = array();
+
+
+  		$count=1;
+  		foreach( $incl_assessment as $key => $assessed ){
+
+  		    $client   = Client::find($assessed->client_id);
+  			$assessor  = User::find($assessed->assessor_id);
+  		    $origin="";
+              if(!empty($client ) && !empty($assessor)):
+
+  			         if(is_object($client->nationality) && $client->nationality != null ){
+  						$origin=$client->nationality->country_name;
+  					 }
+  					 $records["data"][] = array(
+  						$count++,
+  						$client->client_number,
+  						$client->full_name,
+  						$client->sex,
+  						$origin,
+  						date('d M Y',strtotime($client->date_arrival)),
+  						$assessor->full_name,
+  						'<label><a href="'.url("assessments/inclusion/view").'/'.$assessed->id.'">View</a></label>',
+  					);
+
+  		  endif;
+
+  		}
+
+  	echo json_encode($records);
+  	}
     /**
      * Display a listing of the resource.
      *
@@ -394,9 +436,27 @@ class InclusionAssessmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function getClientData($id)
     {
-        //
+
+
+        $incl_assessment =  InclusionAssessment::find($id);
+
+      if(!empty($incl_assessment)){
+          $client   =  Client::find($incl_assessment->client_id);
+          $assessor =  User::find($incl_assessment->assessor_id);
+      return view('assessments.inclusion.view', compact('client','assessor'));
+      }else {
+
+       $user_requested_resource= '<div class="alert alert-info">
+                                      <strong>Info!</strong> Sorry, the client you are trying to accesss is not registered under inclusion assessment.
+                                </div>';
+
+       return view('assessments.inclusion.not_found', compact('user_requested_resource'));
+      }
+
+
+
     }
     /**
      * Show the form for editing the specified resource.

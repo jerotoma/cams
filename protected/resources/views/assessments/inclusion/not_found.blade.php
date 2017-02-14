@@ -35,8 +35,8 @@
             <h5 class="panel-title">Inclusion Assessments</h5>
         </div>
         <div class="panel-body">
-           @include('assessments.inclusion.inc.list_all')
-            <!--   -->
+           {{$user_requested_resource}}
+          
         </div>
     </div>
    <!-- Modal -->

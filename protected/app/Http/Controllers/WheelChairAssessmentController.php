@@ -17,7 +17,7 @@ use DB;
 
 class WheelChairAssessmentController extends Controller
 {
-  public $parts = array( 
+  public $parts = array(
 					array('slug'=> 'perlvis', 'name'=>'Perlvis'),
 					array('slug'=> 'truck', 'name'=>'Trunk'),
 					array('slug'=> 'head', 'name'=>'Head'),
@@ -30,8 +30,8 @@ class WheelChairAssessmentController extends Controller
 					array('slug'=> 'r_ankle', 'name'=>'R Ankle'),
 				   );
 
-        
-		
+
+
 	public function __construct(){
         $this->middleware('auth');
     }
@@ -76,29 +76,29 @@ class WheelChairAssessmentController extends Controller
 
         echo json_encode($records);
     }
-	
+
 	public function getJSonWCListAllClientData(){
-		 
-		 
+
+
          $wc_assessment  = WheelChairAssessment::all();
 		$iTotalRecords   =count($wc_assessment);
          $sEcho = intval(10);
 
         $records = array();
         $records["data"] = array();
-		
-		
+
+
 		$count=1;
 		foreach( $wc_assessment as $key => $assessed ){
-		
+
 		    $client   = Client::find($assessed->client_id);
-			$assessor = User::find($assessed->assessor_id);
+			  $assessor = User::find($assessed->assessor_id);
 		    $origin="";
             if(!empty($client ) && !empty($assessor)):
-					
+
 			         if(is_object($client->nationality) && $client->nationality != null ){
 						$origin=$client->nationality->country_name;
-					 }	
+					 }
 					 $records["data"][] = array(
 						$count++,
 						$client->client_number,
@@ -109,11 +109,11 @@ class WheelChairAssessmentController extends Controller
 						$assessor->full_name,
 						'<label><a href="'.url("wheelchair/view").'/'.$assessed->id.'">View</a></label>',
 					);
-			
+
 		  endif;
-		
+
 		}
-		
+
 	echo json_encode($records);
 	}
     /**
@@ -129,12 +129,12 @@ class WheelChairAssessmentController extends Controller
 		 $hasValue       = false;
 		 $tr             = '';
 		 $count          = 1;
-		
+
 		foreach( $wc_assessment as $key => $assessed ){
 			$assessed->client_id;
 		    $client   = Client::find($assessed->client_id);
 			$assessor = User::find($assessed->assessor_id);
-		    
+
             if(!empty($client ) && !empty($assessor)):
 				 $hasValue = true;
 			            $tr .=  '<tr>
@@ -162,9 +162,9 @@ class WheelChairAssessmentController extends Controller
 								</td>
 							</tr>';
 
-												
+
 			 endif;
-		
+
 		}
 		if($hasValue){
 			$table_rows = $tr;
@@ -172,10 +172,10 @@ class WheelChairAssessmentController extends Controller
 		}else{
 			return view('assessments.wheelchair.index', compact('parts', 'clients'));
 		}
-		
-		
+
+
     }
-	
+
 
     /**
      * Show the form for creating a new resource.
@@ -184,18 +184,18 @@ class WheelChairAssessmentController extends Controller
      */
     public function create()
     {
-        
-		
+
+
     }
     public function postData(Request $request){
-       
+
         //we need to check the user role here, to know if the logged in user can assess
 		// Auth::user()->id; check this
 		//
         $client=Client::find($request->client_id);
-        
+
         if(!empty($client) && $request->ajax() ){
-            
+
             if($client->id == $request->client_id ){
 
                     $wheelChairAssessment              = new WheelChairAssessment();
@@ -224,12 +224,12 @@ class WheelChairAssessmentController extends Controller
                     $assessmentInterview->assess_interview_lifestyle_env_qn_6              = $request->assess_interview_lifestyle_env_qn_6;
                     $assessmentInterview->assess_interview_lifestyle_env_qn_7              = $request->assess_interview_lifestyle_env_qn_7;
                     $assessmentInterview->assess_interview_lifestyle_env_qn_7_describe     = $request->assess_interview_lifestyle_env_qn_7_describe;
-                    $assessmentInterview->assess_interview_existing_wheelchair_qn_1        = $request->assess_interview_existing_wheelchair_qn_1; 
-                    $assessmentInterview->assess_interview_existing_wheelchair_qn_2        = $request->assess_interview_existing_wheelchair_qn_2; 
-                    $assessmentInterview->assess_interview_existing_wheelchair_qn_3        = $request->assess_interview_existing_wheelchair_qn_3; 
+                    $assessmentInterview->assess_interview_existing_wheelchair_qn_1        = $request->assess_interview_existing_wheelchair_qn_1;
+                    $assessmentInterview->assess_interview_existing_wheelchair_qn_2        = $request->assess_interview_existing_wheelchair_qn_2;
+                    $assessmentInterview->assess_interview_existing_wheelchair_qn_3        = $request->assess_interview_existing_wheelchair_qn_3;
                     $assessmentInterview->assess_interview_existing_wheelchair_qn_4        = $request->assess_interview_existing_wheelchair_qn_4;
-                    $assessmentInterview->assess_interview_existing_wheelchair_qn_5        = $request->assess_interview_existing_wheelchair_qn_5; 
-                    $assessmentInterview->assess_interview_existing_wheelchair_qn_6        = $request->assess_interview_existing_wheelchair_qn_6; 
+                    $assessmentInterview->assess_interview_existing_wheelchair_qn_5        = $request->assess_interview_existing_wheelchair_qn_5;
+                    $assessmentInterview->assess_interview_existing_wheelchair_qn_6        = $request->assess_interview_existing_wheelchair_qn_6;
                     $assessmentInterview->save();
 
                     $physicalAssessment = new PhysicalAssessment();
@@ -294,7 +294,7 @@ class WheelChairAssessmentController extends Controller
                     'message' => "<div class='alert alert-success remove-alert'><strong>Error!</strong> Something went wrong, failed to submit your client Wheel Chair Assessment</div>",
                 ], 400);
 
-            }        
+            }
 
         }else{
 	    return response()->json([
@@ -303,7 +303,7 @@ class WheelChairAssessmentController extends Controller
 						   ], 200);
 
 		}
-        
+
     }
     /**
      * Store a newly created resource in storage.
@@ -312,11 +312,11 @@ class WheelChairAssessmentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {  
+    {
 		//we need to check the user role here, to know if the logged in user can assess
 		// Auth::user()->id; check this
 		//
-        
+
     }
 
     /**
@@ -327,24 +327,24 @@ class WheelChairAssessmentController extends Controller
      */
     public function show($id)
     {
-                    $parts          = $this->parts;
+                $parts          = $this->parts;
 		            $clients        = Client::all();
-                    $wc_assessment  = WheelChairAssessment::find($id);;
+                $wc_assessment  = WheelChairAssessment::find($id);;
 		            $assessed       = $wc_assessment;
-			
-            $assessInterview    = $wc_assessment->assessmentInterview;    
-            $passessment        = $wc_assessment->physicalAssessment;    
-            $hsimulation        = $passessment->handsimulation;      
+
+            $assessInterview    = $wc_assessment->assessmentInterview;
+            $passessment        = $wc_assessment->physicalAssessment;
+            $hsimulation        = $passessment->handsimulation;
             $takeMeasurement    = $passessment->takeMeasurement;
             //dd($hsimulation);
-        
+
            //dd($assessInterview );
-        
-        
+
+
 			$assessed->client_id;
 		    $assessedClient   = Client::find($assessed->client_id);
 			$assessor = User::find($assessed->assessor_id);
-	
+
 		return view('assessments.wheelchair.view', compact('parts','hsimulation','clients','passessment' ,'assessInterview','assessedClient','assessor','wc_assessment'));
     }
 
@@ -369,16 +369,16 @@ class WheelChairAssessmentController extends Controller
     public function update(Request $request, $id )
     {
         if($request->ajax()){
-            
+
               try
                 {
 
                        // $client        = Client::findOrFail($id);
                         $wc_assessment =  WheelChairAssessment::findOrFail($id);  // DB::table('wheel_chair_assessments')->where('id',  $client->id )->get();
                         if(!empty($wc_assessment)){
-                            
-                       
-                        $assessmentInterview = $wc_assessment->assessmentInterview;    
+
+
+                        $assessmentInterview = $wc_assessment->assessmentInterview;
                         $assessmentInterview->wc_assessment_id                                 = $wc_assessment->id;
                         $assessmentInterview->assess_interview_diagnosis_qn_1                  = serialize($request->assess_interview_diagnosis_qn_1);
                         $assessmentInterview->assess_interview_diagnosis_qn_2                  = $request->assess_interview_diagnosis_qn_2;
@@ -399,15 +399,15 @@ class WheelChairAssessmentController extends Controller
                         $assessmentInterview->assess_interview_lifestyle_env_qn_6              = $request->assess_interview_lifestyle_env_qn_6;
                         $assessmentInterview->assess_interview_lifestyle_env_qn_7              = $request->assess_interview_lifestyle_env_qn_7;
                         $assessmentInterview->assess_interview_lifestyle_env_qn_7_describe     = $request->assess_interview_lifestyle_env_qn_7_describe;
-                        $assessmentInterview->assess_interview_existing_wheelchair_qn_1        = $request->assess_interview_existing_wheelchair_qn_1; 
-                        $assessmentInterview->assess_interview_existing_wheelchair_qn_2        = $request->assess_interview_existing_wheelchair_qn_2; 
-                        $assessmentInterview->assess_interview_existing_wheelchair_qn_3        = $request->assess_interview_existing_wheelchair_qn_3; 
+                        $assessmentInterview->assess_interview_existing_wheelchair_qn_1        = $request->assess_interview_existing_wheelchair_qn_1;
+                        $assessmentInterview->assess_interview_existing_wheelchair_qn_2        = $request->assess_interview_existing_wheelchair_qn_2;
+                        $assessmentInterview->assess_interview_existing_wheelchair_qn_3        = $request->assess_interview_existing_wheelchair_qn_3;
                         $assessmentInterview->assess_interview_existing_wheelchair_qn_4        = $request->assess_interview_existing_wheelchair_qn_4;
-                        $assessmentInterview->assess_interview_existing_wheelchair_qn_5        = $request->assess_interview_existing_wheelchair_qn_5; 
-                        $assessmentInterview->assess_interview_existing_wheelchair_qn_6        = $request->assess_interview_existing_wheelchair_qn_6; 
+                        $assessmentInterview->assess_interview_existing_wheelchair_qn_5        = $request->assess_interview_existing_wheelchair_qn_5;
+                        $assessmentInterview->assess_interview_existing_wheelchair_qn_6        = $request->assess_interview_existing_wheelchair_qn_6;
                         $assessmentInterview->save();
 
-                        $physicalAssessment = $wc_assessment->physicalAssessment;   
+                        $physicalAssessment = $wc_assessment->physicalAssessment;
                         $physicalAssessment->wc_assessment_id                      = $wc_assessment->id;
                         $physicalAssessment->physical_assess_presence_risk_qn_1    = $request->physical_assess_presence_risk_qn_1;
                         $physicalAssessment->physical_assess_presence_risk_qn_2    = $request->physical_assess_presence_risk_qn_2;
@@ -478,12 +478,12 @@ class WheelChairAssessmentController extends Controller
                                                      'id'=> $id,
                                                     'errors' => $ex->getMessage()
 
-                                                ), 400); 
+                                                ), 400);
                }
 
 
        }
-        
+
     }
 
     /**
