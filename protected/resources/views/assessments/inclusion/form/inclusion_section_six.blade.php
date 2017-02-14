@@ -469,14 +469,14 @@
                       <div class="col-md-8">
                             <div class="radio">
                               <label class="radio-inline"><input type="radio" name ="mpc_qn_f_1" value="Yes">Yes</label>
-                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_2" value="No">No</label>
+                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_1" value="No">No</label>
                             </div>
                       </div>
                 </div>
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <textarea rows="2" class="form-control" name="mpc_qn_f_3_remark" id="mpc_qn_f_3_remark" placeholder="Remarks"></textarea>
+                            <textarea rows="2" class="form-control" name="mpc_qn_f_2_remark" id="mpc_qn_f_2_remark" placeholder="Remarks"></textarea>
                         </div>
                     </div>
                 </div>
@@ -488,15 +488,15 @@
                       </div>
                       <div class="col-md-8">
                             <div class="radio">
-                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_4" value="Yes">Yes</label>
-                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_4" value="No">No</label>
+                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_3" value="Yes">Yes</label>
+                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_3" value="No">No</label>
                             </div>
                       </div>
                 </div>
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <textarea rows="2" class="form-control" name="mpc_qn_f_5_remark" id="mpc_qn_f_5_remark" placeholder="Remarks"></textarea>
+                            <textarea rows="2" class="form-control" name="mpc_qn_f_4_remark" id="mpc_qn_f_4_remark" placeholder="Remarks"></textarea>
                         </div>
                     </div>
                 </div>
@@ -514,8 +514,8 @@
                       </div>
                       <div class="col-md-8">
                             <div class="radio">
-                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_6" value="Yes">Yes</label>
-                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_6" value="No">No</label>
+                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_5" value="Yes">Yes</label>
+                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_5" value="No">No</label>
                             </div>
                       </div>
                 </div>
@@ -527,15 +527,15 @@
                       </div>
                       <div class="col-md-8">
                             <div class="radio">
-                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_7" value="Yes">Yes</label>
-                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_7" value="No">No</label>
+                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_6" value="Yes">Yes</label>
+                              <label class="radio-inline"><input type="radio" name ="mpc_qn_f_6" value="No">No</label>
                             </div>
                       </div>
                 </div>
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <textarea rows="2" class="form-control" name="mpc_qn_f_8_remark" id="mpc_qn_f_8_remark" placeholder="Remarks"></textarea>
+                            <textarea rows="2" class="form-control" name="mpc_qn_f_7_remark" id="mpc_qn_f_7_remark" placeholder="Remarks"></textarea>
                         </div>
                     </div>
                 </div>

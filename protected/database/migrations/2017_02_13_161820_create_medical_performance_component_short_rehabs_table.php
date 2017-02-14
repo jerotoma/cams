@@ -13,7 +13,7 @@ class CreateMedicalPerformanceComponentShortRehabsTable extends Migration
      */
     public function up()
     {
-        Schema::table('medical_performance_component_short_rehabs', function (Blueprint $table) {
+        Schema::create('medical_performance_component_short_rehabs', function (Blueprint $table) {
              $table->increments('id');
              $table->integer('incl_assessment_id')->unsigned();
              $table->text('mpc_short_rehab_1_remark')->nullable();
@@ -36,7 +36,7 @@ class CreateMedicalPerformanceComponentShortRehabsTable extends Migration
      */
     public function down()
     {
-        Schema::table('medical_performance_component_short_rehabs', function (Blueprint $table) {
+        Schema::create('medical_performance_component_short_rehabs', function (Blueprint $table) {
             //
         });
     }

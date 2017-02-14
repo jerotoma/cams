@@ -13,7 +13,7 @@ class CreateMedicalPerformanceComponentPartBBodySensesTable extends Migration
      */
     public function up()
     {
-        Schema::table('medical_performance_component_part_b_body_senses', function (Blueprint $table) {
+        Schema::create('medical_performance_component_part_b_body_senses', function (Blueprint $table) {
              $table->increments('id');
              $table->integer('mpc_part_b_id')->unsigned();
 			 $table->string('mpc_qn_b_5')->nullable();
@@ -51,7 +51,7 @@ class CreateMedicalPerformanceComponentPartBBodySensesTable extends Migration
      */
     public function down()
     {
-        Schema::table('medical_performance_component_part_b_body_senses', function (Blueprint $table) {
+        Schema::create('medical_performance_component_part_b_body_senses', function (Blueprint $table) {
             //
         });
     }

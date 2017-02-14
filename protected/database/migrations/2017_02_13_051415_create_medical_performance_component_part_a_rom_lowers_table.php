@@ -13,7 +13,7 @@ class CreateMedicalPerformanceComponentPartARomLowersTable extends Migration
      */
     public function up()
     {
-        Schema::table('medical_performance_component_part_a_rom_lowers', function (Blueprint $table) {
+        Schema::create('medical_performance_component_part_a_rom_lowers', function (Blueprint $table) {
             //
         });
     }
@@ -25,7 +25,7 @@ class CreateMedicalPerformanceComponentPartARomLowersTable extends Migration
      */
     public function down()
     {
-        Schema::table('medical_performance_component_part_a_rom_lowers', function (Blueprint $table) {
+        Schema::create('medical_performance_component_part_a_rom_lowers', function (Blueprint $table) {
             //
         });
     }

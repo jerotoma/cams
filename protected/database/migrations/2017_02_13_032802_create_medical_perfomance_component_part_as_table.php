@@ -13,7 +13,7 @@ class CreateMedicalPerfomanceComponentPartAsTable extends Migration
      */
     public function up()
     {
-        Schema::table('medical_performance_component_part_as', function (Blueprint $table) {
+        Schema::create('medical_performance_component_part_as', function (Blueprint $table) {
              $table->increments('id');
              $table->integer('incl_assessment_id')->unsigned();
              $table->string('mpc_qn_a_1')->nullable();
@@ -50,7 +50,7 @@ class CreateMedicalPerfomanceComponentPartAsTable extends Migration
      */
     public function down()
     {
-        Schema::table('medical_performance_component_part_as', function (Blueprint $table) {
+        Schema::create('medical_performance_component_part_as', function (Blueprint $table) {
             
             
         });

@@ -13,7 +13,7 @@ class CreateMedicalPerformanceComponentPerformanceAreasTable extends Migration
      */
     public function up()
     {
-        Schema::table('medical_performance_component_performance_areas', function (Blueprint $table) {
+        Schema::create('medical_performance_component_performance_areas', function (Blueprint $table) {
              $table->increments('id');
              $table->integer('incl_assessment_id')->unsigned();
              $table->text('mpc_perf_area_1')->nullable();
@@ -37,7 +37,7 @@ class CreateMedicalPerformanceComponentPerformanceAreasTable extends Migration
      */
     public function down()
     {
-        Schema::table('medical_performance_component_performance_areas', function (Blueprint $table) {
+        Schema::create('medical_performance_component_performance_areas', function (Blueprint $table) {
             //
         });
     }
