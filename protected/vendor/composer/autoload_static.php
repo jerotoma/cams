@@ -393,6 +393,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'CreateAssessmentPsychosocialsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_23_155747_create_assessment_psychosocials_table.php',
         'CreateAssessmentReferralsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_29_072501_create_assessment_referrals_table.php',
         'CreateAssessmentVulnerabilityTypesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_23_153008_create_assessment_vulnerability_types_table.php',
+        'CreateAuditsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_14_114429_create_audits_table.php',
         'CreateCampsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_144953_create_camps_table.php',
         'CreateClientCasesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_09_221915_create_client_cases_table.php',
         'CreateClientVulnerabilityCodesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_20_100418_create_client_vulnerability_codes_table.php',

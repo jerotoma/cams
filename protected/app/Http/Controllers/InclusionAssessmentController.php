@@ -216,7 +216,7 @@ class InclusionAssessmentController extends Controller
                 
                 
                         $mpc_part_c            = new MedicalPerfomanceComponentPartC();
-                        $mpc_part_d            = new MedicalPerfomanceComponentPartD();();
+                        $mpc_part_d            = new MedicalPerfomanceComponentPartD();
                         $mpc_part_e            = new MedicalPerfomanceComponentPartE();
                         $mpc_part_f            = new MedicalPerfomanceComponentPartF();
                         $mpc_part_parea        = new MedicalPerfomanceComponentPerformanceArea();

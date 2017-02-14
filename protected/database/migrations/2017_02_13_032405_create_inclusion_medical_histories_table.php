@@ -13,7 +13,7 @@ class CreateInclusionMedicalHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::table('inclusion_medical_histories', function (Blueprint $table) {
+        Schema::create('inclusion_medical_histories', function (Blueprint $table) {
              $table->increments('id');
              $table->integer('incl_assessment_id')->unsigned();
              $table->text('med_history_info_qn_1')->nullable();

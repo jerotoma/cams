@@ -114,6 +114,12 @@
                     <li><a href="{{url('access/rights')}}">List All Rights</a></li>
                 </ul>
             </li>
+            <li>
+                <a href="#"><i class="icon-users"></i> <span>System Audit</span></a>
+                <ul>
+                    <li><a href="{{url('audit/los')}}">Access Logs</a></li>
+                </ul>
+            </li>
             <!-- /Settings -->
         @endrole
 

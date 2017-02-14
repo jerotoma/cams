@@ -128,7 +128,8 @@ Route::post('assessments/wheelchair/wheelchairassessment','WheelChairAssessmentC
 Route::get('wheelchair/view/{id}','WheelChairAssessmentController@show');
 Route::post('assessments/wheelchair/{id}/edit','WheelChairAssessmentController@update');
 
- 
+//Audit logs
+Route::get('audit/los','AuditController@index');
 //ItemsReceivingController
 
 
