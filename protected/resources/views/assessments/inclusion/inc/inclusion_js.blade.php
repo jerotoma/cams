@@ -1,13 +1,13 @@
 <script>
 	$(document).ready(function () {
-    $('.registration-form fieldset:first-child').fadeIn('slow');
+    $('.inclusion-assessment fieldset:first-child').fadeIn('slow');
 
-    $('.registration-form input[type="text"]').on('focus', function () {
+    $('.inclusion-assessment input[type="text"]').on('focus', function () {
         $(this).removeClass('input-error');
     });
 
     // next step
-    $('.registration-form .btn-next').on('click', function () {
+    $('.inclusion-assessment .btn-next').on('click', function () {
         var parent_fieldset = $(this).parents('fieldset');
         var next_step = true;
 
@@ -29,14 +29,82 @@
     });
 
     // previous step
-    $('.registration-form .btn-previous').on('click', function () {
+    $('.inclusion-assessment .btn-previous').on('click', function () {
         $(this).parents('fieldset').fadeOut(400, function () {
             $(this).prev().fadeIn();
         });
     });
 
+$('#inclusion-assessment').on('submit',function(){
+                $('.load_hidden-spinner').css('display', 'inline-block');
+                var postData = $(this).serializeArray();
+                var formURL = $(this).attr("action");
+			    submitAssessmentData(formURL, postData);
+               
+                return false;
+            });
+          function submitAssessmentData(formURL, postData){
+			  
+				  console.log(formURL);
+				  console.log(postData);
+				  var errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+
+				  $.ajax({
+						url : formURL,
+						type: "POST",
+						data : postData,
+						dataType: "JSON",
+						success:function(response){
+                            $('.load_hidden-spinner').css('display', 'none');
+							
+							if(response.success === true ){
+
+								$('.inform_assessor').html(response.message);
+								setTimeout(function(){ 
+								         if(response.action != 'update'){
+											$("form").trigger('reset');
+											location.reload('/wheelchair/');
+										}
+                                  }, 3000);
+								setTimeout(function(){ 
+									 $('.remove-alert').hide();
+									 $('.remove-alert').fadeOut('slow');
+								  }, 5000);
+
+							}else{
+								$('.inform_assessor').html(response.message);
+								setTimeout(function(){ 
+									 $('.remove-alert').hide();
+									 $('.remove-alert').fadeOut('slow');
+								  }, 5000);
+								
+							}
+
+						},
+						error: function(xhr,status, response) {
+
+							if( xhr.status === 400 ) {
+								var errors = xhr.responseJSON.errors;
+								$.each(errors, function (key, value) {
+									errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+								});
+								errorsHtml += '</ul></di>';
+								$('.inform_assessor').html(errorsHtml); 
+							}
+							else
+							{
+								$('#inform_assessor').html("");
+							}
+
+						}
+					});
+			  
+		  }
+    
+         });
+    
     // submit
-    $('.registration-form').on('submit', function (e) {
+  /*  $('.registration-form').on('submit', function (e) {
 
         $(this).find('input[type="text"],input[type="email"]').each(function () {
             if ($(this).val() == "s") {
@@ -47,26 +115,7 @@
             }
         });
 
-    });
+    });*/
+        
 
-   
-});
-    // Add , Dlelete row dynamically
-
-$(document).ready(function(){
-      var i=1;
-     $("#add_row").click(function(){
-      $('#addr'+i).html("<td>"+ (i+1) +"</td><td><input name='name"+i+"' type='text' placeholder='Name' class='form-control input-md'  /> </td><td><input  name='sur"+i+"' type='text' placeholder='Surname'  class='form-control input-md'></td><td><input  name='email"+i+"' type='text' placeholder='Email'  class='form-control input-md'></td>");
-
-      $('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
-      i++; 
-  });
-     $("#delete_row").click(function(){
-    	 if(i>1){
-		 $("#addr"+(i-1)).html('');
-		 i--;
-		 }
-	 });
-
-});
-</script>
+   </script>

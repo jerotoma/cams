@@ -2,7 +2,12 @@
             <div class="col-xs-12">
                 <div class="col-md-12 well text-center">
                     <h1 class="text-center">Finish Assessment by hitting Submit Assessment </h1>
-                        <div class="form-group inform_assessor">
+                        <div class="form-group">
+                             <div class="row">
+                                  <div class="col-md-6 col-md-offset-3 inform_assessor">
+
+                                  </div>
+                             </div>
                         </div>
                        
 					   <div class="form-group text-center">

@@ -510,8 +510,15 @@
                 <textarea rows="2" class="form-control" name="mpc_qn_long_rehab_9_remark" id="mpc_qn_long_rehab_9_remark" placeholder="Describe"></textarea>
              </div>
              <div class="form-group">
+                 <div class="row">
+                      <div class="col-md-6 col-md-offset-3 inform_assessor">
+                            {{ csrf_field() }}
+                      </div>
+                 </div>
+            </div>
+             <div class="form-group">
                     <button type="button" class="btn btn-previous">Previous</button>
-                    <button type="submit" class="btn">Submit</button>
+                    <button type="submit" class="btn">Submit</button> <span class="load_hidden-spinner"></span>
             </div>
           </div>
        </div>
