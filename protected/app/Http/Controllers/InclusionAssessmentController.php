@@ -216,12 +216,13 @@ class InclusionAssessmentController extends Controller
                 $mpc_part_a_posture->mpc_qn_a_38        = $request->mpc_qn_a_38;
                 $mpc_part_a_posture->mpc_qn_a_39        = $request->mpc_qn_a_39;
                 $mpc_part_a_posture->mpc_qn_a_40        = $request->mpc_qn_a_40;
-                $mpc_part_a_posture->mpc_qn_a_41_remark = $request->mpc_qn_a_40_remark;
+                $mpc_part_a_posture->mpc_qn_a_41_remark = $request->mpc_qn_a_41_remark;
                 $mpc_part_a_posture->save();
 
                 $mpc_part_a_moving_pattern  = new MpcPartAMovingPattern();
                 $mpc_part_a_moving_pattern->mpc_part_a_id      = $mpc_part_a->id;
                 $mpc_part_a_moving_pattern->mpc_qn_a_42_remark = $request->mpc_qn_a_42_remark;
+                $mpc_part_a_moving_pattern->mpc_qn_a_42        = $request->mpc_qn_a_42;
                 $mpc_part_a_moving_pattern->mpc_qn_a_43        = $request->mpc_qn_a_43;
                 $mpc_part_a_moving_pattern->mpc_qn_a_44        = $request->mpc_qn_a_44;
                 $mpc_part_a_moving_pattern->mpc_qn_a_45        = $request->mpc_qn_a_45;
@@ -243,12 +244,13 @@ class InclusionAssessmentController extends Controller
                 $mpc_part_b->mpc_qn_b_2_remark    = $request->mpc_qn_b_2_remark;
                 $mpc_part_b->mpc_qn_b_3_remark    = $request->mpc_qn_b_3_remark;
                 $mpc_part_b->mpc_qn_b_4           = serialize($request->mpc_qn_b_4);
-                $mpc_part_b->mpc_qn_b_27_remak    = $request->mpc_qn_b_27_remak;
+                $mpc_part_b->mpc_qn_b_27_remark    = trim($request->mpc_qn_b_27_remark);
                 $mpc_part_b->mpc_qn_b_28          = serialize($request->mpc_qn_b_28);
                 $mpc_part_b->save();
 
                 $mpc_part_b_body_sense                      =  new MpcPartBBodySense();
                 $mpc_part_b_body_sense->mpc_part_b_id       =  $mpc_part_b->id;
+                $mpc_part_b_body_sense->mpc_qn_b_5          =  $request->mpc_qn_b_5;
                 $mpc_part_b_body_sense->mpc_qn_b_6          =  $request->mpc_qn_b_6;
                 $mpc_part_b_body_sense->mpc_qn_b_7          =  $request->mpc_qn_b_7;
                 $mpc_part_b_body_sense->mpc_qn_b_8          =  $request->mpc_qn_b_8;
@@ -299,7 +301,7 @@ class InclusionAssessmentController extends Controller
                 $mpc_part_e->mpc_qn_e_5             =  $request->mpc_qn_e_5;
                 $mpc_part_e->mpc_qn_e_6             =  $request->mpc_qn_e_6;
                 $mpc_part_e->mpc_qn_e_7             =  $request->mpc_qn_e_7;
-                $mpc_part_e->mpc_qn_e_8             =  $request->mpc_qn_e_8;
+                $mpc_part_e->mpc_qn_e_8_remark      =  $request->mpc_qn_e_8_remark;
                 $mpc_part_e->save();
 
 
@@ -314,8 +316,8 @@ class InclusionAssessmentController extends Controller
                 $mpc_part_f->mpc_qn_f_7_remark    =  $request->mpc_qn_f_7_remark;
                 $mpc_part_f->save();
 
-                $mpc_perf_area                               = new MpcPerformanceArea();
-                $mpc_perf_area->incl_assessment_id                =  $inc_assessment->id;
+                $mpc_perf_area                            =  new MpcPerformanceArea();
+                $mpc_perf_area->incl_assessment_id        =  $inc_assessment->id;
                 $mpc_perf_area->mpc_perf_area_1           =  serialize($request->mpc_qn_perf_area_1);
                 $mpc_perf_area->mpc_perf_area_2           =  serialize($request->mpc_qn_perf_area_2);
                 $mpc_perf_area->mpc_perf_area_3           =  serialize($request->mpc_qn_perf_area_3);
@@ -327,65 +329,151 @@ class InclusionAssessmentController extends Controller
 
                 $mpc_context                           =  new MpcContext();
                 $mpc_context->incl_assessment_id       =  $inc_assessment->id;
-                $mpc_context->mpc_context_1            =  $request->mpc_context_1;
-                $mpc_context->mpc_context_2            =  $request->mpc_context_2;
-                $mpc_context->mpc_context_3_remark     =  $request->mpc_context_3_remark;
-                $mpc_context->mpc_context_4            =  $request->mpc_context_4;
-                $mpc_context->mpc_context_5            =  serialize($request->mpc_context_5);
-                $mpc_context->mpc_context_5_remark     =  $request->mpc_context_5_remark;
-                $mpc_context->mpc_context_6            =  $request->mpc_context_6;
-                $mpc_context->mpc_context_6_remark     =  $request->mpc_context_6_remark;
-                $mpc_context->mpc_context_7            =  $request->mpc_context_7;
-                $mpc_context->mpc_context_8            =  $request->mpc_context_8;
-                $mpc_context->mpc_context_9_remark     =  $request->mpc_context_9_remark;
-                $mpc_context->mpc_context_10           =  $request->mpc_context_10;
-                $mpc_context->mpc_context_11           =  $request->mpc_context_11;
-                $mpc_context->mpc_context_12           =  $request->mpc_context_12;
-                $mpc_context->mpc_context_13           =  $request->mpc_context_13;
-                $mpc_context->mpc_context_14           =  $request->mpc_context_14;
-                $mpc_context->mpc_context_15_remark    =  $request->mpc_context_15_remark;
-                $mpc_context->mpc_context_16           =  $request->mpc_context_16;
-                $mpc_context->mpc_context_16_remark    =  $request->mpc_context_16_remark;
+                $mpc_context->mpc_context_1            =  $request->mpc_qn_context_1;
+                $mpc_context->mpc_context_2            =  $request->mpc_qn_context_2;
+                $mpc_context->mpc_context_3_remark     =  $request->mpc_qn_context_3_remark;
+                $mpc_context->mpc_context_4            =  $request->mpc_qn_context_4;
+                $mpc_context->mpc_context_5            =  serialize($request->mpc_qn_context_5);
+                $mpc_context->mpc_context_5_remark     =  $request->mpc_qn_context_5_remark;
+                $mpc_context->mpc_context_6            =  $request->mpc_qn_context_6;
+                $mpc_context->mpc_context_6_remark     =  $request->mpc_qn_context_6_remark;
+                $mpc_context->mpc_context_7            =  $request->mpc_qn_context_7;
+                $mpc_context->mpc_context_8            =  $request->mpc_qn_context_8;
+                $mpc_context->mpc_context_9_remark     =  $request->mpc_qn_context_9_remark;
+                $mpc_context->mpc_context_10           =  $request->mpc_qn_context_10;
+                $mpc_context->mpc_context_11           =  $request->mpc_qn_context_11;
+                $mpc_context->mpc_context_12           =  $request->mpc_qn_context_12;
+                $mpc_context->mpc_context_13           =  $request->mpc_qn_context_13;
+                $mpc_context->mpc_context_14           =  $request->mpc_qn_context_14;
+                $mpc_context->mpc_context_15_remark    =  $request->mpc_qn_context_15_remark;
+                $mpc_context->mpc_context_16           =  $request->mpc_qn_context_16;
+                $mpc_context->mpc_context_16_remark    =  $request->mpc_qn_context_16_remark;
                 $mpc_context->save();
 
                 $mpc_swot                        =  new MpcSwot();
                 $mpc_swot->incl_assessment_id    =  $inc_assessment->id;
-                $mpc_swot->mpc_swot_1_remark     =  $request->mpc_swot_1_remark;
-                $mpc_swot->mpc_swot_2_remark     =  $request->mpc_swot_2_remark;
-                $mpc_swot->mpc_swot_3_remark     =  $request->mpc_swot_3_remark;
-                $mpc_swot->mpc_swot_4_remark     =  $request->mpc_swot_4_remark;
-                $mpc_swot->mpc_swot_5_remark     =  $request->mpc_swot_5_remark;
-                $mpc_swot->mpc_swot_6_remark     =  $request->mpc_swot_6_remark;
-                $mpc_swot->mpc_swot_7_remark     =  $request->mpc_swot_7_remark;
+                $mpc_swot->mpc_swot_1_remark     =  $request->mpc_qn_swot_1_remark;
+                $mpc_swot->mpc_swot_2_remark     =  $request->mpc_qn_swot_2_remark;
+                $mpc_swot->mpc_swot_3_remark     =  $request->mpc_qn_swot_3_remark;
+                $mpc_swot->mpc_swot_4_remark     =  $request->mpc_qn_swot_4_remark;
+                $mpc_swot->mpc_swot_5_remark     =  $request->mpc_qn_swot_5_remark;
+                $mpc_swot->mpc_swot_6_remark     =  $request->mpc_qn_swot_6_remark;
+                $mpc_swot->mpc_swot_7_remark     =  $request->mpc_qn_swot_7_remark;
                 $mpc_swot->save();
 
 
                 $mpc_short_rehab                        =  new MpcShortRehab();
                 $mpc_short_rehab->incl_assessment_id    =  $inc_assessment->id;
-                $mpc_short_rehab->mpc_short_rehab_1_remark     =  $request->mpc_short_rehab_1_remark;
-                $mpc_short_rehab->mpc_short_rehab_2_remark     =  $request->mpc_short_rehab_2_remark;
-                $mpc_short_rehab->mpc_short_rehab_3_remark     =  $request->mpc_short_rehab_3_remark;
-                $mpc_short_rehab->mpc_short_rehab_4_remark     =  $request->mpc_short_rehab_4_remark;
-                $mpc_short_rehab->mpc_short_rehab_5_remark     =  $request->mpc_short_rehab_5_remark;
-                $mpc_short_rehab->mpc_short_rehab_6_remark     =  $request->mpc_short_rehab_6_remark;
-                $mpc_short_rehab->mpc_short_rehab_7_remark     =  $request->mpc_short_rehab_7_remark;
+                $mpc_short_rehab->mpc_short_rehab_1_remark     =  $request->mpc_qn_short_rehab_1_remark;
+                $mpc_short_rehab->mpc_short_rehab_2_remark     =  $request->mpc_qn_short_rehab_2_remark;
+                $mpc_short_rehab->mpc_short_rehab_3_remark     =  $request->mpc_qn_short_rehab_3_remark;
+                $mpc_short_rehab->mpc_short_rehab_4_remark     =  $request->mpc_qn_short_rehab_4_remark;
+                $mpc_short_rehab->mpc_short_rehab_5_remark     =  $request->mpc_qn_short_rehab_5_remark;
+                $mpc_short_rehab->mpc_short_rehab_6_remark     =  $request->mpc_qn_short_rehab_6_remark;
+                $mpc_short_rehab->mpc_short_rehab_7_remark     =  $request->mpc_qn_short_rehab_7_remark;
                 $mpc_short_rehab->save();
 
 
 
                 $mpc_long_rehab                        =  new MpcLongRehab();
                 $mpc_long_rehab->incl_assessment_id    =  $inc_assessment->id;
-                $mpc_long_rehab->mpc_long_rehab_1_remark     =  $request->mpc_long_rehab_1_remark;
-                $mpc_long_rehab->mpc_long_rehab_2_remark     =  $request->mpc_long_rehab_2_remark;
-                $mpc_long_rehab->mpc_long_rehab_3_remark     =  $request->mpc_long_rehab_3_remark;
-                $mpc_long_rehab->mpc_long_rehab_4_remark     =  $request->mpc_long_rehab_4_remark;
-                $mpc_long_rehab->mpc_long_rehab_5_remark     =  $request->mpc_long_rehab_5_remark;
-                $mpc_long_rehab->mpc_long_rehab_6_remark     =  $request->mpc_long_rehab_6_remark;
-                $mpc_long_rehab->mpc_long_rehab_7_remark     =  $request->mpc_long_rehab_7_remark;
-                $mpc_long_rehab->mpc_long_rehab_8_remark     =  $request->mpc_long_rehab_8_remark;
-                $mpc_long_rehab->mpc_long_rehab_9_remark     =  $request->mpc_long_rehab_9_remark;
+                $mpc_long_rehab->mpc_long_rehab_1_remark     =  $request->mpc_qn_long_rehab_1_remark;
+                $mpc_long_rehab->mpc_long_rehab_2_remark     =  $request->mpc_qn_long_rehab_2_remark;
+                $mpc_long_rehab->mpc_long_rehab_3_remark     =  $request->mpc_qn_long_rehab_3_remark;
+                $mpc_long_rehab->mpc_long_rehab_4_remark     =  $request->mpc_qn_long_rehab_4_remark;
+                $mpc_long_rehab->mpc_long_rehab_5_remark     =  $request->mpc_qn_long_rehab_5_remark;
+                $mpc_long_rehab->mpc_long_rehab_6_remark     =  $request->mpc_qn_long_rehab_6_remark;
+                $mpc_long_rehab->mpc_long_rehab_7_remark     =  $request->mpc_qn_long_rehab_7_remark;
+                $mpc_long_rehab->mpc_long_rehab_8_remark     =  $request->mpc_qn_long_rehab_8_remark;
+                $mpc_long_rehab->mpc_long_rehab_9_remark     =  $request->mpc_qn_long_rehab_9_remark;
                 $mpc_long_rehab->save();
 
+                $lower_limb_row_1 = array( 'rom_l_hip_0_1' => $request->rom_l_hip_0_1,'rom_l_hip_0_2' => $request->rom_l_hip_0_2,'rom_l_hip_0_3' => $request->rom_l_hip_0_3,'rom_r_hip_0_1' => $request->rom_r_hip_0_1,'rom_r_hip_0_2' => $request->rom_r_hip_0_2,'rom_r_hip_0_3' => $request->rom_r_hip_0_3,
+                                       'ms_l_hip_0_1' => $request->ms_l_hip_0_1,'ms_l_hip_0_2' => $request->ms_l_hip_0_2,'ms_l_hip_0_3' => $request->ms_l_hip_0_3,'ms_r_hip_0_1' => $request->ms_r_hip_0_1,'ms_r_hip_0_2' => $request->ms_r_hip_0_2,'ms_r_hip_0_3' => $request->ms_r_hip_0_3 );
+                $lower_limb_row_2  = array( 'rom_l_hip_1_1' => $request->rom_l_hip_1_1,'rom_l_hip_1_2' => $request->rom_l_hip_1_2,'rom_l_hip_1_3' => $request->rom_l_hip_1_3,'rom_r_hip_1_1' => $request->rom_r_hip_1_1,'rom_r_hip_1_2' => $request->rom_r_hip_1_2,'rom_r_hip_1_3' => $request->rom_r_hip_1_3,
+                                        'ms_l_hip_1_1' => $request->ms_l_hip_1_1,'ms_l_hip_1_2' => $request->ms_l_hip_1_2,'ms_l_hip_1_3' => $request->ms_l_hip_1_3,'ms_r_hip_1_1' => $request->ms_r_hip_1_1,'ms_r_hip_1_2' => $request->ms_r_hip_1_2,'ms_r_hip_1_3' => $request->ms_r_hip_1_3 );
+                $lower_limb_row_3  = array( 'rom_l_hip_2_1' => $request->rom_l_hip_2_1,'rom_l_hip_2_2' => $request->rom_l_hip_2_2,'rom_l_hip_2_3' => $request->rom_l_hip_2_3,'rom_r_hip_2_1' => $request->rom_r_hip_2_1,'rom_r_hip_2_2' => $request->rom_r_hip_2_2,'rom_r_hip_2_3' => $request->rom_r_hip_2_3,
+                                        'ms_l_hip_2_1' => $request->ms_l_hip_2_1,'ms_l_hip_2_2' => $request->ms_l_hip_2_2,'ms_l_hip_2_3' => $request->ms_l_hip_2_3,'ms_r_hip_2_1' => $request->ms_r_hip_2_1,'ms_r_hip_2_2' => $request->ms_r_hip_2_2,'ms_r_hip_2_3' => $request->ms_r_hip_2_3 );
+                $lower_limb_row_4  = array( 'rom_l_hip_3_1' => $request->rom_l_hip_3_1,'rom_l_hip_3_2' => $request->rom_l_hip_3_2,'rom_l_hip_3_3' => $request->rom_l_hip_3_3,'rom_r_hip_3_1' => $request->rom_r_hip_3_1,'rom_r_hip_3_2' => $request->rom_r_hip_3_2,'rom_r_hip_3_3' => $request->rom_r_hip_3_3,
+                                         'ms_l_hip_3_1' => $request->ms_l_hip_3_1,'ms_l_hip_3_2' => $request->ms_l_hip_3_2,'ms_l_hip_3_3' => $request->ms_l_hip_3_3,'ms_r_hip_3_1' => $request->ms_r_hip_3_1,'ms_r_hip_3_2' => $request->ms_r_hip_3_2,'ms_r_hip_3_3' => $request->ms_r_hip_3_3 );
+                $lower_limb_row_5  = array( 'rom_l_hip_4_1' => $request->rom_l_hip_4_1,'rom_l_hip_4_2' => $request->rom_l_hip_4_2,'rom_l_hip_4_3' => $request->rom_l_hip_4_3,'rom_r_hip_4_1' => $request->rom_r_hip_4_1,'rom_r_hip_4_2' => $request->rom_r_hip_4_2,'rom_r_hip_4_3' => $request->rom_r_hip_4_3,
+                                         'ms_l_hip_4_1' => $request->ms_l_hip_4_1,'ms_l_hip_4_2' => $request->ms_l_hip_4_2,'ms_l_hip_4_3' => $request->ms_l_hip_4_3,'ms_r_hip_4_1' => $request->ms_r_hip_4_1,'ms_r_hip_4_2' => $request->ms_r_hip_4_2,'ms_r_hip_4_3' => $request->ms_r_hip_4_3 );
+                $lower_limb_row_6  = array( 'rom_l_hip_5_1' => $request->rom_l_hip_5_1,'rom_l_hip_5_2' => $request->rom_l_hip_5_2,'rom_l_hip_5_3' => $request->rom_l_hip_5_3,'rom_r_hip_5_1' => $request->rom_r_hip_5_1,'rom_r_hip_5_2' => $request->rom_r_hip_5_2,'rom_r_hip_5_3' => $request->rom_r_hip_5_3,
+                                         'ms_l_hip_5_1' => $request->ms_l_hip_5_1,'ms_l_hip_5_2' => $request->ms_l_hip_5_2,'ms_l_hip_5_3' => $request->ms_l_hip_5_3,'ms_r_hip_5_1' => $request->ms_r_hip_5_1,'ms_r_hip_5_2' => $request->ms_r_hip_5_2,'ms_r_hip_5_3' => $request->ms_r_hip_5_3 );
+                $lower_limb_row_7  = array( 'rom_l_knee_0_1' => $request->rom_l_knee_0_1,'rom_l_knee_0_2' => $request->rom_l_knee_0_2,'rom_l_knee_0_3' => $request->rom_l_knee_0_3,'rom_r_knee_0_1' => $request->rom_r_knee_0_1,'rom_r_knee_0_2' => $request->rom_r_knee_0_2,'rom_r_knee_0_3' => $request->rom_r_knee_0_3,
+                                        'ms_l_knee_0_1' => $request->ms_l_knee_0_1,'ms_l_knee_0_2' => $request->ms_l_knee_0_2,'ms_l_knee_0_3' => $request->ms_l_knee_0_3,'ms_r_knee_0_1' => $request->ms_r_knee_0_1,'ms_r_knee_0_2' => $request->ms_r_knee_0_2,'ms_r_knee_0_3' => $request->ms_r_knee_0_3 );
+                $lower_limb_row_8  = array( 'rom_l_knee_1_1' => $request->rom_l_knee_1_1,'rom_l_knee_1_2' => $request->rom_l_knee_1_2,'rom_l_knee_1_3' => $request->rom_l_knee_1_3,'rom_r_knee_1_1' => $request->rom_r_knee_1_1,'rom_r_knee_1_2' => $request->rom_r_knee_1_2,'rom_r_knee_1_3' => $request->rom_r_knee_1_3,
+                                        'ms_l_knee_1_1' => $request->ms_l_knee_1_1,'ms_l_knee_1_2' => $request->ms_l_knee_1_2,'ms_l_knee_1_3' => $request->ms_l_knee_1_3,'ms_r_knee_1_1' => $request->ms_r_knee_1_1,'ms_r_knee_1_2' => $request->ms_r_knee_1_2,'ms_r_knee_1_3' => $request->ms_r_knee_1_3 );
+                $lower_limb_row_9  = array( 'rom_l_foot_0_1' => $request->rom_l_foot_0_1,'rom_l_foot_0_2' => $request->rom_l_foot_0_2,'rom_l_foot_0_3' => $request->rom_l_foot_0_3,'rom_r_foot_0_1' => $request->rom_r_foot_0_1,'rom_r_foot_0_2' => $request->rom_r_foot_0_2,'rom_r_foot_0_3' => $request->rom_r_foot_0_3,
+                                        'ms_l_foot_0_1' => $request->ms_l_foot_0_1,'ms_l_foot_0_2' => $request->ms_l_foot_0_2,'ms_l_foot_0_3' => $request->ms_l_foot_0_3,'ms_r_foot_0_1' => $request->ms_r_foot_0_1,'ms_r_foot_0_2' => $request->ms_r_foot_0_2,'ms_r_foot_0_3' => $request->ms_r_foot_0_3 );
+                 $lower_limb_row_10 = array( 'rom_l_foot_1_1' => $request->rom_l_foot_1_1,'rom_l_foot_1_2' => $request->rom_l_foot_1_2,'rom_l_foot_1_3' => $request->rom_l_foot_1_3,'rom_r_foot_1_1' => $request->rom_r_foot_1_1,'rom_r_foot_1_2' => $request->rom_r_foot_1_2,'rom_r_foot_1_3' => $request->rom_r_foot_1_3,
+                                        'ms_l_foot_1_1' => $request->ms_l_foot_1_1,'ms_l_foot_1_2' => $request->ms_l_foot_1_2,'ms_l_foot_1_3' => $request->ms_l_foot_1_3,'ms_r_foot_1_1' => $request->ms_r_foot_1_1,'ms_r_foot_1_2' => $request->ms_r_foot_1_2,'ms_r_foot_1_3' => $request->ms_r_foot_1_3 );
+                 $lower_limb_row_11 = array( 'rom_l_foot_2_1' => $request->rom_l_foot_2_1,'rom_l_foot_2_2' => $request->rom_l_foot_2_2,'rom_l_foot_2_3' => $request->rom_l_foot_2_3,'rom_r_foot_2_1' => $request->rom_r_foot_2_1,'rom_r_foot_2_2' => $request->rom_r_foot_2_2,'rom_r_foot_2_3' => $request->rom_r_foot_2_3,
+                                        'ms_l_foot_2_1' => $request->ms_l_foot_2_1,'ms_l_foot_2_2' => $request->ms_l_foot_2_2,'ms_l_foot_2_3' => $request->ms_l_foot_2_3,'ms_r_foot_2_1' => $request->ms_r_foot_2_1,'ms_r_foot_2_2' => $request->ms_r_foot_2_2,'ms_r_foot_2_3' => $request->ms_r_foot_2_3 );
+                 $lower_limb_row_12 = array( 'rom_l_foot_3_1' => $request->rom_l_foot_3_1,'rom_l_foot_3_2' => $request->rom_l_foot_3_2,'rom_l_foot_3_3' => $request->rom_l_foot_3_3,'rom_r_foot_3_1' => $request->rom_r_foot_3_1,'rom_r_foot_3_2' => $request->rom_r_foot_3_2,'rom_r_foot_3_3' => $request->rom_r_foot_3_3,
+                                        'ms_l_foot_3_1' => $request->ms_l_foot_3_1,'ms_l_foot_3_2' => $request->ms_l_foot_3_2,'ms_l_foot_3_3' => $request->ms_l_foot_3_3,'ms_r_foot_3_1' => $request->ms_r_foot_3_1,'ms_r_foot_3_2' => $request->ms_r_foot_3_2,'ms_r_foot_3_3' => $request->ms_r_foot_3_3 );
+                 $lower_limb_row_13  = array( 'rom_l_trunk_0_1' => $request->rom_l_foot_0_1,'rom_l_trunk_0_2' => $request->rom_l_trunk_0_2,'rom_l_trunk_0_3' => $request->rom_l_trunk_0_3,'rom_r_trunk_0_1' => $request->rom_r_trunk_0_1,'rom_r_trunk_0_2' => $request->rom_r_trunk_0_2,'rom_r_trunk_0_3' => $request->rom_r_trunk_0_3,
+                                       'ms_l_trunk_0_1' => $request->ms_l_trunk_0_1,'ms_l_trunk_0_2' => $request->ms_l_trunk_0_2,'ms_l_trunk_0_3' => $request->ms_l_trunk_0_3,'ms_r_trunk_0_1' => $request->ms_r_trunk_0_1,'ms_r_trunk_0_2' => $request->ms_r_trunk_0_2,'ms_r_trunk_0_3' => $request->ms_r_trunk_0_3 );
+                 $lower_limb_row_14 = array( 'rom_l_trunk_1_1' => $request->rom_l_trunk_1_1,'rom_l_trunk_1_2' => $request->rom_l_trunk_1_2,'rom_l_trunk_1_3' => $request->rom_l_trunk_1_3,'rom_r_trunk_1_1' => $request->rom_r_trunk_1_1,'rom_r_trunk_1_2' => $request->rom_r_trunk_1_2,'rom_r_trunk_1_3' => $request->rom_r_trunk_1_3,
+                                       'ms_l_trunk_1_1' => $request->ms_l_trunk_1_1,'ms_l_trunk_1_2' => $request->ms_l_trunk_1_2,'ms_l_trunk_1_3' => $request->ms_l_trunk_1_3,'ms_r_trunk_1_1' => $request->ms_r_trunk_1_1,'ms_r_trunk_1_2' => $request->ms_r_trunk_1_2,'ms_r_trunk_1_3' => $request->ms_r_trunk_1_3 );
+
+                 $mpcLowerLimb = new MpcPartARomUpperLimb();
+                 $mpcLowerLimb->incl_assessment_id    =  $inc_assessment->id;
+                 $mpcLowerLimb->lower_limb_row_1 = serialize($lower_limb_row_1);
+                 $mpcLowerLimb->lower_limb_row_2 = serialize($lower_limb_row_2);
+                 $mpcLowerLimb->lower_limb_row_3 = serialize($lower_limb_row_3);
+                 $mpcLowerLimb->lower_limb_row_4 = serialize($lower_limb_row_4);
+                 $mpcLowerLimb->lower_limb_row_5 = serialize($lower_limb_row_6);
+                 $mpcLowerLimb->lower_limb_row_6 = serialize($lower_limb_row_6);
+                 $mpcLowerLimb->lower_limb_row_7 = serialize($lower_limb_row_7);
+                 $mpcLowerLimb->lower_limb_row_8 = serialize($lower_limb_row_8);
+                 $mpcLowerLimb->lower_limb_row_9 = serialize($lower_limb_row_9);
+                 $mpcLowerLimb->lower_limb_row_10 = serialize($lower_limb_row_10);
+                 $mpcLowerLimb->lower_limb_row_11 = serialize($lower_limb_row_11);
+                 $mpcLowerLimb->lower_limb_row_12 = serialize($lower_limb_row_12);
+                 $mpcLowerLimb->lower_limb_row_12 = serialize($lower_limb_row_13);
+                 $mpcLowerLimb->lower_limb_row_12 = serialize($lower_limb_row_14);
+                 $mpcLowerLimb->save();
+                 $upper_limb_row_1  = array( 'rom_l_shoulder_and_arm_0_1' => $request->rom_l_shoulder_and_arm_0_1,'rom_l_shoulder_and_arm_0_2' => $request->rom_l_shoulder_and_arm_0_2,'rom_l_shoulder_and_arm_0_3' => $request->rom_l_shoulder_and_arm_0_3,'rom_r_shoulder_and_arm_0_1' => $request->rom_r_shoulder_and_arm_0_1,'rom_r_shoulder_and_arm_0_2' => $request->rom_r_shoulder_and_arm_0_2,'rom_r_shoulder_and_arm_0_3' => $request->rom_r_shoulder_and_arm_0_3,
+                                         'ms_l_shoulder_and_arm_0_1' => $request->ms_l_shoulder_and_arm_0_1,'ms_l_shoulder_and_arm_0_2' => $request->ms_l_shoulder_and_arm_0_2,'ms_l_shoulder_and_arm_0_3' => $request->ms_l_shoulder_and_arm_0_3,'ms_r_shoulder_and_arm_0_1' => $request->ms_r_shoulder_and_arm_0_1,'ms_r_shoulder_and_arm_0_2' => $request->ms_r_shoulder_and_arm_0_2,'ms_r_shoulder_and_arm_0_3' => $request->ms_r_shoulder_and_arm_0_3 );
+                 $upper_limb_row_2  = array( 'rom_l_shoulder_and_arm_1_1' => $request->rom_l_shoulder_and_arm_1_1,'rom_l_shoulder_and_arm_1_2' => $request->rom_l_shoulder_and_arm_1_2,'rom_l_shoulder_and_arm_1_3' => $request->rom_l_shoulder_and_arm_1_3,'rom_r_shoulder_and_arm_1_1' => $request->rom_r_shoulder_and_arm_1_1,'rom_r_shoulder_and_arm_1_2' => $request->rom_r_shoulder_and_arm_1_2,'rom_r_shoulder_and_arm_1_3' => $request->rom_r_shoulder_and_arm_1_3,
+                                         'ms_l_shoulder_and_arm_1_1' => $request->ms_l_shoulder_and_arm_1_1,'ms_l_shoulder_and_arm_1_2' => $request->ms_l_shoulder_and_arm_1_2,'ms_l_shoulder_and_arm_1_3' => $request->ms_l_shoulder_and_arm_1_3,'ms_r_shoulder_and_arm_1_1' => $request->ms_r_shoulder_and_arm_1_1,'ms_r_shoulder_and_arm_1_2' => $request->ms_r_shoulder_and_arm_1_2,'ms_r_shoulder_and_arm_1_3' => $request->ms_r_shoulder_and_arm_1_3 );
+                 $upper_limb_row_3  = array( 'rom_l_shoulder_and_arm_2_1' => $request->rom_l_shoulder_and_arm_2_1,'rom_l_shoulder_and_arm_2_2' => $request->rom_l_shoulder_and_arm_2_2,'rom_l_shoulder_and_arm_2_3' => $request->rom_l_shoulder_and_arm_2_3,'rom_r_shoulder_and_arm_2_1' => $request->rom_r_shoulder_and_arm_2_1,'rom_r_shoulder_and_arm_2_2' => $request->rom_r_shoulder_and_arm_2_2,'rom_r_shoulder_and_arm_2_3' => $request->rom_r_shoulder_and_arm_2_3,
+                                         'ms_l_shoulder_and_arm_2_1' => $request->ms_l_shoulder_and_arm_2_1,'ms_l_shoulder_and_arm_2_2' => $request->ms_l_shoulder_and_arm_2_2,'ms_l_shoulder_and_arm_2_3' => $request->ms_l_shoulder_and_arm_2_3,'ms_r_shoulder_and_arm_2_1' => $request->ms_r_shoulder_and_arm_2_1,'ms_r_shoulder_and_arm_2_2' => $request->ms_r_shoulder_and_arm_2_2,'ms_r_shoulder_and_arm_2_3' => $request->ms_r_shoulder_and_arm_2_3 );
+                 $upper_limb_row_4  = array( 'rom_l_shoulder_and_arm_3_1' => $request->rom_l_shoulder_and_arm_3_1,'rom_l_shoulder_and_arm_3_2' => $request->rom_l_shoulder_and_arm_3_2,'rom_l_shoulder_and_arm_3_3' => $request->rom_l_shoulder_and_arm_3_3,'rom_r_shoulder_and_arm_3_1' => $request->rom_r_shoulder_and_arm_3_1,'rom_r_shoulder_and_arm_3_2' => $request->rom_r_shoulder_and_arm_3_2,'rom_r_shoulder_and_arm_3_3' => $request->rom_r_shoulder_and_arm_3_3,
+                                         'ms_l_shoulder_and_arm_3_1' => $request->ms_l_shoulder_and_arm_3_1,'ms_l_shoulder_and_arm_3_2' => $request->ms_l_shoulder_and_arm_3_2,'ms_l_shoulder_and_arm_3_3' => $request->ms_l_shoulder_and_arm_3_3,'ms_r_shoulder_and_arm_3_1' => $request->ms_r_shoulder_and_arm_3_1,'ms_r_shoulder_and_arm_3_2' => $request->ms_r_shoulder_and_arm_3_2,'ms_r_shoulder_and_arm_3_3' => $request->ms_r_shoulder_and_arm_3_3 );
+                 $upper_limb_row_5  = array( 'rom_l_elbow_forearm_0_1' => $request->rom_l_elbow_forearm_0_1,'rom_l_elbow_forearm_0_2' => $request->rom_l_elbow_forearm_0_2,'rom_l_elbow_forearm_0_3' => $request->rom_l_elbow_forearm_0_3,'rom_r_elbow_forearm_0_1' => $request->rom_r_elbow_forearm_0_1,'rom_r_elbow_forearm_0_2' => $request->rom_r_elbow_forearm_0_2,'rom_r_elbow_forearm_0_3' => $request->rom_r_elbow_forearm_0_3,
+                                         'ms_l_elbow_forearm_0_1' => $request->ms_l_elbow_forearm_0_1,'ms_l_elbow_forearm_0_2' => $request->ms_l_elbow_forearm_0_2,'ms_l_elbow_forearm_0_3' => $request->ms_l_elbow_forearm_0_3,'ms_r_elbow_forearm_0_1' => $request->ms_r_elbow_forearm_0_1,'ms_r_elbow_forearm_0_2' => $request->ms_r_elbow_forearm_0_2,'ms_r_elbow_forearm_0_3' => $request->ms_r_elbow_forearm_0_3 );
+                 $upper_limb_row_6  = array( 'rom_l_elbow_forearm_1_1' => $request->rom_l_elbow_forearm_1_1,'rom_l_elbow_forearm_1_2' => $request->rom_l_elbow_forearm_1_2,'rom_l_elbow_forearm_1_3' => $request->rom_l_elbow_forearm_1_3,'rom_r_elbow_forearm_1_1' => $request->rom_r_elbow_forearm_1_1,'rom_r_elbow_forearm_1_2' => $request->rom_r_elbow_forearm_1_2,'rom_r_elbow_forearm_1_3' => $request->rom_r_elbow_forearm_1_3,
+                                         'ms_l_elbow_forearm_1_1' => $request->ms_l_elbow_forearm_1_1,'ms_l_elbow_forearm_1_2' => $request->ms_l_elbow_forearm_1_2,'ms_l_elbow_forearm_1_3' => $request->ms_l_elbow_forearm_1_3,'ms_r_elbow_forearm_1_1' => $request->ms_r_elbow_forearm_1_1,'ms_r_elbow_forearm_1_2' => $request->ms_r_elbow_forearm_1_2,'ms_r_elbow_forearm_1_3' => $request->ms_r_elbow_forearm_1_3 );
+                 $upper_limb_row_7  = array( 'rom_l_elbow_forearm_2_1' => $request->rom_l_elbow_forearm_2_1,'rom_l_elbow_forearm_2_2' => $request->rom_l_elbow_forearm_2_2,'rom_l_elbow_forearm_2_3' => $request->rom_l_elbow_forearm_2_3,'rom_r_elbow_forearm_2_1' => $request->rom_r_elbow_forearm_2_1,'rom_r_elbow_forearm_2_2' => $request->rom_r_elbow_forearm_2_2,'rom_r_elbow_forearm_2_3' => $request->rom_r_elbow_forearm_2_3,
+                                         'ms_l_elbow_forearm_2_1' => $request->ms_l_elbow_forearm_2_1,'ms_l_elbow_forearm_2_2' => $request->ms_l_elbow_forearm_2_2,'ms_l_elbow_forearm_2_3' => $request->ms_l_elbow_forearm_2_3,'ms_r_elbow_forearm_2_1' => $request->ms_r_elbow_forearm_2_1,'ms_r_elbow_forearm_2_2' => $request->ms_r_elbow_forearm_2_2,'ms_r_elbow_forearm_2_3' => $request->ms_r_elbow_forearm_2_3 );
+                 $upper_limb_row_8  = array( 'rom_l_elbow_forearm_3_1' => $request->rom_l_elbow_forearm_3_1,'rom_l_elbow_forearm_3_2' => $request->rom_l_elbow_forearm_3_2,'rom_l_elbow_forearm_3_3' => $request->rom_l_elbow_forearm_3_3,'rom_r_elbow_forearm_3_1' => $request->rom_r_elbow_forearm_3_1,'rom_r_elbow_forearm_3_2' => $request->rom_r_elbow_forearm_3_2,'rom_r_elbow_forearm_3_3' => $request->rom_r_elbow_forearm_3_3,
+                                         'ms_l_elbow_forearm_3_1' => $request->ms_l_elbow_forearm_3_1,'ms_l_elbow_forearm_3_2' => $request->ms_l_elbow_forearm_3_2,'ms_l_elbow_forearm_3_3' => $request->ms_l_elbow_forearm_3_3,'ms_r_elbow_forearm_3_1' => $request->ms_r_elbow_forearm_3_1,'ms_r_elbow_forearm_3_2' => $request->ms_r_elbow_forearm_3_2,'ms_r_elbow_forearm_3_3' => $request->ms_r_hip_3_3 );
+                $upper_limb_row_9  = array( 'rom_l_wirst_0_1' => $request->rom_l_wirst_0_1,'rom_l_wirst_0_2' => $request->rom_l_wirst_0_2,'rom_l_wirst_0_3' => $request->rom_l_wirst_0_3,'rom_r_wirst_0_1' => $request->rom_r_wirst_0_1,'rom_r_wirst_0_2' => $request->rom_r_wirst_0_2,'rom_r_wirst_0_3' => $request->rom_r_wirst_0_3,
+                                         'ms_l_wirst_0_1' => $request->ms_l_wirst_0_1,'ms_l_wirst_0_2' => $request->ms_l_wirst_0_2,'ms_l_wirst_0_3' => $request->ms_l_wirst_0_3,'ms_r_wirst_0_1' => $request->ms_r_wirst_0_1,'ms_r_wirst_0_2' => $request->ms_r_wirst_0_2,'ms_r_wirst_0_3' => $request->ms_r_wirst_0_3 );
+                 $upper_limb_row_10  = array( 'rom_l_wirst_1_1' => $request->rom_l_wirst_1_1,'rom_l_wirst_1_2' => $request->rom_l_wirst_1_2,'rom_l_wirst_1_3' => $request->rom_l_wirst_1_3,'rom_r_wirst_1_1' => $request->rom_r_wirst_1_1,'rom_r_wirst_1_2' => $request->rom_r_wirst_1_2,'rom_r_wirst_1_3' => $request->rom_r_wirst_1_3,
+                                         'ms_l_wirst_1_1' => $request->ms_l_wirst_1_1,'ms_l_wirst_1_2' => $request->ms_l_wirst_1_2,'ms_l_wirst_1_3' => $request->ms_l_wirst_1_3,'ms_r_wirst_1_1' => $request->ms_r_wirst_1_1,'ms_r_wirst_1_2' => $request->ms_r_wirst_1_2,'ms_r_wirst_1_3' => $request->ms_r_wirst_1_3 );
+                 $upper_limb_row_11  = array( 'rom_l_hands_0_1' => $request->rom_l_hands_0_1,'rom_l_hands_0_2' => $request->rom_l_hands_0_2,'rom_l_hands_0_3' => $request->rom_l_hands_0_3,'rom_r_hands_0_1' => $request->rom_r_hands_0_1,'rom_r_hands_0_2' => $request->rom_r_hands_0_2,'rom_r_hands_0_3' => $request->rom_r_hands_0_3,
+                                         'ms_l_hands_0_1' => $request->ms_l_hands_0_1,'ms_l_hands_0_2' => $request->ms_l_hands_0_2,'ms_l_hands_0_3' => $request->ms_l_hands_0_3,'ms_r_hands_0_1' => $request->ms_r_hands_0_1,'ms_r_hands_0_2' => $request->ms_r_hands_0_2,'ms_r_hands_0_3' => $request->ms_r_hands_0_3 );
+                 $upper_limb_row_12  = array( 'rom_l_hands_1_1' => $request->rom_l_hands_1_1,'rom_l_hands_1_2' => $request->rom_l_hands_1_2,'rom_l_hands_1_3' => $request->rom_l_hands_1_3,'rom_r_hands_1_1' => $request->rom_r_hands_1_1,'rom_r_hands_1_2' => $request->rom_r_hands_1_2,'rom_r_hands_1_3' => $request->rom_r_hands_1_3,
+                                         'ms_l_hands_1_1' => $request->ms_l_hands_1_1,'ms_l_hands_1_2' => $request->ms_l_hands_1_2,'ms_l_hands_1_3' => $request->ms_l_hands_1_3,'ms_r_hands_1_1' => $request->ms_r_hands_1_1,'ms_r_hands_1_2' => $request->ms_r_hands_1_2,'ms_r_hands_1_3' => $request->ms_r_hands_1_3 );
+
+                 $mpcUpperLimb = new MpcPartARomUpperLimb();
+                 $mpcUpperLimb->incl_assessment_id    =  $inc_assessment->id;
+                 $mpcUpperLimb->upper_limb_row_1 = serialize($upper_limb_row_1);
+                 $mpcUpperLimb->upper_limb_row_2 = serialize($upper_limb_row_2);
+                 $mpcUpperLimb->upper_limb_row_3 = serialize($upper_limb_row_3);
+                 $mpcUpperLimb->upper_limb_row_4 = serialize($upper_limb_row_4);
+                 $mpcUpperLimb->upper_limb_row_5 = serialize($upper_limb_row_6);
+                 $mpcUpperLimb->upper_limb_row_6 = serialize($upper_limb_row_6);
+                 $mpcUpperLimb->upper_limb_row_7 = serialize($upper_limb_row_7);
+                 $mpcUpperLimb->upper_limb_row_8 = serialize($upper_limb_row_8);
+                 $mpcUpperLimb->upper_limb_row_9 = serialize($upper_limb_row_9);
+                 $mpcUpperLimb->upper_limb_row_10 = serialize($upper_limb_row_10);
+                 $mpcUpperLimb->upper_limb_row_11 = serialize($upper_limb_row_11);
+                 $mpcUpperLimb->upper_limb_row_12 = serialize($upper_limb_row_12);
+                 $mpcUpperLimb->save();
                 //two more table remain
                 return response()->json([
                     'success' => true,

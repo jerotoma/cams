@@ -1,5 +1,5 @@
  <?php $incAssHelper = new InclusionAssessmentHelper(); ?>
-  
+
         <div class="form-group">
           <div class="row">
              <div class="col-md-12">
@@ -297,7 +297,7 @@
 						  <div class="col-md-6 col-md-pull-2">
 								<div class="checkbox">
 								  <label class="checkbox-inline">
-                                      <input type="checkbox" name ="mpc_qn_a_2" value="0" {{ $incAssHelper->isChecked($mpc_part_a->mpc_qn_a_2, '0')}} >0</label>
+                                      <input type="checkbox" name ="mpc_qn_a_2" value="initial" {{ $incAssHelper->isChecked($mpc_part_a->mpc_qn_a_2, 'initial')}} >0</label>
 								</div>
 								<div clas="form-group">
 									<input type="text" class="form-control" id="" placeholder="Remark:" name ="mpc_qn_a_2_remark" value="{{$incAssHelper->getTextFieldValue($mpc_part_a->mpc_qn_a_2_remark)}}">
@@ -1033,7 +1033,7 @@
 				    <div class="row">
                          <div class="col-md-12 col-md-pull-0">
                               <div class="form-group">
-                                  <textarea rows="2" class="form-control" name="mpc_qn_a_42_remark" id="mpc_qn_a_42_remark" placeholder="Description">{{$incAssHelper->getTextFieldValue($moving_pattern->mpc_qn_a_25_remark)}}</textarea>
+                                  <textarea rows="2" class="form-control" name="mpc_qn_a_42_remark" id="mpc_qn_a_42_remark" placeholder="Description">{{$incAssHelper->getTextFieldValue($moving_pattern->mpc_qn_a_42_remark)}}</textarea>
                              </div>
                         </div>
                     </div>
@@ -1155,7 +1155,7 @@
                                         <td class="text-center">
                                             <div class="radio">
                                                   <label class="radio-inline"><input type="radio" name ="mpc_qn_a_53" value="Yes" {{ $incAssHelper->isChecked($moving_pattern->mpc_qn_a_53, 'Yes')}}>Yes</label>
-                                                  <label class="radio-inline"><input type="radio" name ="mpc_qn_a_53" value="No" {{ $incAssHelper->isChecked($moving_pattern->mpc_qn_a_53, 'No')}}No</label>
+                                                  <label class="radio-inline"><input type="radio" name ="mpc_qn_a_53" value="No" {{ $incAssHelper->isChecked($moving_pattern->mpc_qn_a_53, 'No')}}>No</label>
                                             </div>
                                         </td>
                                    </tr>
@@ -1205,9 +1205,9 @@
                           </div>
                           <div class="col-md-8 col-md-pull-1">
                                 <div class="checkbox">
-                                  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_2[]" value="Normal" {{ $incAssHelper->getCheckedBox($mpc_part_b->mpc_qn_b_2, 'Normal')}} >Normal</label> 
+                                  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_2[]" value="Normal" {{ $incAssHelper->getCheckedBox($mpc_part_b->mpc_qn_b_2, 'Normal')}} >Normal</label>
                                   <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_2[]" value="Deaf" {{ $incAssHelper->getCheckedBox($mpc_part_b->mpc_qn_b_2, 'Deaf')}} >Deaf</label>
-                                  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_2[]" value="React to noise" {{ $incAssHelper->getCheckedBox($mpc_part_b->mpc_qn_b_2, 'NReact to noise')}} >React to noise</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_2[]" value="React to noise" {{ $incAssHelper->getCheckedBox($mpc_part_b->mpc_qn_b_2, 'React to noise')}} >React to noise</label>
                                 </div>
                           </div>
                     </div>
@@ -1267,25 +1267,25 @@
                                                 <td class="text-center">
                                                     <div class="radio">
                                                           <label class="radio-inline"><input type="radio" name ="mpc_qn_b_5" value="Yes" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_5, 'Yes')}} >Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="mpc_qn_b_5" value="No" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_5, 'Yes')}} >No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="mpc_qn_b_5" value="No" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_5, 'No')}} >No</label>
                                                     </div>
                                                 </td>
                                                <td class="text-center">
                                                     <div class="radio">
                                                           <label class="radio-inline"><input type="radio" name ="mpc_qn_b_6" value="Yes" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_6, 'Yes')}} >Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="mpc_qn_b_6" value="No" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_6, 'Yes')}} >No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="mpc_qn_b_6" value="No" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_6, 'No')}} >No</label>
                                                     </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="radio">
                                                           <label class="radio-inline"><input type="radio" name ="mpc_qn_b_7" value="Yes" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_7, 'Yes')}} >Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="mpc_qn_b_7" value="No" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_7, 'Yes')}} >No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="mpc_qn_b_7" value="No" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_7, 'No')}} >No</label>
                                                     </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="radio">
                                                           <label class="radio-inline"><input type="radio" name ="mpc_qn_b_8" value="Yes" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_8, 'Yes')}} >Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="mpc_qn_b_8" value="No" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_8, 'Yes')}} >No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="mpc_qn_b_8" value="No" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_8, 'No')}} >No</label>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1297,7 +1297,7 @@
                                                 <td class="text-center">
                                                     <div class="radio">
                                                           <label class="radio-inline"><input type="radio" name ="mpc_qn_b_9" value="Yes" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_9, 'Yes')}} >Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="mpc_qn_b_9" value="No" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_9, 'Yes')}} >No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="mpc_qn_b_9" value="No" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_9, 'No')}} >No</label>
                                                     </div>
                                                 </td>
                                                <td class="text-center">
@@ -1309,7 +1309,7 @@
                                                 <td class="text-center">
                                                     <div class="radio">
                                                           <label class="radio-inline"><input type="radio" name ="mpc_qn_b_11" value="Yes" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_11, 'Yes')}} >Yes</label>
-                                                          <label class="radio-inline"><input type="radio" name ="mpc_qn_b_11" value="No" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_11, 'Yes')}} >No</label>
+                                                          <label class="radio-inline"><input type="radio" name ="mpc_qn_b_11" value="No" {{ $incAssHelper->isChecked($mpcbody_sense->mpc_qn_b_11, 'No')}} >No</label>
                                                     </div>
                                                 </td>
                                                 <td class="text-center">
@@ -1416,7 +1416,7 @@
 				   </div>
                 </div>
              <div class="form-group">
-                        <textarea rows="2" class="form-control" name="mpc_qn_b_27_remark" id="mpc_qn_b_27_remark" placeholder="Remarks">{{$incAssHelper->getTextFieldValue($mpc_part_b->mpc_qn_a_27_remark)}}</textarea>
+                        <textarea rows="2" class="form-control" name="mpc_qn_b_27_remark" id="mpc_qn_b_27_remark" placeholder="Remarks">{{$incAssHelper->getTextFieldValue($mpc_part_b->mpc_qn_b_27_remark)}}</textarea>
              </div>
              <div class="form-group">
                   <div class="row">
@@ -1582,7 +1582,7 @@
                       <div class="col-md-8">
                             <div class="radio">
                               <label class="radio-inline"><input type="radio" name ="mpc_qn_e_5" value="Yes" {{ $incAssHelper->isChecked($mpc_part_e->mpc_qn_e_5, 'Yes')}} >Yes</label>
-                              <label class="radio-inline"><input type="radio" name ="mpc_qn_e_5" value="NoYes" {{ $incAssHelper->isChecked($mpc_part_e->mpc_qn_e_5, 'No')}} >No</label>
+                              <label class="radio-inline"><input type="radio" name ="mpc_qn_e_5" value="No" {{ $incAssHelper->isChecked($mpc_part_e->mpc_qn_e_5, 'No')}} >No</label>
                             </div>
                       </div>
                 </div>
@@ -1738,7 +1738,7 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1[]" value="0" {{ $incAssHelper->getCheckedBox($mpc_perf_area->mpc_perf_area_1, '0')}}></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1[]" value="init" {{ $incAssHelper->getCheckedBox($mpc_perf_area->mpc_perf_area_1, 'init')}}></label>
                                                      </div>
                                                 </td>
                                                 <td class="text-center">
@@ -1908,7 +1908,7 @@
                                                  </td>
                                             </tr>
                                             <tr>
-                                                
+
                                                 <td class="text-center">
                                                   Grooming <br>(brushing teeth, applying<br> oil and combing hair)
                                                 </td>
@@ -1952,7 +1952,7 @@
           </div>
        </div>
      </div>
-     
+
      <hr>
      <div class="form-group">
        <div class="row">
@@ -2229,7 +2229,7 @@
                                             </tr>
                                            <tr>
                                                 <td class="text-left" width="50px">
-                                                   Weakness {{$mpc_swot->mpc_swot_2_remark}}
+                                                   Weakness 
                                                 </td>
                                                 <td class="text-center">
                                                      <div class="form-group">
