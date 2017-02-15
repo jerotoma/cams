@@ -11,4 +11,9 @@ class PSNCode extends Model
     {
         return $this::hasMany('\App\ClientVulnerabilityCode','code_id','id');
     }
+
+    public function category()
+    {
+        return $this::belongsTo('\App\PSNCodeCategory','category_id');
+    }
 }

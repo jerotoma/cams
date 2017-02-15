@@ -398,19 +398,18 @@ class ClientsController extends Controller
         //
         try {
             $validator = Validator::make($request->all(), [
-                'client_number' => 'required|unique:clients,client_number,'.$id,
+                'client_number' => 'required'.$id,
                 'full_name' => 'required',
                 'sex' => 'required',
                 'age' => 'required',
                 'civil_status' => 'required',
-                'nationality' => 'required',
+                'origin' => 'required',
                 'date_arrival' => 'required|before:tomorrow',
                 'ration_card_number' => 'required',
                 'camp_id' => 'required',
                 'vulnerability_code' => 'required',
                 'females_total' => 'required',
                 'males_total' => 'required',
-                'birth_date'=>'before:tomorrow',
                 'present_address'=> 'required',
 
             ]);
@@ -425,14 +424,10 @@ class ClientsController extends Controller
                 $client->full_name = ucwords($request->full_name);
                 $client->sex = ucwords($request->sex);
                 $client->age = $request->age;
-                if ($request->birth_date != null) {
-                    $client->birth_date = date("Y-m-d", strtotime($request->birth_date));
-                }
                 $client->civil_status = $request->civil_status;
                 $client->spouse_name = $request->spouse_name;
                 $client->care_giver = $request->care_giver;
-                $client->origin = ucwords($request->origin);
-                $client->country_id = $request->nationality;
+                $client->country_id = $request->origin;
                 $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
                 $client->present_address = $request->present_address;
                 $client->household_number = $request->household_number;

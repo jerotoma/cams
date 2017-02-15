@@ -14,25 +14,25 @@ class UserRightsSeeder extends Seeder
         //
         $inputer = new \App\Role();
         $inputer->name         = 'inputer';
-        $inputer->display_name = 'Data inputer'; // optional
+        $inputer->display_name = 'Data Inputer'; // optional
         $inputer->description  = 'User for inputing data to the system'; // optional
         $inputer->save();
 
         $viewer = new \App\Role();
         $viewer->name         = 'viewer';
-        $viewer->display_name = 'Data viewer'; // optional
+        $viewer->display_name = 'Data Viewer'; // optional
         $viewer->description  = 'User for viewing data'; // optional
         $viewer->save();
 
         $authorizer = new \App\Role();
-        $authorizer->name         = 'Authorizer';
+        $authorizer->name         = 'authorizer';
         $authorizer->display_name = 'Data Authorizer'; // optional
         $authorizer->description  = 'User for Authorize data'; // optional
         $authorizer->save();
 
         $admin = new \App\Role();
         $admin->name         = 'admin';
-        $admin->display_name = 'User Administrator'; // optional
+        $admin->display_name = 'System Administrator'; // optional
         $admin->description  = 'User is allowed to manage and edit other users'; // optional
         $admin->save();
 

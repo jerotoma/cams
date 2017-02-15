@@ -1,18 +1,18 @@
 /* ------------------------------------------------------------------------------
-*
-*  # Login form with validation
-*
-*  Specific JS code additions for login_validation.html page
-*
-*  Version: 1.0
-*  Latest update: Aug 1, 2015
-*
-* ---------------------------------------------------------------------------- */
+ *
+ *  # Login form with validation
+ *
+ *  Specific JS code additions for login_validation.html page
+ *
+ *  Version: 1.0
+ *  Latest update: Aug 1, 2015
+ *
+ * ---------------------------------------------------------------------------- */
 
 $(function() {
 
-	// Style checkboxes and radios
-	$('.styled').uniform();
+    // Style checkboxes and radios
+    $('.styled').uniform();
 
 
     // Setup validation
@@ -35,7 +35,7 @@ $(function() {
                 if(element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
                     error.appendTo( element.parent().parent().parent().parent() );
                 }
-                 else {
+                else {
                     error.appendTo( element.parent().parent().parent().parent().parent() );
                 }
             }
@@ -64,11 +64,11 @@ $(function() {
                 error.insertAfter(element);
             }
         },
-      
+
         messages: {
             username: "Enter your username",
             password: {
-            	required: "Enter your password",
+                required: "Enter your password",
             }
         }
     });

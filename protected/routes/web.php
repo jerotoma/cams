@@ -33,6 +33,8 @@ Route::resource('districts','DistrictController');
 Route::resource('camps','CampController');
 Route::resource('departments','DepartmentController');
 Route::resource('psncodes','PSNCodesController');
+Route::resource('psncodes-catogories','PSNCodeCategoryController');
+
 Route::resource('clients','ClientsController');
 Route::get('getclientsjson','ClientsController@getJSonDataSearch');
 Route::get('getclientslist','ClientsController@getJSonClientDataSearch');

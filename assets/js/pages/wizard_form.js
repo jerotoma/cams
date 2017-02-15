@@ -1,13 +1,13 @@
 /* ------------------------------------------------------------------------------
-*
-*  # Form wizard
-*
-*  Specific JS code additions for wizard_form.html page
-*
-*  Version: 1.1
-*  Latest update: Dec 25, 2015
-*
-* ---------------------------------------------------------------------------- */
+ *
+ *  # Form wizard
+ *
+ *  Specific JS code additions for wizard_form.html page
+ *
+ *  Version: 1.1
+ *  Latest update: Dec 25, 2015
+ *
+ * ---------------------------------------------------------------------------- */
 
 $(function() {
 
@@ -36,7 +36,7 @@ $(function() {
                 swal({title: "Congratulations!", text: "You are registered now!", type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
             },
             dataType: 'json',
-            resetForm: true, 
+            resetForm: true,
             beforeSubmit: function(){
                 return confirm("This is the beforeSubmit callback, do you want to submit?");
             },
@@ -75,7 +75,7 @@ $(function() {
                     if(element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
                         error.appendTo( element.parent().parent().parent().parent() );
                     }
-                     else {
+                    else {
                         error.appendTo( element.parent().parent().parent().parent().parent() );
                     }
                 }
@@ -158,7 +158,7 @@ $(function() {
     // Append step on button click
     $("#add-step").on('click', function(){
         $(".step-wrapper").append($(".extra-steps .step:first"));
-        $(".form-add-steps").formwizard("update_steps");  
+        $(".form-add-steps").formwizard("update_steps");
         return false;
     });
 
@@ -193,5 +193,5 @@ $(function() {
     $(".form-basic, .form-validation, .form-add-steps, .form-ajax").on("step_shown", function(event, data){
         //$.uniform.update();
     });
-    
+
 });
