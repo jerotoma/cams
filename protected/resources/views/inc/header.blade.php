@@ -20,7 +20,48 @@
             <p class="navbar-text"><span class="label bg-success-400">Online</span></p>
 
             <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="icon-bell2"></i>
+                        <span class="visible-xs-inline-block position-right">Pending for approval</span>
+                        <span class="status-mark border-orange-400"></span>
+                    </a>
 
+                    <div class="dropdown-menu dropdown-content">
+                        <div class="dropdown-content-heading">
+                            Pending for approval
+                            <ul class="icons-list">
+                                <li><a href="#"><i class="icon-menu7"></i></a></li>
+                            </ul>
+                        </div>
+
+                        <ul class="media-list dropdown-content-body width-350">
+                            <li class="media">
+                                <div class="media-left">
+                                    <a href="#" class="btn bg-success-400 btn-rounded btn-icon btn-xs"><i class="icon-users"></i></a>
+                                </div>
+
+                                <div class="media-body">
+                                    Registered Clients <a href="#">More..</a>
+                                    <div class="media-annotation">4 minutes ago</div>
+                                </div>
+                            </li>
+                            <li><hr/></li>
+
+                            <li class="media">
+                                <div class="media-left">
+                                    <a href="#" class="btn bg-warning-400 btn-rounded btn-icon btn-xs"><i class="icon-bubble8"></i></a>
+                                </div>
+
+                                <div class="media-body">
+                                    Vulnerability assessment <a href="#">More..</a>
+                                    <div class="media-annotation">Feb 2, 10:20</div>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
 
                 <li class="dropdown">
                     <a href="{{url('logout')}}" class="dropdown-toggle" >

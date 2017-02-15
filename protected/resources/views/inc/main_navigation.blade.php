@@ -87,8 +87,8 @@
             <li>
                 <a href="#"><i class="icon-puzzle4"></i> <span>PSN Codes</span></a>
                 <ul>
-                    <li><a href="{{url('psncodes/create')}}">Add New Code</a></li>
-                    <li><a href="{{url('psncodes')}}">List All Codes</a></li>
+                    <li><a href="{{url('psncodes')}}">Codes</a></li>
+                    <li><a href="{{url('psncodes-catogories')}}">Categories</a></li>
                 </ul>
             </li>
 

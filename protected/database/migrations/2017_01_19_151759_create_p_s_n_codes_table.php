@@ -20,6 +20,9 @@ class CreatePSNCodesTable extends Migration
             $table->text('definition')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->integer('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('p_s_n_code_categories')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

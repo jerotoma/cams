@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\PSNCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class PSNCodesController extends Controller
 {
@@ -44,21 +46,37 @@ class PSNCodesController extends Controller
     public function store(Request $request)
     {
         //
-        $this->validate($request, [
-            'code' => 'required',
-        ]);
-        if(count(PSNCode::where('code','=',strtoupper($request->code))->get()) >0)
-        {
-            return redirect()->back()->withInput()->with('code_error',"Duplicate code name ".$request->code);
+        try {
+            $validator = Validator::make($request->all(), [
+                'code' => 'required|unique:p_s_n_codes',
+                'description' => 'required',
+                'definition' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $code = new PSNCode;
+                $code->code = strtoupper($request->code);
+                $code->description = $request->description;
+                $code->definition = $request->definition;
+                $code->created_by = Auth::user()->username;
+                $code->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => "Saved Successful"
+                ], 200);
+            }
         }
-        else {
-            $code = new PSNCode;
-            $code->code = strtoupper($request->code);
-            $code->description = $request->description;
-            $code->definition = $request->definition;
-            $code->created_by = Auth::user()->username;
-            $code->save();
-            return redirect('psncodes');
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
         }
     }
 
@@ -98,21 +116,37 @@ class PSNCodesController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $this->validate($request, [
-            'code' => 'required',
-        ]);
-        if(count(PSNCode::where('code','=',strtoupper($request->code))->where('id','<>',$id)->get()) >0)
-        {
-            return redirect()->back()->withInput()->with('code_error',"Duplicate code name ".$request->code);
+        try {
+            $validator = Validator::make($request->all(), [
+                'code' => 'required|unique:p_s_n_codes,code'.$id,
+                'description' => 'required',
+                'definition' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $code = new PSNCode;
+                $code->code = strtoupper($request->code);
+                $code->description = $request->description;
+                $code->definition = $request->definition;
+                $code->created_by = Auth::user()->username;
+                $code->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => "Saved Successful"
+                ], 200);
+            }
         }
-        else {
-            $code =  PSNCode::find($id);
-            $code->code = strtoupper($request->code);
-            $code->description = $request->description;
-            $code->definition = $request->definition;
-            $code->created_by = Auth::user()->username;
-            $code->save();
-            return redirect('psncodes');
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
         }
     }
 
