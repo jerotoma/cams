@@ -19,11 +19,11 @@ class CreateMpcPerformanceAreasTable extends Migration
              $table->text('mpc_perf_area_1')->nullable();
              $table->text('mpc_perf_area_2')->nullable();
              $table->text('mpc_perf_area_3')->nullable();
+             $table->text('mpc_perf_area_4')->nullable();
              $table->text('mpc_perf_area_4_remark')->nullable();
+             $table->text('mpc_perf_area_5')->nullable();
              $table->text('mpc_perf_area_5_remark')->nullable();
              $table->text('mpc_perf_area_6')->nullable();
-             $table->text('mpc_perf_area_7')->nullable();
-             $table->text('mpc_perf_area_8')->nullable();
              $table->timestamps();
              $table->foreign('incl_assessment_id')->references('id')->on('inclusion_assessments')
                 ->onUpdate('cascade')->onDelete('cascade');

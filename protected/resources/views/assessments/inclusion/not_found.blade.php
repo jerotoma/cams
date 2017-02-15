@@ -35,8 +35,7 @@
             <h5 class="panel-title">Inclusion Assessments</h5>
         </div>
         <div class="panel-body">
-           {{$user_requested_resource}}
-          
+           <?php echo $user_requested_resource; ?>
         </div>
     </div>
    <!-- Modal -->

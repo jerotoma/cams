@@ -17,11 +17,15 @@ class CreateInclusionMedicalHistoriesTable extends Migration
              $table->increments('id');
              $table->integer('incl_assessment_id')->unsigned();
              $table->text('med_history_info_qn_1')->nullable();
+              $table->string('med_history_info_qn_1_remark')->nullable();
              $table->text('med_history_info_qn_2')->nullable();
+              $table->string('med_history_info_qn_2_remark')->nullable();
              $table->string('med_history_info_qn_3')->nullable();
+              $table->string('med_history_info_qn_3_remark')->nullable();
              $table->string('med_history_info_qn_4')->nullable();
              $table->string('med_history_info_qn_4_remark')->nullable();
              $table->string('med_history_info_qn_5')->nullable();
+             $table->string('med_history_info_qn_5_remark')->nullable();
              $table->string('med_history_info_qn_6')->nullable();
              $table->string('med_history_info_qn_6_remark')->nullable();
              $table->string('med_history_info_qn_7')->nullable();

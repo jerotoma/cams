@@ -28,7 +28,7 @@ class CreateMpcPartAMovingPatternsTable extends Migration
              $table->string('mpc_qn_a_50')->nullable();
              $table->string('mpc_qn_a_51')->nullable();
              $table->string('mpc_qn_a_52')->nullable();
-             $table->string('mpc_qn_a_53_remark')->nullable();
+             $table->string('mpc_qn_a_53')->nullable();
              $table->timestamps();
              $table->foreign('mpc_part_a_id')->references('id')->on('mpc_part_as')
                 ->onUpdate('cascade')->onDelete('cascade');

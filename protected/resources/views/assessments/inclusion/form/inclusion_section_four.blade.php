@@ -198,7 +198,7 @@
                                            </tr>
                                         </thead>
                                         <tbody>
-                                            <?php echo $inclhelper ->getTableRow($inclhelper->arrLowerLimb); ?>
+                                            <?php echo  $incAssHelper ->getTableRow($incAssHelper->arrLowerLimb); ?>
                                         </tbody>
                                  </table>
                             </div>
@@ -281,7 +281,7 @@
                                            </tr>
                                         </thead>
                                         <tbody>
-                                            <?php echo $inclhelper ->getTableRow($inclhelper->arrUpperLimb); ?>
+                                            <?php echo  $incAssHelper ->getTableRow($incAssHelper->arrUpperLimb); ?>
                                         </tbody>
                                  </table>
                             </div>
