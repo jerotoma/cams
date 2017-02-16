@@ -368,7 +368,7 @@ class WheelChairAssessmentController extends Controller
      */
     public function update(Request $request, $id )
     {
-        if($request->ajax()){
+        if($request->ajax()){ 
 
               try
                 {

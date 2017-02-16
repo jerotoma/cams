@@ -1,7 +1,7 @@
  <?php $incAssHelper = new InclusionAssessmentHelper(); ?>
-
+<form role="form" id="update-inclusion-assessment" class="inclusion-assessment" action="{{url('assessments/inclusion')}}/{{$incl_assessment->id}}/update-assessment" method="POST">
         <div class="form-group">
-          <div class="row">
+            <div class="row">
              <div class="col-md-12">
                        <div class="form-group" id="client-particulars-info" >
                          <div class="row">
@@ -262,7 +262,7 @@
       </div>
     </div>
 
-<div class="form-group">
+      <div class="form-group">
        		<div class="row">
 			 <div class="col-md-12">
                  <div class="form-group">
@@ -372,7 +372,7 @@
 						  </div>
 					   </div>
 				 </div>
-                  <hr>
+              
 			     <div class="form-group">
                            <div class="row">
                               <div class="col-md-12">
@@ -689,18 +689,18 @@
                                   <label class="radio-inline"><input type="radio" name ="mpc_qn_a_16" value="Level 4" {{ $incAssHelper->isChecked($mpc_part_a->mpc_qn_a_16, 'Level 4')}} >Level 4</label>
                                   <label class="radio-inline"><input type="radio" name ="mpc_qn_a_16" value="Level 5" {{ $incAssHelper->isChecked($mpc_part_a->mpc_qn_a_16, 'Level 5')}} >Level 5</label>
                                 </div>
-                          </div>
-				     </div>
-                 </div>
+                              </div>
+				           </div>
+                         </div>
+                    </div>
+                </div>
             </div>
-		</div>
-    </div>
-   <div class="form-group">
-      <div class="row">
-              <div class="col-md-12">
-        			  <div class="form-group">
-        					<div class="row">
-        						<div class="col-md-12 col-md-pull-0">
+           <div class="form-group">
+              <div class="row">
+                      <div class="col-md-12">
+                              <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12 col-md-pull-0">
         							 <div class="radio">
         								  <p>Posture (Sitting, standing,prone and supine) : </p>
         							 </div>
@@ -1898,7 +1898,7 @@
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5[]" value="4" {{ $incAssHelper->getCheckedBox($mpc_perf_area->mpc_perf_area_5, '43')}}></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5[]" value="4" {{ $incAssHelper->getCheckedBox($mpc_perf_area->mpc_perf_area_5, '4')}}></label>
                                                     </div>
                                                  </td>
                                                 <td class="text-center">
@@ -2468,4 +2468,5 @@
             </div>
           </div>
        </div>
-    </div>
+         </form>
+</div>
