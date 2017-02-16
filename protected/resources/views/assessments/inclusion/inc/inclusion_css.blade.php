@@ -7,7 +7,7 @@ select.form-control {
     margin: 0;
     padding: 0 20px;
     vertical-align: middle;
-    background: #f8f8f8;
+    background: #fff;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 300;
@@ -67,7 +67,7 @@ textarea:focus,
 textarea.form-control:focus {
     outline: 0;
     background: #fff;
-   
+
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -275,7 +275,7 @@ h3 {
         padding: 10px;
  }
 .table-title{
-	font-weight: 700;	
+	font-weight: 700;
 	}
 
 h1 .small,
@@ -329,12 +329,13 @@ body {
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
 }
-    
-.table > thead > tr > th, 
-.table > tbody > tr > th, 
-.table > tfoot > tr > th, 
-.table > thead > tr > td, 
-.table > tbody > tr > td, 
+
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
 .table > tfoot > tr > td {
     padding: 8px;
     line-height: 1.5384616;
@@ -373,7 +374,7 @@ form.inclusion-assessment fieldset {
      }
 	@keyframes round{
             from{transform: rotate(0deg)}
-            to{transform: rotate(360deg)}  
+            to{transform: rotate(360deg)}
      }
 
 </style>

@@ -63,7 +63,7 @@ return array(
     'CreateMpcPartDsTable' => $baseDir . '/database/migrations/2017_02_13_050942_create_mpc_part_ds_table.php',
     'CreateMpcPartEsTable' => $baseDir . '/database/migrations/2017_02_13_051128_create_mpc_part_es_table.php',
     'CreateMpcPartFsTable' => $baseDir . '/database/migrations/2017_02_13_051015_create_mpc_part_fs_table.php',
-    'CreateMpcPerformanceAreasTable' => $baseDir . '/database/migrations/2017_02_13_051214_create_mpcperformance_areas_table.php',
+    'CreateMpcPerformanceAreasTable' => $baseDir . '/database/migrations/2017_02_13_051214_create_mpc_performance_areas_table.php',
     'CreateMpcShortRehabsTable' => $baseDir . '/database/migrations/2017_02_13_161820_create_mpc_short_rehabs_table.php',
     'CreateMpcSwotsTable' => $baseDir . '/database/migrations/2017_02_13_051300_create_mpc_swots_table.php',
     'CreatePSNCodeCategoriesTable' => $baseDir . '/database/migrations/2017_01_19_151758_create_p_s_n_code_categories_table.php',

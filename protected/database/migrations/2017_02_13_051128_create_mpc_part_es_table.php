@@ -24,6 +24,7 @@ class CreateMpcPartEsTable extends Migration
              $table->string('mpc_qn_e_6')->nullable();
              $table->string('mpc_qn_e_7')->nullable();
              $table->text('mpc_qn_e_8')->nullable();
+             $table->text('mpc_qn_e_8_remark')->nullable();
              $table->timestamps();
              $table->foreign('incl_assessment_id')->references('id')->on('inclusion_assessments')
                 ->onUpdate('cascade')->onDelete('cascade');

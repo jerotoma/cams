@@ -22,7 +22,8 @@ class UserController extends Controller
     //This middleware protects unauthenticated users
     public function __construct()
     {
-      $this->middleware(array('auth','role:admin'),['except' => ['login','postLogin']]);
+
+         $this->middleware('auth',['except' => ['login','postLogin']]);
 
     }
 

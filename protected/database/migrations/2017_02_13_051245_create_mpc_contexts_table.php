@@ -26,7 +26,7 @@ class CreateMpcContextsTable extends Migration
              $table->text('mpc_context_6_remark')->nullable();
              $table->string('mpc_context_7')->nullable();
              $table->string('mpc_context_8')->nullable();
-             $table->string('mpc_context_9_remark')->nullable();
+             $table->text('mpc_context_9_remark')->nullable();
              $table->string('mpc_context_10')->nullable();
              $table->string('mpc_context_11')->nullable();
              $table->string('mpc_context_12')->nullable();

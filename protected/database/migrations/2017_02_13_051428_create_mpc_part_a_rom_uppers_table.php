@@ -13,9 +13,21 @@ class CreateMpcPartARomUppersTable extends Migration
      */
     public function up()
     {
-       Schema::create('mpc_part_a_rom_uppers', function (Blueprint $table) {
+    Schema::create('mpc_part_a_rom_uppers', function (Blueprint $table) {
          $table->increments('id');
          $table->integer('incl_assessment_id')->unsigned();
+         $table->text('upper_limb_row_1')->nullable();
+         $table->text('upper_limb_row_2')->nullable();
+         $table->text('upper_limb_row_3')->nullable();
+         $table->text('upper_limb_row_4')->nullable();
+         $table->text('upper_limb_row_5')->nullable();
+         $table->text('upper_limb_row_6')->nullable();
+         $table->text('upper_limb_row_7')->nullable();
+         $table->text('upper_limb_row_8')->nullable();
+         $table->text('upper_limb_row_9')->nullable();
+         $table->text('upper_limb_row_10')->nullable();
+         $table->text('upper_limb_row_11')->nullable();
+         $table->text('upper_limb_row_12')->nullable();
          $table->timestamps();
          $table->foreign('incl_assessment_id')->references('id')->on('inclusion_assessments')
             ->onUpdate('cascade')->onDelete('cascade');
