@@ -35,12 +35,20 @@
         });
     });
 
-$('#inclusion-assessment').on('submit',function(){
+        $('#inclusion-assessment').on('submit',function(){
+                    $('.load_hidden-spinner').css('display', 'inline-block');
+                    var postData = $(this).serializeArray();
+                    var formURL = $(this).attr("action");
+                    submitAssessmentData(formURL, postData);
+
+                    return false;
+                });
+        $('#update-inclusion-assessment').on('submit',function(){
                 $('.load_hidden-spinner').css('display', 'inline-block');
                 var postData = $(this).serializeArray();
                 var formURL = $(this).attr("action");
-			    submitAssessmentData(formURL, postData);
-               
+                submitAssessmentData(formURL, postData);
+
                 return false;
             });
           function submitAssessmentData(formURL, postData){

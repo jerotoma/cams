@@ -166,3 +166,4 @@ Route::get('assessments/inclusion/client-to-assess/{id}','InclusionAssessmentCon
 Route::post('assessments/inclusion/store-assessment','InclusionAssessmentController@postData');
 Route::get('inclusion-get-assessed-clients','InclusionAssessmentController@getJSONIncAssessmentListAllClientData');
 Route::get('assessments/inclusion/view/{id}','InclusionAssessmentController@getClientData');
+Route::post('assessments/inclusion/{id}/update-assessment','InclusionAssessmentController@update');
