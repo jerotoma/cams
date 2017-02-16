@@ -129,27 +129,20 @@
                 <div class="col-md-4">
                 <div class="form-group ">
                     <label class="control-label"> Present address (Zone, Cluster, Neibourhood etc)</label>
-                    <input type="text" class="form-control" placeholder="Present address (Zone, Cluster, Neibourhood etc)" name="present_address" id="present_address" value="{{old('address')}}">
+                    <input type="text" class="form-control" placeholder="Present address " name="present_address" id="present_address" value="{{old('address')}}">
                     @if($errors->first('address') !="")
                         <label id="address-error" class="validation-error-label" for="address">{{ $errors->first('address') }}</label>
                     @endif
                 </div>
                 </div>
             </div>
-            <div class="form-group ">
-                <label class="control-label">Care Giver</label>
-                <input type="text" class="form-control" placeholder="Care Giver" name="care_giver" id="care_giver" value="{{old('care_giver')}}">
-                @if($errors->first('care_giver') !="")
-                    <label id="address-error" class="validation-error-label" for="care_giver">{{ $errors->first('care_giver') }}</label>
-                @endif
-            </div>
+
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group ">
-                        <label class="control-label">Civil Status</label>
-                        <select class="select" name="civil_status" id="civil_status" data-placeholder="Choose an option...">
+                        <label class="control-label">Marital Status</label>
+                        <select class="select" name="marital_status" id="marital_status" data-placeholder="Choose an option...">
                             <option></option>
-                            <option value="">Civil Status</option>
                             <option value="Single">Single</option>
                             <option value="Married">Married</option>
                             <option value="Divorced">Divorced</option>
@@ -170,30 +163,18 @@
                     </div>
                 </div>
             </div>
-
+            <div class="form-group ">
+                <label class="control-label">Care Giver</label>
+                <input type="text" class="form-control" placeholder="Care Giver" name="care_giver" id="care_giver" value="{{old('care_giver')}}">
+                @if($errors->first('care_giver') !="")
+                    <label id="address-error" class="validation-error-label" for="care_giver">{{ $errors->first('care_giver') }}</label>
+                @endif
+            </div>
         </fieldset>
         <fieldset class="scheduler-border">
-            <legend class="text-bold" >Household Size </legend>
+            <legend class="text-bold" >Household Details </legend>
             <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group ">
-                        <label class="control-label">Number of Males</label>
-                        <input type="number" class="form-control" name="males_total" id="males_total" placeholder="Number of Males" value="{{old('males_total')}}">
-                        @if($errors->first('males_total') !="")
-                            <label id="address-error" class="validation-error-label" for="address">{{ $errors->first('males_total') }}</label>
-                        @endif
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group ">
-                        <label class="control-label">Number of Females</label>
-                        <input type="number" class="form-control" name="females_total" id="females_total" placeholder="Number of Females" value="{{old('females_total')}}">
-                        @if($errors->first('females_total') !="")
-                            <label id="address-error" class="validation-error-label" for="females_total">{{ $errors->first('females_total') }}</label>
-                        @endif
-                    </div>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group ">
                         <label class="control-label"> Household Number</label>
                         <input type="text" class="form-control" placeholder="Household Number" name="household_number" id="household_number" value="{{old('household_number')}}">
@@ -202,6 +183,43 @@
                         @endif
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group ">
+                        <label class="control-label">Relation to the head of household</label>
+                        <select class="select" name="hh_relation" id="hh_relation" data-placeholder="Choose an option...">
+                            <option></option>
+                            <option value="Head">Head</option>
+                            <option value="Wiife/Husband">Wife/Husband</option>
+                            <option value="Sister/Brother">Sister/Brother</option>
+                            <option value="Son/Daughter">Son/Daughter</option>
+                            <option value="Grandparent">Grandparent</option>
+                            <option value="Not related">Not related</option>
+
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group ">
+                        <label class="control-label">Number of Males</label>
+                        <input type="number" class="form-control" name="males_total" id="males_total" placeholder="Number of Males" value="{{old('males_total')}}">
+                        @if($errors->first('males_total') !="")
+                            <label id="address-error" class="validation-error-label" for="address">{{ $errors->first('males_total') }}</label>
+                        @endif
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group ">
+                        <label class="control-label">Number of Females</label>
+                        <input type="number" class="form-control" name="females_total" id="females_total" placeholder="Number of Females" value="{{old('females_total')}}">
+                        @if($errors->first('females_total') !="")
+                            <label id="address-error" class="validation-error-label" for="females_total">{{ $errors->first('females_total') }}</label>
+                        @endif
+                    </div>
+                </div>
+
             </div>
         </fieldset>
 
@@ -219,7 +237,7 @@
             @endif
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group ">
                     <label class="control-label"> Assistance Received to date </label>
                     <input type="text" class="form-control" name="assistance_received" id="assistance_received" placeholder="Assistance Received to date (mention)..." value="{{old('assistance_received')}}">
@@ -228,7 +246,7 @@
                     @endif
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group ">
                     <label class="control-label"> Problem Specification </label>
                     <input type="text" class="form-control" placeholder="Problem Specification" name="problem_specification" id="assistance_received" value="{{old('problem_specification')}}">
@@ -237,6 +255,20 @@
                     @endif
                 </div>
             </div>
+            <div class="col-md-4">
+            <div class="form-group ">
+                <label class="control-label"> Can we share your informations with other partners? </label>
+                <select class="select" name="share_info" id="share_info" data-placeholder="Choose an option...">
+                    <option></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+
+
+                </select>
+
+
+            </div>
+        </div>
         </div>
 
         <div class="row">
@@ -304,7 +336,8 @@
         },
         errorElement:'div',
         rules: {
-
+            share_info: "required",
+            hh_relation: "required",
             present_address: "required",
             client_number: "required",
             full_name: "required",
@@ -327,6 +360,8 @@
             camp_id:"required"
         },
         messages: {
+            share_info: "Please this field is required",
+            hh_relation: "Please Relation to the head of household is required",
             present_address: "Please client number is required",
             client_number: "Please client number is required",
             full_name: "Please full name is required",

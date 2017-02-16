@@ -206,7 +206,7 @@ class ClientsController extends Controller
                         $client->age =$row->age;
                         if($row->birth_date != null){
                         $client->birth_date =date("Y-m-d",strtotime($row->birth_date));}
-                        $client->civil_status =$row->civil_status;
+                        $client->marital_status =$row->marital_status;
                         $client->spouse_name =$row->name_of_spouse_if_married;
                         $client->care_giver =$row->care_giver;
                         $client->females_total =$row->number_of_females;
@@ -288,7 +288,7 @@ class ClientsController extends Controller
                 'full_name' => 'required',
                 'sex' => 'required',
                 'age' => 'required',
-                'civil_status' => 'required',
+                'marital_status' => 'required',
                 'nationality' => 'required',
                 'date_arrival' => 'required|before:tomorrow',
                 'ration_card_number' => 'required',
@@ -296,8 +296,9 @@ class ClientsController extends Controller
                 'vulnerability_code' => 'required',
                 'females_total' => 'required',
                 'males_total' => 'required',
-                'birth_date'=>'before:tomorrow',
                 'present_address'=> 'required',
+                'share_info' => 'required',
+                'hh_relation' => 'required',
 
             ]);
             if ($validator->fails()) {
@@ -315,7 +316,7 @@ class ClientsController extends Controller
                 if ($request->birth_date != null) {
                     $client->birth_date = date("Y-m-d", strtotime($request->birth_date));
                 }
-                $client->civil_status = $request->civil_status;
+                $client->marital_status = $request->marital_status;
                 $client->spouse_name = $request->spouse_name;
                 $client->care_giver = $request->care_giver;
                 $client->origin = ucwords($request->origin);
@@ -330,6 +331,8 @@ class ClientsController extends Controller
                 $client->present_address = $request->present_address;
                 $client->females_total = $request->females_total;
                 $client->males_total = $request->males_total;
+                $client->present_address = $request->present_address;
+                $client->hh_relation = $request->hh_relation;
                 $client->created_by = Auth::user()->username;
                 $client->save();
 
@@ -402,7 +405,7 @@ class ClientsController extends Controller
                 'full_name' => 'required',
                 'sex' => 'required',
                 'age' => 'required',
-                'civil_status' => 'required',
+                'marital_status' => 'required',
                 'origin' => 'required',
                 'date_arrival' => 'required|before:tomorrow',
                 'ration_card_number' => 'required',
@@ -411,6 +414,9 @@ class ClientsController extends Controller
                 'females_total' => 'required',
                 'males_total' => 'required',
                 'present_address'=> 'required',
+                'hh_relation' => 'required',
+
+
 
             ]);
             if ($validator->fails()) {
@@ -424,7 +430,7 @@ class ClientsController extends Controller
                 $client->full_name = ucwords($request->full_name);
                 $client->sex = ucwords($request->sex);
                 $client->age = $request->age;
-                $client->civil_status = $request->civil_status;
+                $client->marital_status = $request->marital_status;
                 $client->spouse_name = $request->spouse_name;
                 $client->care_giver = $request->care_giver;
                 $client->country_id = $request->origin;
@@ -440,6 +446,8 @@ class ClientsController extends Controller
                 $client->males_total = $request->males_total;
                 $client->created_by = Auth::user()->username;
                 $client->status=$request->status;
+                $client->present_address = $request->present_address;
+                $client->hh_relation = $request->hh_relation;
                 $client->save();
 
                 //Save validation codes
@@ -488,7 +496,7 @@ class ClientsController extends Controller
       $client->full_name = "Alyoce Godson";
       $client->sex = "Male";
       $client->age = 23;
-      $client->civil_status = "Citizen";
+      $client->marital_status = "Citizen";
       $client->spouse_name = "Grace Otuman";
       $client->origin = "Tanzania";
       $client->country_id = 34;
