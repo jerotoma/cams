@@ -143,7 +143,7 @@
                                 success: function(data){
                                     swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                                     setTimeout(function() {
-                                        location.replace("{{url('psncodes-catogories')}}");
+                                        location.replace("{{url('psncodes-categories')}}");
                                         $("#output").html("");
                                     }, 2000);
                                 },

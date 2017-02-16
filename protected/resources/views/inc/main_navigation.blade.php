@@ -55,7 +55,32 @@
             <li>
                 <a href="#"><i class="icon-graph"></i> <span>Clients Reports</span></a>
                 <ul>
-                    <li><a href="{{url('reports/clients')}}">Client Report</a></li>
+                    <li><a href="{{url('reports/clients')}}">Client Registration</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="icon-graph"></i> <span>Assessments Reports</span></a>
+                <ul>
+                    <li ><a href="{{url('reports/assessments/vulnerability')}}">Vulnerability assessment</a></li>
+                    <li><a href="{{url('reports/assessments/inclusion')}}">Inclusion Assessment</a></li>
+                    <li><a href="{{url('reports/assessments/wheelchair')}}">Wheelchair Assessment</a></li>
+                    <li><a href="{{url('reports/assessments/home')}}">PSN Needs/Home Assessment </a></li>
+                    <li><a href="{{url('reports/assessments/paediatric')}}">Paediatric Assessment </a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-bar-chart"></i> <span>Client Referrals</span></a>
+                <ul>
+                    <li><a href="{{url('reports/referrals')}}">Referrals Report</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-pie-chart"></i> <span>NFIs Inventory Reports</span></a>
+                <ul>
+                    <li><a href="{{url('reports/items/distributions')}}">Item Distribution</a></li>
+                    <li><a href="{{url('reports/inventory-received')}}">Received Items</a></li>
+                    <li><a href="{{url('reports/inventory')}}">Items Inventory</a></li>
+                    <li><a href="{{url('reports/inventory-categories')}}">Items Categories</a></li>
                 </ul>
             </li>
             <!-- /data visualization -->
@@ -88,7 +113,7 @@
                 <a href="#"><i class="icon-puzzle4"></i> <span>PSN Codes</span></a>
                 <ul>
                     <li><a href="{{url('psncodes')}}">Codes</a></li>
-                    <li><a href="{{url('psncodes-catogories')}}">Categories</a></li>
+                    <li><a href="{{url('psncodes-categories')}}">Categories</a></li>
                 </ul>
             </li>
 

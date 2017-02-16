@@ -28,7 +28,7 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::model($category,array('route' => array('catogories.update', $category->id), 'method' => 'PUT','role'=>'form','id'=>'formClients')) !!}
+        {!! Form::model($category,array('route' => array('psncodes-categories.update', $category->id), 'method' => 'PUT','role'=>'form','id'=>'formClients')) !!}
         <div class="panel panel-flat">
             <div class="panel-heading">
                 <h5 class="panel-title">PSN Code Category Details</h5>
@@ -63,8 +63,15 @@
 
                 </div>
 
-                <div class="text-right">
-                    <button type="submit" class="btn btn-primary">Submit form <i class="icon-arrow-right14 position-right"></i></button>
+                <div class="row">
+                    <div class="col-md-8 col-sm-8 pull-left" id="output">
+
+                    </div>
+                    <div class="col-md-4 col-sm-4 pull-right text-right">
+                        <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit Form </button>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -144,7 +151,7 @@
                     success: function(data){
                         swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                         setTimeout(function() {
-                            location.replace("{{url('psncodes-catogories')}}");
+                            location.replace("{{url('psncodes-categories')}}");
                             $("#output").html("");
                         }, 2000);
                     },

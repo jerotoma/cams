@@ -6,10 +6,13 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddAgeHotScoretoClients' => $baseDir . '/database/migrations/2017_02_15_232348_addAgeHotScoretoClients.php',
     'AddAssessornametoPaediatric' => $baseDir . '/database/migrations/2017_02_09_073017_addAssessornametoPaediatric.php',
     'AddAuthStatustoClient' => $baseDir . '/database/migrations/2017_02_14_193712_addAuthStatustoClient.php',
+    'AddCategoryIdTOPSNCODE' => $baseDir . '/database/migrations/2017_02_16_043412_addCategoryIdTOPSNCODE.php',
     'AddCommentstoItemDistribution' => $baseDir . '/database/migrations/2017_02_12_221227_AddCommentstoItemDistribution.php',
     'AddcentreNametopaediatric' => $baseDir . '/database/migrations/2017_02_08_225621_addcentre_nametopaediatric.php',
+    'AddfileToclient' => $baseDir . '/database/migrations/2017_02_15_193021_addfileToclient.php',
     'Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
     'CreateAssessmentEconomicSituationsTable' => $baseDir . '/database/migrations/2017_01_23_151245_create_assessment_economic_situations_table.php',
     'CreateAssessmentHousholdProfilesTable' => $baseDir . '/database/migrations/2017_01_23_145703_create_assessment_houshold_profiles_table.php',
@@ -64,7 +67,7 @@ return array(
     'CreateMpcPerformanceAreasTable' => $baseDir . '/database/migrations/2017_02_13_051214_create_mpc_performance_areas_table.php',
     'CreateMpcShortRehabsTable' => $baseDir . '/database/migrations/2017_02_13_161820_create_mpc_short_rehabs_table.php',
     'CreateMpcSwotsTable' => $baseDir . '/database/migrations/2017_02_13_051300_create_mpc_swots_table.php',
-    'CreatePSNCodeCategoriesTable' => $baseDir . '/database/migrations/2017_02_15_035720_create_p_s_n_code_categories_table.php',
+    'CreatePSNCodeCategoriesTable' => $baseDir . '/database/migrations/2017_01_19_151758_create_p_s_n_code_categories_table.php',
     'CreatePSNCodesTable' => $baseDir . '/database/migrations/2017_01_19_151759_create_p_s_n_codes_table.php',
     'CreatePaediatricAssessmentHistoriesTable' => $baseDir . '/database/migrations/2017_02_08_165640_create_paediatric_assessment_histories_table.php',
     'CreatePaediatricAssessmentsTable' => $baseDir . '/database/migrations/2017_02_08_164349_create_paediatric_assessments_table.php',

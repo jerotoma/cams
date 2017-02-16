@@ -1,6 +1,28 @@
 @extends('site.master')
 @section('page_js')
     @include('inc.page_js')
+    <script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_multiselect.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_select.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/selectboxit.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/typeahead/typeahead.bundle.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/tags/tagsinput.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/tags/tokenfield.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/touchspin.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/maxlength.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/formatter.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/ui/moment/moment.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 
 @stop
 @section('main_navigation')
@@ -23,6 +45,8 @@
     {!! Html::script("assets/highcharts/js/highcharts.js") !!}
     {!! Html::script("assets/highcharts/js/modules/exporting.js") !!}
     <script>
+        $('.pickadate').pickadate();
+
         $('#clientRegistration').highcharts({
             chart: {
                 type: 'column'
@@ -110,9 +134,79 @@
                 data: [<?php echo getHighChatClientByCodes();?>]
             }]
         });
+
+        $("#formClientReport").validate({
+            ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
+            errorClass: 'validation-error-label',
+            successClass: 'validation-valid-label',
+            highlight: function(element, errorClass) {
+                $(element).removeClass(errorClass);
+            },
+            unhighlight: function(element, errorClass) {
+                $(element).removeClass(errorClass);
+            },
+            errorPlacement: function(error, element) {
+
+                // Styled checkboxes, radios, bootstrap switch
+                if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container') ) {
+                    if(element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                        error.appendTo( element.parent().parent().parent().parent() );
+                    }
+                    else {
+                        error.appendTo( element.parent().parent().parent().parent().parent() );
+                    }
+                }
+
+                // Unstyled checkboxes, radios
+                else if (element.parents('div').hasClass('checkbox') || element.parents('div').hasClass('radio')) {
+                    error.appendTo( element.parent().parent().parent() );
+                }
+
+                // Input with icons and Select2
+                else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
+                    error.appendTo( element.parent() );
+                }
+
+                // Inline checkboxes, radios
+                else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                    error.appendTo( element.parent().parent() );
+                }
+
+                // Input group, styled file input
+                else if (element.parent().hasClass('uploader') || element.parents().hasClass('input-group')) {
+                    error.appendTo( element.parent().parent() );
+                }
+
+                else {
+                    error.insertAfter(element);
+                }
+            },
+            errorElement:'div',
+            rules: {
+
+                start_date: "required",
+                end_date: "required",
+                report_type: "required",
+                vulnerability_code: "required"
+            },
+            messages: {
+                start_date: "Please start_date is required",
+                end_date: "Please end_date is required",
+                report_type: "Please report_type is required",
+                vulnerability_code: "Please vulnerability_code is required"
+            }
+        });
     </script>
 @stop
 @section('contents')
+    <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-12 text-right">
+            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-cogs "></i> <span>Generate Report</span></a>
+            <a  href="{{url('clients')}}" class="btn btn-primary "><i class="fa fa-list "></i> <span>List All</span></a>
+            <a  href="{{url('clients')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Search</span></a>
+            <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import</span></a>
+        </div>
+    </div>
     <div class="row" style="margin-top: 20px">
         <div class="col-md-6">
             <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientsNeeds"></div>
@@ -243,15 +337,70 @@
         <div class="col-md-12">
             <div class="portlet light bordered">
                 <div class="portlet-body form">
-                    {!! Form::open(array('url'=>'clients','role'=>'form','id'=>'formClients')) !!}
+                    {!! Form::open(array('url'=>'generate/reports/clients','role'=>'form','id'=>'formClientReport')) !!}
                     <div class="panel panel-flat">
 
 
                         <div class="panel-body">
                             <fieldset class="scheduler-border">
-                                <legend class="text-bold">Generate Client Report</legend>
+                                <legend class="text-bold">Client Registration Report</legend>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group ">
+                                            <label class="control-label">Start Date</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                                                <input type="text" class="form-control pickadate"  value="{{old('start_date')}}" name="start_date" id="start_date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group ">
+                                            <label class="control-label">End Date</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                                                <input type="text" class="form-control pickadate" value="{{old('end_date')}}" name="end_date" id="end_date">
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group ">
+                                            <label>Camp</label>
+                                            <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="camp" id="Camp">
+                                                <optgroup label="Camp Name">
+                                                    <option value="All">All</option>
+                                                    @foreach(\App\Camp::all() as $item)
+                                                        <option value="{{$item->id}}">{{$item->camp_name}}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group ">
+                                            <label>Report Type</label>
+                                            <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type">
+                                                <optgroup label="Vulnerability Code">
+                                                    <option value="Excel" selected>Excel File</option>
+                                                    <option value="Graphical" >Graphical</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </fieldset>
+                            <div class="row">
+                                <div class="col-md-8 col-sm-8 pull-left" id="output">
+
+                                </div>
+                                <div class="col-md-4 col-sm-4 pull-right text-right">
+                                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-plus"></i> Generate Report </button>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                     {!! Form::close() !!}
