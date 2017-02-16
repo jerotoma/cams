@@ -60,11 +60,11 @@
 
 
 
-      public function getTableRow($arrArgs, $args='' ){
+      public function getTableRow($arrArgs, $args = '' ){
 
         //  var_dump($args);
           if (empty($args)) {
-          $args  = "";
+             $args  = '';
           }
           $tr    = '';
           $title = '';
@@ -91,16 +91,16 @@
                   $tr    .=  '<td class="text-center" width="23px">'.$title.' <br>'.$deg.'</td>
                            <td class="text-center"><input type="checkbox" name="rom_l_'.$this->slugify($key).'_'.$count.'_1" '.$this->wasChecked($args,'rom_l_'.$this->slugify($key).'_'.$count.'_1','Yes').' value="Yes"></td>
                            <td class="text-center"><input type="checkbox" name="rom_l_'.$this->slugify($key).'_'.$count.'_2" '.$this->wasChecked($args,'rom_l_'.$this->slugify($key).'_'.$count.'_2','Yes').' value="Yes"> </td>
-                           <td class="text-center"><input type="checkbox" name="rom_l_'.$this->slugify($key).'_'.$count.'_3" '.$this->wasChecked($args,'rom_l_'.$this->slugify($key).'_'.$count.'_3','Yes').' value="Yes" > </td>
-                           <td class="text-center"><input type="checkbox" name="rom_r_'.$this->slugify($key).'_'.$count.'_1" '.$this->wasChecked($args,'rom_r_'.$this->slugify($key).'_'.$count.'_1','Yes').' value="Yes" > </td>
-                           <td class="text-center"><input type="checkbox" name="rom_r_'.$this->slugify($key).'_'.$count.'_2" '.$this->wasChecked($args,'rom_r_'.$this->slugify($key).'_'.$count.'_2','Yes').' value="Yes" > </td>
-                           <td class="text-center"><input type="checkbox" name="rom_r_'.$this->slugify($key).'_'.$count.'_3" '.$this->wasChecked($args,'rom_r_'.$this->slugify($key).'_'.$count.'_3','Yes').' value="Yes" > </td>
-                           <td class="text-center"><input type="checkbox" name="ms_l_'.$this->slugify($key).'_'.$count.'_1" '.$this->wasChecked($args,'ms_l_'.$this->slugify($key).'_'.$count.'_1','Yes').' value="Yes" > </td>
-                           <td class="text-center"><input type="checkbox" name="ms_l_'.$this->slugify($key).'_'.$count.'_2" '.$this->wasChecked($args,'ms_l_'.$this->slugify($key).'_'.$count.'_2','Yes').' value="Yes" > </td>
-                           <td class="text-center"><input type="checkbox" name="ms_l_'.$this->slugify($key).'_'.$count.'_3" '.$this->wasChecked($args,'ms_l_'.$this->slugify($key).'_'.$count.'_3','Yes').' value="Yes" > </td>
-                           <td class="text-center"><input type="checkbox" name="ms_r_'.$this->slugify($key).'_'.$count.'_1" '.$this->wasChecked($args,'ms_r_'.$this->slugify($key).'_'.$count.'_1','Yes').' value="Yes" > </td>
-                           <td class="text-center"><input type="checkbox" name="ms_r_'.$this->slugify($key).'_'.$count.'_2" '.$this->wasChecked($args,'ms_r_'.$this->slugify($key).'_'.$count.'_2','Yes').' value="Yes" > </td>
-                           <td class="text-center"><input type="checkbox" name="ms_r_'.$this->slugify($key).'_'.$count.'_3" '.$this->wasChecked($args,'ms_r_'.$this->slugify($key).'_'.$count.'_3','Yes').' value="Yes" > </td>
+                           <td class="text-center"><input type="checkbox" name="rom_l_'.$this->slugify($key).'_'.$count.'_3" '.$this->wasChecked($args,'rom_l_'.$this->slugify($key).'_'.$count.'_3','Yes').' value="Yes"> </td>
+                           <td class="text-center"><input type="checkbox" name="rom_r_'.$this->slugify($key).'_'.$count.'_1" '.$this->wasChecked($args,'rom_r_'.$this->slugify($key).'_'.$count.'_1','Yes').' value="Yes"> </td>
+                           <td class="text-center"><input type="checkbox" name="rom_r_'.$this->slugify($key).'_'.$count.'_2" '.$this->wasChecked($args,'rom_r_'.$this->slugify($key).'_'.$count.'_2','Yes').' value="Yes"> </td>
+                           <td class="text-center"><input type="checkbox" name="rom_r_'.$this->slugify($key).'_'.$count.'_3" '.$this->wasChecked($args,'rom_r_'.$this->slugify($key).'_'.$count.'_3','Yes').' value="Yes"> </td>
+                           <td class="text-center"><input type="checkbox" name="ms_l_'.$this->slugify($key).'_'.$count.'_1" '.$this->wasChecked($args,'ms_l_'.$this->slugify($key).'_'.$count.'_1','Yes').' value="Yes"> </td>
+                           <td class="text-center"><input type="checkbox" name="ms_l_'.$this->slugify($key).'_'.$count.'_2" '.$this->wasChecked($args,'ms_l_'.$this->slugify($key).'_'.$count.'_2','Yes').' value="Yes"> </td>
+                           <td class="text-center"><input type="checkbox" name="ms_l_'.$this->slugify($key).'_'.$count.'_3" '.$this->wasChecked($args,'ms_l_'.$this->slugify($key).'_'.$count.'_3','Yes').' value="Yes"> </td>
+                           <td class="text-center"><input type="checkbox" name="ms_r_'.$this->slugify($key).'_'.$count.'_1" '.$this->wasChecked($args,'ms_r_'.$this->slugify($key).'_'.$count.'_1','Yes').' value="Yes"> </td>
+                           <td class="text-center"><input type="checkbox" name="ms_r_'.$this->slugify($key).'_'.$count.'_2" '.$this->wasChecked($args,'ms_r_'.$this->slugify($key).'_'.$count.'_2','Yes').' value="Yes"> </td>
+                           <td class="text-center"><input type="checkbox" name="ms_r_'.$this->slugify($key).'_'.$count.'_3" '.$this->wasChecked($args,'ms_r_'.$this->slugify($key).'_'.$count.'_3','Yes').' value="Yes"> </td>
                           </tr>';
                 $count++;
                }
@@ -125,9 +125,7 @@
                                  if ($k === $label) {
                                       if($v == $passedValue){
                                           $checked = 'checked';
-                                           
-                                           echo $v .'<br>';
-                                          break 2;
+                                         break 2;
                                       }
                                  }
                          }
