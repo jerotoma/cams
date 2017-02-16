@@ -11,6 +11,8 @@ use App\MpcPartAPosture;
 use App\MpcPerformanceArea;
 use App\MpcShortRehab;
 use App\MpcLongRehab;
+use App\MpcPartARomUpper;
+use App\MpcPartARomLower;
 use App\mpcContext;
 use App\MpcSwot;
 use App\MpcPartBBodySense;
@@ -417,7 +419,7 @@ class InclusionAssessmentController extends Controller
                  $lower_limb_row_14 = array( 'rom_l_trunk_1_1' => $request->rom_l_trunk_1_1,'rom_l_trunk_1_2' => $request->rom_l_trunk_1_2,'rom_l_trunk_1_3' => $request->rom_l_trunk_1_3,'rom_r_trunk_1_1' => $request->rom_r_trunk_1_1,'rom_r_trunk_1_2' => $request->rom_r_trunk_1_2,'rom_r_trunk_1_3' => $request->rom_r_trunk_1_3,
                                        'ms_l_trunk_1_1' => $request->ms_l_trunk_1_1,'ms_l_trunk_1_2' => $request->ms_l_trunk_1_2,'ms_l_trunk_1_3' => $request->ms_l_trunk_1_3,'ms_r_trunk_1_1' => $request->ms_r_trunk_1_1,'ms_r_trunk_1_2' => $request->ms_r_trunk_1_2,'ms_r_trunk_1_3' => $request->ms_r_trunk_1_3 );
 
-                 $mpcLowerLimb = new MpcPartARomUpperLimb();
+                 $mpcLowerLimb = new MpcPartARomLower();
                  $mpcLowerLimb->incl_assessment_id    =  $inc_assessment->id;
                  $mpcLowerLimb->lower_limb_row_1 = serialize($lower_limb_row_1);
                  $mpcLowerLimb->lower_limb_row_2 = serialize($lower_limb_row_2);
@@ -459,7 +461,7 @@ class InclusionAssessmentController extends Controller
                  $upper_limb_row_12  = array( 'rom_l_hands_1_1' => $request->rom_l_hands_1_1,'rom_l_hands_1_2' => $request->rom_l_hands_1_2,'rom_l_hands_1_3' => $request->rom_l_hands_1_3,'rom_r_hands_1_1' => $request->rom_r_hands_1_1,'rom_r_hands_1_2' => $request->rom_r_hands_1_2,'rom_r_hands_1_3' => $request->rom_r_hands_1_3,
                                          'ms_l_hands_1_1' => $request->ms_l_hands_1_1,'ms_l_hands_1_2' => $request->ms_l_hands_1_2,'ms_l_hands_1_3' => $request->ms_l_hands_1_3,'ms_r_hands_1_1' => $request->ms_r_hands_1_1,'ms_r_hands_1_2' => $request->ms_r_hands_1_2,'ms_r_hands_1_3' => $request->ms_r_hands_1_3 );
 
-                 $mpcUpperLimb = new MpcPartARomUpperLimb();
+                 $mpcUpperLimb = new MpcPartARomUpper();
                  $mpcUpperLimb->incl_assessment_id    =  $inc_assessment->id;
                  $mpcUpperLimb->upper_limb_row_1 = serialize($upper_limb_row_1);
                  $mpcUpperLimb->upper_limb_row_2 = serialize($upper_limb_row_2);
@@ -533,15 +535,17 @@ class InclusionAssessmentController extends Controller
           $mpc_context        =   $incl_assessment->mpcContext;
           $mpc_swot           =   $incl_assessment->mpcSwot;
           $mpc_short_rehab    =   $incl_assessment->mpcShortRehab;
-          $mpc_long_rehab    =   $incl_assessment->mpcLongRehab;
-
+          $mpc_long_rehab     =   $incl_assessment->mpcLongRehab;
+          $mpc_lower_limb     =   $incl_assessment->mpcPartARomLower;
+          $mpc_upper_limb     =   $incl_assessment->mpcPartARomUpper;
+          
           return view('assessments.inclusion.view', compact(
                                                             'client','mpc_part_a_posture','mpc_swot',
                                                             'assessor','imhistory','mpc_context',
                                                             'mpc_part_a','mpc_part_b','mpc_perf_area',
                                                             'mpc_part_c','mpc_part_d','mpcbody_sense',
                                                             'mpc_part_e','mpc_part_f', 'moving_pattern',
-                                                            'mpc_short_rehab','mpc_long_rehab'
+                                                            'mpc_short_rehab','mpc_long_rehab','mpc_lower_limb','mpc_upper_limb'
                                                             ));
       }else {
 

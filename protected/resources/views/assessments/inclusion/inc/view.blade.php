@@ -396,7 +396,7 @@
                                                   <p>Range of Motion</p>
                                                 </th>
                                                 <th class="text-center" colspan="6">
-                                                  <p>Mascle Stregnth (St) or Spasticity (Sp)</p>
+                                                  <p>Mascle Stregnth (St) or Spasticity (Sp) </p>
                                                 </th>
                                             </tr>
                                             <tr >
@@ -455,7 +455,7 @@
                                            </tr>
                                         </thead>
                                         <tbody>
-                                            <?php echo  $incAssHelper ->getTableRow($incAssHelper->arrLowerLimb); ?>
+                                            <?php echo  $incAssHelper ->getTableRow($incAssHelper->arrLowerLimb, $mpc_lower_limb->toArray()); ?>
                                         </tbody>
                                  </table>
                             </div>
@@ -538,7 +538,7 @@
                                            </tr>
                                         </thead>
                                         <tbody>
-                                            <?php echo  $incAssHelper->getTableRow($incAssHelper->arrUpperLimb); ?>
+                                            <?php echo  $incAssHelper->getTableRow($incAssHelper->arrUpperLimb, $mpc_upper_limb->toArray()); ?>
                                         </tbody>
                                  </table>
                             </div>

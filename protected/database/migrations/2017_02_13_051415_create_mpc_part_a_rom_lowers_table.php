@@ -28,6 +28,8 @@ class CreateMpcPartARomLowersTable extends Migration
           $table->text('lower_limb_row_10')->nullable();
           $table->text('lower_limb_row_11')->nullable();
           $table->text('lower_limb_row_12')->nullable();
+          $table->text('lower_limb_row_13')->nullable();
+          $table->text('lower_limb_row_14')->nullable();
           $table->timestamps();
           $table->foreign('incl_assessment_id')->references('id')->on('inclusion_assessments')
              ->onUpdate('cascade')->onDelete('cascade');

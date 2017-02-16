@@ -13,7 +13,7 @@ class CreateMpcPartARomUppersTable extends Migration
      */
     public function up()
     {
-       Schema::create('mpc_part_a_rom_uppers', function (Blueprint $table) {
+    Schema::create('mpc_part_a_rom_uppers', function (Blueprint $table) {
          $table->increments('id');
          $table->integer('incl_assessment_id')->unsigned();
          $table->text('upper_limb_row_1')->nullable();

@@ -35,16 +35,22 @@ class InclusionAssessment extends Model
             return $this::hasOne('App\MpcPerformanceArea','incl_assessment_id');
     }
     public function mpcContext(){
-            return $this::hasOne('App\mpcContext','incl_assessment_id');
+            return $this::hasOne('App\MpcContext','incl_assessment_id');
     }
     public function mpcSwot(){
-            return $this::hasOne('App\mpcSwot','incl_assessment_id');
+            return $this::hasOne('App\MpcSwot','incl_assessment_id');
     }
     public function mpcShortRehab(){
-            return $this::hasOne('App\mpcShortRehab','incl_assessment_id');
+            return $this::hasOne('App\MpcShortRehab','incl_assessment_id');
     }
     public function mpcLongRehab(){
-            return $this::hasOne('App\mpcLongRehab','incl_assessment_id');
+            return $this::hasOne('App\MpcLongRehab','incl_assessment_id');
+    }
+    public function mpcPartARomLower(){
+            return $this::hasOne('App\MpcPartARomLower','incl_assessment_id');
+    }
+    public function mpcPartARomUpper(){
+            return $this::hasOne('App\MpcPartARomUpper','incl_assessment_id');
     }
 
 }

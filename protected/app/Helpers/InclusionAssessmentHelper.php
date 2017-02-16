@@ -61,7 +61,11 @@ class InclusionAssessmentHelper{
 
 
   public function getTableRow($arrArgs, $args='' ){
+
+    //  var_dump($args);
+      if (empty($args)) {
       $args  = "";
+      }
       $tr    = '';
       $title = '';
       $deg   = '';
@@ -81,22 +85,22 @@ class InclusionAssessmentHelper{
 
                $title  = $arrArg[$count]['title'];
                $deg    = $arrArg[$count]['deg'];
-
+        //var_dump($this->wasChecked($args,'rom_l_'.$this->slugify($key).'_'.$count.'_1','Yes'));
            $tr    .=  '<td class="text-center" width="23px">'.$title.' <br>'.$deg.'</td>
-                       <td class="text-center"><input type="checkbox" name="rom_l_'.$this->slugify(strtolower($key)).'_'.$count.'_1" '.$this->isChecked($args,'rom_l_'.$this->slugify(strtolower($key)).'_'.$count.'_1').'></td>
-                       <td class="text-center"><input type="checkbox" name="rom_l_'.$this->slugify(strtolower($key)).'_'.$count.'_2" '.$this->isChecked($args,'rom_l_'.$this->slugify(strtolower($key)).'_'.$count.'_2').'> </td>
-                       <td class="text-center"><input type="checkbox" name="rom_l_'.$this->slugify(strtolower($key)).'_'.$count.'_3" '.$this->isChecked($args,'rom_l_'.$this->slugify(strtolower($key)).'_'.$count.'_3').'> </td>
-                       <td class="text-center"><input type="checkbox" name="rom_r_'.$this->slugify(strtolower($key)).'_'.$count.'_1" '.$this->isChecked($args,'rom_r_'.$this->slugify(strtolower($key)).'_'.$count.'_1').'> </td>
-                       <td class="text-center"><input type="checkbox" name="rom_r_'.$this->slugify(strtolower($key)).'_'.$count.'_2" '.$this->isChecked($args,'rom_r_'.$this->slugify(strtolower($key)).'_'.$count.'_2').'> </td>
-                       <td class="text-center"><input type="checkbox" name="rom_r_'.$this->slugify(strtolower($key)).'_'.$count.'_3" '.$this->isChecked($args,'rom_r_'.$this->slugify(strtolower($key)).'_'.$count.'_3').'> </td>
-                       <td class="text-center"><input type="checkbox" name="ms_l_'.$this->slugify(strtolower($key)).'_'.$count.'_1" '.$this->isChecked($args,'ms_l_'.$this->slugify(strtolower($key)).'_'.$count.'_1').'> </td>
-                       <td class="text-center"><input type="checkbox" name="ms_l_'.$this->slugify(strtolower($key)).'_'.$count.'_2" '.$this->isChecked($args,'ms_l_'.$this->slugify(strtolower($key)).'_'.$count.'_2').'> </td>
-                       <td class="text-center"><input type="checkbox" name="ms_l_'.$this->slugify(strtolower($key)).'_'.$count.'_3" '.$this->isChecked($args,'ms_l_'.$this->slugify(strtolower($key)).'_'.$count.'_3').'> </td>
-                       <td class="text-center"><input type="checkbox" name="ms_r_'.$this->slugify(strtolower($key)).'_'.$count.'_1" '.$this->isChecked($args,'ms_r_'.$this->slugify(strtolower($key)).'_'.$count.'_1').'> </td>
-                       <td class="text-center"><input type="checkbox" name="ms_r_'.$this->slugify(strtolower($key)).'_'.$count.'_2" '.$this->isChecked($args,'ms_r_'.$this->slugify(strtolower($key)).'_'.$count.'_2').'> </td>
-                       <td class="text-center"><input type="checkbox" name="ms_r_'.$this->slugify(strtolower($key)).'_'.$count.'_3" '.$this->isChecked($args,'ms_r_'.$this->slugify(strtolower($key)).'_'.$count.'_3').'> </td>
+                       <td class="text-center"><input type="checkbox" name="rom_l_'.$this->slugify(strtolower($key)).'_'.$count.'_1" '.$this->wasChecked($args,'rom_l_'.$this->slugify($key).'_'.$count.'_1','Yes').' value="Yes"></td>
+                       <td class="text-center"><input type="checkbox" name="rom_l_'.$this->slugify(strtolower($key)).'_'.$count.'_2" '.$this->wasChecked($args,'rom_l_'.$this->slugify($key).'_'.$count.'_2','Yes').' value="Yes"> </td>
+                       <td class="text-center"><input type="checkbox" name="rom_l_'.$this->slugify(strtolower($key)).'_'.$count.'_3" '.$this->wasChecked($args,'rom_l_'.$this->slugify($key).'_'.$count.'_3','Yes').'value="Yes" > </td>
+                       <td class="text-center"><input type="checkbox" name="rom_r_'.$this->slugify(strtolower($key)).'_'.$count.'_1" '.$this->wasChecked($args,'rom_r_'.$this->slugify($key).'_'.$count.'_1','Yes').' value="Yes" > </td>
+                       <td class="text-center"><input type="checkbox" name="rom_r_'.$this->slugify(strtolower($key)).'_'.$count.'_2" '.$this->wasChecked($args,'rom_r_'.$this->slugify($key).'_'.$count.'_2','Yes').' value="Yes" > </td>
+                       <td class="text-center"><input type="checkbox" name="rom_r_'.$this->slugify(strtolower($key)).'_'.$count.'_3" '.$this->wasChecked($args,'rom_r_'.$this->slugify($key).'_'.$count.'_3','Yes').' value="Yes" > </td>
+                       <td class="text-center"><input type="checkbox" name="ms_l_'.$this->slugify(strtolower($key)).'_'.$count.'_1" '.$this->wasChecked($args,'ms_l_'.$this->slugify($key).'_'.$count.'_1','Yes').' value="Yes" > </td>
+                       <td class="text-center"><input type="checkbox" name="ms_l_'.$this->slugify(strtolower($key)).'_'.$count.'_2" '.$this->wasChecked($args,'ms_l_'.$this->slugify($key).'_'.$count.'_2','Yes').'value="Yes" > </td>
+                       <td class="text-center"><input type="checkbox" name="ms_l_'.$this->slugify(strtolower($key)).'_'.$count.'_3" '.$this->wasChecked($args,'ms_l_'.$this->slugify($key).'_'.$count.'_3','Yes').'value="Yes" > </td>
+                       <td class="text-center"><input type="checkbox" name="ms_r_'.$this->slugify(strtolower($key)).'_'.$count.'_1" '.$this->wasChecked($args,'ms_r_'.$this->slugify($key).'_'.$count.'_1','Yes').'value="Yes" > </td>
+                       <td class="text-center"><input type="checkbox" name="ms_r_'.$this->slugify(strtolower($key)).'_'.$count.'_2" '.$this->wasChecked($args,'ms_r_'.$this->slugify($key).'_'.$count.'_2','Yes').' value="Yes" > </td>
+                       <td class="text-center"><input type="checkbox" name="ms_r_'.$this->slugify(strtolower($key)).'_'.$count.'_3" '.$this->wasChecked($args,'ms_r_'.$this->slugify($key).'_'.$count.'_3','Yes').' value="Yes" > </td>
                       </tr>';
-          $count++;
+            $count++;
            }
 
 
@@ -104,7 +108,35 @@ class InclusionAssessmentHelper{
 
   return $tr;
   }
+  public function wasChecked($args,$label, $passedValue){
+         $checked = '';
 
+        if (!empty($args)) {
+
+            foreach((array)$args as $key => $va) {
+
+             if ( $key != 'incl_assessment_id' && $key != 'id' && $key != 'created_at' && $key != 'updated_at' && isset($va) ){
+                  $data =          unserialize($va);
+
+                   foreach((array)$data as $k => $v) {
+                          $checked = '';
+                             if ($k === $label) {
+                                  if($v == 'Yes'){
+                                      $checked = 'checked';
+                                      break 2;
+                                  }
+                             }
+                     }
+                 }
+
+             }
+             return $checked;
+        }else {
+          return '';
+        }
+
+
+  }
 
  public function slugify($text){
            // replace non letter or digits by -
