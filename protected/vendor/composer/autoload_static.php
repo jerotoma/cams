@@ -378,8 +378,10 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
     );
 
     public static $classMap = array (
+        'AddAgeHotScoretoClients' => __DIR__ . '/../..' . '/database/migrations/2017_02_15_232348_addAgeHotScoretoClients.php',
         'AddAssessornametoPaediatric' => __DIR__ . '/../..' . '/database/migrations/2017_02_09_073017_addAssessornametoPaediatric.php',
         'AddAuthStatustoClient' => __DIR__ . '/../..' . '/database/migrations/2017_02_14_193712_addAuthStatustoClient.php',
+        'AddCategoryIdTOPSNCODE' => __DIR__ . '/../..' . '/database/migrations/2017_02_16_043412_addCategoryIdTOPSNCODE.php',
         'AddCommentstoItemDistribution' => __DIR__ . '/../..' . '/database/migrations/2017_02_12_221227_AddCommentstoItemDistribution.php',
         'AddcentreNametopaediatric' => __DIR__ . '/../..' . '/database/migrations/2017_02_08_225621_addcentre_nametopaediatric.php',
         'Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
@@ -436,7 +438,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'CreateMpcPerformanceAreasTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_13_051214_create_mpcperformance_areas_table.php',
         'CreateMpcShortRehabsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_13_161820_create_mpc_short_rehabs_table.php',
         'CreateMpcSwotsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_13_051300_create_mpc_swots_table.php',
-        'CreatePSNCodeCategoriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_15_035720_create_p_s_n_code_categories_table.php',
+        'CreatePSNCodeCategoriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_151758_create_p_s_n_code_categories_table.php',
         'CreatePSNCodesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_151759_create_p_s_n_codes_table.php',
         'CreatePaediatricAssessmentHistoriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_08_165640_create_paediatric_assessment_histories_table.php',
         'CreatePaediatricAssessmentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_08_164349_create_paediatric_assessments_table.php',

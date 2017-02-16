@@ -22,7 +22,7 @@ class UserController extends Controller
     //This middleware protects unauthenticated users
     public function __construct()
     {
-      $this->middleware('auth',['except' => ['login','postLogin']]);
+      $this->middleware(array('auth','role:admin'),['except' => ['login','postLogin']]);
 
     }
 
@@ -32,6 +32,62 @@ class UserController extends Controller
 
        return view('users.index', ['users' =>  $users  ] );
     }
+
+    //Get profile
+    public function getProfile()
+    {
+        $user =  User::findorfail(Auth::user()->id);
+        return view('users.profile', compact('user') );
+    }
+    public function getSettings()
+    {
+        $user =  User::findorfail(Auth::user()->id);
+        return view('users.settings.profile',compact('user'));
+    }
+    public function showChangePassword()
+    {
+        $user =  User::findorfail(Auth::user()->id);
+        return view('users.settings.password',compact('user'));
+    }
+    public function postChangePassword(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'full_name' => 'required',
+                'username' => 'required|unique:users',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:8',
+                'role_id' => 'required',
+                'phone' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $user = User::find(Auth::user()->id);
+                $user->password = bcrypt($request->userpass);
+                $user->save();
+                //Audit log
+                $auditMsg = "Changed password for " . $user->username . " with status " . $user->status;
+                return response()->json([
+                    'success' => true,
+                    'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Your have changed your password</span><h3>"
+                ], 200);
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' =>"Password change failed"
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+
+    }
+
 
 
     /**

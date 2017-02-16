@@ -279,6 +279,23 @@ class ClientsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    //Culculate age score
+    public function getAgeScore($age){
+
+        if($age <=17 ){
+            return "A";
+        }
+        else if($age >17 && $age < 50){
+            return "B";
+        }
+        else if($age >=50 && $age < 60){
+            return "C";
+        }
+        else if($age >= 60 ){
+            return "C";
+        }
+    }
+
     public function store(Request $request)
     {
         //
@@ -312,8 +329,10 @@ class ClientsController extends Controller
                 $client->full_name = ucwords($request->full_name);
                 $client->sex = ucwords($request->sex);
                 $client->age = $request->age;
-                if ($request->birth_date != null) {
-                    $client->birth_date = date("Y-m-d", strtotime($request->birth_date));
+                if ($request->age != null) {
+                    $agedef=Date("Y") - $request->age;
+                    $birthdate=$agedef."01-01";
+                    $client->birth_date = $birthdate;
                 }
                 $client->civil_status = $request->civil_status;
                 $client->spouse_name = $request->spouse_name;
@@ -331,6 +350,7 @@ class ClientsController extends Controller
                 $client->females_total = $request->females_total;
                 $client->males_total = $request->males_total;
                 $client->created_by = Auth::user()->username;
+                $client->age_score= $this->getAgeScore($request->age);
                 $client->save();
 
                 //Save validation codes
@@ -440,6 +460,7 @@ class ClientsController extends Controller
                 $client->males_total = $request->males_total;
                 $client->created_by = Auth::user()->username;
                 $client->status=$request->status;
+                $client->age_score= $this->getAgeScore($request->age);
                 $client->save();
 
                 //Save validation codes

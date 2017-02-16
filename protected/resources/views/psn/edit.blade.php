@@ -46,6 +46,15 @@
                         <label id="code_error-error" class="validation-error-label" for="code_error">{{ Session::get('code_error') }}</label>
                     @endif
                 </div>
+                <div class="form-group ">
+                    <label class="control-label">Category</label>
+                    <select class="select withOthers" name="category_id" id="category_id" data-placeholder="Choose an option...">
+                        <option ></option>
+                        @foreach(\App\PSNCodeCategory::all() as $item)
+                            <option value="{{$item->id}}">{{$item->code}}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="form-group">
                     <label>Description</label>
                     <textarea class="form-control" placeholder="Descriptions" name="description" id="description">@if(old('description')){{old('description')}}@else{{$code->description}}@endif</textarea>
