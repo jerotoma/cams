@@ -292,7 +292,7 @@ class ClientsController extends Controller
             return "C";
         }
         else if($age >= 60 ){
-            return "C";
+            return "D";
         }
     }
 
@@ -332,7 +332,7 @@ class ClientsController extends Controller
                 $client->age = $request->age;
                 if ($request->age != null) {
                     $agedef=Date("Y") - $request->age;
-                    $birthdate=$agedef."01-01";
+                    $birthdate=$agedef."-01-01";
                     $client->birth_date = $birthdate;
                 }
                 $client->marital_status = $request->marital_status;

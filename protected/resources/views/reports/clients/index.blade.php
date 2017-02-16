@@ -201,7 +201,6 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-cogs "></i> <span>Generate Report</span></a>
             <a  href="{{url('clients')}}" class="btn btn-primary "><i class="fa fa-list "></i> <span>List All</span></a>
             <a  href="{{url('clients')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Search</span></a>
             <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import</span></a>
@@ -369,7 +368,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group ">
                                             <label>Camp</label>
-                                            <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="camp" id="Camp">
+                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="camp_id" id="camp_id">
                                                 <optgroup label="Camp Name">
                                                     <option value="All">All</option>
                                                     @foreach(\App\Camp::all() as $item)

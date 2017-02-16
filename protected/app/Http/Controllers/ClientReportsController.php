@@ -21,14 +21,14 @@ class ClientReportsController extends Controller
     }
     public function postGenerate(Request $request)
     {//
-        $start_time = date("Y-m-d", strtotime($request->start_time));
-        $end_time = date("Y-m-d", strtotime($request->end_time));
+        $start_time = date("Y-m-d", strtotime($request->start_date));
+        $end_time = date("Y-m-d", strtotime($request->end_date));
         $range = [$start_time, $end_time];
-        $codes=$request->vulnerability_code;
+        $camp_id=$request->camp_id;
 
-        \Excel::create("Detailed_Registration_by_Category", function ($excel) use ($codes,$range,$start_time,$end_time) {
-            $excel->sheet('sheet', function ($sheet) use ($codes,$range) {
-                $sheet->loadView('reports.clients.registration',compact('range','codes','end_time','start_time'));
+        \Excel::create("Detailed_Registration_by_Category", function ($excel) use ($range,$start_time,$end_time,$camp_id) {
+            $excel->sheet('sheet', function ($sheet) use ($range,$start_time,$end_time,$camp_id) {
+                $sheet->loadView('reports.clients.registration',compact('range','start_time','end_time','camp_id'));
                 $sheet->setWidth(array(
                     'A'     =>  30,
                     'B'     =>  25,
@@ -37,5 +37,6 @@ class ClientReportsController extends Controller
                 // $sheet->setAutoFilter('E2:F2');
             });
         })->download('xlsx');
+
     }
 }
