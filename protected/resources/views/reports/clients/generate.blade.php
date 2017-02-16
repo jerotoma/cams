@@ -1,94 +1,82 @@
-<script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
-<script type="text/javascript" src="{{asset("assets/js/plugins/tinymce/js/tinymce/tinymce.min.js")}}"></script>
-<script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form.min.js")}}"></script>
-<script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form_wizard.min.js")}}"></script>
+
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_multiselect.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_select.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/selectboxit.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/typeahead/typeahead.bundle.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/tags/tagsinput.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/tags/tokenfield.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/touchspin.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/maxlength.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/formatter.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/ui/moment/moment.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
-<script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
-<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
-
-<script type="text/javascript" src="{{asset("assets/js/pages/wizard_form.js")}}"></script>
-
+<script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
     $('.pickadate').pickadate();
-    tinymce.init({ selector:'textarea' });
 </script>
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::model($notice, array('route' => array('notices.update', $notice->id), 'method' => 'PUT','role'=>'form','id'=>'formNotice')) !!}
+        {!! Form::open(array('url'=>'generate/reports/clients','role'=>'form','id'=>'form')) !!}
         <div class="panel panel-flat">
 
 
             <div class="panel-body">
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold"><h3 class="text-center text-bold">Note Details</h3></legend>
+                    <legend class="text-bold">Client Registration Report</legend>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Open Date</label>
+                                <label class="control-label">Start Date</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                    <input type="text" class="form-control pickadate"  value="{{$notice->open_date}}" name="open_date" id="open_date">
+                                    <input type="text" class="form-control pickadate"  value="{{old('start_date')}}" name="start_date" id="start_date">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Case Worker Name</label>
-                                <input type="text" class="form-control" placeholder="case_worker_name" name="case_worker_name" id="case_worker_name" value="{{$notice->case_worker_name}}">
+                                <label class="control-label">End Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                                    <input type="text" class="form-control pickadate" value="{{old('end_date')}}" name="end_date" id="end_date">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Subjective Information</label>
-                        <textarea  class="form-control" name="subjective_information" id="subjective_information" ><?php echo $notice->subjective_information;?></textarea>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Objective Information</label>
-                        <textarea  class="form-control" name="objective_information" id="objective_information" ><?php echo $notice->objective_information;?></textarea>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Analysis</label>
-                        <textarea  class="form-control" name="analysis" id="analysis" ><?php echo $notice->analysis;?></textarea>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Planning</label>
-                        <textarea  class="form-control" name="planning" id="planning" ><?php echo $notice->planning;?></textarea>
+
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Camp</label>
-                                <select name="camp_id" id="camp_id" data-placeholder="Choose an option..." class="select withOthers">
-                                    @if(is_object($notice->camp) && $notice->camp != null )
-                                        <option value="{{$notice->camp->id}}" selected>{{$notice->camp->camp_name}}</option>
-                                    @endif
-                                    <option></option>
-                                    @foreach(\App\Camp::all() as $camp)
-                                        <option value="{{$camp->id}}">{{$camp->camp_name}}</option>
-                                    @endforeach
+                                <label>Vulnerability Category</label>
+                                <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="vulnerability_code[]" id="vulnerability_code">
+                                    <optgroup label="Vulnerability Code">
+                                        <option value="All">All</option>
+                                        @foreach(\App\PSNCode::all() as $item)
+                                            <option value="{{$item->id}}">{{$item->code}}</option>
+                                        @endforeach
+                                    </optgroup>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Status</label>
-                                <select name="status" id="status" data-placeholder="Choose an option..." class="select withOthers">
-                                    @if($notice->status !="" && $notice->status != null )
-                                        <option value="{{$notice->status}}" selected>{{$notice->status}}</option>
-                                    @endif
-                                    <option></option>
-                                    <option value="Open Case">Open Case</option>
-                                    <option value="Assessment">Assessment</option>
-                                    <option value="Case Planning">Case Planning</option>
-                                    <option value="Case Followup">Case Followup</option>
-                                    <option value="Case Closed">Case Closed</option>
+                                <label>Report Type</label>
+                                <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type">
+                                    <optgroup label="Vulnerability Code">
+                                        <option value="Excel" selected>Excel File</option>
+                                        <option value="Graphical" >Graphical</option>
+                                    </optgroup>
                                 </select>
                             </div>
                         </div>
@@ -100,7 +88,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 pull-right text-right">
                         <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Generate Report </button>
                     </div>
 
                 </div>
@@ -111,25 +99,7 @@
 </div>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script>
-    $(".withOthers").change(function () {
-        var id1 =  $(this[this.selectedIndex]).val();
-        var txt = $(this[this.selectedIndex]).text();
-        var slt= $(this);
-        if(id1 == "Other")
-        {
-            bootbox.prompt("Please specify the other", function(result) {
-                if (result === null) {
-                    bootbox.alert("Nothing entered");
-                } else {
-                    slt.append('<option value="'+ result +'" selected>'+ result +'</option>');
-
-                }
-            });
-
-        }
-    });
-
-    $("#formNotice").validate({
+    $("#formClientReport").validate({
         ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
         errorClass: 'validation-error-label',
         successClass: 'validation-valid-label',
@@ -177,27 +147,22 @@
         },
         errorElement:'div',
         rules: {
-            open_date: "required",
-            subjective_information: "required",
-            objective_information: "required",
-            analysis: "required",
-            planning: "required",
-            case_worker_name: "required",
-            status: "required"
+
+            start_date: "required",
+            end_date: "required",
+            report_type: "required",
+            vulnerability_code: "required"
         },
         messages: {
-            open_date: "Please this field is required",
-            subjective_information: "Please this field is required",
-            objective_information: "Please field is required",
-            analysis: "Please this field is required",
-            planning: "Please this field is required",
-            case_worker_name: "Please this field is required",
-            status: "Please this field is required"
+            start_date: "Please start_date is required",
+            end_date: "Please end_date is required",
+            report_type: "Please report_type is required",
+            vulnerability_code: "Please vulnerability_code is required"
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-            var postData = $('#formNotice').serializeArray();
-            var formURL = $('#formNotice').attr("action");
+            var postData = $('#formClients').serializeArray();
+            var formURL = $('#formClients').attr("action");
             $.ajax(
                 {
                     url : formURL,
@@ -206,7 +171,7 @@
                     success: function(data){
                         swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                         setTimeout(function() {
-                            location.replace("{{url('progressive/notices')}}");
+                            location.replace("{{url('clients')}}");
                             $("#output").html("");
                         }, 2000);
                     },

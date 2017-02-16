@@ -62,6 +62,7 @@ class PSNCodesController extends Controller
                 $code->code = strtoupper($request->code);
                 $code->description = $request->description;
                 $code->definition = $request->definition;
+                $code->category_id = $request->category_id;
                 $code->created_by = Auth::user()->username;
                 $code->save();
 
@@ -118,7 +119,7 @@ class PSNCodesController extends Controller
         //
         try {
             $validator = Validator::make($request->all(), [
-                'code' => 'required|unique:p_s_n_codes,code'.$id,
+                'code' => 'required|unique:p_s_n_codes,code,'.$id,
                 'description' => 'required',
                 'definition' => 'required',
             ]);
@@ -128,10 +129,11 @@ class PSNCodesController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
-                $code = new PSNCode;
+                $code =  PSNCode::find($id);
                 $code->code = strtoupper($request->code);
                 $code->description = $request->description;
                 $code->definition = $request->definition;
+                $code->category_id = $request->category_id;
                 $code->created_by = Auth::user()->username;
                 $code->save();
 

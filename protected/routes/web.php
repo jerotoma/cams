@@ -23,6 +23,11 @@ Route::get('logout','Auth\LoginController@logout');
 //Users
 Route::resource('users','UserController');
 Route::get('create-user','UserController@createUser');
+Route::get('account/profile','UserController@getProfile');
+Route::get('account/settings','UserController@getSettings');
+Route::get('account/settings/access','UserController@showChangePassword');
+Route::post('account/settings/access','UserController@postChangePassword');
+
 //User rights
 Route::resource('access/rights','RolesController');
 
@@ -33,7 +38,7 @@ Route::resource('districts','DistrictController');
 Route::resource('camps','CampController');
 Route::resource('departments','DepartmentController');
 Route::resource('psncodes','PSNCodesController');
-Route::resource('psncodes-catogories','PSNCodeCategoryController');
+Route::resource('psncodes-categories','PSNCodeCategoryController');
 
 Route::resource('clients','ClientsController');
 Route::get('getclientsjson','ClientsController@getJSonDataSearch');
@@ -155,9 +160,11 @@ Route::get('rehabilitation/progress',[
 
 //Data Visualization
 Route::get('reports/clients',[
-      'uses' => 'DataVisualizationController@clients',
+      'uses' => 'ClientReportsController@index',
       'as'   => 'reports/clients'
 ]);
+Route::get('generate/reports/clients','ClientReportsController@showGenerate');
+Route::post('generate/reports/clients','ClientReportsController@postGenerate');
 Route::get('reports/assessments','DataVisualizationController@showAssessments');
 //Inclusion Assessments
 Route::resource('assessments/inclusion','InclusionAssessmentController');

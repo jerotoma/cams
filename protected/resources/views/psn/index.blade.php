@@ -184,7 +184,7 @@
                     // Confirmation dialog
                     $('.deleteRecord').on('click', function() {
                         var id1 = $(this).parent().attr('id');
-                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        var btn=$(this).parent().parent();
                         bootbox.confirm("Are You Sure to delete record?", function(result) {
                             if(result){
                                 $.ajax({
@@ -290,7 +290,7 @@
         <div class="col-md-12 text-right">
             <a  href="#" class="addRecord btn btn-primary "><i class="fa fa-plus"></i> <span>Add New Code</span></a>
             <a  href="{{url('psncodes')}}" class="btn btn-primary "><i class="fa fa-list"></i> <span>List All Codes</span></a>
-            <a  href="{{url('psncodes-catogories')}}" class="btn btn-primary "><i class="fa fa-list"></i> <span>List All Categories</span></a>
+            <a  href="{{url('psncodes-categories')}}" class="btn btn-primary "><i class="fa fa-list"></i> <span>List All Categories</span></a>
             <a  href="{{url('psncodes')}}" class="btn btn-primary "><i class="fa fa-search"></i> <span>Search</span></a>
         </div>
     </div>
@@ -321,7 +321,7 @@
                 <td>{{$code->description}}</td>
                 <td>{{$code->definition}}</td>
                 <td class="text-center" id="{{$code->id}}">
-                    <a href="{{url('psncodes')}}/{{$code->id}}/edit" class="editRecord btn "><i class="fa fa-pencil text-success"></i> Edit</a>
+                    <a href="#" class="editRecord btn "><i class="fa fa-pencil text-success"></i> Edit</a>
                     <a href="#" class="deleteRecord btn" ><i class="fa fa-trash text-danger"></i> Delete</a>
                 </td>
             </tr>

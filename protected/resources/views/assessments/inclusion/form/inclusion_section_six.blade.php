@@ -28,7 +28,7 @@
                                   <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_1[]" value="Normal">Normal</label>
                                   <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_1[]" value="Blind">Blind</label>
                                   <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_1[]" value="Loss of part of vision field">Loss of part of vision field</label>
-                                  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_1[]" value="No">Strabismus</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_1[]" value="Strabismus">Strabismus</label>
                                </div>
                           </div>
                     </div>
@@ -578,32 +578,32 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1[]" value="init"></label>
                                                      </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1[]" value="1"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1[]" value="2"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1[]" value="3"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1[]" value="4"></label>
                                                     </div>
                                                  </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_1[]" value="5"></label>
                                                     </div>
                                                  </td>
                                             </tr>
@@ -613,32 +613,32 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_2" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_2[]" value="init"></label>
                                                      </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_2" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_2[]" value="1"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_2" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_2[]" value="2"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_2" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_2[]" value="3"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_2" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_2[]" value="4"></label>
                                                     </div>
                                                  </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_2" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_2[]" value="5"></label>
                                                     </div>
                                                  </td>
                                             </tr>
@@ -648,32 +648,32 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_3" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_3[]" value="init"></label>
                                                      </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_3" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_3[]" value="2"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_3" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_3[]" value="2"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_3" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_3[]" value="3"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_3" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_3[]" value="4"></label>
                                                     </div>
                                                  </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_3" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_3[]" value="5"></label>
                                                     </div>
                                                  </td>
                                            </tr>
@@ -683,32 +683,32 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_4" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_4[]" value="init"></label>
                                                      </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_4" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_4[]" value="1"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_4" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_4[]" value="2"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_4" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_4[]" value="3"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_4" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_4[]" value="4"></label>
                                                     </div>
                                                  </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_4" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_4[]" value="5"></label>
                                                     </div>
                                                  </td>
                                             </tr>
@@ -718,32 +718,32 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5[]" value="init"></label>
                                                      </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5[]" value="1"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5[]" value="2"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5[]" value="3"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5[]" value="4"></label>
                                                     </div>
                                                  </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_5[]" value="5"></label>
                                                     </div>
                                                  </td>
                                             </tr>
@@ -751,36 +751,37 @@
                                                 <td class="text-center">
                                                   Grooming <br>(brushing teeth, applying<br> oil and combing hair)
                                                 </td>
+																								<td class="text-center">
+																										<div class="checkbox">
+																													<label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_6[]" value="init"></label>
+																										</div>
+																								 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_6" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_6[]" value="1"></label>
                                                      </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_6" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_6[]" value="2"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_6" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_6[]" value="3"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_6" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_6[]" value="4"></label>
                                                     </div>
                                                  </td>
                                                  <td class="text-center">
                                                     <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_6" value="Yes"></label>
+                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_6[]" value="5"></label>
                                                     </div>
                                                  </td>
-                                                <td class="text-center">
-                                                    <div class="checkbox">
-                                                          <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_perf_area_6" value="Yes"></label>
-                                                    </div>
-                                                 </td>
+
                                             </tr>
 
                                         </tbody>

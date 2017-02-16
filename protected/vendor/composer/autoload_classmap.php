@@ -6,8 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddAgeHotScoretoClients' => $baseDir . '/database/migrations/2017_02_15_232348_addAgeHotScoretoClients.php',
     'AddAssessornametoPaediatric' => $baseDir . '/database/migrations/2017_02_09_073017_addAssessornametoPaediatric.php',
     'AddAuthStatustoClient' => $baseDir . '/database/migrations/2017_02_14_193712_addAuthStatustoClient.php',
+    'AddCategoryIdTOPSNCODE' => $baseDir . '/database/migrations/2017_02_16_043412_addCategoryIdTOPSNCODE.php',
     'AddCommentstoItemDistribution' => $baseDir . '/database/migrations/2017_02_12_221227_AddCommentstoItemDistribution.php',
     'AddcentreNametopaediatric' => $baseDir . '/database/migrations/2017_02_08_225621_addcentre_nametopaediatric.php',
     'AddfileToclient' => $baseDir . '/database/migrations/2017_02_15_193021_addfileToclient.php',

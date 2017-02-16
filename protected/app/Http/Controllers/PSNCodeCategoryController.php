@@ -102,7 +102,7 @@ class PSNCodeCategoryController extends Controller
     public function edit($id)
     {
         //
-        $category=PSNCodeCategory::all();
+        $category=PSNCodeCategory::find($id);
         return view('psn.categories.edit',compact('category'));
     }
 
@@ -116,6 +116,38 @@ class PSNCodeCategoryController extends Controller
     public function update(Request $request, $id)
     {
         //
+        try {
+            $validator = Validator::make($request->all(), [
+                'code' => 'required|unique:p_s_n_code_categories,code,'.$id,
+                'description' => 'required',
+                'definition' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $category =  PSNCodeCategory::find($id);
+                $category->code = strtoupper($request->code);
+                $category->description = $request->description;
+                $category->definition = $request->definition;
+                $category->created_by = Auth::user()->username;
+                $category->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => "Saved Successful"
+                ], 200);
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**
@@ -127,5 +159,7 @@ class PSNCodeCategoryController extends Controller
     public function destroy($id)
     {
         //
+        $category=PSNCodeCategory::find($id);
+        $category->delete();
     }
 }

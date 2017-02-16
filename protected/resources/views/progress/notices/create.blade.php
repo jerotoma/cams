@@ -117,7 +117,7 @@
 
             <div class="panel-body">
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold"><h3 class="text-center text-bold">Select client to register case</h3></legend>
+                    <legend class="text-bold"><h3 class="text-center text-bold">Select client to register</h3></legend>
                     <div class="form-group">
                         <div class="row clearfix">
                             <div class="col-md-12 column">
@@ -180,7 +180,7 @@
                     </div>
                 </fieldset>
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold"><h3 class="text-center text-bold">Notice Details</h3></legend>
+                    <legend class="text-bold"><h3 class="text-center text-bold">Note Details</h3></legend>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">

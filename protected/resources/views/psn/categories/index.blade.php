@@ -54,7 +54,7 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("psncodes-catogories-catogory") ?>/"+id1);
+                        $(".modal-body").load("<?php echo url("psncodes-categories-catogory") ?>/"+id1);
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
@@ -79,7 +79,7 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("psncodes-catogories") ?>/"+id1+"/edit");
+                        $(".modal-body").load("<?php echo url("psncodes-categories") ?>/"+id1+"/edit");
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
@@ -92,7 +92,7 @@
                         bootbox.confirm("Are You Sure to delete record?", function(result) {
                             if(result){
                                 $.ajax({
-                                    url:"<?php echo url('psncodes-catogories') ?>/"+id1,
+                                    url:"<?php echo url('psncodes-categories') ?>/"+id1,
                                     type: 'post',
                                     data: {_method: 'delete', _token :"{{csrf_token()}}"},
                                     success:function(msg){
@@ -163,7 +163,7 @@
             $("body").append(modaldis);
             $("#myModal").modal("show");
             $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("psncodes-catogories/create") ?>");
+            $(".modal-body").load("<?php echo url("psncodes-categories/create") ?>");
             $("#myModal").on('hidden.bs.modal',function(){
                 $("#myModal").remove();
             })
@@ -193,9 +193,9 @@
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
             <a  href="#" class="addRecord btn btn-primary "><i class="fa fa-plus"></i> <span>Add New Category</span></a>
-            <a  href="{{url('psncodes-catogories')}}" class="btn btn-primary "><i class="fa fa-list"></i> <span>List All Categories</span></a>
+            <a  href="{{url('psncodes-categories')}}" class="btn btn-primary "><i class="fa fa-list"></i> <span>List All Categories</span></a>
             <a  href="{{url('psncodes')}}" class="btn btn-primary "><i class="fa fa-list"></i> <span>List All Codes</span></a>
-            <a  href="{{url('psncodes-catogories')}}" class="btn btn-primary "><i class="fa fa-search"></i> <span>Search</span></a>
+            <a  href="{{url('psncodes-categories')}}" class="btn btn-primary "><i class="fa fa-search"></i> <span>Search</span></a>
         </div>
     </div>
     <div class="panel panel-flat">
@@ -225,7 +225,7 @@
                 <td>{{$category->description}}</td>
                 <td>{{$category->definition}}</td>
                 <td class="text-center" id="{{$category->id}}">
-                    <a href="{{url('psncodes-catogories')}}/{{$category->id}}/edit" class="editRecord btn "><i class="fa fa-pencil text-success"></i> Edit</a>
+                    <a href="#" class="editRecord btn "><i class="fa fa-pencil text-success"></i> Edit</a>
                     <a href="#" class="deleteRecord btn" ><i class="fa fa-trash text-danger"></i> Delete</a>
                 </td>
             </tr>

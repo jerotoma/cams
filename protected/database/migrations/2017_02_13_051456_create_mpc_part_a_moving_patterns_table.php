@@ -18,6 +18,7 @@ class CreateMpcPartAMovingPatternsTable extends Migration
              $table->increments('id');
              $table->integer('mpc_part_a_id')->unsigned();
 			       $table->text('mpc_qn_a_42_remark')->nullable();
+             $table->string('mpc_qn_a_42')->nullable();
              $table->string('mpc_qn_a_43')->nullable();
              $table->string('mpc_qn_a_44')->nullable();
              $table->string('mpc_qn_a_45')->nullable();

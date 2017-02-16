@@ -22,7 +22,7 @@ class CreateMpcPartBsTable extends Migration
              $table->text('mpc_qn_b_2_remark')->nullable();
              $table->text('mpc_qn_b_3_remark')->nullable();
              $table->text('mpc_qn_b_4')->nullable();
-             $table->text('mpc_qn_b_27_remak')->nullable();
+             $table->text('mpc_qn_b_27_remark')->nullable();
              $table->text('mpc_qn_b_28')->nullable();
              $table->timestamps();
              $table->foreign('incl_assessment_id')->references('id')->on('inclusion_assessments')
