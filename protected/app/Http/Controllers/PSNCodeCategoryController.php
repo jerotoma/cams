@@ -62,6 +62,7 @@ class PSNCodeCategoryController extends Controller
                 $category->code = strtoupper($request->code);
                 $category->description = $request->description;
                 $category->definition = $request->definition;
+                $category->for_reporting = $request->for_reporting;
                 $category->created_by = Auth::user()->username;
                 $category->save();
 
@@ -132,6 +133,7 @@ class PSNCodeCategoryController extends Controller
                 $category->code = strtoupper($request->code);
                 $category->description = $request->description;
                 $category->definition = $request->definition;
+                $category->for_reporting = $request->for_reporting;
                 $category->created_by = Auth::user()->username;
                 $category->save();
 

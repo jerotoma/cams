@@ -62,6 +62,14 @@
                     @endif
 
                 </div>
+                <div class="form-group">
+                    <label>Used in reporting</label>
+                    <select class="select" name="for_reporting" id="for_reporting">
+                        <option></option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
 
                 <div class="row">
                     <div class="col-md-8 col-sm-8 pull-left" id="output">

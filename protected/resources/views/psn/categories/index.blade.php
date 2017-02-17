@@ -213,6 +213,7 @@
                 <th>Code</th>
                 <th>Description</th>
                 <th>Definition</th>
+                <th>Used In Reports</th>
                 <th class="text-center">Actions</th>
             </tr>
             </thead>
@@ -224,9 +225,18 @@
                 <td>{{$category->code}}</td>
                 <td>{{$category->description}}</td>
                 <td>{{$category->definition}}</td>
-                <td class="text-center" id="{{$category->id}}">
-                    <a href="#" class="editRecord btn "><i class="fa fa-pencil text-success"></i> Edit</a>
-                    <a href="#" class="deleteRecord btn" ><i class="fa fa-trash text-danger"></i> Delete</a>
+                <td>{{$category->for_reporting}}</td>
+                <td><ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li id="{{$category->id}}"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                                <li id="{{$category->id}}"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </td>
             </tr>
                 @endforeach

@@ -35,7 +35,7 @@
     @include('inc.main_navigation')
 @stop
 @section('page_title')
-    Countries
+    Origin
 @stop
 @section('page_heading_title')
     <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Countries</span> </h4>

@@ -69,6 +69,14 @@
                         @endif
 
                     </div>
+                    <div class="form-group">
+                        <label>Used in reporting</label>
+                        <select class="select" name="for_reporting" id="for_reporting">
+                            <option></option>
+                           <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
 
                     <div class="row">
                         <div class="col-md-8 col-sm-8 pull-left" id="output">
@@ -135,12 +143,13 @@
                     },
                     errorElement:'div',
                     rules: {
-
+                        for_reporting: "required",
                         code: "required",
                         description: "required",
                         definition: "required"
                     },
                     messages: {
+                        for_reporting: "Please field is required",
                         code: "Please category_name is required",
                         description: "Please description is required",
                         definition: "Please full name is required",

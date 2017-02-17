@@ -22,7 +22,11 @@
 <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
-    $('.pickadate').pickadate();
+    $('.pickadate').pickadate({
+
+        // Escape any “rule” characters with an exclamation mark (!).
+        format: 'yyyy-mm-dd',
+    });
 </script>
 
 <div class="portlet light bordered">
@@ -77,12 +81,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group ">
-                        <label class="control-label">Client Number</label>
+                        <label class="control-label">Unique ID</label>
                         <input type="text" class="form-control" placeholder="Client Number" name="client_number" id="client_number"
                                value="{{old('client_number')}}">
-                        @if($errors->first('client_number') !="")
-                            <label id="address-error" class="validation-error-label" for="address">{{ $errors->first('client_number') }}</label>
-                        @endif
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -143,6 +144,7 @@
                         <label class="control-label">Marital Status</label>
                         <select class="select" name="marital_status" id="marital_status" data-placeholder="Choose an option...">
                             <option></option>
+                            <option value="Child">Child</option>
                             <option value="Single">Single</option>
                             <option value="Married">Married</option>
                             <option value="Divorced">Divorced</option>
@@ -422,7 +424,7 @@
                 });
         }
     });
-    $("#civil_status").change(function () {
+    $("#marital_status").change(function () {
         var id1 = this.value;
         if(id1 != "Married")
         {

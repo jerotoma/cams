@@ -63,6 +63,7 @@ class PSNCodesController extends Controller
                 $code->description = $request->description;
                 $code->definition = $request->definition;
                 $code->category_id = $request->category_id;
+                $code->for_reporting = $request->for_reporting;
                 $code->created_by = Auth::user()->username;
                 $code->save();
 
@@ -134,6 +135,7 @@ class PSNCodesController extends Controller
                 $code->description = $request->description;
                 $code->definition = $request->definition;
                 $code->category_id = $request->category_id;
+                $code->for_reporting = $request->for_reporting;
                 $code->created_by = Auth::user()->username;
                 $code->save();
 

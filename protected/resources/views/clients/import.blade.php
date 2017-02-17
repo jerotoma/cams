@@ -244,6 +244,18 @@
                         {{Session::get('error')}}
                     </div>
                 @endif
+                    <div class="form-group ">
+                        <label class="control-label">Camp</label>
+                        <select class="select" name="camp_id" id="camp_id" data-placeholder="Choose an option...">
+                            <option ></option>
+                            @foreach(\App\Camp::all() as $item)
+                                <option value="{{$item->id}}">{{$item->camp_name}}</option>
+                            @endforeach
+                        </select>
+                        @if($errors->first('camp_id') !="")
+                            <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
+                        @endif
+                    </div>
                 <div class="form-group">
                     <label>Import list of clients for registration, kindly use this template <a href={{asset("assets/templates/client_import_template.xls")}}>Download template here</a> </label>
                     <input TYPE="file" class="form-control" name="inventory_file" id="inventory_file">

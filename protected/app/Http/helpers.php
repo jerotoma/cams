@@ -60,7 +60,7 @@ if (!function_exists('getHighChatClientByCodes')) {
 
         $series1="";
         $seriesdata1="";
-        foreach (\App\PSNCode::all() as $code) {
+        foreach (\App\PSNCode::where('for_reporting','=','Yes')->get() as $code) {
             $series1 .= "{ ";
             $series1 .= " name: '".$code->description."',";
 
@@ -74,6 +74,29 @@ if (!function_exists('getHighChatClientByCodes')) {
 
         $seriesdata1=substr($series1,0,strlen($series1)-1);
         return $seriesdata1;
+    }
+}
+if (!function_exists('getClientsCountByCreteria')) {
+    function getClientsCountByCreteria($id,$sex,$score,$camp_id,$range) {
+        $data = count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('clients.sex','=',$sex)
+            ->where('clients.age_score','=',$score)
+            ->whereBetween('clients.date_arrival', $range)->get());
+
+        return $data;
+    }
+}
+if (!function_exists('getClientsCountAll')) {
+    function getClientsCountAll($id,$range,$camp_id) {
+
+        $data = \DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->whereBetween('clients.date_arrival', $range)->get();
+
+        return count($data);
     }
 }
 if (!function_exists('getHighChatClientMonthlyCountByNationality')) {

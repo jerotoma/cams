@@ -140,6 +140,7 @@ class ClientsController extends Controller
                                 <i class="icon-menu9"></i>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
+                                <li id="'.$client->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
                                 <li id="'.$client->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
                                 <li id="'.$client->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
                             </ul>
@@ -169,10 +170,10 @@ class ClientsController extends Controller
     }
     public function postImport(Request $request)
     {
-        try {
-            $this->validate($request, [
-                'inventory_file' => 'required|mimes:xls,xlsx',
-            ]);
+        //try {
+            //$this->validate($request, [
+            //    'inventory_file' => 'required|mimes:xls,xlsx',
+           // ]);
 
             $file= $request->file('inventory_file');
             $destinationPath = public_path() .'/uploads/temp/';
@@ -180,48 +181,66 @@ class ClientsController extends Controller
 
             $file->move($destinationPath, $filename);
 
-            Excel::load($destinationPath . $filename, function ($reader) {
+            Excel::load($destinationPath . $filename, function ($reader) use($request) {
                 $reader->formatDates(false, 'Y-m-d');
                 $results= $reader->get();
-                $results->each(function($row) {
+                $results->each(function($row) use($request) {
 
-                    if(!count(Client::where('client_number','=',strtoupper($row->client_number))->get()) >0)
+                    if(!count(Client::where('client_number','=',strtoupper($row->unique_id))
+                            ->where('full_name','=',ucwords($row->full_name))
+                            ->where('age','=',$row->age)
+                            ->where('origin','=',ucwords(strtolower($row->origin)))
+                            ->where('ration_card_number','=',$row->ration_card_number)->get()) >0)
                     {
-                        if(count(Country::where('country_name','=',ucwords(strtolower($row->nationality)))->get()) >0)
+                        if(count(Country::where('country_name','=',ucwords(strtolower($row->origin)))->get()) >0)
                         {
-                            $c=Country::where('country_name','=',ucwords(strtolower($row->nationality)))->get()->first();
+                            $c=Country::where('country_name','=',ucwords(strtolower($row->origin)))->get()->first();
                         }
                         else
                         {
                             $co=new Country;
-                            $co->country_name=ucwords(strtolower($row->nationality));
+                            $co->country_name=ucwords(strtolower($row->origin));
                             $co->save();
                             $c=$co;
                         }
 
+
                         $client=new Client;
-                        $client->client_number =strtoupper($row->client_number);
-                        $client->full_name =ucwords(strtolower($row->full_name));
-                        $client->sex =ucwords($row->sex);
-                        $client->age =$row->age;
-                        if($row->birth_date != null){
-                        $client->birth_date =date("Y-m-d",strtotime($row->birth_date));}
-                        $client->marital_status =$row->marital_status;
-                        $client->spouse_name =$row->name_of_spouse_if_married;
-                        $client->care_giver =$row->care_giver;
-                        $client->females_total =$row->number_of_females;
-                        $client->males_total =$row->number_of_males;
-                        if($c != null){
-                            $client->country_id =$c->id;
+                        $client->client_number = strtoupper($row->unique_id);
+                        $client->full_name = ucwords($row->full_name);
+                        if(strtolower($row->sex) =="k" || strtolower($row->sex) =="mk" || strtolower($row->sex) =="f")
+                        {
+                            $client->sex = "Female";
                         }
-                        $client->origin =ucwords($row->origin);
-                        $client->date_arrival =date("Y-m-d",strtotime($row->date_of_arrival));
-                        $client->present_address =$row->present_address;
-                        $client->household_number =$row->household_number;
-                        $client->ration_card_number =$row->ration_card_number;
-                        $client->assistance_received =$row->assistance_received_to_date;
-                        $client->problem_specification =$row->problem_specification;
-                        $client->created_by =Auth::user()->username;
+                        else
+                        {
+                            $client->sex = "Male";
+                        }
+                        $client->age = $row->age;
+                        if ($row->age != null) {
+                            $agedef=Date("Y") - $row->age;
+                            $birthdate=$agedef."-01-01";
+                            $client->birth_date = $birthdate;
+                        }
+                        $client->marital_status = ucwords($row->marital_status);
+                        $client->spouse_name = $row->spouse_name;
+                        $client->care_giver = $row->care_giver;
+                        $client->origin = ucwords($row->origin);
+                        $client->country_id = $c->id;
+                        $client->date_arrival = date("Y-m-d", strtotime("$row->date_of_arrival"));
+                        $client->present_address = $row->present_address;
+                        $client->household_number = $row->household_number;
+                        $client->ration_card_number = $row->ration_card_number;
+                        $client->assistance_received = $row->assistance_received;
+                        $client->problem_specification = $row->problem_specification;
+                        $client->camp_id = $request->camp_id;
+                        $client->present_address = $row->present_address;
+                        $client->females_total = $row->females_total;
+                        $client->males_total = $row->males_total;
+                        $client->present_address = $row->present_address;
+                        $client->hh_relation = "";
+                        $client->created_by = Auth::user()->username;
+                        $client->age_score= $this->getAgeScore($row->age);
                         $client->save();
 
                         $psnCodes=array($row->psn_code_1,$row->psn_code_2,$row->psn_code_3,$row->psn_code_4,$row->psn_code_5);
@@ -255,12 +274,12 @@ class ClientsController extends Controller
 
             });
            return redirect('clients');
-        }
+        /*}
         catch (\Exception $e)
         {
             //echo $e->getMessage();
             return  redirect()->back()->with('error',$e->getMessage());
-        }
+        }*/
     }
 
     /**

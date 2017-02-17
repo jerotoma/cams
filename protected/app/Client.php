@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Client extends Model
 {
     //
+    public function origin()
+    {
+        return $this::belongsTo('\App\Origin','origin_id');
+    }
     public function nationality()
     {
         return $this::belongsTo('\App\Country','country_id');

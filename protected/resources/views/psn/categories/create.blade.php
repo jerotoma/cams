@@ -28,7 +28,7 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-            {!! Form::open(array('url'=>'psncodes-catogories','role'=>'form','id'=>'formClients')) !!}
+            {!! Form::open(array('url'=>'psncodes-categories','role'=>'form','id'=>'formClients')) !!}
             <div class="panel panel-flat">
                 <div class="panel-heading">
                     <h5 class="panel-title">PSN Code Category Details</h5>
