@@ -340,7 +340,8 @@ class InclusionAssessmentController extends Controller
                 $mpc_context->mpc_context_6            =  $request->mpc_qn_context_6;
                 $mpc_context->mpc_context_6_remark     =  $request->mpc_qn_context_6_remark;
                 $mpc_context->mpc_context_7            =  $request->mpc_qn_context_7;
-                $mpc_context->mpc_context_8            =  $request->mpc_qn_context_8;
+                $mpc_context->mpc_context_8            =  $request->mpc_qn_context_8;   
+                $mpc_context->mpc_context_9            =  $request->mpc_qn_context_9;
                 $mpc_context->mpc_context_9_remark     =  $request->mpc_qn_context_9_remark;
                 $mpc_context->mpc_context_10           =  $request->mpc_qn_context_10;
                 $mpc_context->mpc_context_11           =  $request->mpc_qn_context_11;
