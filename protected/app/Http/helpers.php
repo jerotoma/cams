@@ -76,6 +76,27 @@ if (!function_exists('getHighChatClientByCodes')) {
         return $seriesdata1;
     }
 }
+if (!function_exists('getClientsCountByCreteriaAgeScore')) {
+    function getClientsCountByCreteriaAgeScore($id,$score,$camp_id,$range) {
+        $data = count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('clients.age_score','=',$score)
+            ->whereBetween('clients.date_arrival', $range)->get());
+
+        return $data;
+    }
+}
+if (!function_exists('getClientsSumCountByCreteriaAgeScore')) {
+    function getClientsSumCountByCreteriaAgeScore($id,$camp_id,$range) {
+        $data = count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->whereBetween('clients.date_arrival', $range)->get());
+
+        return $data;
+    }
+}
 if (!function_exists('getClientsCountByCreteria')) {
     function getClientsCountByCreteria($id,$sex,$score,$camp_id,$range) {
         $data = count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
@@ -86,6 +107,114 @@ if (!function_exists('getClientsCountByCreteria')) {
             ->whereBetween('clients.date_arrival', $range)->get());
 
         return $data;
+    }
+}
+if (!function_exists('getClientsSumCountByCreteria')) {
+    function getClientsSumCountByCreteria($id,$sex,$camp_id,$range) {
+        $data = count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('clients.sex','=',$sex)
+            ->whereBetween('clients.date_arrival', $range)->get());
+
+        return $data;
+    }
+}
+if (!function_exists('getClientsCountPercentageByCreteria')) {
+    function getClientsCountPercentageByCreteria($id,$sex,$score,$camp_id,$range) {
+        $sexcount = count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('clients.sex','=',$sex)
+            ->where('clients.age_score','=',$score)
+            ->whereBetween('clients.date_arrival', $range)->get());
+
+        $total=count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('clients.age_score','=',$score)
+            ->whereBetween('clients.date_arrival', $range)->get());
+
+        $percent=0;
+        if($sexcount > 0 && $total >0 ) {
+            $num=(($sexcount / $total) * 100);
+            $percent =  number_format($num,2). "%";
+        }
+        else{
+            $percent .="%";
+        }
+        return $percent;
+    }
+}
+if (!function_exists('getClientsSumCountPercentageByCreteria')) {
+    function getClientsSumCountPercentageByCreteria($id,$sex,$camp_id,$range) {
+        $sexcount = count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('clients.sex','=',$sex)
+            ->whereBetween('clients.date_arrival', $range)->get());
+
+        $total=count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->whereBetween('clients.date_arrival', $range)->get());
+
+        $percent=0;
+        if($sexcount > 0 && $total >0 ) {
+            $num=(($sexcount / $total) * 100);
+            $percent =  number_format($num,2). "%";
+        }
+        else{
+            $percent .="%";
+        }
+        return $percent;
+    }
+}
+if (!function_exists('getClientsCountPercentageByCreteriaAgeScore')) {
+    function getClientsCountPercentageByCreteriaAgeScore($id,$score,$camp_id,$range) {
+        $sexcount = count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('clients.age_score','=',$score)
+            ->whereBetween('clients.date_arrival', $range)->get());
+
+        $total=count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->whereBetween('clients.date_arrival', $range)->get());
+
+        $percent=0;
+        if($sexcount > 0 && $total >0 ) {
+            $num=(($sexcount / $total) * 100);
+            $percent =  number_format($num,2). "%";
+        }
+        else{
+            $percent .="%";
+        }
+        return $percent;
+    }
+}
+if (!function_exists('getClientsSumCountPercentageByCreteriaAgeScore')) {
+    function getClientsSumCountPercentageByCreteriaAgeScore($id,$camp_id,$range) {
+        $sexcount = count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->whereBetween('clients.date_arrival', $range)->get());
+
+        $total=count(\DB::table('client_vulnerability_codes')->leftjoin('clients','client_vulnerability_codes.client_id','=','clients.id')
+            ->where('client_vulnerability_codes.code_id','=',$id)
+            ->where('clients.camp_id','=',$camp_id)
+            ->whereBetween('clients.date_arrival', $range)->get());
+
+        $percent=0;
+        if($sexcount > 0 && $total >0 ) {
+            $num=(($sexcount / $total) * 100);
+            $percent =  number_format($num,2). "%";
+        }
+        else{
+            $percent .="%";
+        }
+        return $percent;
     }
 }
 if (!function_exists('getClientsCountAll')) {
@@ -130,5 +259,110 @@ if (!function_exists('getHighChatItemsDistributionByYear')) {
         }
         $monthData.=substr($MonthCount,0,strlen($MonthCount)-1);
         return $monthData;
+    }
+}
+
+if (!function_exists('getClientNumberBySex')) {
+    function getClientNumberBySex($sex) {
+        return count(\App\Client::where('sex','=',ucwords(strtolower($sex)))->get());
+    }
+}
+if (!function_exists('getClientNumberBySexByCamp')) {
+    function getClientNumberBySexByCamp($sex,$camp_id,$range) {
+        return count(\App\Client::whereBetween('date_arrival', $range)->where('camp_id','=',$camp_id)->where('sex','=',ucwords(strtolower($sex)))->get());
+    }
+}
+if (!function_exists('getClientPercentageBySex')) {
+    function getClientPercentageBySex($sex) {
+        $sexcount= count(\App\Client::where('sex','=',ucwords(strtolower($sex)))->get());
+        $total=count(\App\Client::all());
+        $percent=0;
+        if($sexcount > 0 && $total >0 ) {
+            $num=(($sexcount / $total) * 100);
+            $percent =  number_format($num,2). "%";
+        }
+        else{
+            $percent .="%";
+        }
+        return $percent;
+
+    }
+}
+if (!function_exists('getClientNumberBySexAgescore')) {
+    function getClientNumberBySexAgescore($sex,$score) {
+        return count(\App\Client::where('sex','=',ucwords(strtolower($sex)))->where('age_score','=',$score)->get());
+    }
+}
+if (!function_exists('getClientNumberBySexAgescoreByCamp')) {
+    function getClientNumberBySexAgescoreByCamp($sex,$score,$camp_id,$range) {
+        return count(\App\Client::whereBetween('date_arrival', $range)->where('camp_id','=',$camp_id)->where('sex','=',ucwords(strtolower($sex)))->where('age_score','=',$score)->get());
+    }
+}
+if (!function_exists('getClientNumberByAgeScore')) {
+    function getClientNumberByAgeScore($score) {
+        return count(\App\Client::where('age_score','=',$score)->get());
+    }
+}
+if (!function_exists('getClientNumberByAgeScoreByCamp')) {
+    function getClientNumberByAgeScoreByCamp($score,$camp_id,$range) {
+        return count(\App\Client::whereBetween('date_arrival', $range)->where('camp_id','=',$camp_id)->where('age_score','=',$score)->get());
+    }
+}
+if (!function_exists('getAllClientsNumber')) {
+    function getAllClientsNumber() {
+        return count(\App\Client::all());
+    }
+}
+if (!function_exists('getAllClientsNumberByCamp')) {
+    function getAllClientsNumberByCamp($camp_id,$range) {
+        return count(\App\Client::whereBetween('date_arrival', $range)->where('camp_id','=',$camp_id)->get());
+    }
+}
+if (!function_exists('getClientPercentageBySexAgeScore')) {
+    function getClientPercentageBySexAgeScore($sex,$score) {
+        $sexcount= count(\App\Client::where('sex','=',ucwords(strtolower($sex)))->where('age_score','=',$score)->get());
+        $total=count(\App\Client::where('age_score','=',$score)->get());
+        $percent=0;
+        if($sexcount > 0 && $total >0 ) {
+            $num=(($sexcount / $total) * 100);
+            $percent =  number_format($num,2). "%";
+        }
+        else{
+            $percent .="%";
+        }
+        return $percent;
+
+    }
+}
+if (!function_exists('getClientPercentageByAgeScore')) {
+    function getClientPercentageByAgeScore($score) {
+        $sexcount= count(\App\Client::where('age_score','=',$score)->get());
+        $total=count(\App\Client::all());
+        $percent=0;
+        if($sexcount > 0 && $total >0 ) {
+            $num=(($sexcount / $total) * 100);
+            $percent =  number_format($num,2). "%";
+        }
+        else{
+            $percent .="%";
+        }
+        return $percent;
+
+    }
+}
+if (!function_exists('getClientPercentageByAgeScoreByCamp')) {
+    function getClientPercentageByAgeScoreByCamp($score,$camp_id,$range) {
+        $sexcount= count(\App\Client::whereBetween('date_arrival', $range)->where('camp_id','=',$camp_id)->where('age_score','=',$score)->get());
+        $total=count(\App\Client::whereBetween('date_arrival', $range)->where('camp_id','=',$camp_id)->get());
+        $percent=0;
+        if($sexcount > 0 && $total >0 ) {
+            $num=(($sexcount / $total) * 100);
+            $percent =  number_format($num,2). "%";
+        }
+        else{
+            $percent .="%";
+        }
+        return $percent;
+
     }
 }

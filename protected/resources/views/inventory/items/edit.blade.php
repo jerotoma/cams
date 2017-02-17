@@ -60,23 +60,27 @@
             <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
                     <div class="form-group">
-                        <label>Status</label>
-                        <select name="status" class="select" id="status" data-placeholder="Choose an option...">
-                            @if($item->status !="" )
-                                <option value="{{$item->status}}">{{$item->status}}</option>
-                            @endif
-                            <option></option>
-                            <option value="Available">Available</option>
-                            <option value="Available">Not available</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
-                    <div class="form-group">
                         <label>Remarks</label>
                         <input type="text" class="form-control" name="remarks" id="remarks" value="{{$item->remarks}}">
                     </div>
                 </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                    <div class="form-group">
+                        <label>Re distribution Limit <small class="text-danger text-bold">Number of days for items to be redistributed to client</small></label>
+                        <input type="text" class="form-control" name="redistribution_limit" id="redistribution_limit" value="{{$item->redistribution_limit}}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" class="select" id="status" data-placeholder="Choose an option...">
+                    @if($item->status !="" )
+                        <option value="{{$item->status}}">{{$item->status}}</option>
+                    @endif
+                    <option></option>
+                    <option value="Available">Available</option>
+                    <option value="Available">Not available</option>
+                </select>
             </div>
             <div class="row">
                 <div class="col-md-8 col-sm-8 pull-left" id="output">
@@ -84,7 +88,7 @@
                 </div>
                 <div class="col-md-4 col-sm-4 pull-right text-right">
                     <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-refresh"></i> Update Item </button>
                 </div>
 
             </div>
@@ -159,13 +163,15 @@
             item_name: "required",
             status: "required",
             unit: "required",
-            quantity: "required"
+            quantity: "required",
+            redistribution_limit: "required",
         },
         messages: {
             item_name: "Please enter item name",
-            status: "Please select status",
             unit: "Please enter item unit",
-            quantity: "Please enter quantity"
+            status: "Please select status",
+            quantity: "Please enter quantity",
+            redistribution_limit: "Please enter redistribution limit"
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");

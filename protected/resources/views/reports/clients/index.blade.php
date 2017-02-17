@@ -187,17 +187,11 @@
             },
             errorElement:'div',
             rules: {
-
-                start_date: "required",
-                end_date: "required",
-                report_type: "required",
-                vulnerability_code: "required"
+                report_type: "required"
             },
             messages: {
-                start_date: "Please start_date is required",
-                end_date: "Please end_date is required",
-                report_type: "Please report_type is required",
-                vulnerability_code: "Please vulnerability_code is required"
+                report_type: "Please report type is required"
+
             }
         });
     </script>
@@ -231,13 +225,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group ">
                                             <label class="control-label">End Date</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="icon-calendar22"></i></span>
                                                 <input type="text" class="form-control pickadate" value="{{old('end_date')}}" name="end_date" id="end_date">
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group ">
+                                            <label class="control-label">All Dates</label>
+                                            <input type="checkbox" class="form-control" value="alldated" name="all_dates">
+
                                         </div>
                                     </div>
 
@@ -258,11 +259,30 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group ">
-                                            <label>Report Type</label>
-                                            <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type">
-                                                <optgroup label="Vulnerability Code">
-                                                    <option value="Excel" selected>Excel File</option>
-                                                    <option value="Graphical" >Graphical</option>
+                                            <label>Specific Needs?</label>
+                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
+                                                <optgroup label="Specific Needs">
+                                                    <option></option>
+                                                    <option value="All">All</option>
+                                                    @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
+                                                    <option value="{{$code->id}}">{{$code->description}}</option>
+                                                        @endforeach
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group ">
+                                            <label>What type of report type do you need?</label>
+                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type" data-placeholder="Choose an option...">
+                                                <optgroup label="Report Type">
+                                                    <option></option>
+                                                    <option value="Registration by Category">Registration by Category</option>
+                                                    <option value="Population Planning Groups" >Population Planning Groups</option>
+                                                    <option value="Specific needs provided" >Specific needs provided</option>
+                                                    <option value="All Registration Details" >All Registration Details</option>
                                                 </optgroup>
                                             </select>
                                         </div>
@@ -270,11 +290,8 @@
                                 </div>
                             </fieldset>
                             <div class="row">
-                                <div class="col-md-8 col-sm-8 pull-left" id="output">
-
-                                </div>
-                                <div class="col-md-4 col-sm-4 pull-right text-right">
-                                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-plus"></i> Generate Report </button>
+                                <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
+                                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cog"></i> Generate Report </button>
                                 </div>
 
                             </div>

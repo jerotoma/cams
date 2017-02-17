@@ -13,6 +13,7 @@ class ReportsClientController extends Controller
      */
     public function index()
     {
+        ob_clean();
         //
         \Excel::create('Laravel Excel', function($excel) {
 

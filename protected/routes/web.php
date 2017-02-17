@@ -6,7 +6,6 @@ Route::get('home','HomeController@index');
 Route::get('login','Auth\LoginController@login');
 Route::post('login','Auth\LoginController@postLogin');
 Route::get('logout','Auth\LoginController@logout');
-Route::get('test','ReportsClientController@index');
 
 //Users
 Route::resource('users','UserController');
@@ -151,7 +150,7 @@ Route::get('reports/clients',[
       'uses' => 'ClientReportsController@index',
       'as'   => 'reports/clients'
 ]);
-Route::get('generate/reports/clients','ClientReportsController@showGenerate');
+Route::get('generate/reports/clients','ClientReportsController@index');
 Route::post('generate/reports/clients','ClientReportsController@postGenerate');
 Route::get('reports/assessments','DataVisualizationController@showAssessments');
 //Inclusion Assessments

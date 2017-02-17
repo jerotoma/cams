@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Client extends Model
 {
     //
-    public function origin()
+    public function fromOrigin()
     {
         return $this::belongsTo('\App\Origin','origin_id');
     }

@@ -26,20 +26,35 @@
         </tr>
         </thead>
         <tbody>
+        <?php
+        $t1=$t2=$t3=$t4=$t5=$t6=$t7=$t8=$t9=0
+        ?>
         @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
             <tr>
                 <td>{{$code->description}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Female','A',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Male','A',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Female','B',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Male','B',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Female','C',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Male','C',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Female','D',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Male','D',$camp->id,$range)}}</td>
-                <td>{{getClientsCountAll($code->id,$range,$camp->id)}}</td>
+                <td>{{getClientsCountByCreteria($code->id,'Female','A',$camp->id,$range)}}<?php $t1 = $t1 + getClientsCountByCreteria($code->id,'Female','A',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Male','A',$camp->id,$range)}}<?php $t2 = $t2 + getClientsCountByCreteria($code->id,'Male','A',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Female','B',$camp->id,$range)}}<?php $t3 = $t3 + getClientsCountByCreteria($code->id,'Female','B',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Male','B',$camp->id,$range)}}<?php $t4 = $t4 + getClientsCountByCreteria($code->id,'Male','B',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Female','C',$camp->id,$range)}}<?php $t5 = $t5 + getClientsCountByCreteria($code->id,'Female','C',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Male','C',$camp->id,$range)}}<?php $t6 = $t6 +getClientsCountByCreteria($code->id,'Male','C',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Female','D',$camp->id,$range)}}<?php $t7 = $t7 + getClientsCountByCreteria($code->id,'Female','D',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Male','D',$camp->id,$range)}}<?php $t8 = $t8 + getClientsCountByCreteria($code->id,'Male','D',$camp->id,$range);?></td>
+                <td>{{getClientsCountAll($code->id,$range,$camp->id)}}<?php $t9 = $t9 + getClientsCountAll($code->id,$range,$camp->id);?></td>
             </tr>
         @endforeach
+        <tr>
+            <th>Total</th>
+            <td>{{$t1}}</td>
+            <td>{{$t2}}</td>
+            <td>{{$t3}}</td>
+            <td>{{$t4}}</td>
+            <td>{{$t5}}</td>
+            <td>{{$t6}}</td>
+            <td>{{$t7}}</td>
+            <td>{{$t8}}</td>
+            <td>{{$t9}}</td>
+        </tr>
         </tbody>
         <tfoot></tfoot>
     </table>
@@ -52,7 +67,7 @@
             <th style="text-align:center; background-color: #cccccc" colspan="10">Detailed Registration by Category for {{$camp->camp_name}} ({{$start_time. " to ". $end_time}} )</th>
         </tr>
         <tr>
-            <th rowspan="2" >Specific Needs & Codes </th>
+            <th rowspan="2"  >Specific Needs & Codes </th>
             <th colspan="2" style="text-align:center; background-color: #cccccc">0-17 Yrs</th>
             <th colspan="2" style="text-align:center; background-color: #cccccc">18-49 Yrs</th>
             <th colspan="2" style="text-align:center; background-color: #cccccc">50-59yrs</th>
@@ -72,60 +87,37 @@
         </tr>
         </thead>
         <tbody>
+        <?php
+        $t1=$t2=$t3=$t4=$t5=$t6=$t7=$t8=$t9=0
+        ?>
         @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
             <tr>
                 <td>{{$code->description}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Female','A',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Male','A',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Female','B',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Male','B',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Female','C',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Male','C',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Female','D',$camp->id,$range)}}</td>
-                <td>{{getClientsCountByCreteria($code->id,'Male','D',$camp->id,$range)}}</td>
-                <td>{{getClientsCountAll($code->id,$range,$camp->id)}}</td>
+                <td>{{getClientsCountByCreteria($code->id,'Female','A',$camp->id,$range)}}<?php $t1 = $t1 + getClientsCountByCreteria($code->id,'Female','A',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Male','A',$camp->id,$range)}}<?php $t2 = $t2 + getClientsCountByCreteria($code->id,'Male','A',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Female','B',$camp->id,$range)}}<?php $t3 = $t3 + getClientsCountByCreteria($code->id,'Female','B',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Male','B',$camp->id,$range)}}<?php $t4 = $t4 + getClientsCountByCreteria($code->id,'Male','B',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Female','C',$camp->id,$range)}}<?php $t5 = $t5 + getClientsCountByCreteria($code->id,'Female','C',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Male','C',$camp->id,$range)}}<?php $t6 = $t6 +getClientsCountByCreteria($code->id,'Male','C',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Female','D',$camp->id,$range)}}<?php $t7 = $t7 + getClientsCountByCreteria($code->id,'Female','D',$camp->id,$range);?></td>
+                <td>{{getClientsCountByCreteria($code->id,'Male','D',$camp->id,$range)}}<?php $t8 = $t8 + getClientsCountByCreteria($code->id,'Male','D',$camp->id,$range);?></td>
+                <td>{{getClientsCountAll($code->id,$range,$camp->id)}}<?php $t9 = $t9 + getClientsCountAll($code->id,$range,$camp->id);?></td>
             </tr>
         @endforeach
+        <tr>
+            <th>Total</th>
+            <td>{{$t1}}</td>
+            <td>{{$t2}}</td>
+            <td>{{$t3}}</td>
+            <td>{{$t4}}</td>
+            <td>{{$t5}}</td>
+            <td>{{$t6}}</td>
+            <td>{{$t7}}</td>
+            <td>{{$t8}}</td>
+            <td>{{$t9}}</td>
+        </tr>
         </tbody>
         <tfoot></tfoot>
     </table>
 
 @endif
-
-<table border="1">
-    <thead>
-    <tr>
-        <th colspan="22" align="center">All clients details</th>
-    </tr>
-    <tr>
-        <th colspan="5" align="center">Client Details</th>
-        <th colspan="14" align="center">Assessment Details</th>
-        <th colspan="3" align="center">Disability Details</th>
-    </tr>
-    <tr>
-        <th> Date registered </th>
-        <th> File number  </th>
-        <th> Client Name </th>
-        <th> Sex </th>
-        <th>Date of  Birth </th>
-        <th>Nationality </th>
-        <th>Date of first consultation </th>
-        <th>Consultation No </th>
-        <th>Diagnosis </th>
-        <th>Medical History</th>
-        <th>School/employment </th>
-        <th>Social History </th>
-        <th> Skin condition </th>
-        <th> Activities of daily living </th>
-        <th> Joint assessment </th>
-        <th> Muscle assessment </th>
-        <th> Functional assessment </th>
-        <th> Problem list </th>
-        <th> Treatment </th>
-        <th> Remarks </th>
-        <th>Disability Category</th>
-        <th>Disability/Diagnosis</th>
-        <th>Remarks</th>
-    </tr>
-    </thead>
-</table>

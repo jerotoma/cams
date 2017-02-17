@@ -138,6 +138,7 @@ class ItemInventoryController extends Controller
                 'quantity' => 'required|numeric',
                 'status' => 'required',
                 'unit' => 'required',
+                'redistribution_limit' => 'required',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -146,13 +147,14 @@ class ItemInventoryController extends Controller
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
                 $item = new ItemsInventory;
-                $item->item_name = $request->item_name;
+                $item->item_name = strtoupper(strtolower($request->item_name));
                 $item->description = $request->description;
                 $item->category_id = $request->category_id;
                 $item->quantity = $request->quantity;
                 $item->unit = strtoupper(strtolower($request->unit));
                 $item->remarks = $request->remarks;
                 $item->status = $request->status;
+                $item->redistribution_limit=$request->redistribution_limit;
                 $item->save();
                 return response()->json([
                     'success' => true,
@@ -211,6 +213,7 @@ class ItemInventoryController extends Controller
                 'quantity' => 'required|numeric',
                 'status' => 'required',
                 'unit' => 'required',
+                'redistribution_limit' => 'required',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -219,13 +222,14 @@ class ItemInventoryController extends Controller
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
                 $item = ItemsInventory::find($id);
-                $item->item_name = $request->item_name;
+                $item->item_name = strtoupper(strtolower($request->item_name));
                 $item->description = $request->description;
                 $item->category_id = $request->category_id;
-                $item->unit = strtoupper(strtolower($request->unit));
                 $item->quantity = $request->quantity;
+                $item->unit = strtoupper(strtolower($request->unit));
                 $item->remarks = $request->remarks;
                 $item->status = $request->status;
+                $item->redistribution_limit=$request->redistribution_limit;
                 $item->save();
                 return response()->json([
                     'success' => true,
