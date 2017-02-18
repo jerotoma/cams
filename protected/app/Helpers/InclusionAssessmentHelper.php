@@ -48,7 +48,7 @@
             }
       }
       public function isChecked($text, $value){
-
+           if($value == "initial") var_dump($value);
           if(!empty($text) && ($text == $value)){
               $check = 'checked';
               return $check;

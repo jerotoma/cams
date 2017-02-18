@@ -40,7 +40,7 @@
 						   </div>
 						  <div class="col-md-6 col-md-pull-2">
 								<div class="checkbox">
-								  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_a_2" value="0">0</label>
+								  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_a_2" value="initial">0</label>
 								</div>
 								<div clas="form-group">
 									<input type="text" class="form-control" id="" placeholder="Remark:" name ="mpc_qn_a_2_remark" value="">
