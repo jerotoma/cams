@@ -70,8 +70,8 @@
                         <label class="control-label">Origin</label>
                         <select class="select" name="nationality" id="origin" data-placeholder="Choose an option...">
                             <option></option>
-                            @foreach(\App\Country::all() as $item)
-                                <option value="{{$item->id}}">{{$item->country_name}}</option>
+                            @foreach(\App\Origin::all() as $item)
+                                <option value="{{$item->id}}">{{$item->origin_name}}</option>
                             @endforeach
                         </select>
                     </div>

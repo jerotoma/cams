@@ -77,10 +77,7 @@
             <li>
                 <a href="#"><i class="fa fa-pie-chart"></i> <span>NFIs Inventory Reports</span></a>
                 <ul>
-                    <li><a href="{{url('reports/items/distributions')}}">Item Distribution</a></li>
-                    <li><a href="{{url('reports/inventory-received')}}">Received Items</a></li>
-                    <li><a href="{{url('reports/inventory')}}">Items Inventory</a></li>
-                    <li><a href="{{url('reports/inventory-categories')}}">Items Categories</a></li>
+                    <li><a href="#">Inventory Reports</a></li>
                 </ul>
             </li>
             <!-- /data visualization -->
@@ -155,8 +152,8 @@
             <li>
                 <a href="#"><i class="icon-puzzle4"></i> <span>Data import</span></a>
                 <ul>
-                    <li><a href="{{url('backup/import')}}">Import</a></li>
-                    <li><a href="{{url('backup/export')}}">Export</a></li>
+                    <li><a href="#">Import</a></li>
+                    <li><a href="#">Export</a></li>
                 </ul>
             </li>
             <li>

@@ -34,7 +34,7 @@
 
 </head>
 
-<body class="navbar-top">
+<body class="navbar-top" style="overflow:auto;">
 
    @include('inc.header')
 

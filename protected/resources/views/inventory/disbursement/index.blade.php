@@ -49,7 +49,7 @@
                         modaldis+= ' </div>';
                         modaldis+= '</div>';
                         modaldis+= '</div>';
-                        $('body').css('overflow','hidden');
+                         $('body').css('overflow-y','scroll');
 
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
@@ -74,7 +74,7 @@
                         modaldis+= ' </div>';
                         modaldis+= '</div>';
                         modaldis+= '</div>';
-                        $('body').css('overflow','hidden');
+                         $('body').css('overflow-y','scroll');
 
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
@@ -161,7 +161,7 @@
             modaldis+= ' </div>';
             modaldis+= '</div>';
             modaldis+= '</div>';
-            $('body').css('overflow','hidden');
+             $('body').css('overflow-y','scroll');
 
             $("body").append(modaldis);
             $("#myModal").modal("show");
@@ -185,7 +185,7 @@
             modaldis+= ' </div>';
             modaldis+= '</div>';
             modaldis+= '</div>';
-            $('body').css('overflow','hidden');
+             $('body').css('overflow-y','scroll');
 
             $("body").append(modaldis);
             $("#myModal").modal("show");
@@ -239,7 +239,8 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a href="#" class="addBulkRecord btn btn-primary "> <i class="fa fa-plus text-success"></i>Items Distributions</a>
+            <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-success"></i>Items Distributions</a>
+            <a href="#" class="addBulkRecord btn btn-primary " title="Item distributions for multiple clients"> <i class="fa fa-plus text-success"></i>Bulk Items Distributions</a>
             <a href="{{url('items/distributions')}}" class="btn btn-primary"><i class="fa fa-list text-info"></i> List All Records</a>
             <a href="{{url('inventory')}}" class="btn btn-primary " title="Go to Item inventory list"><i class="fa fa-reply text-danger"></i> Go to Inventory Items</a>
         </div>

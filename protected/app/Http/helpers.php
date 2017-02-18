@@ -366,3 +366,102 @@ if (!function_exists('getClientPercentageByAgeScoreByCamp')) {
 
     }
 }
+
+if (!function_exists('isClientRegistered')) {
+    function isClientRegistered($name,$sex,$age,$present_address,$ration_card_number) {
+        if(count(\App\Client::where('full_name','=',ucwords(strtolower(preg_replace('/\s+/S', " ",$name))))
+                ->where('age','=',$age)
+                ->where('sex','=',$sex)
+                ->where('present_address','=',ucwords(strtolower(preg_replace('/\s+/S', " ",$present_address))))
+                ->where('ration_card_number','=',preg_replace('/\s+/S', "",$ration_card_number))->get()) > 0){
+
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+}
+if (!function_exists('getClientIdFromData')) {
+    function getClientIdFromData($name,$sex,$age,$present_address,$ration_card_number) {
+        if(count(\App\Client::where('full_name','=',ucwords(strtolower(preg_replace('/\s+/S', " ",$name))))
+            ->where('age','=',$age)
+            ->where('sex','=',$sex)
+            ->where('present_address','=',ucwords(strtolower(preg_replace('/\s+/S', " ",$present_address))))
+            ->where('ration_card_number','=',preg_replace('/\s+/S', "",$ration_card_number))->get())){
+
+            $client=\App\Client::where('full_name','=',ucwords(strtolower(preg_replace('/\s+/S', " ",$name))))
+                ->where('age','=',$age)
+                ->where('sex','=',$sex)
+                ->where('present_address','=',ucwords(strtolower(preg_replace('/\s+/S', " ",$present_address))))
+                ->where('ration_card_number','=',preg_replace('/\s+/S', "",$ration_card_number))->get()->first();
+
+            return $client;
+        }
+        else{
+            return null;
+        }
+
+    }
+}
+if (!function_exists('isNotInDistributionLimit')) {
+    function isNotInDistributionLimit($item_id,$client_id) {
+
+
+        if(count(\App\ItemsDisbursementItems::where('item_id','=',$item_id)
+            ->where('client_id','=',$client_id)->orderBy('distribution_date','DESC')->get()) >0) {
+
+            $itemsds=\App\ItemsDisbursementItems::where('item_id','=',$item_id)
+                ->where('client_id','=',$client_id)->orderBy('distribution_date','DESC')->get()->first();
+
+            $inventoryItem= \App\ItemsInventory::find($item_id);
+            $limit =$inventoryItem->redistribution_limit;
+            $ts1 = strtotime($itemsds->distribution_date);
+            $ts2 = strtotime(date('Y-m-d'));
+            $dayspass= date("j",($ts1 - $ts2));
+
+            if($dayspass > $limit ){
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+}
+
+if (!function_exists('deductItems')) {
+    function deductItems($item_id,$q) {
+       $item=\App\ItemsInventory::find($item_id);
+        $item->quantity=$item->quantity - $q;
+        $item->save();
+    }
+}
+
+if (!function_exists('isItemOutOfStock')) {
+    function isItemOutOfStock($item_id) {
+
+        $item=\App\ItemsInventory::find($item_id);
+        if($item->quantity <= 0)
+        {
+            $item->quantity=0;
+            $item->status ="Out of stock";
+            $item->save();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+//Get client ID

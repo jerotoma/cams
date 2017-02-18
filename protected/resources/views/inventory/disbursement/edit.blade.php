@@ -2,7 +2,11 @@
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
 <script>
     // Basic options
-    $('.pickadate').pickadate();
+    $('.pickadate').pickadate({
+
+        // Escape any “rule” characters with an exclamation mark (!).
+        format: 'yyyy-mm-dd',
+    });
 </script>
 <div class="portlet light bordered">
     <div class="portlet-body form">
