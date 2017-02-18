@@ -247,7 +247,7 @@ class ClientsController extends Controller
                         $client->save();
 
                         //Generate computer number
-                        $client->hai_reg_number="HAI-".date("Y",strtotime($client->date_arrival))."-".str_pad($client->id,4,'0',STR_PAD_LEFT);;
+                        $client->hai_reg_number="HAI-".str_pad($client->id,4,'0',STR_PAD_LEFT).$row->vul_1."-".$row->vul_2;
                         $client->save();
 
                         $psnCodes=array($row->vul_1,$row->vul_2,$row->vul_3,$row->vul_4,$row->vul_5);
