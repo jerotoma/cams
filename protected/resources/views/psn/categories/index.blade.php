@@ -49,7 +49,7 @@
                         modaldis+= ' </div>';
                         modaldis+= '</div>';
                         modaldis+= '</div>';
-                        $('body').css('overflow','hidden');
+                         $('body').css('overflow-y','scroll');
 
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
@@ -74,7 +74,7 @@
                         modaldis+= ' </div>';
                         modaldis+= '</div>';
                         modaldis+= '</div>';
-                        $('body').css('overflow','hidden');
+                         $('body').css('overflow-y','scroll');
 
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
@@ -158,7 +158,7 @@
             modaldis+= ' </div>';
             modaldis+= '</div>';
             modaldis+= '</div>';
-            $('body').css('overflow','hidden');
+             $('body').css('overflow-y','scroll');
 
             $("body").append(modaldis);
             $("#myModal").modal("show");

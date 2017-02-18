@@ -21,7 +21,11 @@
 <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
-    $('.pickadate').pickadate();
+    $('.pickadate').pickadate({
+
+        // Escape any “rule” characters with an exclamation mark (!).
+        format: 'yyyy-mm-dd',
+    });
 </script>
 
 <div class="portlet light bordered">
@@ -48,6 +52,39 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group ">
+                    <label class="control-label">Camp</label>
+                    <select class="select" name="camp_id" id="camp_id" data-placeholder="Choose an option...">
+                        <option ></option>
+                        @foreach(\App\Camp::all() as $item)
+                            <option value="{{$item->id}}">{{$item->camp_name}}</option>
+                        @endforeach
+                    </select>
+                    @if($errors->first('camp_id') !="")
+                        <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
+                    @endif
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            <label class="control-label">Item Category</label>
+                            <select class="select" name="category_id" id="category_id" data-placeholder="Choose an option...">
+                                <option ></option>
+                                @foreach(\App\ItemsCategories::all() as $category)
+                                    <option value="{{$category->id}}">{{$category->category_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            <label class="control-label">Item</label>
+                            <select class="select" name="item_id" id="item_id" data-placeholder="Choose an option...">
+                                <option ></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </fieldset>
             <fieldset class="scheduler-border">
                 <legend class="text-bold">PSN CLIENTS ITEMS DISTRIBUTION LIST</legend>
@@ -70,7 +107,7 @@
                 </div>
                 <div class="col-md-4 col-sm-4 pull-right text-right">
                     <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit Form </button>
                 </div>
 
             </div>
@@ -82,7 +119,15 @@
 </div>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script>
-
+    $("#category_id").change(function () {
+        var id1 = this.value;
+        if(id1 != "")
+        {
+            $.get("<?php echo url('fetchitemsbycategoryid') ?>/"+id1,function(data){
+                $("#item_id").html(data);
+            });
+        }else{$("#item_id").html("<option value=''>----</option>");}
+    });
     $("#formItemsReceived").validate({
         ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
         errorClass: 'validation-error-label',
@@ -133,12 +178,18 @@
         rules: {
             disbursements_date: "required",
             disbursements_by: "required",
-            items_distribution_file:"required"
+            items_distribution_file:"required",
+            camp_id:"required",
+            category_id:"required",
+            item_id:"required",
         },
         messages: {
             disbursements_date: "Please field is required",
             disbursements_by: "Please field is required",
-            items_distribution_file: "Please upload file"
+            items_distribution_file: "Please upload file",
+            category_id:"Please please select camp",
+            camp_id:"Please please select camp",
+            item_id:"Please Please select Items",
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Submitting form please wait...</span><h3>");

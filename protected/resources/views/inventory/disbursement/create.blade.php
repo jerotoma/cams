@@ -21,90 +21,89 @@
 <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
-    $('.pickadate').pickadate();
+    $('.pickadate').pickadate({
+
+        // Escape any “rule” characters with an exclamation mark (!).
+        format: 'yyyy-mm-dd',
+    });
 </script>
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'inventory-received','role'=>'form','id'=>'formItemsReceived','files'=>true)) !!}
-        <div class="form-body">
-            <fieldset class="scheduler-border">
-                <legend class="text-bold"> NFIs Items Distribution</legend>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="control-label">Distribution Date:</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                <input type="text" class="form-control pickadate"  value="{{old('disbursements_date')}}" name="disbursements_date" id="disbursements_date">
+        {!! Form::open(array('url'=>'items/distributions','role'=>'form','id'=>'formItemsReceived','files'=>true)) !!}
+        <div class="panel panel-flat">
+            <div class="panel-body">
+                <fieldset class="scheduler-border">
+                    <legend class="text-bold"> NFIs Items Distribution</legend>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Distribution Date:</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                                    <input type="text" class="form-control pickadate"  value="{{old('disbursements_date')}}" name="disbursements_date" id="disbursements_date">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">PSN HAI ID</label>
+                                <input type="text" class="form-control" name="hai_reg_number"  id="hai_reg_number" value="" >
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Items Distributed By</label>
+                                <input type="text" class="form-control" name="disbursements_by"  id="disbursements_by" value="" >
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="control-label">disbursements_by</label>
-                            <input type="text" class="form-control" name="donor_ref"  id="donor_ref" value="" >
-                            @if($errors->first('donor_ref') !="")
-                                <label id="address-error" class="validation-error-label" for="donor_ref">{{ $errors->first('donor_ref') }}</label>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="control-label">Project:</label>
-                            <input type="text" class="form-control" name="project"  id="project" value="" >
-                            @if($errors->first('project') !="")
-                                <label id="address-error" class="validation-error-label" for="project">{{ $errors->first('project') }}</label>
-                            @endif
-                        </div>
+                    <div class="form-group ">
+                        <label class="control-label">Camp</label>
+                        <select class="select" name="camp_id" id="camp_id" data-placeholder="Choose an option...">
+                            <option ></option>
+                            @foreach(\App\Camp::all() as $item)
+                                <option value="{{$item->id}}">{{$item->camp_name}}</option>
+                            @endforeach
+                        </select>
+                        @if($errors->first('camp_id') !="")
+                            <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
+                        @endif
                     </div>
 
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group ">
-                            <label class="control-label"> Received From/Supplier: </label>
-                            <input type="text" class="form-control" name="received_from" id="received_from" value="{{old('received_from')}}">
-                            @if($errors->first('received_from') !="")
-                                <label id="address-error" class="validation-error-label" for="received_from">{{ $errors->first('received_from') }}</label>
-                            @endif
+                </fieldset>
+                <fieldset class="scheduler-border">
+                    <legend class="text-bold">PSN CLIENTS ITEMS DISTRIBUTION LIST</legend>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Item</label>
+                                <select class="select" name="item_id" id="item_id" data-placeholder="Choose an option..." data-live-search="true" data-width="100%">
+                                    <option ></option>
+                                    @foreach(\App\ItemsCategories::all() as $category)
+                                        <optgroup label="{{$category->category_name}}">
+                                            @foreach($category->items as $item)
+                                                <option  value="{{$item->id}}"> {{$item->item_name}}</option>
+                                                @endforeach
+                                        </optgroup>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Quantity</label>
+                                <input type="text" class="form-control" name="quantity"  id="quantity" value="" >
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group ">
-                            <label class="control-label"> HAI Receiving Officer: </label>
-                            <input type="text" class="form-control"  name="receiving_officer" id="receiving_officer" value="{{old('receiving_officer')}}">
-                            @if($errors->first('receiving_officer') !="")
-                                <label id="address-error" class="validation-error-label" for="receiving_officer">{{ $errors->first('receiving_officer') }}</label>
-                            @endif
-                        </div>
+                    <div class="form-group ">
+                        <label class="control-label"> Comments: </label>
+                        <textarea class="form-control"  name="comments" id="comments">{{old('comments')}}</textarea>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group ">
-                            <label class="control-label"> Onward Delivery to: </label>
-                            <input type="text" class="form-control"  name="onward_delivery" id="onward_delivery" value="{{old('onward_delivery')}}">
-                            @if($errors->first('onward_delivery') !="")
-                                <label id="address-error" class="validation-error-label" for="onward_delivery">{{ $errors->first('onward_delivery') }}</label>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
-            <fieldset class="scheduler-border">
-                <legend class="text-bold">ITEMS</legend>
-                <div class="form-group">
-                    <label>Use this template for importing Items <a href={{asset("assets/templates/item_import_template.xls")}}>Download template here</a> </label>
-                    <input type="file" class="form-control" name="items_file" id="items_file">
-                </div>
-            </fieldset>
-                <div class="form-group ">
-                    <label class="control-label"> Comments: </label>
-                    <textarea class="form-control"  name="comments" id="comments">{{old('comments')}}</textarea>
-                    @if($errors->first('comments') !="")
-                        <label id="address-error" class="validation-error-label" for="comments">{{ $errors->first('comments') }}</label>
-                    @endif
-                </div>
-            </fieldset>
+                </fieldset>
+                </fieldset>
+            </div>
         </div>
         <div class="form-actions">
             <div class="row">
@@ -113,7 +112,7 @@
                 </div>
                 <div class="col-md-4 col-sm-4 pull-right text-right">
                     <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit Form </button>
                 </div>
 
             </div>
@@ -121,11 +120,10 @@
 
         {!! Form::close() !!}
 
-</div>
+    </div>
 </div>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script>
-
     $("#formItemsReceived").validate({
         ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
         errorClass: 'validation-error-label',
@@ -174,25 +172,24 @@
         },
         errorElement:'div',
         rules: {
-            reference_number: "required",
-            date_received: "required",
-            received_from: "required",
-            donor_ref: "required",
-            receiving_officer: "required",
-            project: "required",
-            items_file:"required"
+            disbursements_date: "required",
+            disbursements_by: "required",
+            quantity:"required",
+            camp_id:"required",
+            category_id:"required",
+            hai_reg_number:"required",
+            item_id:"required",
         },
         messages: {
-            reference_number: "Please field is required",
-            date_received: "Please field is required",
-            received_from: "Please field is required",
-            donor_ref: "Please field is required",
-            receiving_officer: "Please field is required",
-            project: "Please field is required",
-            items_file: "Please Upload file is required"
+            disbursements_date: "Please field is required",
+            disbursements_by: "Please field is required",
+            hai_reg_number: "Please enter Registration",
+            quantity:"Please please enter quantity",
+            camp_id:"Please please select camp",
+            item_id:"Please Please select Items",
         },
         submitHandler: function(form) {
-            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
+            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Submitting form please wait...</span><h3>");
             var formURL = $('#formItemsReceived').attr("action");
             var formData = new FormData(form);
             $.ajax(
@@ -209,7 +206,7 @@
                     {
                         $("#output").html(data.message);
                         setTimeout(function() {
-                            location.replace('{{url('inventory-received')}}');
+                            location.replace('{{url('items/distributions')}}');
                             $("#output").html("");
                         }, 2000);
 

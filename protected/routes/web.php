@@ -33,6 +33,7 @@ Route::get('getclientslist','ClientsController@getJSonClientDataSearch');
 Route::get('search/clients','ClientsController@searchClient');
 Route::post('search/clients','ClientsController@postSearchClient');
 Route::get('create-client','ClientsController@createClient');
+
 //NFIs Item inventory
 Route::resource('inventory-categories','ItemsCategoriesController');
 Route::post('onflycategory','ItemsCategoriesController@onFlyCategory');
@@ -40,6 +41,8 @@ Route::resource('inventory','ItemInventoryController');
 Route::resource('inventory-received','ItemsReceivingController');
 Route::get('download/pdf/inventory-received/{id}','ItemsReceivingController@downloadPDF');
 Route::get('print/inventory-received/{id}','ItemsReceivingController@loadPrintForm');
+Route::get('fetchitemsbycategoryid/{id}','ItemsCategoriesController@getItemsList');
+
 
 //Referrals
 Route::resource('referrals','ReferralController');
@@ -150,6 +153,8 @@ Route::get('reports/clients',[
       'uses' => 'ClientReportsController@index',
       'as'   => 'reports/clients'
 ]);
+
+Route::get('reports/referrals','ReferralReportsController@index');
 Route::get('generate/reports/clients','ClientReportsController@index');
 Route::post('generate/reports/clients','ClientReportsController@postGenerate');
 Route::get('reports/assessments','DataVisualizationController@showAssessments');
