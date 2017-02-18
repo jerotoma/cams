@@ -108,7 +108,7 @@ class InclusionAssessmentController extends Controller
                 $origin,
                 date('d M Y',strtotime($client->date_arrival)),
                 '<label><input id="client-'.$client->id.'" type="radio" name="client_id" value="'.$client->id.' "></label>
-                <script>$("#client-'.$client->id.'").on("change", function(){ $.get("inclusion/client-to-assess/'.$client->id.'",function(response){ var rs = JSON.parse(response);console.log(rs.data); $("#client-particulars-info").html(rs.data);});});</script>',
+                <script>$("#client-'.$client->id.'").on("change", function(){ $.get("inclusion/client-to-assess/'.$client->id.'",function(response){ var rs = JSON.parse(response); $("#client-particulars-info").html(rs.data);});});</script>',
             );
         }
         $records["draw"] = $sEcho;

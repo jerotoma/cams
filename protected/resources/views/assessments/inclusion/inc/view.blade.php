@@ -3,7 +3,7 @@
         <div class="form-group">
             <div class="row">
              <div class="col-md-12">
-                       <div class="form-group" id="client-particulars-info" >
+                       <div class="form-group" >
                          <div class="row">
                                <div class="col-md-3 first table-client">
                                  <span class="table-title">Client Name :</span>
