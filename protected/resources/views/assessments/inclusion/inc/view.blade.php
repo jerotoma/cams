@@ -296,8 +296,7 @@
 						   </div>
 						  <div class="col-md-6 col-md-pull-2">
 								<div class="checkbox">
-								  <label class="checkbox-inline">
-                                      <input type="checkbox" name ="mpc_qn_a_2" value="initial" {{ $incAssHelper->isChecked($mpc_part_a->mpc_qn_a_2, 'initial')}} >0</label>
+								  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_a_2" value="initial" {{ $incAssHelper->isChecked($mpc_part_a->mpc_qn_a_2,'initial')}}  >0</label>
 								</div>
 								<div clas="form-group">
 									<input type="text" class="form-control" id="" placeholder="Remark:" name ="mpc_qn_a_2_remark" value="{{$incAssHelper->getTextFieldValue($mpc_part_a->mpc_qn_a_2_remark)}}">
@@ -1225,7 +1224,7 @@
                           <div class="col-md-9 col-md-pull-1">
                                 <div class="checkbox">
                                   <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_4[]" value="With language" {{ $incAssHelper->getCheckedBox($mpc_part_b->mpc_qn_b_4, 'With language')}} >With language</label>
-                                  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_4[]" value="without language" {{ $incAssHelper->getCheckedBox($mpc_part_b->mpc_qn_b_4, 'with language')}} >Without language</label>
+                                  <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_4[]" value="without language" {{ $incAssHelper->getCheckedBox($mpc_part_b->mpc_qn_b_4, 'without language')}} >Without language</label>
                                   <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_4[]" value="body language" {{ $incAssHelper->getCheckedBox($mpc_part_b->mpc_qn_b_4, 'body language')}} >Body language</label>
                                   <label class="checkbox-inline"><input type="checkbox" name ="mpc_qn_b_4[]" value="No communication" {{ $incAssHelper->getCheckedBox($mpc_part_b->mpc_qn_b_4, 'No communication')}} >No communication</label>
                                 </div>
@@ -1594,7 +1593,7 @@
                       </div>
                       <div class="col-md-8">
                             <div class="radio">
-                              <label class="radio-inline"><input type="radio" name ="mpc_qn_e_6" value="Passive" {{ $incAssHelper->isChecked($mpc_part_e->mpc_qn_e_6, 'Yes')}} >Yes</label>
+                              <label class="radio-inline"><input type="radio" name ="mpc_qn_e_6" value="Yes" {{ $incAssHelper->isChecked($mpc_part_e->mpc_qn_e_6, 'Yes')}} >Yes</label>
                               <label class="radio-inline"><input type="radio" name ="mpc_qn_e_6" value="No" {{ $incAssHelper->isChecked($mpc_part_e->mpc_qn_e_6, 'No')}} >No</label>
                             </div>
                       </div>
