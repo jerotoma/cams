@@ -295,7 +295,7 @@
                             <div class="col-md-4">
                                 <div class="form-group ">
                                     <label class="control-label">Age: </label>
-                                    <input type="text" class="form-control" placeholder="Age " name="client_age" id="client_age"
+                                    <input type="text" class="form-control" placeholder="Age " name="" id="client_age"
                                            value="{{old('client_age')}}">
                                 </div>
                             </div>
@@ -417,15 +417,34 @@
 
                     </fieldset>
 
-
                     <fieldset class="scheduler-border">
-                        <legend class="text-bold"><h3 class="text-left text-bold">Services Requested
-                            </h3></legend>
+                        <legend class="text-bold"><h3 class="text-left text-bold">Services Requested   </h3></legend>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group ">
+
+                                        <option value="mental_services">Mental Health Services </option>
+
                                     <label class="control-label">Has the client been informed of the referral?   </label>
-                                    <textarea  class="form-control" name="clientinfo_referral" id="clientinfo_referral"></textarea>
+                                      <textarea  class="form-control" name="clientinfo_referral" id="clientinfo_referral"></textarea>
+                                    </div>
+                                    <select name="service_request"  multiple="multiple" class="select" >
+
+                                        <option value="protection_services">Protection Support/ Services </option>
+                                        <option value="shelter">Shelter</option>
+                                        <option value="psychological">Psychological Interventions </option>
+                                        <option value="community_centre">Community Centre/ Social Services </option>
+                                        <option value="material_assesment">Material Assistance</option>
+                                        <option value="physical_health">Physical Health Care </option>
+                                        <option value="family_tracing">Family Tracing Services </option>
+                                        <option value="nutrition">Nutrition</option>
+                                        <option value="physical_rehabilation">Physical Rehabilitation</option>
+                                        <option value="legal_assesment">Legal Assistance </option>
+                                        <option value="financial_assistance">Financial Assistance   </option>
+                                        <option value="education">Education </option>
+                                        <option value="psychocial_activities">Psychosocial Activities </option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -439,7 +458,15 @@
 
                         </div>
 
+
+
+
+
+
                     </fieldset>
+
+
+
 
 
 
@@ -529,40 +556,31 @@
         },
         errorElement:'div',
         rules: {
-            organization: "required",
-            progress_number: "required",
-            referral_date: "required",
-            completed_by: "required",
-            age: {
+            ref_org: "required",
+            rec_org: "required",
+
+            client_age: {
                 number: true
             },
-            case_name: "required",
-            referred_to: "required",
-            referred_to_position: "required",
-            org_phone: "required",
-            org_email:{
-                email:true,
-            },
-            location: "required",
-            primary_concern: "required",
+            client_sex: "required",
+            client_language: "required",
+            client_number: "required",
+
+
+
         },
         messages: {
-            organization: "Please this field is required",
-            progress_number: "Please this field is required",
-            referral_date: "Please field is required",
-            completed_by: "Please this field is required",
-            age:{
+            ref_org: "Please this field is required",
+            rec_org: "Please this field is required",
+            client_language: "Please field is required",
+
+            client_age:{
                 number:"Please enter valid age",
             } ,
-            case_name: "Please this field is required",
-            referred_to: "Please this field is required",
-            referred_to_position: "Please this field is required",
-            primary_concern: "Please this field is required",
-            org_phone: "Please this field is required",
-            org_email:{
-                email:"Please enter valid data",
+
+
             },
-            location: "Please this field is required"
+
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");

@@ -10,8 +10,15 @@
     $('.inclusion-assessment .btn-next').on('click', function () {
         var parent_fieldset = $(this).parents('fieldset');
         var next_step = true;
-
-        parent_fieldset.find('input[type="text"],input[type="email"]').each(function () {
+        var client_id = $( "input[type=radio][name=client_id]:checked" ).val();
+        console.log(client_id);
+        if(typeof client_id === 'undefined'){
+            var errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">You must select client to countinue</p><ul>';
+            $('.alert-user').html(errorsHtml);
+            next_step = false;
+        }
+        
+        parent_fieldset.find('.btn-next').each(function () {
             if ($(this).val() == "s") {
                 $(this).addClass('input-error');
                 next_step = false;
@@ -24,6 +31,8 @@
             parent_fieldset.fadeOut(400, function () {
                 $(this).next().fadeIn();
             });
+        }else{
+            return false;
         }
 
     });
