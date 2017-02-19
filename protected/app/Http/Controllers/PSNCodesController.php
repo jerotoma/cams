@@ -51,6 +51,7 @@ class PSNCodesController extends Controller
                 'code' => 'required|unique:p_s_n_codes',
                 'description' => 'required',
                 'definition' => 'required',
+                'category_id' => 'required',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -123,6 +124,7 @@ class PSNCodesController extends Controller
                 'code' => 'required|unique:p_s_n_codes,code,'.$id,
                 'description' => 'required',
                 'definition' => 'required',
+                'category_id' => 'required',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(

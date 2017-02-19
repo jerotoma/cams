@@ -148,13 +148,15 @@
                         for_reporting: "required",
                         code: "required",
                         description: "required",
-                        definition: "required"
+                        definition: "required",
+                        category_id: "required",
                     },
                     messages: {
                         for_reporting: "Please field is required",
                         code: "Please category_name is required",
                         description: "Please description is required",
                         definition: "Please full name is required",
+                        category_id: "Please category is required"
 
                     },
                     submitHandler: function(form) {

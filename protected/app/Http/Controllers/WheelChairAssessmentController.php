@@ -53,18 +53,21 @@ class WheelChairAssessmentController extends Controller
         foreach($clients as $client) {
             $origin="";
             $status="";
-
-            if(is_object($client->nationality) && $client->nationality != null )
+            $camp="";
+            if(is_object($client->camp) && $client->camp != null )
             {
-                $origin=$client->nationality->country_name;
+                $camp=$client->camp->camp_name;
             }
             $records["data"][] = array(
                 $count++,
+                $client->hai_reg_number,
                 $client->client_number,
                 $client->full_name,
                 $client->sex,
-                $origin,
+                $client->age,
+                $client->ration_card_number,
                 date('d M Y',strtotime($client->date_arrival)),
+                $camp,
                 '<label><input type="radio" name="client_id" value="'.$client->id.' "></label>',
             );
         }
