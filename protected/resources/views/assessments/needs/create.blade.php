@@ -132,19 +132,25 @@
                                             #
                                         </th>
                                         <th class="text-center">
-                                            Client Number
+                                            HAI REG NO
+                                        </th>
+                                        <th class="text-center">
+                                            Unique ID
                                         </th>
                                         <th class="text-center">
                                             Full Name
                                         </th>
                                         <th class="text-center">
-                                            Gender
+                                            Sex
                                         </th>
                                         <th class="text-center">
-                                            Nationality
+                                            Age
                                         </th>
                                         <th class="text-center">
-                                            Date of Arrival
+                                            Ration Card No
+                                        </th>
+                                        <th class="text-center">
+                                            Camp
                                         </th>
                                         <th class="text-center">
                                             Check client
@@ -159,19 +165,25 @@
 
                                         </td>
                                         <td class="text-center">
-                                            Client Number
+                                            HAI REG NO
+                                        </td>
+                                        <td class="text-center">
+                                            Unique ID
                                         </td>
                                         <td class="text-center">
                                             Full Name
                                         </td>
                                         <td class="text-center">
-                                            Gender
+                                            Sex
                                         </td>
                                         <td class="text-center">
-                                            Nationality
+                                            Age
                                         </td>
                                         <td class="text-center">
-                                            Date of Arrival
+                                            Ration Card No
+                                        </td>
+                                        <td class="text-center">
+                                            Camp
                                         </td>
                                         <td class="text-center">
 
@@ -328,21 +340,31 @@
                     url : formURL,
                     type: "POST",
                     data : postData,
-                    success:function(data)
-                    {
-                        console.log(data);
-                        //data: return data from server
-                        $("#output").html(data);
+                    success: function(data){
+                        swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                         setTimeout(function() {
-                            location.replace('{{url('assessments/home')}}');
+                            location.replace("{{url('assessments/home')}}");
                             $("#output").html("");
                         }, 2000);
                     },
-                    error: function(data)
-                    {
-                        console.log(data.responseJSON);
-                        //in the responseJSON you get the form validation back.
-                        $("#output").html("<h3><span class='text-danger'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
+                    error: function(jqXhr,status, response) {
+                        console.log(jqXhr);
+                        if( jqXhr.status === 401 ) {
+                            location.replace('{{url('login')}}');
+                        }
+                        if( jqXhr.status === 400 ) {
+                            var errors = jqXhr.responseJSON.errors;
+                            errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                            $.each(errors, function (key, value) {
+                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                            });
+                            errorsHtml += '</ul></di>';
+                            $('#output').html(errorsHtml);
+                        }
+                        else
+                        {
+                            $('#output').html(jqXhr.message);
+                        }
 
                     }
                 });

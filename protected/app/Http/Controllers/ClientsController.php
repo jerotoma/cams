@@ -383,6 +383,7 @@ class ClientsController extends Controller
                 $client->hh_relation = $request->hh_relation;
                 $client->share_info= $request->share_info;
                 $client->created_by = Auth::user()->username;
+                $client->status= $request->status;
                 $client->age_score= $this->getAgeScore($request->age);
                 $client->save();
 
@@ -513,6 +514,7 @@ class ClientsController extends Controller
                 $client->present_address = $request->present_address;
                 $client->hh_relation = $request->hh_relation;
                 $client->share_info= $request->share_info;
+                $client->status= $request->status;
                 $client->created_by = Auth::user()->username;
                 $client->age_score= $this->getAgeScore($request->age);
                 $client->save();

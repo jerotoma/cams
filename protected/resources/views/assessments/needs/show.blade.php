@@ -145,16 +145,37 @@
 </div>
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-bordered" style="margin-top: 10px">
+            <table class="table ">
                 <thead>
                 <tr>
-                    <th colspan="4">Examined By:</th>
+                    <th>Name of Case Worker: </th>
+                    <th></th>
+                    <th>Signature</th>
+                    <th></th>
                 </tr>
                 <tr>
-                    <th>Name</th>
-                    <th>Title</th>
-                    <th>Date</th>
+                    <th>Name of Project Coordinator: </th>
+                    <th></th>
                     <th>Signature</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Organization: </th>
+                    <th></th>
+                    <th>Date</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Name of Case Worker: </th>
+                    <th></th>
+                    <th>Signature</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Name of Project Coordinator: </th>
+                    <th></th>
+                    <th>Signature</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>

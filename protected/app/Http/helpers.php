@@ -37,14 +37,14 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
 
         $series1="";
         $seriesdata1="";
-        foreach (\App\Country::all() as $country) {
+        foreach (\App\Origin::all() as $origin) {
             $series1 .= "{ ";
-            $series1 .= " name: '".$country->country_name."',";
+            $series1 .= " name: '".$origin->origin_name."',";
 
             $MonthCount = "";
             $monthData = "";
             for ($i = 1; $i <= 12; $i++) {
-                $MonthCount .= count(\App\Client::where('country_id','=',$country->id)->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+                $MonthCount .= count(\App\Client::where('origin_id','=',$origin->id)->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
             }
             $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
             $series1 .= " data:[" . $monthData . "]";
@@ -233,13 +233,13 @@ if (!function_exists('getHighChatClientMonthlyCountByNationality')) {
 
         $series1="";
         $seriesdata1="";
-        foreach (\App\Country::all() as $country) {
+        foreach (\App\Origin::all() as $origin) {
             $series1 .= "{ ";
-            $series1 .= " name: '".$country->country_name."',";
+            $series1 .= " name: '".$origin->origin_name."',";
 
             $MonthCount = "";
             $monthData = "";
-            $MonthCount .= count(\App\Client::where('country_id','=',$country->id)->get()) . ",";
+            $MonthCount .= count(\App\Client::where('origin_id','=',$origin->id)->get()) . ",";
             $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
             $series1 .= " y:" . intval($monthData);
             $series1 .= "  },";

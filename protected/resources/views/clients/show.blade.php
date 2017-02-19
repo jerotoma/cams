@@ -44,7 +44,7 @@
                                 <label class="control-label">Date of Arrival</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                    <input type="text" class="form-control pickadate" placeholder="Date of Arrival" value="{{$client->date_arrival}}" name="date_arrival" id="date_arrival">
+                                    <input type="text" class="form-control pickadate" placeholder="Date of Arrival" value="{{$client->date_arrival}}" name="date_arrival" id="date_arrival" readonly>
                                 </div>
                             </div>
                         </div>

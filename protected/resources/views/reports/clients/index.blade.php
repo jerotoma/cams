@@ -127,9 +127,13 @@
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                        enabled: false
-                    },
-                    showInLegend: true
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
                 }
             },
             series: [{
@@ -305,11 +309,11 @@
 
     </div>
     <div class="row" style="margin-top: 20px">
-        <div class="col-md-6">
-            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientsNeeds"></div>
+        <div class="col-md-8">
+            <div style="min-width: 410px; height: 500px; margin: 0 auto" id="clientsNeeds"></div>
         </div>
-        <div class="col-md-6">
-            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientRegistration"></div>
+        <div class="col-md-4">
+            <div style="min-width: 310px; height: 500px; margin: 0 auto" id="clientRegistration"></div>
         </div>
 
     </div>

@@ -61,6 +61,8 @@ Route::get('clients-va','VulnerabilityAssessmentController@showClients');
 Route::get('getvalist','VulnerabilityAssessmentController@getJSonDataSearch');
 Route::get('client/assessments/vulnerability/{id}','VulnerabilityAssessmentController@showClientVulnerability');
 Route::get('vulnerability-assessment/download/{id}','VulnerabilityAssessmentController@downloadForm');
+Route::get('getvulassessmentpsnprofile/{id}','VulnerabilityAssessmentController@getPSNProfile');
+
 
 //Paediatric Assessments
 Route::resource('assessments/paediatric','PaediatricAssessmentController');

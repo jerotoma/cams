@@ -41,9 +41,9 @@
    
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-             <a class="btn  btn-lg" data-toggle="modal" data-target="#client_wheelchair_assessment"><i class="fa fa-plus text-success" aria-hidden="true"></i> <span> Assess Client</span></a>
-             <a  href="{{url('assessments/wheelchair')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All Assessments</span></a>
-             <a  href="{{url('import/assessments/wheelchair')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import Assessments</span></a>
+             <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#client_wheelchair_assessment"><i class="fa fa-plus text-success" aria-hidden="true"></i> <span> Assess Client</span></a>
+             <a  href="{{url('assessments/wheelchair')}}" class="btn btn-primary  "><i class="fa fa-list text-info"></i> <span>List All Assessments</span></a>
+             <a  href="{{url('import/assessments/wheelchair')}}" class="btn btn-primary "><i class="fa fa-upload text-danger"></i> <span>Import Assessments</span></a>
     
 		</div>
     </div>

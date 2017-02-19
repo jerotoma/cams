@@ -11,18 +11,19 @@
             <th colspan="2" style="text-align:center; background-color: #cccccc">18-49 Yrs</th>
             <th colspan="2" style="text-align:center; background-color: #cccccc">50-59yrs</th>
             <th colspan="2" style="text-align:center; background-color: #cccccc">60 and ></th>
-            <th></th>
+            <th style="text-align:center; background-color: #cccccc"></th>
         </tr>
         <tr>
-            <th>F</th>
-            <th>M</th>
-            <th>F</th>
-            <th>M</th>
-            <th>F</th>
-            <th>M</th>
-            <th>F</th>
-            <th>M</th>
-            <th>Total</th>
+            <th  style="text-align:center; background-color: #cccccc"></th>
+            <th  style="text-align:center; background-color: #cccccc">F</th>
+            <th  style="text-align:center; background-color: #cccccc">M</th>
+            <th  style="text-align:center; background-color: #cccccc">F</th>
+            <th  style="text-align:center; background-color: #cccccc">M</th>
+            <th  style="text-align:center; background-color: #cccccc">F</th>
+            <th  style="text-align:center; background-color: #cccccc">M</th>
+            <th  style="text-align:center; background-color: #cccccc">F</th>
+            <th  style="text-align:center; background-color: #cccccc">M</th>
+            <th style="text-align:center; background-color: #cccccc">Total</th>
         </tr>
         </thead>
         <tbody>
@@ -72,18 +73,19 @@
             <th colspan="2" style="text-align:center; background-color: #cccccc">18-49 Yrs</th>
             <th colspan="2" style="text-align:center; background-color: #cccccc">50-59yrs</th>
             <th colspan="2" style="text-align:center; background-color: #cccccc">60 and ></th>
-            <th></th>
+            <th style="text-align:center; background-color: #cccccc"></th>
         </tr>
         <tr>
-            <th>F</th>
-            <th>M</th>
-            <th>F</th>
-            <th>M</th>
-            <th>F</th>
-            <th>M</th>
-            <th>F</th>
-            <th>M</th>
-            <th>Total</th>
+            <th style="text-align:center; background-color: #cccccc"></th>
+            <th style="text-align:center; background-color: #cccccc">F</th>
+            <th style="text-align:center; background-color: #cccccc">M</th>
+            <th style="text-align:center; background-color: #cccccc">F</th>
+            <th style="text-align:center; background-color: #cccccc">M</th>
+            <th  style="text-align:center; background-color: #cccccc">F</th>
+            <th  style="text-align:center; background-color: #cccccc">M</th>
+            <th  style="text-align:center; background-color: #cccccc">F</th>
+            <th  style="text-align:center; background-color: #cccccc">M</th>
+            <th  style="text-align:center; background-color: #cccccc">Total</th>
         </tr>
         </thead>
         <tbody>

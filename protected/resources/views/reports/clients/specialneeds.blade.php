@@ -1,7 +1,8 @@
-@if($specific_needs="All")
+@if($specific_needs =="All")
     @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
            @if($camp_id=="All")
             @foreach(\App\Camp::all() as $camp)
+
                 <table>
                     <tr>
                         <th colspan="3" style="text-align: center; background-color: #ccc">Name of Population Planning Group: {{$code->description}} </th>
@@ -163,7 +164,6 @@
                     <td colspan="2" style="text-align: center ;background-color: #ccc">Total</td>
                 </tr>
                 <tr>
-                    <td></td>
                     <td style="text-align: center">in numbers</td>
                     <td style="text-align: center">in %</td>
                     <td style="text-align: center">in numbers</td>
@@ -236,7 +236,6 @@
                 <td colspan="2" style="text-align: center ;background-color: #ccc">Total</td>
             </tr>
             <tr>
-                <td></td>
                 <td style="text-align: center">in numbers</td>
                 <td style="text-align: center">in %</td>
                 <td style="text-align: center">in numbers</td>

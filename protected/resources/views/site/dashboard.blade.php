@@ -192,7 +192,7 @@
                 type: 'pie'
             },
             title: {
-                text: 'Client Registration Per Nationality'
+                text: 'Client Registration Per Origin'
             },
             credits: {
                 enabled: false
