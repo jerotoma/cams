@@ -65,7 +65,7 @@ class WheelChairAssessmentController extends Controller
                 $client->sex,
                 $origin,
                 date('d M Y',strtotime($client->date_arrival)),
-                '<label><input type="radio" name="client_id" value="'.$client->id.' "></label>',
+                '<label><input type="radio" name="client_id" value="'.$client->id.' " class="client_id" onclick="getPSNProfile(this.value);"></label>',
             );
         }
 

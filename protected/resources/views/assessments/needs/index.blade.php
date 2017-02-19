@@ -218,9 +218,8 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="#" class="addRecord btn"><i class="fa fa-plus text-success"></i> <span>Assess Client</span></a>
-            <a  href="{{url('assessments/home')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All Assessment</span></a>
-            <a  href="{{url('import/assessments/home')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
+            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-plus text-success"></i> <span>Assess Client</span></a>
+            <a  href="{{url('assessments/home')}}" class="btn  btn-primary"><i class="fa fa-list text-info"></i> <span>List All Assessment</span></a>
         </div>
     </div>
     <div class="panel panel-flat">

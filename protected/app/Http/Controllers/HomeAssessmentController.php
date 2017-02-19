@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\HomeAssessment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class HomeAssessmentController extends Controller
 {
@@ -22,6 +24,23 @@ class HomeAssessmentController extends Controller
         //
         return view('assessments.needs.index');
     }
+    public function downloadPDF($id)
+    {
+
+        $assessment=HomeAssessment::findorfail($id);
+
+         $pdf = \PDF::loadView('assessments.needs.show',compact('assessment'))
+            ->setOption('footer-center', '[page]')
+            ->setOption('page-offset', 0);
+        return $pdf->download('PSN_Home_Assessments_form.pdf');
+    }
+    public function getPSNProfile($id)
+    {
+        $client=Client::findorfail($id);
+        return view('assessments.needs.psnprofile',compact('client'));
+
+    }
+
     public function showClients()
     {
         return view('assessments.needs.listclients');
@@ -92,25 +111,46 @@ class HomeAssessmentController extends Controller
     {
         //
         try {
+            $validator = Validator::make($request->all(), [
+                'client_id' => 'required',
+                'assessment_date' => 'required',
+                'case_code' => 'required'
 
-            $assessment = new HomeAssessment;
-            $assessment->client_id = $request->client_id;
-            $assessment->case_code = $request->case_code;
-            $assessment->linked_case_code = $request->Linked_case_code;
-            $assessment->assessment_date = $request->assessment_date;
-            $assessment->needs_description = $request->needs_description;
-            $assessment->findings = $request->findings;
-            $assessment->diagnosis = $request->diagnosis;
-            $assessment->recommendations = $request->recommendations;
-            $assessment->final_decision = $request->final_decision;
-            $assessment->case_worker_name = $request->case_worker_name;
-            $assessment->project_coordinator = $request->project_coordinator;
-            $assessment->organization = $request->organization;
-            $assessment->save();
-            return "<h3><span class='text-success'><i class='fa fa-info'></i> Saved successful</span><h3>";
+
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $assessment = new HomeAssessment;
+                $assessment->client_id = $request->client_id;
+                $assessment->case_code = $request->case_code;
+                $assessment->linked_case_code = $request->Linked_case_code;
+                $assessment->assessment_date = $request->assessment_date;
+                $assessment->needs_description = $request->needs_description;
+                $assessment->findings = $request->findings;
+                $assessment->diagnosis = $request->diagnosis;
+                $assessment->recommendations = $request->recommendations;
+                $assessment->final_decision = $request->final_decision;
+                $assessment->case_worker_name = $request->case_worker_name;
+                $assessment->project_coordinator = $request->project_coordinator;
+                $assessment->organization = $request->organization;
+                $assessment->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => "Saved Successful"
+                ], 200);
+            }
         }
-        catch (\Exception $e){
-            return "<h3><span class='text-danger'><i class='fa fa-info'></i>".$e->getMessage()."</span><h3>";
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
         }
 
     }
@@ -152,24 +192,44 @@ class HomeAssessmentController extends Controller
     {
         //
         try {
+            $validator = Validator::make($request->all(), [
+                'assessment_date' => 'required',
+                'case_code' => 'required'
 
-            $assessment =  HomeAssessment::find($id);
-            $assessment->case_code = $request->case_code;
-            $assessment->linked_case_code = $request->Linked_case_code;
-            $assessment->assessment_date = $request->assessment_date;
-            $assessment->needs_description = $request->needs_description;
-            $assessment->findings = $request->findings;
-            $assessment->diagnosis = $request->diagnosis;
-            $assessment->recommendations = $request->recommendations;
-            $assessment->final_decision = $request->final_decision;
-            $assessment->case_worker_name = $request->case_worker_name;
-            $assessment->project_coordinator = $request->project_coordinator;
-            $assessment->organization = $request->organization;
-            $assessment->save();
-            return "<h3><span class='text-success'><i class='fa fa-info'></i> Saved successful</span><h3>";
+
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $assessment =  HomeAssessment::find($id);
+                $assessment->case_code = $request->case_code;
+                $assessment->linked_case_code = $request->Linked_case_code;
+                $assessment->assessment_date = $request->assessment_date;
+                $assessment->needs_description = $request->needs_description;
+                $assessment->findings = $request->findings;
+                $assessment->diagnosis = $request->diagnosis;
+                $assessment->recommendations = $request->recommendations;
+                $assessment->final_decision = $request->final_decision;
+                $assessment->case_worker_name = $request->case_worker_name;
+                $assessment->project_coordinator = $request->project_coordinator;
+                $assessment->organization = $request->organization;
+                $assessment->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => "Saved Successful"
+                ], 200);
+            }
         }
-        catch (\Exception $e){
-            return "<h3><span class='text-danger'><i class='fa fa-info'></i>".$e->getMessage()."</span><h3>";
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
         }
     }
 

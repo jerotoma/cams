@@ -72,7 +72,10 @@ Route::get('paediatric-assessment/download/{id}','PaediatricAssessmentController
 //PSN Needs/Home assessment Form
 Route::resource('assessments/home','HomeAssessmentController');
 Route::get('clients-hm','HomeAssessmentController@showClients');
+Route::get('download/assessments/home/{id}','HomeAssessmentController@downloadPDF');
 Route::get('list/assessments/home','HomeAssessmentController@getJSonAssessmentList');
+Route::get('gethomeassessmentpsnprofile/{id}','HomeAssessmentController@getPSNProfile');
+
 Route::get('client/assessments/home/{id}','HomeAssessmentController@create');
 
 //Progress monitoring

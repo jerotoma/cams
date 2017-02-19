@@ -105,7 +105,11 @@
 
 </script>
 <script>
-    $('.pickadate').pickadate();
+    $('.pickadate').pickadate({
+
+        // Escape any “rule” characters with an exclamation mark (!).
+        format: 'yyyy-mm-dd',
+    });
     tinymce.init({ selector:'textarea' });
 </script>
 
@@ -181,11 +185,6 @@
                 </fieldset>
                 <fieldset class="scheduler-border">
                     <legend class="text-bold">PSN Needs/Home assessment Details</legend>
-                    <div class="form-group ">
-                        <label class="control-label">PSN Case code</label>
-                        <input type="text" class="form-control" placeholder="" name="case_code" id="case_code"
-                               value="">
-                    </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
@@ -198,84 +197,17 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Ration card number (if any)</label>
+                                <label class="control-label">PSN Case code</label>
                                 <input type="text" class="form-control" placeholder="" name="case_code" id="case_code"
-                                       value="" readonly>
+                                       value="">
                             </div>
                         </div>
                     </div>
 
                 </fieldset>
-                <fieldset class="scheduler-border">
-                    <legend class="text-bold">Profile Information of PSN: ( to add contact details of the PSN or caretaker)</legend>
-                        <div class="form-group ">
-                            <label class="control-label">Name of PSN</label>
-                            <input type="text" class="form-control" placeholder="Name of PSN" name="psn_name" id="psn_name"
-                                   value="" readonly>
-                        </div>
-                     <div class="form-group ">
-                        <label class="control-label">Nationality</label>
-                        <select class="select" name="nationality" id="nationality" data-placeholder="Choose an option..." readonly="">
-                            <option></option>
-                            @foreach(\App\Country::all() as $item)
-                                <option value="{{$item->id}}">{{$item->country_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Name of caregiver/Parent/household head(if different):</label>
-                                <input type="text" class="form-control" placeholder="" name="care_giver" id="care_giver"
-                                       value="" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Address</label>
-                                <input type="text" class="form-control" placeholder="" name="address" id="address"
-                                       value="" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Camp Name</label>
-                                <select class="select" name="camp_id" id="camp_id" data-placeholder="Choose an option..." readonly="">
+                 <div id="psnprofile">
 
-                                    <option ></option>
-                                    @foreach(\App\Camp::all() as $item)
-                                        <option value="{{$item->id}}">{{$item->camp_name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">District</label>
-                                <input type="text" class="form-control" placeholder="" name="district" id="district"
-                                       value="" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Family size</label>
-                        <input type="text" class="form-control" placeholder="" name="family_size" id="family_size"
-                               value="{{old('family_size')}}">
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Any other PSN in the family</label>
-                        <input type="text" class="form-control" placeholder="" name="family_psn" id="family_psn"
-                               value="{{old('family_psn')}}">
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Link case code</label>
-                        <input type="text" class="form-control" placeholder="" name="linked_case_code" id="linked_case_code"
-                               value="{{old('linked_case_code')}}">
-                    </div>
-
-                </fieldset>
+                 </div>
                 <fieldset class="scheduler-border">
                     <legend class="text-bold">Description of the individual special needs and the family situation</legend>
                     <div class="form-group ">
@@ -316,7 +248,7 @@
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Organization </label>
-                        <input type="text" class="form-control" placeholder="" name="organization" id="organization"
+                        <input type="text"  class="form-control" placeholder="" name="organization" id="organization"
                                value="">
                     </div>
                 </fieldset>
@@ -436,4 +368,12 @@
             });
         }else{$("#district_id").html("<option value=''>----</option>");}
     });
+      function getPSNProfile(id1){
+        if(id1 != "")
+        {
+            $.get("<?php echo url('gethomeassessmentpsnprofile') ?>/"+id1,function(data){
+                $("#psnprofile").html(data);
+            });
+        }else{$("#psnprofile").html("");}
+    }
 </script>
