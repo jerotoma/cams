@@ -321,7 +321,7 @@
                         </div>
                         <div class="col-md-2">
                             <div class="content-group">
-                                <h5 class="text-semibold no-margin"><i class="icon-calendar5  position-left text-slate"></i>{{count(\App\Referral::all())}}</h5>
+                                <h5 class="text-semibold no-margin"><i class="icon-calendar5  position-left text-slate"></i>{{count(\App\ClientReferral::all())}}</h5>
                                 <span class="text-muted text-size-small">Referrals</span>
                             </div>
                         </div>
