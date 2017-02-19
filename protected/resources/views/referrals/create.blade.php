@@ -105,7 +105,11 @@
 
 </script>
 <script>
-    $('.pickadate').pickadate();
+    $('.pickadate').pickadate({
+
+        // Escape any “rule” characters with an exclamation mark (!).
+        format: 'yyyy-mm-dd',
+    });
     tinymce.init({ selector:'textarea' });
 </script>
 
@@ -113,7 +117,6 @@
     <div class="portlet-body form">
         {!! Form::open(array('url'=>'referrals','role'=>'form','id'=>'formClients')) !!}
         <div class="panel panel-flat">
-
 
             <div class="panel-body">
                 <fieldset class="scheduler-border">
@@ -128,19 +131,25 @@
                                             #
                                         </th>
                                         <th class="text-center">
-                                            Client Number
+                                            HAI REG NO
+                                        </th>
+                                        <th class="text-center">
+                                            Unique ID
                                         </th>
                                         <th class="text-center">
                                             Full Name
                                         </th>
                                         <th class="text-center">
-                                            Gender
+                                            Sex
                                         </th>
                                         <th class="text-center">
-                                            Nationality
+                                            Age
                                         </th>
                                         <th class="text-center">
-                                            Date of Arrival
+                                            Ration Card No
+                                        </th>
+                                        <th class="text-center">
+                                            Camp
                                         </th>
                                         <th class="text-center">
                                             Check client
@@ -155,19 +164,25 @@
 
                                         </td>
                                         <td class="text-center">
-                                            Client Number
+                                            HAI REG NO
+                                        </td>
+                                        <td class="text-center">
+                                            Unique ID
                                         </td>
                                         <td class="text-center">
                                             Full Name
                                         </td>
                                         <td class="text-center">
-                                            Gender
+                                            Sex
                                         </td>
                                         <td class="text-center">
-                                            Nationality
+                                            Age
                                         </td>
                                         <td class="text-center">
-                                            Date of Arrival
+                                            Ration Card No
+                                        </td>
+                                        <td class="text-center">
+                                            Camp
                                         </td>
                                         <td class="text-center">
 
@@ -180,26 +195,50 @@
                     </div>
                 </fieldset>
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold"><h3 class="text-left text-bold">Referring agency </h3></legend>
+                    <legend class="text-bold">Referral Details </legend>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label class="control-label">Date of Referral</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                                    <input type="text" class="form-control pickadate" placeholder="Date of Referral" value="{{old('referral_date')}}" name="referral_date" id="referral_date">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <select name="referral_type" data-placeholder="Choose an option..." class="select">
+                                <option></option>
+                                <option value="Yes">Routine</option>
+                                <option value="No">Urgent</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+                <fieldset class="scheduler-border">
+                    <legend class="text-bold">Referring agency </legend>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Agency / Org: </label>
-                                <input type="text" class="form-control" placeholder="Agency / Org: " name="ref_org" id="ref_org"
-                                       value="{{old('ref_org')}}">
+                                <input type="text" class="form-control" placeholder="Agency / Org: " name="rec_organisation" id="rec_organisation"
+                                       value="{{old('rec_organisation')}}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Contact (if known): </label>
-                                <input type="text" class="form-control" placeholder="contact" id="ref_contact" name="ref_contact" value="{{old('ref_contact')}}">
+                                <input type="text" class="form-control" placeholder="contact" id="rec_contact" name="rec_contact" value="{{old('rec_contact')}}">
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Phone</label>
-                                <input type="text" class="form-control" placeholder="Phone" id="ref_phone" name="ref_phone" value="{{old('ref_phone')}}">
+                                <input type="text" class="form-control" placeholder="Phone" id="rec_phone" name="rec_phone" value="{{old('rec_phone')}}">
                             </div>
                         </div>
 
@@ -209,19 +248,20 @@
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Email: </label>
-                                <input type="text" class="form-control" placeholder="Email " name="ref_email" id="ref_email"
-                                       value="{{old('ref_email')}}">
+                                <input type="text" class="form-control" placeholder="Email " name="rec_email" id="rec_email"
+                                       value="{{old('rec_email')}}">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Location: </label>
-                                <input type="text" class="form-control" placeholder="Location" id="ref_location" name="ref_location" value="{{old('ref_location')}}">
+                                <input type="text" class="form-control" placeholder="Location" id="rec_location" name="rec_location" value="{{old('rec_location')}}">
                             </div>
                         </div>
                     </div>
-                    <fieldset class="scheduler-border">
-                        <legend class="text-bold"><h3 class="text-left text-bold">Receiving Agency </h3></legend>
+                </fieldset>
+                <fieldset class="scheduler-border">
+                        <legend class="text-bold">Receiving Agency</legend>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group ">
@@ -264,195 +304,284 @@
                         </div>
 
                     </fieldset>
+                 <fieldset class="scheduler-border">
+                            <legend class="text-bold">Client Information</legend>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Name: </label>
+                                        <input type="text" class="form-control" placeholder="Name: " name="cl_name" id="cl_name"
+                                               value="{{old('cl_name')}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Address: </label>
+                                        <input type="text" class="form-control" placeholder="Address" id="cl_address" name="cl_address" value="{{old('cl_address')}}">
+                                    </div>
+                                </div>
 
-             <fieldset class="scheduler-border">
-                        <legend class="text-bold"><h3 class="text-left text-bold">Client Information </h3></legend>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group ">
-                                    <label class="control-label">Name: </label>
-                                    <input type="text" class="form-control" placeholder="Name: " name="client_name" id="client_name"
-                                           value="{{old('client_name')}}">
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Phone</label>
+                                        <input type="text" class="form-control" placeholder="Phone" id="cl_phone" name="cl_phone" value="{{old('cl_phone')}}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group ">
-                                    <label class="control-label">Address: </label>
-                                    <input type="text" class="form-control" placeholder="Address" id="client_address" name="client_address" value="{{old('client_address')}}">
-                                </div>
-                            </div>
 
-                            <div class="col-md-4">
-                                <div class="form-group ">
-                                    <label class="control-label">Phone</label>
-                                    <input type="text" class="form-control" placeholder="Phone" id="client_phone" name="client_phone" value="{{old('client_phone')}}">
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group ">
-                                    <label class="control-label">Age: </label>
-                                    <input type="text" class="form-control" placeholder="Age " name="" id="client_age"
-                                           value="{{old('client_age')}}">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group ">
-                                    <label class="control-label">Sex: </label>
-                                    <input type="text" class="form-control" placeholder="Sex" id="client_sex" name="client_sex" value="{{old('client_sex')}}">
-                                </div>
                             </div>
 
-                            <div class="col-md-4">
-                                <div class="form-group ">
-                                    <label class="control-label">Nationality: </label>
-                                    <input type="text" class="form-control" placeholder="Nationality" id="client_nationality" name="client_nationality" value="{{old('client_nationality')}}">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Age: </label>
+                                        <input type="text" class="form-control" placeholder="Age " name="" id="cl_age"
+                                               value="{{old('cl_age')}}">
+                                    </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Sex: </label>
+                                        <input type="text" class="form-control" placeholder="Sex" id="cl_sex" name="cl_sex" value="{{old('cl_sex')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Nationality: </label>
+                                        <input type="text" class="form-control" placeholder="Nationality" id="cl_nationality" name="cl_nationality" value="{{old('cl_nationality')}}">
+                                    </div>
+                                </div>
+
                             </div>
 
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group ">
-                                    <label class="control-label">Language: </label>
-                                    <input type="text" class="form-control" placeholder="Language " name="client_language" id="client_language"
-                                           value="{{old('client_language')}}">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">Language: </label>
+                                        <input type="text" class="form-control" placeholder="Language " name="cl_language" id="cl_language"
+                                               value="{{old('cl_language')}}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group ">
-                                    <label class="control-label">ID Numbers: </label>
-                                    <input type="text" class="form-control" placeholder="ID Numbers:" id="client_number" name="client_number" value="{{old('client_number')}}">
-                                </div>
-                            </div>
-                        </div>
-
-              </fieldset>
-
-
-
-               <fieldset class="scheduler-border">
-                        <legend class="text-bold"><h3 class="text-left text-bold">If Client Is a Minor (under 18 years) </h3></legend>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group ">
-                                    <label class="control-label">Name of primary caregiver:: </label>
-                                    <input type="text" class="form-control" placeholder="Name of primary caregiver:: " name="caregiver_name" id="caregiver_name"
-                                           value="{{old('caregiver_name')}}">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group ">
-                                    <label class="control-label">Relationship to child: </label>
-                                    <input type="text" class="form-control" placeholder="Relationship to child:" id="child_relationship" name="child_relationship" value="{{old('child_relationship')}}">
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label class="control-label">ID Numbers: </label>
+                                        <input type="text" class="form-control" placeholder="ID Numbers:" id="cl_id_number" name="cl_id_number" value="{{old('cl_id_number')}}">
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
-                                <div class="form-group ">
-                                    <label class="control-label">Contact information for caregiver:</label>
-                                    <input type="text" class="form-control" placeholder="Contact information" id="caregiver_contact" name="caregiver_contact" value="{{old('caregiver_contact')}}">
+                  </fieldset>
+
+                   <fieldset class="scheduler-border">
+                            <legend class="text-bold">If Client Is a Minor (under 18 years)</legend>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Name of primary caregiver:: </label>
+                                        <input type="text" class="form-control" placeholder="Name of primary caregiver:: " name="cl_care_giver" id="cl_care_giver"
+                                               value="{{old('cl_care_giver')}}">
+                                    </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Relationship to child: </label>
+                                        <input type="text" class="form-control" placeholder="Relationship to child:" id="cl_care_giver_relationship" name="cl_care_giver_relationship" value="{{old('cl_care_giver_relationship')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Contact information for caregiver:</label>
+                                        <input type="text" class="form-control" placeholder="Contact information" id="cl_care_giver_contact" name="cl_care_giver_contact" value="{{old('cl_care_giver_contact')}}">
+                                    </div>
+                                </div>
+
                             </div>
 
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group ">
-                                    <label class="control-label">Caregiver is informed of referral?: </label>
-                                    <select name="inform_caregiver" data-placeholder="Choose an option..." class="select">
-                                        <option></option>
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                    </select>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Caregiver is informed of referral?: </label>
+                                        <select name="cl_care_giver_informed" data-placeholder="Choose an option..." class="select">
+                                            <option></option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group ">
-                                    <label class="control-label">Is child separated or unaccompanied? </label>
-                                    <select name="child_separated" data-placeholder="Choose an option..." class="select">
-                                        <option></option>
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                    </select>
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Is child separated or unaccompanied? </label>
+                                        <select name="cl_child_separated" data-placeholder="Choose an option..." class="select">
+                                            <option></option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                  </div>
+                      </div>
 
-               </fieldset>
+                   </fieldset>
 
                     <fieldset class="scheduler-border">
-                        <legend class="text-bold"><h3 class="text-left text-bold">Background Information/Reason for Referral:
+                        <legend class="text-bold">Background Information/Reason for Referral:
                                 (problem description, duration, frequency, etc.) and Services Already Provided
-                            </h3></legend>
+                            </legend>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group ">
-                                    <label class="control-label">Has the client been informed of the referral?   </label>
-                                    <textarea  class="form-control" name="clientinfo_referral" id="clientinfo_referral"></textarea>
+                                    <label class="control-label">Has the client been informed of the referral?? </label>
+                                    <select name="client_referral_info" data-placeholder="Choose an option..." class="select">
+                                        <option></option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="form-group ">
-                                    <label class="control-label">Has the client been referred to any other organizations?   </label>
+                                    <label class="control-label"> If yes Explain here?   </label>
+                                    <textarea  class="form-control" name="client_referral_info_text" id="client_referral_info_text"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group ">
+                                    <label class="control-label">Has the client been referred to any other organisazation ? </label>
+                                    <select name="client_referral_status" data-placeholder="Choose an option..." class="select">
+                                        <option></option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group ">
+                                    <label class="control-label">If yes Explain here?   </label>
                                     <textarea  class="form-control" name="referal_other_org" id="referal_other_org"></textarea>
                                 </div>
                             </div>
 
-
-
                         </div>
 
                     </fieldset>
 
                     <fieldset class="scheduler-border">
-                        <legend class="text-bold"><h3 class="text-left text-bold">Services Requested   </h3></legend>
+                        <legend class="text-bold">Services Requested </legend>
                         <div class="row">
-                            <div class="col-sm-4g">
+                            <div class="col-sm-3">
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" class="styled">
-                                    Remember
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Mental Health Services">
+                                    Mental Health Services
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Protection Support/ Services" >
+                                    Protection Support/ Services
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Shelter" >
+                                    Shelter
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Psychological Interventions" >
+                                    Shelter
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" >
+                                    Psychological Interventions
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Community Centre/ Social Services" >
+                                    Community Centre/ Social Services
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="aterial Assistance">
+                                    Material Assistance
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Physical Health Care" >
+                                    Physical Health Care
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Family Tracing Services">
+                                    Family Tracing Services
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Nutrition">
+                                    Nutrition
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Physical Rehabilitation">
+                                    Physical Rehabilitation
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Legal Assistance">
+                                    Legal Assistance
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Financial Assistance">
+                                    Financial Assistance
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Education">
+                                    Education
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities">
+                                    Psychosocial Activities
                                 </label>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group ">
-                                    <select name="service_request"  multiple="multiple" class="select" >
-                                        <option value="mental_services">Mental Health Services </option>
-                                        <option value="protection_services">Protection Support/ Services </option>
-                                        <option value="shelter">Shelter</option>
-                                        <option value="psychological">Psychological Interventions </option>
-                                        <option value="community_centre">Community Centre/ Social Services </option>
-                                        <option value="material_assesment">Material Assistance</option>
-                                        <option value="physical_health">Physical Health Care </option>
-                                        <option value="family_tracing">Family Tracing Services </option>
-                                        <option value="nutrition">Nutrition</option>
-                                        <option value="physical_rehabilation">Physical Rehabilitation</option>
-                                        <option value="legal_assesment">Legal Assistance </option>
-                                        <option value="financial_assistance">Financial Assistance   </option>
-                                        <option value="education">Education </option>
-                                        <option value="psychocial_activities">Psychosocial Activities </option>
-                                    </select>
-                                   </div>
-
-                                </div>
-                            </div>
+                    </fieldset>
+                    <fieldset class="scheduler-border">
+                        <legend class="text-bold">Explain any request Service  </legend>
+                        <textarea  class="form-control" name="comments" id="comments"></textarea>
                     </fieldset>
 
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-md-8 col-sm-8 pull-left" id="output">
 
+                    </div>
+                    <div class="col-md-4 col-sm-4 pull-right text-right">
+                        <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit Form </button>
+                    </div>
 
-
-
-
-                </fieldset>
-
+                </div>
 
 
             </div>

@@ -218,9 +218,9 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="#" class="addRecord btn"><i class="fa fa-plus text-success"></i> <span>Client Referral</span></a>
-            <a  href="{{url('referrals')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All Referrals</span></a>
-            <a  href="{{url('import/referrals')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import Referrals data </span></a>
+            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-plus text-success"></i> Client Referral</a>
+            <a  href="{{url('referrals')}}" class="btn  btn-primary"><i class="fa fa-list text-info"></i> List All Referrals</a>
+            <a  href="{{url('import/referrals')}}" class="btn btn-primary"><i class="fa fa-users text-danger"></i> Go to Clients </a>
         </div>
     </div>
     <div class="panel panel-flat">
@@ -235,11 +235,13 @@
             <thead>
             <tr>
                 <th>SNO</th>
-                <th>Client No</th>
+                <th>Referral Ref</th>
+                <th>Date of Referral</th>
+                <th>Unique Id</th>
                 <th>Full Name</th>
-                <th>Progress Number</th>
-                <th>Case name</th>
-                <th>Date</th>
+                <th>Age</th>
+                <th>Sex</th>
+                <th>Camp</th>
                 <th>Details</th>
                 <th class="text-center">Actions</th>
             </tr>
