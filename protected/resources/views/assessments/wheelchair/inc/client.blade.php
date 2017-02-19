@@ -37,29 +37,35 @@
                                 <div class="col-md-12 column">
                                       <table class="table datatable-basic table-bordered table-hover" id="tab_logic">
                                         <thead>
-                                            <tr >
-                                                <th class="text-center">
-                                                    #
-                                                </th>
-                                                <th class="text-center">
-                                                    Client Number
-                                                </th>
-                                                <th class="text-center">
-                                                    Full Name
-                                                </th>
-                                                <th class="text-center">
-                                                    Gender
-                                                </th>
-                                               <th class="text-center">
-                                                    Nationality
-                                                </th>
-                                                <th class="text-center">
-                                                   Date of Arrival
-                                                </th>
-                                                <th class="text-center">
-                                                    Check client
-                                                </th>
-                                            </tr>
+                                        <tr >
+                                            <th class="text-center">
+                                                #
+                                            </th>
+                                            <th class="text-center">
+                                                HAI REG NO
+                                            </th>
+                                            <th class="text-center">
+                                                Unique ID
+                                            </th>
+                                            <th class="text-center">
+                                                Full Name
+                                            </th>
+                                            <th class="text-center">
+                                                Sex
+                                            </th>
+                                            <th class="text-center">
+                                                Age
+                                            </th>
+                                            <th class="text-center">
+                                                Ration Card No
+                                            </th>
+                                            <th class="text-center">
+                                                Camp
+                                            </th>
+                                            <th class="text-center">
+                                                Check client
+                                            </th>
+                                        </tr>
                                         </thead>
                                         <tbody>
                                         </tbody>
