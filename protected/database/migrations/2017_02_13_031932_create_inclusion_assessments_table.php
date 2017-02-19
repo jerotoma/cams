@@ -17,7 +17,13 @@ class CreateInclusionAssessmentsTable extends Migration
              $table->increments('id');
              $table->integer('client_id')->unsigned();
              $table->integer('assessor_id')->unsigned();
-             $table->timestamps();
+
+            $table->string('auth_status')->nullable()->default('pending');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
+
+            $table->timestamps();
              $table->foreign('client_id')->references('id')->on('clients')
                 ->onUpdate('cascade')->onDelete('cascade');
             
@@ -31,8 +37,6 @@ class CreateInclusionAssessmentsTable extends Migration
      */
     public function down()
     {
-        Schema::create('inclusion_assessments', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('inclusion_assessments');
     }
 }

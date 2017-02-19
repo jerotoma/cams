@@ -18,9 +18,11 @@ class CreatePSNCodeCategoriesTable extends Migration
             $table->string('code')->nullable();
             $table->string('description')->nullable();
             $table->text('definition')->nullable();
+            $table->string('for_reporting')->default('No')->nullable();
+            $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
-            $table->string('auth_status')->default('pending')->nullable();
+            $table->string('auth_by')->nullable();
             $table->timestamps();
         });
     }

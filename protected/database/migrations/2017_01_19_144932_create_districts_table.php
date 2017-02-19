@@ -17,8 +17,10 @@ class CreateDistrictsTable extends Migration
             $table->increments('id');
             $table->string('district_name')->index();
             $table->integer('region_id')->unsigned();
+            $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
             $table->timestamps();
             $table->foreign('region_id')->references('id')->on('regions')
                 ->onUpdate('cascade')->onDelete('cascade');

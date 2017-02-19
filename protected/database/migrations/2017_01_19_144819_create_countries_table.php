@@ -17,8 +17,10 @@ class CreateCountriesTable extends Migration
             $table->increments('id');
             $table->string('country_name');
             $table->string('country_code')->nullable();
+            $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
             $table->timestamps();
         });
     }

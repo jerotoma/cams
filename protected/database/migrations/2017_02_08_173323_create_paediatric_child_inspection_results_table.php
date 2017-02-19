@@ -28,6 +28,7 @@ class CreatePaediatricChildInspectionResultsTable extends Migration
             $table->string('source_name')->nullable();
             $table->string('source_designation')->nullable();
             $table->date('source_date')->nullable();
+            $table->string('centre_name')->nullable();
             $table->foreign('assessment_id')->references('id')->on('paediatric_assessments')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

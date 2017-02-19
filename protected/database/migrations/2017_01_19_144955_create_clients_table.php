@@ -15,16 +15,21 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('hai_reg_number')->nullable();
             $table->string('client_number');
             $table->string('full_name');
             $table->string('sex')->nullable();
             $table->date('birth_date')->nullable();
             $table->integer('age')->nullable();
-            $table->string('civil_status')->nullable();
+            $table->string('age_score')->nullable();
+            $table->string('marital_status')->nullable();
             $table->string('spouse_name')->nullable();
             $table->string('care_giver')->nullable();
-            $table->integer('country_id')->unsigned()->nullable();
-            $table->string('district')->nullable();
+            $table->string('child_care_giver')->nullable();
+            $table->integer('origin_id')->nullable()->unsigned();
+            $table->integer('camp_id')->nullable()->unsigned();
+
+
             $table->date('date_arrival')->nullable();
             $table->string('present_address')->nullable();
             $table->integer('females_total')->nullable();
@@ -33,10 +38,19 @@ class CreateClientsTable extends Migration
             $table->string('ration_card_number')->nullable();
             $table->string('assistance_received')->nullable();
             $table->string('problem_specification')->nullable();
-            $table->integer('camp_id')->unsigned()->nullable();
+
             $table->string('status')->nullable();
+            $table->string('share_info')->nullable();
+            $table->string('hh_relation')->nullable();
+
+            $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
-            $table->string('auth_by')->nullable();
+            $table->string('updated_by')->nullable();
+
+            $table->foreign('origin_id')->references('id')->on('origins')
+                ->onUpdate('cascade');
+            $table->foreign('camp_id')->references('id')->on('camps')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -48,6 +62,8 @@ class CreateClientsTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('clients');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

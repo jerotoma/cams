@@ -44,6 +44,10 @@ class CreateReferralsTable extends Migration
             $table->string('organization')->nullable();
             $table->string('org_phone')->nullable();
             $table->string('org_email')->nullable();
+            $table->string('auth_status')->nullable()->default('pending');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
             $table->timestamps();
             $table->foreign('client_id')->references('id')->on('clients')
                 ->onUpdate('cascade')->onDelete('cascade');

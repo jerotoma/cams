@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Case management Database for Person with special needs| @yield('page_title')</title>
+    <title>Case management Database for Person with specific needs| @yield('page_title')</title>
 
     <!-- Global stylesheets -->
     <link href="{{asset("assets/css/googlefonts.css")}}" rel="stylesheet" type="text/css">
@@ -45,7 +45,7 @@
     <div class="page-content">
 
         <!-- Main sidebar -->
-        <div class="sidebar sidebar-main sidebar-default ">
+        <div class="sidebar sidebar-main sidebar-fixed ">
             <div class="sidebar-content">
 
                 <!-- User menu -->

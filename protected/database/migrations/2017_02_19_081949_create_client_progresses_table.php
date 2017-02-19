@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProgressiveNoticesTable extends Migration
+class CreateClientProgressesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateProgressiveNoticesTable extends Migration
      */
     public function up()
     {
-        Schema::create('progressive_notices', function (Blueprint $table) {
+        Schema::create('client_progresses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('reference_number')->nullable();
             $table->date('open_date')->nullable();
@@ -22,12 +22,17 @@ class CreateProgressiveNoticesTable extends Migration
             $table->text('analysis')->nullable();
             $table->text('planning')->nullable();
             $table->string('case_worker_name')->nullable();
-            $table->string('status')->nullable()->default('Open Notice');
-            $table->integer('created_by')->unsigned()->nullable();
-            $table->integer('updated_by')->unsigned()->nullable();
-            $table->integer('reviewed_by')->unsigned()->nullable();
+            $table->string('status')->nullable()->default('Opened');
+
             $table->integer('client_id')->unsigned();
             $table->integer('camp_id')->unsigned()->nullable();
+
+            $table->string('auth_status')->nullable()->default('pending');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
+
+
             $table->foreign('client_id')->references('id')->on('clients')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('camp_id')->references('id')->on('camps')
@@ -43,6 +48,6 @@ class CreateProgressiveNoticesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('progressive_notices');
+        Schema::dropIfExists('client_progresses');
     }
 }

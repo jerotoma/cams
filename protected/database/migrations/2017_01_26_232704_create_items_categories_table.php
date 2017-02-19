@@ -17,6 +17,9 @@ class CreateItemsCategoriesTable extends Migration
             $table->string('category_name')->unique();
             $table->string('description')->nullable();
             $table->string('status')->nullable()->default('Available');
+            $table->string('auth_status')->nullable()->default('pending');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

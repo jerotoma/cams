@@ -16,13 +16,13 @@ class CreateItemsDisbursementItemsTable extends Migration
         Schema::create('items_disbursement_items', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('client_id')->unsigned();
+            $table->date('distribution_date')->nullable();
             $table->integer('item_id')->unsigned();
             $table->integer('quantity')->default(0);
             $table->integer('distribution_id')->unsigned();
 
             $table->foreign('client_id')->references('id')->on('clients')
                 ->onUpdate('cascade')->onDelete('cascade');
-
             $table->foreign('item_id')->references('id')->on('items_inventories')
                 ->onUpdate('cascade')->onDelete('cascade');
 

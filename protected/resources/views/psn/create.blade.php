@@ -1,5 +1,3 @@
-
-
 <script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
@@ -23,7 +21,11 @@
 <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
-    $('.pickadate').pickadate();
+    $('.pickadate').pickadate({
+
+        // Escape any “rule” characters with an exclamation mark (!).
+        format: 'yyyy-mm-dd',
+    });
 </script>
 
 <div class="portlet light bordered">
@@ -146,13 +148,15 @@
                         for_reporting: "required",
                         code: "required",
                         description: "required",
-                        definition: "required"
+                        definition: "required",
+                        category_id: "required",
                     },
                     messages: {
                         for_reporting: "Please field is required",
                         code: "Please category_name is required",
                         description: "Please description is required",
                         definition: "Please full name is required",
+                        category_id: "Please category is required"
 
                     },
                     submitHandler: function(form) {

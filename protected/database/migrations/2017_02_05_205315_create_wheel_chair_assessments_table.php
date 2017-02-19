@@ -17,6 +17,12 @@ class CreateWheelChairAssessmentsTable extends Migration
                $table->increments('id');
 			   $table->integer('client_id')->unsigned();
 			   $table->integer('assessor_id')->unsigned();
+
+                $table->string('auth_status')->nullable()->default('pending');
+                $table->string('created_by')->nullable();
+                $table->string('updated_by')->nullable();
+                $table->string('auth_by')->nullable();
+
 			   $table->timestamps();
                $table->foreign('client_id')->references('id')
                    ->on('clients')->onDelete('cascade');

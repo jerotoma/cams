@@ -247,10 +247,15 @@ class ClientsController extends Controller
                         $client->save();
 
                         //Generate computer number
-                        $client->hai_reg_number="HAI-".date("Y",strtotime($client->date_arrival))."-".str_pad($client->id,4,'0',STR_PAD_LEFT);;
+                        $client->hai_reg_number="HAI-".str_pad($client->id,4,'0',STR_PAD_LEFT).$row->vul_1."-".$row->vul_2;
                         $client->save();
-
                         $psnCodes=array($row->vul_1,$row->vul_2,$row->vul_3,$row->vul_4,$row->vul_5);
+
+                        $vn="";
+                        foreach ($psnCodes as $data ){
+                            $vn .= $data."-,";
+                            $vn=substr($vn,0,strlen($vn)-1);
+                        }
                         //Save validation codes
 
                         foreach ($psnCodes as $data )
@@ -327,12 +332,11 @@ class ClientsController extends Controller
         //
         try {
             $validator = Validator::make($request->all(), [
-                'client_number' => 'required|unique:clients',
                 'full_name' => 'required',
                 'sex' => 'required',
                 'age' => 'required',
                 'marital_status' => 'required',
-                'nationality' => 'required',
+                'origin' => 'required',
                 'date_arrival' => 'required|before:tomorrow',
                 'ration_card_number' => 'required',
                 'camp_id' => 'required',
@@ -364,8 +368,6 @@ class ClientsController extends Controller
                 $client->marital_status = $request->marital_status;
                 $client->spouse_name = $request->spouse_name;
                 $client->care_giver = $request->care_giver;
-                $client->origin = ucwords($request->origin);
-                $client->country_id = $request->nationality;
                 $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
                 $client->present_address = $request->present_address;
                 $client->household_number = $request->household_number;
@@ -373,13 +375,27 @@ class ClientsController extends Controller
                 $client->assistance_received = $request->assistance_received;
                 $client->problem_specification = $request->problem_specification;
                 $client->camp_id = $request->camp_id;
+                $client->origin_id=$request->origin;
                 $client->present_address = $request->present_address;
                 $client->females_total = $request->females_total;
                 $client->males_total = $request->males_total;
                 $client->present_address = $request->present_address;
                 $client->hh_relation = $request->hh_relation;
+                $client->share_info= $request->share_info;
                 $client->created_by = Auth::user()->username;
                 $client->age_score= $this->getAgeScore($request->age);
+                $client->save();
+
+                //Generate computer number
+                $vn="";
+                foreach ($request->vulnerability_code as $item) {
+                    $code=PSNCode::find($item);
+                    $vn .= $code->code."-,";
+                    $vn=substr($vn,0,strlen($vn)-1);
+                }
+                $vn=substr($vn,0,strlen($vn)-1);
+
+                $client->hai_reg_number="HAI-".str_pad($client->id,4,'0',STR_PAD_LEFT).$vn;
                 $client->save();
 
                 //Save validation codes
@@ -447,7 +463,6 @@ class ClientsController extends Controller
         //
         try {
             $validator = Validator::make($request->all(), [
-                'client_number' => 'required'.$id,
                 'full_name' => 'required',
                 'sex' => 'required',
                 'age' => 'required',
@@ -460,9 +475,8 @@ class ClientsController extends Controller
                 'females_total' => 'required',
                 'males_total' => 'required',
                 'present_address'=> 'required',
+                'share_info' => 'required',
                 'hh_relation' => 'required',
-
-
 
             ]);
             if ($validator->fails()) {
@@ -471,15 +485,20 @@ class ClientsController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
-                $client = Client::find($id);
+
+                $client =  Client::find($id);
                 $client->client_number = strtoupper($request->client_number);
                 $client->full_name = ucwords($request->full_name);
                 $client->sex = ucwords($request->sex);
                 $client->age = $request->age;
+                if ($request->age != null) {
+                    $agedef=Date("Y") - $request->age;
+                    $birthdate=$agedef."-01-01";
+                    $client->birth_date = $birthdate;
+                }
                 $client->marital_status = $request->marital_status;
                 $client->spouse_name = $request->spouse_name;
                 $client->care_giver = $request->care_giver;
-                $client->country_id = $request->origin;
                 $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
                 $client->present_address = $request->present_address;
                 $client->household_number = $request->household_number;
@@ -487,15 +506,17 @@ class ClientsController extends Controller
                 $client->assistance_received = $request->assistance_received;
                 $client->problem_specification = $request->problem_specification;
                 $client->camp_id = $request->camp_id;
+                $client->origin_id=$request->origin;
                 $client->present_address = $request->present_address;
                 $client->females_total = $request->females_total;
                 $client->males_total = $request->males_total;
-                $client->created_by = Auth::user()->username;
-                $client->status=$request->status;
                 $client->present_address = $request->present_address;
                 $client->hh_relation = $request->hh_relation;
+                $client->share_info= $request->share_info;
+                $client->created_by = Auth::user()->username;
                 $client->age_score= $this->getAgeScore($request->age);
                 $client->save();
+
 
                 //Save validation codes
                 foreach (ClientVulnerabilityCode::where('client_id', '=', $client->id)->get() as $item) {
@@ -508,11 +529,11 @@ class ClientsController extends Controller
                     $codes->code_id = $item;
                     $codes->save();
                 }
-
                 return response()->json([
                     'success' => true,
-                    'message' => "Saved Successful"
+                    'message' => " Saved Successful"
                 ], 200);
+
             }
         }
         catch (\Exception $ex)

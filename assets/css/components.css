@@ -130,6 +130,112 @@ a.badge,
   -o-transition: background-color ease-in-out 0.15s;
   transition: background-color ease-in-out 0.15s;
 }
+.sidebar-user-material-menu > a,
+.navbar-nav > .active > a:after,
+.ranges ul li {
+  -webkit-transition: background-color ease-in-out 0.15s;
+  -o-transition: background-color ease-in-out 0.15s;
+  transition: background-color ease-in-out 0.15s;
+}
+.sidebar-user-material-menu > a > .caret {
+  -webkit-transition: -webkit-transform ease-in-out 0.15s;
+  -o-transition: -webkit-transform ease-in-out 0.15s;
+  transition: -webkit-transform ease-in-out 0.15s;
+}
+.sidebar-user-material .category-content {
+  background: url(../images/backgrounds/user_bg4.jpg) center center no-repeat;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.sidebar-user-material .navigation-wrapper {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.sidebar-default .sidebar-user-material .navigation-wrapper {
+  background-color: rgba(0, 0, 0, 0.01);
+  border-bottom-color: #ddd;
+}
+.sidebar-user-material .navigation {
+  padding: 8px 0;
+}
+.sidebar-detached .sidebar-user-material:first-child .category-content {
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+.sidebar-user-material-menu {
+  margin: -20px;
+  margin-top: 20px;
+}
+.sidebar-user-material-menu > a {
+  padding: 10px 20px;
+  display: block;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.1);
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.sidebar-user-material-menu > a:hover,
+.sidebar-user-material-menu > a:focus,
+.sidebar-user-material-menu > a[aria-expanded="true"] {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+.sidebar-user-material-menu > a > i {
+  float: right;
+  margin-top: 2px;
+}
+.sidebar-user-material-menu > a > .caret {
+  -webkit-transition-duration: 0.35s;
+  transition-duration: 0.35s;
+}
+.sidebar-user-material-menu > a[aria-expanded="true"] > .caret {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.sidebar-user-material-content {
+  text-align: center;
+}
+.sidebar-user-material-content > a {
+  display: inline-block;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+.sidebar-user-material-content > a > img {
+  height: 80px;
+}
+.sidebar-user-material-content > h6 {
+  margin-bottom: 0;
+}
+.sidebar-user-material-content > h6,
+.sidebar-user-material-content > span {
+  color: #fff;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.sidebar-xs .sidebar-user-material-content {
+  display: none;
+}
+.sidebar-xs .sidebar-user-material > .category-content {
+  padding: 0;
+}
+.sidebar-xs .sidebar-user-material-menu {
+  margin: 0;
+}
+.sidebar-xs .sidebar-user-material-menu > a {
+  text-align: center;
+  padding: 20px;
+  line-height: 1;
+}
+.sidebar-xs .sidebar-user-material-menu > a > span {
+  display: none;
+}
+.sidebar-xs .sidebar-user-material-menu > a > i {
+  float: none;
+  margin-top: 0;
+}
 /* ------------------------------------------------------------------------------
  *
  *  # Sidebar layouts

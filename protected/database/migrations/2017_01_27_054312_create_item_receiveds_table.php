@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePSNCodesTable extends Migration
+class CreateItemReceivedsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,20 @@ class CreatePSNCodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('p_s_n_codes', function (Blueprint $table) {
+        Schema::create('item_receiveds', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('code');
+            $table->integer('received_id')->nullable()->unsigned();
+            $table->integer('item_id')->nullable()->unsigned();
+            $table->integer('quantity')->nullable();
             $table->string('description')->nullable();
-            $table->text('definition')->nullable();
-            $table->integer('category_id')->nullable()->unsigned();
-            $table->string('for_reporting')->nullable()->default('No');
             $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('auth_by')->nullable();
-            $table->foreign('category_id')->references('id')->on('p_s_n_code_categories')
+
+            $table->foreign('received_id')->references('id')->on('inventory_receiveds')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('item_id')->references('id')->on('items_inventories')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
@@ -37,6 +39,8 @@ class CreatePSNCodesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('p_s_n_codes');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        Schema::dropIfExists('item_receiveds');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
