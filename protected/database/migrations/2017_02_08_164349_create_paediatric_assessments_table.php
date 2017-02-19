@@ -39,6 +39,12 @@ class CreatePaediatricAssessmentsTable extends Migration
             $table->integer('total_children')->nullable()->default(0);
             $table->integer('total_children_alive')->nullable()->default(0);
             $table->integer('total_children_dead')->nullable()->default(0);
+
+            $table->string('auth_status')->nullable()->default('pending');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
+
             $table->foreign('client_id')->references('id')->on('clients')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

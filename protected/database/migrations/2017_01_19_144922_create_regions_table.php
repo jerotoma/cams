@@ -17,8 +17,10 @@ class CreateRegionsTable extends Migration
             $table->increments('id');
             $table->integer('country_id')->unsigned()->nullable();
             $table->string('region_name')->nullable();
+            $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
             $table->timestamps();
             $table->foreign('country_id')->references('id')->on('countries')
                 ->onUpdate('cascade')->onDelete('cascade');

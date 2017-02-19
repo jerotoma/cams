@@ -14,11 +14,13 @@ class CreateItemsDisbursementsTable extends Migration
     {
         Schema::create('items_disbursements', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('client_id');
-            $table->integer('item_id');
-            $table->integer('quantity');
             $table->date('disbursements_date');
-            $table->string('disbursements_by');
+            $table->string('disbursements_by')->nullable();
+            $table->text('comments')->nullable();
+            $table->integer('camp_id')->nullable()->unsigned();
+            $table->string('auth_status')->nullable()->default('pending');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

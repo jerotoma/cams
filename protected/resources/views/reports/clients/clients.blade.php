@@ -2,7 +2,7 @@
     @foreach(\App\Camp::all() as $camp)
         <table>
             <tr>
-                <td colspan="12">List of PSN Clients at {{$camp->camp_name}} on @if( !$start_time =="1970-01-01")) ({{$start_time. " to ". $end_time}} @endif</td>
+                <td colspan="12">List of PSN Clients at {{$camp->camp_name}}  ({{$start_time. " to ". $end_time}}</td>
             </tr>
             <tr>
                 <th>No</th>
@@ -37,20 +37,22 @@
                     <td>{{$client->sex}}</td>
                     <td>{{$client->age}}</td>
                     <td>{{$client->marital_status}}</td>
-                    <td>{{$client->males_total}}</td>
+                    <td>{{$client->care_giver}}</td>
                     <td>{{$client->spouse_name}}</td>
                     <td>{{$client->males_total}}</td>
                     <td>{{$client->females_total}}</td>
                     <td>{{$client->females_total + $client->males_total }}</td>
+                    <td>
                     @if(is_object($client->fromOrigin) && $client->fromOrigin)
                         {{$client->fromOrigin->origin_name}}
                     @endif
-                    <td>@if( !$client->date_arrival =="1970-01-01"){{$client->date_arrival}}@endif</td>
+                    </td>
+                    <td> @if( $client->date_arrival !="1970-01-01"){{$client->date_arrival}}@endif </td>
                     <td>{{$client->present_address}}</td>
                     <td>{{$client->ration_card_number}}</td>
                     @if(is_object($client->vulnerabilityCodes))
                         @foreach($client->vulnerabilityCodes as $code)
-                            <td>{{$client->ration_card_number}}</td>
+                            <td>{{$code->code->code}}</td>
                         @endforeach
                     @endif
 
@@ -64,7 +66,7 @@
     <?php $camp=\App\Camp::find($camp_id);?>
     <table>
         <tr>
-            <td colspan="12">List of PSN Clients at {{$camp->camp_name}} on @if( !$start_time =="1970-01-01")) ({{$start_time. " to ". $end_time}} @endif</td>
+            <td colspan="12">List of PSN Clients at {{$camp->camp_name}}  ({{$start_time. " to ". $end_time}}</td>
         </tr>
         <tr>
             <th>No</th>
@@ -99,22 +101,24 @@
                 <td>{{$client->sex}}</td>
                 <td>{{$client->age}}</td>
                 <td>{{$client->marital_status}}</td>
-                <td>{{$client->males_total}}</td>
+                <td>{{$client->care_giver}}</td>
                 <td>{{$client->spouse_name}}</td>
                 <td>{{$client->males_total}}</td>
                 <td>{{$client->females_total}}</td>
                 <td>{{$client->females_total + $client->males_total }}</td>
-                @if(is_object($client->fromOrigin) && $client->fromOrigin)
-                    {{$client->fromOrigin->origin_name}}
-                @endif
-                <td>@if( !$client->date_arrival =="1970-01-01"){{$client->date_arrival}}@endif</td>
+                <td>
+                    @if(is_object($client->fromOrigin) && $client->fromOrigin)
+                        {{$client->fromOrigin->origin_name}}
+                    @endif
+                </td>
+                <td> @if( $client->date_arrival !="1970-01-01"){{$client->date_arrival}}@endif </td>
                 <td>{{$client->present_address}}</td>
                 <td>{{$client->ration_card_number}}</td>
                 @if(is_object($client->vulnerabilityCodes))
                     @foreach($client->vulnerabilityCodes as $code)
-                       <td>{{$client->ration_card_number}}</td>
+                        <td>{{$code->code->code}}</td>
                     @endforeach
-                 @endif
+                @endif
 
 
             </tr>

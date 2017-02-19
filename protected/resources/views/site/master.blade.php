@@ -45,7 +45,7 @@
     <div class="page-content">
 
         <!-- Main sidebar -->
-        <div class="sidebar sidebar-main sidebar-default ">
+        <div class="sidebar sidebar-main sidebar-fixed ">
             <div class="sidebar-content">
 
                 <!-- User menu -->

@@ -68,7 +68,7 @@
                 <div class="col-md-4">
                     <div class="form-group ">
                         <label class="control-label">Origin</label>
-                        <select class="select" name="nationality" id="origin" data-placeholder="Choose an option...">
+                        <select class="select" name="origin" id="origin" data-placeholder="Choose an option...">
                             <option></option>
                             @foreach(\App\Origin::all() as $item)
                                 <option value="{{$item->id}}">{{$item->origin_name}}</option>
@@ -82,7 +82,7 @@
                 <div class="col-md-4">
                     <div class="form-group ">
                         <label class="control-label">Unique ID</label>
-                        <input type="text" class="form-control" placeholder="Client Number" name="client_number" id="client_number"
+                        <input type="text" class="form-control"  name="client_number" id="client_number"
                                value="{{old('client_number')}}">
                     </div>
                 </div>
@@ -340,10 +340,10 @@
         },
         errorElement:'div',
         rules: {
+            marital_status: "required",
             share_info: "required",
             hh_relation: "required",
             present_address: "required",
-            client_number: "required",
             full_name: "required",
             sex: "required",
             age: {
@@ -357,17 +357,17 @@
                 number: true
             },
             civil_status: "required",
-            nationality: "required",
+            origin: "required",
             date_arrival: "required",
             ration_card_number: "required",
             vulnerability_code:"required",
             camp_id:"required"
         },
         messages: {
+            marital_status: "Please this field is required",
             share_info: "Please this field is required",
             hh_relation: "Please Relation to the head of household is required",
-            present_address: "Please client number is required",
-            client_number: "Please client number is required",
+            present_address: "Please client address is required",
             full_name: "Please full name is required",
             sex: "Please sex is required",
             age:{
@@ -381,7 +381,7 @@
                 number:"Please enter valid age",
             } ,
             civil_status: "Please civil status is required",
-            nationality: "Please origin is required",
+            origin: "Please origin is required",
             date_arrival: "Please arrival date is required",
             ration_card_number: "Please ration card number is required",
             vulnerability_code: "Please  vulnerability code is required",

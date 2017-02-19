@@ -21,8 +21,16 @@ class ClientReportsController extends Controller
     }
     public function postGenerate(Request $request)
     {   ob_clean();
-        $start_time = date("Y-m-d", strtotime($request->start_date));
-        $end_time = date("Y-m-d", strtotime($request->end_date));
+        $end_time ="";
+        $start_time="";
+        if($request->start_date != ""){
+            $start_time = date("Y-m-d", strtotime($request->start_date));
+        }
+        if($request->end_date != ""){
+            $end_time = date("Y-m-d", strtotime($request->end_date));
+        }
+
+
         $range = [$start_time, $end_time];
         $camp_id=$request->camp_id;
         $specific_needs= $request->specific_needs;

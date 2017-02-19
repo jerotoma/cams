@@ -19,6 +19,7 @@ class CreateAuditsTable extends Migration
             $table->string('module')->nullable();
             $table->string('activity')->nullable();
             $table->text('data')->nullable();
+            $table->date('date')->nullable();
             $table->dateTime('log_time')->nullable();
             $table->timestamps();
         });

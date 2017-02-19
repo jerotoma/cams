@@ -25,11 +25,15 @@ class CreateClientCasesTable extends Migration
             $table->string('case_worker_name')->nullable();
             $table->string('vol')->nullable();
             $table->string('status')->default('Open Case');
-            $table->integer('created_by')->unsigned()->nullable();
-            $table->integer('updated_by')->unsigned()->nullable();
-            $table->integer('reviewed_by')->unsigned()->nullable();
+
             $table->integer('client_id')->unsigned();
             $table->integer('camp_id')->unsigned()->nullable();
+
+            $table->string('auth_status')->nullable()->default('pending');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
+
             $table->foreign('client_id')->references('id')->on('clients')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('camp_id')->references('id')->on('camps')

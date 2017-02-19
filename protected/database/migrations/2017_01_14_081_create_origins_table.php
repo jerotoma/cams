@@ -16,8 +16,10 @@ class CreateOriginsTable extends Migration
         Schema::create('origins', function (Blueprint $table) {
             $table->increments('id');
             $table->string('origin_name')->unique();
+            $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +31,8 @@ class CreateOriginsTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('origins');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
