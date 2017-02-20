@@ -238,13 +238,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1">
-                                        <div class="form-group ">
-                                            <label class="control-label">All Dates</label>
-                                            <input type="checkbox" class="form-control" value="alldated" name="all_dates">
-
-                                        </div>
-                                    </div>
 
                                 </div>
                                 <div class="row">

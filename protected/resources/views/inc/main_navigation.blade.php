@@ -73,7 +73,7 @@
             <li>
                 <a href="#"><i class="fa fa-pie-chart"></i> <span>NFIs Inventory Reports</span></a>
                 <ul>
-                    <li><a href="#">Inventory Reports</a></li>
+                    <li><a href="{{url('reports/nfis')}}">Inventory Reports</a></li>
                 </ul>
             </li>
             <!-- /data visualization -->
