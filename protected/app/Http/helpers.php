@@ -464,4 +464,14 @@ if (!function_exists('isItemOutOfStock')) {
     }
 }
 
+if (!function_exists('getAllClientsReceivedItemByItemId')) {
+    function getAllClientsReceivedItemByItemId($item_id,$range) {
+
+        $itemsUsers=\App\ItemsDisbursementItems::where('item_id','=',$item_id)->whereBetween('distribution_date', $range)->get();
+        $itemsUsers= \DB::table('items_disbursement_items')->leftjoin('clients','items_disbursement_items.client_id','=','clients.id')
+                          ->select('clients.*')
+                         ->whereBetween('distribution_date', $range)->get();
+
+    }
+}
 //Get client ID

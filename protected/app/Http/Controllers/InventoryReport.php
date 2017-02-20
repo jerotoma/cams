@@ -34,24 +34,36 @@ class InventoryReport extends Controller
         $report_type=$request->report_type;
         $all_dates=$request->all_dates;
         $items=$request->items;
-        //return view('reports.clients.registration',compact('range','start_time','end_time','camp_id'));
 
-        if($report_type =="List of Clients Received Items" && items) {
-            \Excel::create("Detailed_Registration_by_Category", function ($excel) use ($range, $start_time, $end_time, $camp_id,$items) {
-                $excel->sheet('sheet', function ($sheet) use ($range, $start_time, $end_time, $camp_id,$items) {
-                    $sheet->loadView('reports.nfis.clients', compact('range', 'start_time', 'end_time', 'camp_id','items'));
+        //return view('reports.nfis.clients', compact('range', 'start_time', 'end_time', 'camp_id','items'));
+
+        if($report_type =="List of Clients Received Items" && $items !="" && $items != "All") {
+            $receive="yes";
+            \Excel::create("Detailed_Registration_by_Category", function ($excel) use ($range, $start_time, $end_time, $camp_id,$items,$receive) {
+                $excel->sheet('sheet', function ($sheet) use ($range, $start_time, $end_time, $camp_id,$items,$receive) {
+                    $sheet->loadView('reports.nfis.clients', compact('range', 'start_time', 'end_time', 'camp_id','items','receive'));
                 });
             })->download('xlsx');
-        }elseif($report_type =="Population Planning Groups") {
-            \Excel::create("Detailed_Population_Planning_Groups", function ($excel) use ($range, $start_time, $end_time, $camp_id,$all_dates) {
-                $excel->sheet('sheet', function ($sheet) use ($range, $start_time, $end_time, $camp_id,$all_dates) {
-                    $sheet->loadView('reports.clients.population', compact('range', 'start_time', 'end_time', 'camp_id','all_dates'));
+        }elseif($report_type =="Prepare list for distribution" && $items !="" && $items != "All") {
+            $receive="no";
+            \Excel::create("Detailed_Population_Planning_Groups", function ($excel) use ($range, $start_time, $end_time, $camp_id,$items,$receive) {
+                $excel->sheet('sheet', function ($sheet) use ($range, $start_time, $end_time, $camp_id,$items,$receive) {
+                    $sheet->loadView('reports.nfis.clients', compact('range', 'start_time', 'end_time', 'camp_id','items','receive'));
                 });
             })->download('xlsx');
-        }elseif($report_type =="Specific needs provided") {
-            \Excel::create("Detailed_specific_needs_provided", function ($excel) use ($range, $start_time, $end_time, $camp_id,$all_dates,$specific_needs) {
-                $excel->sheet('sheet', function ($sheet) use ($range, $start_time, $end_time, $camp_id,$all_dates,$specific_needs) {
-                    $sheet->loadView('reports.clients.specialneeds', compact('range', 'start_time', 'end_time', 'camp_id','all_dates','specific_needs'));
+        }elseif($report_type =="Out of stock Items") {
+            $status="out";
+            \Excel::create("Out_of_stock_Items", function ($excel)use ($status) {
+                $excel->sheet('sheet', function ($sheet) use ($status) {
+                    $sheet->loadView('reports.nfis.items',compact('status'));
+                });
+            })->download('xlsx');
+        }
+        elseif($report_type =="List of All Items") {
+            $status="instock";
+            \Excel::create("Out_of_stock_Items", function ($excel)use ($status) {
+                $excel->sheet('sheet', function ($sheet) use ($status) {
+                    $sheet->loadView('reports.nfis.items',compact('status'));
                 });
             })->download('xlsx');
         }

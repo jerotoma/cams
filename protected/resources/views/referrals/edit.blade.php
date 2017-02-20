@@ -94,7 +94,7 @@
                             <div class="form-group ">
                                 <label class="control-label">Email: </label>
                                 <input type="text" class="form-control" placeholder="Email " name="ref_email" id="ref_email"
-                                       @if(is_object($referral->referringAgency)) value="{{$referral->referringAgency->ref_location}}" @endif>
+                                       @if(is_object($referral->referringAgency)) value="{{$referral->referringAgency->ref_email}}" @endif>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -112,15 +112,15 @@
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Agency / Org: </label>
-                                <input type="text" class="form-control" placeholder="Agency / Org: " name="rec_org" id="rec_org"
-                                       @if(is_object($referral->receivingAgency)) value="{{$referral->receivingAgency->rec_email}}" @endif>
+                                <input type="text" class="form-control" placeholder="Agency / Org: " name="rec_organisation" id="rec_organisation"
+                                       @if(is_object($referral->receivingAgency)) value="{{$referral->receivingAgency->rec_organisation}}" @endif>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Contact (if known): </label>
                                 <input type="text" class="form-control" placeholder="contact" id="rec_contact" name="rec_contact"
-                                       @if(is_object($referral->receivingAgency)) value="{{$referral->receivingAgency->rec_email}}" @endif>
+                                       @if(is_object($referral->receivingAgency)) value="{{$referral->receivingAgency->rec_contact}}" @endif>
                             </div>
                         </div>
 
@@ -128,7 +128,7 @@
                             <div class="form-group ">
                                 <label class="control-label">Phone</label>
                                 <input type="text" class="form-control" placeholder="Phone" id="rec_phone" name="rec_phone"
-                                       @if(is_object($referral->receivingAgency)) value="{{$referral->receivingAgency->rec_email}}" @endif>
+                                       @if(is_object($referral->receivingAgency)) value="{{$referral->receivingAgency->rec_phone}}" @endif>
                             </div>
                         </div>
 
@@ -138,14 +138,15 @@
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Email: </label>
-                                <input type="text" class="form-control" placeholder="Email " name="ref_email" id="ref_email"
+                                <input type="text" class="form-control" placeholder="Email " name="rec_email" id="rec_email"
                                        @if(is_object($referral->receivingAgency)) value="{{$referral->receivingAgency->rec_email}}" @endif>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Location: </label>
-                                <input type="text" class="form-control" placeholder="Location" id="rec_location" name="rec_location" value="{{old('rec_location')}}">
+                                <input type="text" class="form-control" placeholder="Location" id="rec_location" name="rec_location"
+                                       @if(is_object($referral->receivingAgency)) value="{{$referral->receivingAgency->rec_location}}" @endif>
                             </div>
                         </div>
 

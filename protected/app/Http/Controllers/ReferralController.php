@@ -277,7 +277,6 @@ class ReferralController extends Controller
         //
         try {
             $validator = Validator::make($request->all(), [
-                'client_id' => 'required',
                 'referral_type' => 'required',
                 'referral_date' => 'required|before:tomorrow',
                 'rec_organisation' => 'required',
