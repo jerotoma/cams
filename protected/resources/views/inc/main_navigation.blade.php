@@ -61,11 +61,7 @@
             <li>
                 <a href="#"><i class="icon-graph"></i> <span>Assessments Reports</span></a>
                 <ul>
-                    <li ><a href="{{url('reports/assessments/vulnerability')}}">Vulnerability assessment</a></li>
-                    <li><a href="{{url('reports/assessments/inclusion')}}">Inclusion Assessment</a></li>
-                    <li><a href="{{url('reports/assessments/wheelchair')}}">Wheelchair Assessment</a></li>
-                    <li><a href="{{url('reports/assessments/home')}}">PSN Needs/Home Assessment </a></li>
-                    <li><a href="{{url('reports/assessments/paediatric')}}">Paediatric Assessment </a></li>
+                    <li ><a href="{{url('reports/assessments')}}">Reports</a></li>
                 </ul>
             </li>
             <li>

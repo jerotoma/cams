@@ -24,12 +24,12 @@
         // Escape any “rule” characters with an exclamation mark (!).
         format: 'yyyy-mm-dd',
     });
-    tinymce.init({ selector:'textarea' });
+    tinymce.init({ selector:'texteditor' });
 </script>
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'referrals','role'=>'form','id'=>'formClients')) !!}
+        {!! Form::model($referral,array('route' => array('referrals.update', $referral->id), 'method' => 'PUT','role'=>'form','id'=>'formClients')) !!}
         <div class="panel panel-flat">
 
             <div class="panel-body">
@@ -41,16 +41,20 @@
                                 <label class="control-label">Date of Referral</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                    <input type="text" class="form-control pickadate" placeholder="Date of Referral" value="{{old('referral_date')}}" name="referral_date" id="referral_date">
+                                    <input type="text" class="form-control pickadate" placeholder="Date of Referral" value="{{$referral->referral_date}}" name="referral_date" id="referral_date">
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-4">
+                            <label class="control-label">Referral Type</label>
                             <select name="referral_type" data-placeholder="Choose an option..." class="select">
+                                @if($referral->referral_type !="")
+                                    <option value="{{$referral->referral_type}}">{{$referral->referral_type}}</option>
+                                    @endif
                                 <option></option>
-                                <option value="Yes">Routine</option>
-                                <option value="No">Urgent</option>
+                                <option value="Routine">Routine</option>
+                                <option value="Urgent">Urgent</option>
                             </select>
                         </div>
 
@@ -63,21 +67,23 @@
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Agency / Org: </label>
-                                <input type="text" class="form-control" placeholder="Agency / Org: " name="rec_organisation" id="rec_organisation"
-                                       value="{{old('rec_organisation')}}">
+                                <input type="text" class="form-control" placeholder="Agency / Org: " name="ref_organisation" id="ref_organisation"
+                                       @if(is_object($referral->referringAgency))value="{{$referral->referringAgency->ref_organisation}}" @endif>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Contact (if known): </label>
-                                <input type="text" class="form-control" placeholder="contact" id="rec_contact" name="rec_contact" value="{{old('rec_contact')}}">
+                                <input type="text" class="form-control" placeholder="contact" id="ref_contact" name="ref_contact"
+                                       @if(is_object($referral->referringAgency)) value="{{$referral->referringAgency->ref_contact}}" @endif >
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Phone</label>
-                                <input type="text" class="form-control" placeholder="Phone" id="rec_phone" name="rec_phone" value="{{old('rec_phone')}}">
+                                <input type="text" class="form-control" placeholder="Phone" id="ref_phone" name="ref_phone"
+                                       @if(is_object($referral->referringAgency)) value="{{$referral->referringAgency->ref_phone}}" @endif>
                             </div>
                         </div>
 
@@ -87,14 +93,15 @@
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Email: </label>
-                                <input type="text" class="form-control" placeholder="Email " name="rec_email" id="rec_email"
-                                       value="{{old('rec_email')}}">
+                                <input type="text" class="form-control" placeholder="Email " name="ref_email" id="ref_email"
+                                       @if(is_object($referral->referringAgency)) value="{{$referral->referringAgency->ref_location}}" @endif>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Location: </label>
-                                <input type="text" class="form-control" placeholder="Location" id="rec_location" name="rec_location" value="{{old('rec_location')}}">
+                                <input type="text" class="form-control" placeholder="Location" id="ref_location" name="ref_location"
+                                       @if(is_object($referral->referringAgency)) value="{{$referral->referringAgency->ref_location}}" @endif>
                             </div>
                         </div>
                     </div>
@@ -106,20 +113,22 @@
                             <div class="form-group ">
                                 <label class="control-label">Agency / Org: </label>
                                 <input type="text" class="form-control" placeholder="Agency / Org: " name="rec_org" id="rec_org"
-                                       value="{{old('rec_org')}}">
+                                       @if(is_object($referral->receivingAgency)) value="{{$referral->receivingAgency->rec_email}}" @endif>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Contact (if known): </label>
-                                <input type="text" class="form-control" placeholder="contact" id="rec_contact" name="rec_contact" value="{{old('rec_contact')}}">
+                                <input type="text" class="form-control" placeholder="contact" id="rec_contact" name="rec_contact"
+                                       @if(is_object($referral->receivingAgency)) value="{{$referral->receivingAgency->rec_email}}" @endif>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Phone</label>
-                                <input type="text" class="form-control" placeholder="Phone" id="rec_phone" name="rec_phone" value="{{old('rec_phone')}}">
+                                <input type="text" class="form-control" placeholder="Phone" id="rec_phone" name="rec_phone"
+                                       @if(is_object($referral->receivingAgency)) value="{{$referral->receivingAgency->rec_email}}" @endif>
                             </div>
                         </div>
 
@@ -129,8 +138,8 @@
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Email: </label>
-                                <input type="text" class="form-control" placeholder="Email " name="rec_email" id="rec_email"
-                                       value="{{old('rec_email')}}">
+                                <input type="text" class="form-control" placeholder="Email " name="ref_email" id="ref_email"
+                                       @if(is_object($referral->receivingAgency)) value="{{$referral->receivingAgency->rec_email}}" @endif>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -144,26 +153,28 @@
 
                 </fieldset>
                 <fieldset class="scheduler-border">
+
                     <legend class="text-bold">Client Information</legend>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Name: </label>
                                 <input type="text" class="form-control" placeholder="Name: " name="cl_name" id="cl_name"
-                                       value="{{old('cl_name')}}">
+                                       value="{{$referral->clientInformation->cl_name}}" readonly>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Address: </label>
-                                <input type="text" class="form-control" placeholder="Address" id="cl_address" name="cl_address" value="{{old('cl_address')}}">
+                                <input type="text" class="form-control" placeholder="Address" id="cl_address" name="cl_address" value="{{$referral->clientInformation->cl_address}}" readonly>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Phone</label>
-                                <input type="text" class="form-control" placeholder="Phone" id="cl_phone" name="cl_phone" value="{{old('cl_phone')}}">
+                                <input type="text" class="form-control" placeholder="Phone" id="cl_phone" name="cl_phone"
+                                       value="{{$referral->clientInformation->cl_phone}}">
                             </div>
                         </div>
 
@@ -174,20 +185,21 @@
                             <div class="form-group ">
                                 <label class="control-label">Age: </label>
                                 <input type="text" class="form-control" placeholder="Age " name="" id="cl_age"
-                                       value="{{old('cl_age')}}">
+                                       value="{{$referral->clientInformation->cl_age}}" readonly >
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Sex: </label>
-                                <input type="text" class="form-control" placeholder="Sex" id="cl_sex" name="cl_sex" value="{{old('cl_sex')}}">
+                                <input type="text" class="form-control" placeholder="Sex" id="cl_sex" name="cl_sex" value="{{$referral->clientInformation->cl_sex}}" readonly>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Nationality: </label>
-                                <input type="text" class="form-control" placeholder="Nationality" id="cl_nationality" name="cl_nationality" value="{{old('cl_nationality')}}">
+                                <input type="text" class="form-control" placeholder="Nationality" id="cl_nationality" name="cl_nationality"
+                                       value="{{$referral->clientInformation->cl_nationality}}" >
                             </div>
                         </div>
 
@@ -198,13 +210,13 @@
                             <div class="form-group ">
                                 <label class="control-label">Language: </label>
                                 <input type="text" class="form-control" placeholder="Language " name="cl_language" id="cl_language"
-                                       value="{{old('cl_language')}}">
+                                       value="{{$referral->clientInformation->cl_language}}" >
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">ID Numbers: </label>
-                                <input type="text" class="form-control" placeholder="ID Numbers:" id="cl_id_number" name="cl_id_number" value="{{old('cl_id_number')}}">
+                                <input type="text" class="form-control" placeholder="ID Numbers:" id="cl_id_number" name="cl_id_number" value="{{$referral->clientInformation->cl_id_number}}">
                             </div>
                         </div>
                     </div>
@@ -218,20 +230,22 @@
                             <div class="form-group ">
                                 <label class="control-label">Name of primary caregiver:: </label>
                                 <input type="text" class="form-control" placeholder="Name of primary caregiver:: " name="cl_care_giver" id="cl_care_giver"
-                                       value="{{old('cl_care_giver')}}">
+                                       @if(is_object($referral->clientInformation)) value="{{$referral->clientInformation->cl_language}}" @endif >
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Relationship to child: </label>
-                                <input type="text" class="form-control" placeholder="Relationship to child:" id="cl_care_giver_relationship" name="cl_care_giver_relationship" value="{{old('cl_care_giver_relationship')}}">
+                                <input type="text" class="form-control" placeholder="Relationship to child:" id="cl_care_giver_relationship" name="cl_care_giver_relationship"
+                                       @if(is_object($referral->clientInformation)) value="{{$referral->clientInformation->cl_care_giver_relationship}}" @endif>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Contact information for caregiver:</label>
-                                <input type="text" class="form-control" placeholder="Contact information" id="cl_care_giver_contact" name="cl_care_giver_contact" value="{{old('cl_care_giver_contact')}}">
+                                <input type="text" class="form-control" placeholder="Contact information" id="cl_care_giver_contact" name="cl_care_giver_contact"
+                                       @if(is_object($referral->clientInformation)) value="{{$referral->clientInformation->cl_care_giver_contact}}" @endif>
                             </div>
                         </div>
 
@@ -242,6 +256,9 @@
                             <div class="form-group ">
                                 <label class="control-label">Caregiver is informed of referral?: </label>
                                 <select name="cl_care_giver_informed" data-placeholder="Choose an option..." class="select">
+                                    @if(is_object($referral->clientInformation))
+                                        <option>  {{$referral->clientInformation->cl_care_giver_informed}}</option>
+                                    @endif
                                     <option></option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
@@ -252,6 +269,9 @@
                             <div class="form-group ">
                                 <label class="control-label">Is child separated or unaccompanied? </label>
                                 <select name="cl_child_separated" data-placeholder="Choose an option..." class="select">
+                                    @if(is_object($referral->clientInformation))
+                                        <option> {{$referral->clientInformation->cl_child_separated}}</option>
+                                    @endif
                                     <option></option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
@@ -271,6 +291,9 @@
                             <div class="form-group ">
                                 <label class="control-label">Has the client been informed of the referral?? </label>
                                 <select name="client_referral_info" data-placeholder="Choose an option..." class="select">
+                                    @if(is_object($referral->referralReason))
+                                        <option> {{$referral->referralReason->client_referral_info}}</option>
+                                    @endif
                                     <option></option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
@@ -280,13 +303,16 @@
                         <div class="col-md-3">
                             <div class="form-group ">
                                 <label class="control-label"> If yes Explain here?   </label>
-                                <textarea  class="form-control" name="client_referral_info_text" id="client_referral_info_text"></textarea>
+                                <textarea  class="form-control" name="client_referral_info_text" id="client_referral_info_text">@if(is_object($referral->referralReason)){{$referral->referralReason->client_referral_info}}@endif</textarea>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Has the client been referred to any other organisazation ? </label>
                                 <select name="client_referral_status" data-placeholder="Choose an option..." class="select">
+                                    @if(is_object($referral->referralReason))
+                                        <option> {{$referral->referralReason->client_referral_status}}</option>
+                                    @endif
                                     <option></option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
@@ -296,7 +322,7 @@
                         <div class="col-md-3">
                             <div class="form-group ">
                                 <label class="control-label">If yes Explain here?   </label>
-                                <textarea  class="form-control" name="referal_other_org" id="referal_other_org"></textarea>
+                                <textarea  class="form-control" name="referal_other_org" id="referal_other_org">@if(is_object($referral->referralReason)){{$referral->referralReason->client_referral_status}}</option>@endif</textarea>
                             </div>
                         </div>
 
@@ -408,7 +434,7 @@
                 </fieldset>
                 <fieldset class="scheduler-border">
                     <legend class="text-bold">Explain any request Service  </legend>
-                    <textarea  class="form-control" name="comments" id="comments"></textarea>
+                    <textarea  class="form-control" name="comments" id="comments"> @if(is_object($referral->referralServiceRequested)){{$referral->referralServiceRequested->client_referral_status}}@endif</textarea>
                 </fieldset>
 
                 <div class="row" style="margin-top: 10px">
@@ -496,23 +522,28 @@
         },
         errorElement: 'div',
         rules: {
-            ref_org: "required",
-            rec_org: "required",
+            client_id: "required",
+            referral_type: "required",
 
             client_age: {
                 number: true
             },
-            client_sex: "required",
-            client_language: "required",
-            client_number: "required",
-
+            referral_date: "required",
+            rec_organisation: "required",
+            rec_contact: "required",
+            client_referral_info: "required",
+            ref_organisation: "required",
+            ref_contact: "required",
 
         },
         messages: {
-            ref_org: "Please this field is required",
-            rec_org: "Please this field is required",
-            client_language: "Please field is required",
-
+            client_id: "Please this field is required",
+            referral_type: "Please this field is required",
+            referral_date: "Please field is required",
+            rec_organisation: "Please this field is required",
+            rec_contact: "Please this field is required",
+            client_referral_info: "Please field is required",
+            ref_contact: "Please field is required",
             client_age: {
                 number: "Please enter valid age",
             },
