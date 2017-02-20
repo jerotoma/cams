@@ -13,7 +13,7 @@
                     <ul class="nav navbar-nav text-white">
                         <li><a href="#" class="text-white">Help center</a></li>
                         <li><a href="#" class="text-white">Policy</a></li>
-                        <li><a href="#" class="text-semibold text-white">User manual</a></li>
+                        <li><a href="{{assert('assets/templates/system_manual.pdf')}}" target="_blank" class="text-semibold text-white">User manual</a></li>
 
                     </ul>
                 </div>
