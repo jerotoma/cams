@@ -20,11 +20,40 @@
         </div>
     </div>
     <div class="row" style="margin-top: 10px">
-        <div class="col-md-12 ">
-            <h5> Referring agency coy</h5>
+        <tr class="col-md-12 ">
+            <h5><span class="pull-right"><label class="checkbox-inline">
+                                <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities">
+                                Routine
+                            </label> <label class="checkbox-inline" style="margin-left: 10px">
+                                <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities">
+                                Urgent
+                            </label> Date of referral (DD/MM/YY): {{date("d/m/Y",strtotime($referral->referral_date))}}</span> <span class="pull-left">Referring agency copy</span></h5>
             <table class="table table-bordered">
                 <tr>
-                    <th style="background-color:#ccc">Referring Agency </th>
+                    <th style="background-color:#ccc" colspan="4">Referring Agency </th>
+                </tr>
+                <tr>
+                    <th>Agency /Org</th>
+                    <td>@if(is_object($referral->referringAgency)){{$referral->referringAgency->ref_organisation}} @endif</td>
+                    <th>Contact</th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td></td>
+                    <th>Email</th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th>Location</th>
+                    <td colspan="3"></td>
+
+                </tr>
+            </table>
+
+            <table class="table table-bordered">
+                <tr>
+                    <th style="background-color:#ccc" colspan="4">Receiving Agency </th>
                 </tr>
                 <tr>
                     <th>Agency /Org</th>
@@ -40,39 +69,14 @@
                 </tr>
                 <tr>
                     <th>Location</th>
-                    <td></td>
+                    <td colspan="3"></td>
 
                 </tr>
             </table>
 
-            <h5> Receiving Agency</h5>
             <table class="table table-bordered">
                 <tr>
-                    <th style="background-color:#ccc">Receiving Agency </th>
-                </tr>
-                <tr>
-                    <th>Agency /Org</th>
-                    <td></td>
-                    <th>Contact</th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>Phone</th>
-                    <td></td>
-                    <th>Email</th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>Location</th>
-                    <td></td>
-
-                </tr>
-            </table>
-
-            <h5> Client Information</h5>
-            <table class="table table-bordered">
-                <tr>
-                    <th style="background-color:#ccc">Client Information </th>
+                    <th style="background-color:#ccc" colspan="4">Client Information </th>
                 </tr>
                 <tr>
                     <th>Name</th>
@@ -99,10 +103,9 @@
 
                 </tr>
             </table>
-            <h5> If Client Is a Minor (under 18 years)</h5>
             <table class="table table-bordered">
                 <tr>
-                    <th style="background-color:#ccc">If Client Is a Minor (under 18 years) </th>
+                    <th style="background-color:#ccc" colspan="4">If Client Is a Minor (under 18 years) </th>
                 </tr>
                 <tr>
                     <th>Name of primary caregiver:</th>
@@ -118,17 +121,15 @@
                 </tr>
                 <tr>
                     <th>Caregiver is informed of referral?  </th>
-                    <td></td>
+                    <td colspan="3"></td>
 
                 </tr>
             </table>
 
-            <h5> Background Information/Reason for Referral:
-                (problem description, duration, frequency, etc.) and Services Already Provided
-            </h5>
+
             <table class="table table-bordered">
                 <tr>
-                    <th style="background-color:#ccc"> Background Information/Reason for Referral:
+                    <th style="background-color:#ccc" colspan="4"> Background Information/Reason for Referral:
                         (problem description, duration, frequency, etc.) and Services Already Provided
                     </th>
                 </tr>
@@ -141,66 +142,109 @@
 
             </table>
 
-            <h5> Services Requested </h5>
             <table class="table table-bordered">
                 <tr>
-                    <th style="background-color:#ccc"> Services Requested  </th>
+                    <th style="background-color:#ccc" colspan="6"> Services Requested  </th>
                 </tr>
                 <tr>
-                    <th>Mental Health Services</th>
-                    <td></td>
-                    <th>Protection Support/ Services   </th>
-                    <td></td>
-                    <th>Shelter</th>
-                    <td></td>
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]"  value="Mental Health Services">
+                            Mental Health Services
+                        </label>
+                    </td>
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]" value="Protection Support/ Services" >
+                            Protection Support/ Services
+                        </label>
+                    </td>
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]" value="Shelter" >
+                            Shelter
+                        </label>
+                    </td>
                 </tr>
-                <tr>
-                    <th>Psychological Interventions </th>
-                    <td></td>
-                    <th>Community Centre/ Social Services  </th>
-                    <td></td>
-                    <th>Material Assistance</th>
-                    <td></td>
+                <tr >
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]" >
+                            Psychological Interventions
+                        </label>
+                    </td>
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]" value="Community Centre/ Social Services" >
+                            Community Centre/ Social Services
+                        </label>
+                    </td>
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]"  value="aterial Assistance">
+                            Material Assistance
+                        </label>
+                    </td>
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]" value="Physical Health Care" >
+                            Physical Health Care
+                        </label>
+                    </td>
                 </tr>
-                <tr>
-                    <th>Physical Health Care  </th>
-                    <td></td>
-                    <th>Family Tracing Services   </th>
-                    <td></td>
-                    <th>Nutrition</th>
-                    <td></td>
+                <tr >
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]" value="Family Tracing Services">
+                            Family Tracing Services
+                        </label>
+                    </td>
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]" value="Nutrition">
+                            Nutrition
+                        </label>
+                    </td>
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]"  value="Physical Rehabilitation">
+                            Physical Rehabilitation
+                        </label>
+                    </td>
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]"  value="Legal Assistance">
+                            Legal Assistance
+                        </label>
+                    </td>
                 </tr>
-                <tr>
-                    <th>Physical Rehabilitation   </th>
-                    <td></td>
-                    <th>Legal Assistance   </th>
-                    <td></td>
-                    <th> Financial Assistance  </th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>Physical Rehabilitation   </th>
-                    <td></td>
-                    <th>Legal Assistance   </th>
-                    <td></td>
-                    <th> Financial Assistance  </th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>Psychosocial Activities </th>
-                    <td></td>
-                    <th>Education </th>
-                    <td></td>
-                    <th> Please explain any requested services:  </th>
-                    <td></td>
+                <tr >
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]"  value="Financial Assistance">
+                            Financial Assistance
+                        </label>
+                    </td>
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]" value="Education">
+                            Education
+                        </label>
+                    </td>
+                    <td class="col-sm-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities">
+                            Psychosocial Activities
+                        </label>
+                    </td>
                 </tr>
 
             </table>
 
-            <h5> Consent to Release Information (Read with client/ caregiver and answer any questions before s/he signs below)</h5>
+
             <table class="table table-bordered">
                 <tr>
-                    <th style="background-color:#ccc">Consent to Release Information (Read with client/ caregiver and answer any questions before s/he signs below) </th>
+                    <th style="background-color:#ccc" colspan="3">Consent to Release Information (Read with client/ caregiver and answer any questions before s/he signs below) </th>
                 </tr>
                 <tr>
                     <th>I,.............................................................(client name), understand that the purpose of the referral and of disclosing this information to                                        (receiving agency) is to ensure the safety and continuity of care among service providers seeking to serve the client. The service provider,                                        (referring agency), has clearly explained the procedure of the referral to me and has listed the exact information that is to be disclosed. By signing this form,
@@ -211,11 +255,10 @@
                 </tr>
 
             </table>
-            <h5> Details of Referral</h5>
 
             <table class="table table-bordered">
                 <tr>
-                    <th style="background-color:#ccc"> Details of Referral</th>
+                    <th style="background-color:#ccc" colspan="4"> Details of Referral</th>
                 </tr>
                 <tr>
                     <th>Any Contact or other restriction :</th>

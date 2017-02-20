@@ -225,21 +225,21 @@
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Agency / Org: </label>
-                                <input type="text" class="form-control" placeholder="Agency / Org: " name="rec_organisation" id="rec_organisation"
-                                       value="{{old('rec_organisation')}}">
+                                <input type="text" class="form-control" placeholder="Agency / Org: " name="ref_organisation" id="ref_organisation"
+                                       value="{{old('ref_organisation')}}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Contact (if known): </label>
-                                <input type="text" class="form-control" placeholder="contact" id="rec_contact" name="rec_contact" value="{{old('rec_contact')}}">
+                                <input type="text" class="form-control" placeholder="contact" id="ref_contact" name="ref_contact" value="{{old('ref_contact')}}">
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group ">
                                 <label class="control-label">Phone</label>
-                                <input type="text" class="form-control" placeholder="Phone" id="rec_phone" name="rec_phone" value="{{old('rec_phone')}}">
+                                <input type="text" class="form-control" placeholder="Phone" id="ref_phone" name="ref_phone" value="{{old('ref_phone')}}">
                             </div>
                         </div>
 
@@ -249,14 +249,14 @@
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Email: </label>
-                                <input type="text" class="form-control" placeholder="Email " name="rec_email" id="rec_email"
+                                <input type="text" class="form-control" placeholder="Email " name="ref_email" id="ref_email"
                                        value="{{old('rec_email')}}">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
                                 <label class="control-label">Location: </label>
-                                <input type="text" class="form-control" placeholder="Location" id="rec_location" name="rec_location" value="{{old('rec_location')}}">
+                                <input type="text" class="form-control" placeholder="Location" id="ref_location" name="ref_location" value="{{old('ref_location')}}">
                             </div>
                         </div>
                     </div>
@@ -305,73 +305,7 @@
                         </div>
 
                     </fieldset>
-                 <fieldset class="scheduler-border">
-                            <legend class="text-bold">Client Information</legend>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group ">
-                                        <label class="control-label">Name: </label>
-                                        <input type="text" class="form-control" placeholder="Name: " name="cl_name" id="cl_name"
-                                               value="{{old('cl_name')}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group ">
-                                        <label class="control-label">Address: </label>
-                                        <input type="text" class="form-control" placeholder="Address" id="cl_address" name="cl_address" value="{{old('cl_address')}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group ">
-                                        <label class="control-label">Phone</label>
-                                        <input type="text" class="form-control" placeholder="Phone" id="cl_phone" name="cl_phone" value="{{old('cl_phone')}}">
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group ">
-                                        <label class="control-label">Age: </label>
-                                        <input type="text" class="form-control" placeholder="Age " name="" id="cl_age"
-                                               value="{{old('cl_age')}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group ">
-                                        <label class="control-label">Sex: </label>
-                                        <input type="text" class="form-control" placeholder="Sex" id="cl_sex" name="cl_sex" value="{{old('cl_sex')}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group ">
-                                        <label class="control-label">Nationality: </label>
-                                        <input type="text" class="form-control" placeholder="Nationality" id="cl_nationality" name="cl_nationality" value="{{old('cl_nationality')}}">
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group ">
-                                        <label class="control-label">Language: </label>
-                                        <input type="text" class="form-control" placeholder="Language " name="cl_language" id="cl_language"
-                                               value="{{old('cl_language')}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group ">
-                                        <label class="control-label">ID Numbers: </label>
-                                        <input type="text" class="form-control" placeholder="ID Numbers:" id="cl_id_number" name="cl_id_number" value="{{old('cl_id_number')}}">
-                                    </div>
-                                </div>
-                            </div>
-
-                  </fieldset>
+                    <div id="psnprofile"></div>
 
                    <fieldset class="scheduler-border">
                             <legend class="text-bold">If Client Is a Minor (under 18 years)</legend>
@@ -655,23 +589,28 @@
         },
         errorElement: 'div',
         rules: {
-            ref_org: "required",
-            rec_org: "required",
+            client_id: "required",
+            referral_type: "required",
 
             client_age: {
                 number: true
             },
-            client_sex: "required",
-            client_language: "required",
-            client_number: "required",
-
+            referral_date: "required",
+            rec_organisation: "required",
+            rec_contact: "required",
+            client_referral_info: "required",
+            ref_organisation: "required",
+            ref_contact: "required",
 
         },
         messages: {
-            ref_org: "Please this field is required",
-            rec_org: "Please this field is required",
-            client_language: "Please field is required",
-
+            client_id: "Please this field is required",
+            referral_type: "Please this field is required",
+            referral_date: "Please field is required",
+            rec_organisation: "Please this field is required",
+            rec_contact: "Please this field is required",
+            client_referral_info: "Please field is required",
+            ref_contact: "Please field is required",
             client_age: {
                 number: "Please enter valid age",
             },
@@ -741,4 +680,12 @@
             });
         }else{$("#district_id").html("<option value=''>----</option>");}
     });
+    function getPSNProfile(id1){
+        if(id1 != "")
+        {
+            $.get("<?php echo url('getreferralpsnprofile') ?>/"+id1,function(data){
+                $("#psnprofile").html(data);
+            });
+        }else{$("#psnprofile").html("");}
+    }
 </script>

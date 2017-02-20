@@ -77,6 +77,7 @@ return array(
     'CreateReceivingAgenciesTable' => $baseDir . '/database/migrations/2017_02_20_004928_create_receiving_agencies_table.php',
     'CreateReferralReasonsTable' => $baseDir . '/database/migrations/2017_02_20_011033_create_referral_reasons_table.php',
     'CreateReferralServiceRequestedsTable' => $baseDir . '/database/migrations/2017_02_20_011901_create_referral_service_requesteds_table.php',
+    'CreateReferringAgenciesTable' => $baseDir . '/database/migrations/2017_02_20_040013_create_referring_agencies_table.php',
     'CreateRegionsTable' => $baseDir . '/database/migrations/2017_01_19_144922_create_regions_table.php',
     'CreateRehabilitationsTable' => $baseDir . '/database/migrations/2017_02_04_225954_create_rehabilitations_table.php',
     'CreateRequestedServicesTable' => $baseDir . '/database/migrations/2017_02_20_023310_create_requested_services_table.php',

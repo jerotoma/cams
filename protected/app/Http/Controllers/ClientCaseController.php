@@ -141,7 +141,7 @@ class ClientCaseController extends Controller
                 $case->save();
 
                 //Create references
-                $case->reference_number="CBR/".date("Y")."/CS-".str_pad($case->id,4,'0',STR_PAD_LEFT);
+                $case->reference_number="HAI/".date("Y")."/CS-".str_pad($case->id,4,'0',STR_PAD_LEFT);
                 $case->save();
                 return response()->json([
                     'success' => true,

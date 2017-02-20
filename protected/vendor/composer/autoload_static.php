@@ -449,6 +449,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'CreateReceivingAgenciesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_20_004928_create_receiving_agencies_table.php',
         'CreateReferralReasonsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_20_011033_create_referral_reasons_table.php',
         'CreateReferralServiceRequestedsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_20_011901_create_referral_service_requesteds_table.php',
+        'CreateReferringAgenciesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_20_040013_create_referring_agencies_table.php',
         'CreateRegionsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_144922_create_regions_table.php',
         'CreateRehabilitationsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_04_225954_create_rehabilitations_table.php',
         'CreateRequestedServicesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_20_023310_create_requested_services_table.php',

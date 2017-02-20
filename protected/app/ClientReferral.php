@@ -9,11 +9,15 @@ class ClientReferral extends Model
     //
     public function client()
     {
-        return $this::belongsTo('\App\Client','client_id');
+        return $this::belongsTo('\App\Client','client_id','id');
     }
     public function receivingAgency()
     {
         return $this::hasOne('\App\ReceivingAgency','referral_id');
+    }
+    public function referringAgency()
+    {
+        return $this::hasOne('\App\ReferringAgency','referral_id');
     }
     public function clientInformation()
     {
@@ -21,7 +25,7 @@ class ClientReferral extends Model
     }
     public function referralReason()
     {
-        return $this::hasOne('\App\Client','referral_id');
+        return $this::hasOne('\App\ReferralReason','referral_id');
     }
     public function referralServiceRequested()
     {

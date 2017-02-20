@@ -9,6 +9,7 @@ use App\ReceivingAgency;
 use App\Referral;
 use App\ReferralReason;
 use App\ReferralServiceRequested;
+use App\ReferringAgency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -81,8 +82,8 @@ class ReferralController extends Controller
                 $referral->referral_date,
                 $referral->client->client_number,
                 $referral->client->full_name,
-                $referral->age,
-                $referral->sex,
+                $referral->client->age,
+                $referral->client->sex,
                 $referral->client->camp->camp_name,
                 '<span class="text-center" id="'.$referral->id.'">
                                         <a href="#" class="showRecord btn " > <i class="fa fa-eye green "></i> </a>
@@ -135,6 +136,8 @@ class ReferralController extends Controller
                 'client_referral_info' => 'required',
                 'client_referral_status' => 'required',
                 'service_request' => 'required',
+                'rec_email' => 'email',
+                'ref_email' => 'email',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -148,7 +151,11 @@ class ReferralController extends Controller
                 $referral->referral_date = date("Y-m-d", strtotime($request->referral_date));
                 $referral->created_by=Auth::user()->username;
                 $referral->save();
-                
+
+                //Create references
+                $referral->reference_number="HAI/".date("Y")."/RF-".str_pad($referral->id,4,'0',STR_PAD_LEFT);
+                $referral->save();
+
                 $agency=new ReceivingAgency;
                 $agency->referral_id = $referral->id;
                 $agency->rec_organisation = $referral->rec_organisation;
@@ -157,6 +164,15 @@ class ReferralController extends Controller
                 $agency->rec_email = $referral->rec_email;
                 $agency->rec_location = $referral->rec_location;
                 $agency->save();
+
+                $refagency=new ReferringAgency();
+                $refagency->referral_id = $referral->id;
+                $refagency->ref_organisation = $referral->ref_organisation;
+                $refagency->ref_phone = $referral->ref_phone;
+                $refagency->ref_contact = $referral->ref_contact;
+                $refagency->ref_email = $referral->ref_email;
+                $refagency->ref_location = $referral->ref_location;
+                $refagency->save();
 
                 $client=new ClientInformation;
                 $client->referral_id= $referral->id;
@@ -175,12 +191,12 @@ class ReferralController extends Controller
                 $client->cl_care_giver_informed=$referral->cl_care_giver_informed;
                 $client->save();
                 
-                $reason=new ReferralReason;
-                $client->referral_id=$referral->id;
-                $client->client_referral_info=$referral->client_referral_info;
-                $client->client_referral_status=$referral->client_referral_status;
-                $client->client_referral_info_text=$referral->client_referral_info_text;
-                $client->client_referral_status_text=$referral->client_referral_status_text;
+                $reason= new ReferralReason;
+                $reason->referral_id=$referral->id;
+                $reason->client_referral_info=$referral->client_referral_info;
+                $reason->client_referral_status=$referral->client_referral_status;
+                $reason->client_referral_info_text=$referral->client_referral_info_text;
+                $reason->client_referral_status_text=$referral->client_referral_status_text;
                 $reason->save();
 
                 if (isset($request->service_request)) {
@@ -224,7 +240,7 @@ class ReferralController extends Controller
     public function show($id)
     {
         //
-        $referral=Referral::findorfail($id);
+        $referral=ClientReferral::findorfail($id);
         return view('referrals.show',compact('referral'));
     }
 
@@ -237,9 +253,17 @@ class ReferralController extends Controller
     public function edit($id)
     {
         //
-        $referral =  ClientReferral::find();
+        $referral =  ClientReferral::find($id);
         return view('referrals.edit',compact('referral'));
     }
+    public function getClientProfile($id)
+    {
+        //
+        $client =  Client::find($id);
+        return view('referrals.profile',compact('client'));
+    }
+
+
 
     /**
      * Update the specified resource in storage.
@@ -261,6 +285,7 @@ class ReferralController extends Controller
                 'client_referral_info' => 'numeric',
                 'client_referral_status' => 'required',
                 'service_request' => 'required',
+                'rec_email'=> 'required',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -275,7 +300,7 @@ class ReferralController extends Controller
                 $referral->created_by=Auth::user()->username;
                 $referral->save();
 
-                $agency= $referral->ReceivingAgency;
+                $agency= $referral->receivingAgency;
                 $agency->referral_id = $referral->id;
                 $agency->rec_organisation = $referral->rec_organisation;
                 $agency->rec_phone = $referral->rec_phone;
@@ -284,7 +309,7 @@ class ReferralController extends Controller
                 $agency->rec_location = $referral->rec_location;
                 $agency->save();
 
-                $client= $referral->ClientInformation;
+                $client= $referral->clientInformation;
                 $client->referral_id= $referral->id;
                 $client->cl_name=$referral->cl_name;
                 $client->cl_address=$referral->cl_address;
@@ -301,7 +326,7 @@ class ReferralController extends Controller
                 $client->cl_care_giver_informed=$referral->cl_care_giver_informed;
                 $client->save();
 
-                $reason=$referral->ReferralReason;
+                $reason=$referral->referralReason;
                 $client->referral_id=$referral->id;
                 $client->client_referral_info=$referral->client_referral_info;
                 $client->client_referral_status=$referral->client_referral_status;
@@ -317,7 +342,7 @@ class ReferralController extends Controller
 
                 if (isset($request->service_request)) {
 
-                    $service=new ReferralServiceRequested;
+                    $service=$referral->referralServiceRequested;
                     $service->referral_id=$referral->id;
                     $service->comments=$referral->comments;
                     $reason->save();
@@ -357,7 +382,6 @@ class ReferralController extends Controller
     public function destroy($id)
     {
         //
-        $referral =  ClientReferral::find();
-        $referral->delete();
+
     }
 }
