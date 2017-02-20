@@ -15,7 +15,6 @@
                         <ul class="navigation">
                             <li><a href="{{url('account/profile')}}"><i class="icon-user-plus"></i> <span>My profile</span></a></li>
                             <li class="divider"></li>
-                            <li><a href="{{url('account/settings')}}"><i class="icon-cog5"></i> <span>Account settings</span></a></li>
                             <li><a href="{{url('logout')}}"><i class="icon-switch2"></i> <span>Logout</span></a></li>
                         </ul>
                     </div>

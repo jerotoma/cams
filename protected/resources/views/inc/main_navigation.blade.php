@@ -46,7 +46,7 @@
                 <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
                 <ul>
                     <li><a href="{{url('cases')}}">Case Management</a></li>
-                    <li><a href="{{url('progressive/notices')}}">Progressive Notice</a></li>
+                    <li><a href="{{url('progressive/notices')}}">Progressive Note</a></li>
                 </ul>
             </li>
             <!-- /forms -->
@@ -132,7 +132,7 @@
                     <li><a href="{{url('access/rights')}}">List All Rights</a></li>
                 </ul>
             </li>
-            <li>
+        <!-- <li>
                 <a href="#"><i class="icon-users"></i> <span>System Audit</span></a>
                 <ul>
                     <li><a href="{{url('audit/los')}}">Access Logs</a></li>
@@ -143,7 +143,7 @@
 
 
 
-        <!-- Extensions -->
+        <!-- Extensions
             <li class="navigation-header"><span>Data Sharing/Backup</span> <i class="icon-menu" title="Data Sharing"></i></li>
             <li>
                 <a href="#"><i class="icon-puzzle4"></i> <span>Data import</span></a>

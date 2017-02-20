@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-md-12 col-xs-12 text-center">
             <h3><strong>HelpAge International</strong></h3>
-            <h5><strong> CBR Progressive Notice</strong></h5>
+            <h5><strong> Progressive Notice</strong></h5>
         </div>
     </div>
     <div class="row">

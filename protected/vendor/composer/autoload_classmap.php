@@ -74,6 +74,7 @@ return array(
     'CreatePaediatricChildInspectionsTable' => $baseDir . '/database/migrations/2017_02_08_173038_create_paediatric_child_inspections_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreatePhyscalAssessmentsTable' => $baseDir . '/database/migrations/2017_02_07_153514_create_physcal_assessments_table.php',
+    'CreateProgressNotesTable' => $baseDir . '/database/migrations/2017_02_20_103647_create_progress_notes_table.php',
     'CreateReceivingAgenciesTable' => $baseDir . '/database/migrations/2017_02_20_004928_create_receiving_agencies_table.php',
     'CreateReferralReasonsTable' => $baseDir . '/database/migrations/2017_02_20_011033_create_referral_reasons_table.php',
     'CreateReferralServiceRequestedsTable' => $baseDir . '/database/migrations/2017_02_20_011901_create_referral_service_requesteds_table.php',

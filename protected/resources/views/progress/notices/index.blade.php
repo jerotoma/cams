@@ -50,7 +50,7 @@
                         modaldis+= ' </div>';
                         modaldis+= '</div>';
                         modaldis+= '</div>';
-                         $('body').css('overflow-y','scroll');
+                        $('body').css('overflow-y','scroll');
 
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
@@ -75,7 +75,7 @@
                         modaldis+= ' </div>';
                         modaldis+= '</div>';
                         modaldis+= '</div>';
-                         $('body').css('overflow-y','scroll');
+                        $('body').css('overflow-y','scroll');
 
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
@@ -215,9 +215,8 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="#" class="addRecord btn"><i class="fa fa-plus text-success"></i> <span>Register new Note</span></a>
-            <a  href="{{url('progressive/notices')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List AllProgressive Note</span></a>
-            <a  href="{{url('import/progressive/notices')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import data </span></a>
+            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-plus text-success"></i> <span>Register new Note</span></a>
+            <a  href="{{url('progressive/notices')}}" class="btn  btn-primary"><i class="fa fa-list text-info"></i> <span>List AllProgressive Note</span></a>
         </div>
     </div>
     <div class="panel panel-flat">
@@ -228,7 +227,7 @@
         <div class="panel-body">
         </div>
 
-        <table class="table datatable-basic table-hover">
+        <table class="table datatable-basic">
             <thead>
             <tr>
                 <th>SNO</th>

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\ProgressiveNotice;
+use App\ProgressNote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
-class ProgressiveNoticeController extends Controller
+class ProgressNoteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class ProgressiveNoticeController extends Controller
     }
     public function downloadPDF($id)
     {
-        $notice =ProgressiveNotice::find($id);
+        $notice =ProgressNote::find($id);
         $pdf = \PDF::loadView('progress.notices.pdf', compact('notice'))
             ->setOption('footer-center', '[page]')
             ->setOption('page-offset', 0);
@@ -31,8 +31,8 @@ class ProgressiveNoticeController extends Controller
     public function getNoticeList()
     {
         //
-        $notices=ProgressiveNotice::all();
-        $iTotalRecords =count(ProgressiveNotice::all());
+        $notices=ProgressNote::all();
+        $iTotalRecords =count(ProgressNote::all());
         $sEcho = intval(10);
 
         $records = array();
@@ -109,7 +109,7 @@ class ProgressiveNoticeController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
-                $notice = new ProgressiveNotice;
+                $notice = new ProgressNote;
                 $notice->open_date = date('Y-m-d',strtotime($request->open_date));
                 $notice->subjective_information = $request->subjective_information;
                 $notice->objective_information = $request->objective_information;
@@ -145,7 +145,7 @@ class ProgressiveNoticeController extends Controller
     public function show($id)
     {
         //
-        $notice =  ProgressiveNotice::find($id);
+        $notice =  ProgressNote::find($id);
         return view('progress.notices.show',compact('notice'));
     }
 
@@ -158,7 +158,7 @@ class ProgressiveNoticeController extends Controller
     public function edit($id)
     {
         //
-        $notice =  ProgressiveNotice::find($id);
+        $notice =  ProgressNote::find($id);
         return view('progress.notices.edit',compact('notice'));
     }
 
@@ -176,7 +176,6 @@ class ProgressiveNoticeController extends Controller
             $validator = Validator::make($request->all(), [
                 'open_date' => 'required',
                 'case_worker_name' => 'required',
-                'subjective_information' => 'required',
                 'status' => 'required',
                 'camp_id' => 'required'
             ]);
@@ -186,7 +185,7 @@ class ProgressiveNoticeController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
-                $notice =  ProgressiveNotice::find($id);
+                $notice =  ProgressNote::find($id);
                 $notice->open_date = date('Y-m-d',strtotime($request->open_date));
                 $notice->subjective_information = $request->subjective_information;
                 $notice->objective_information = $request->objective_information;
@@ -217,7 +216,7 @@ class ProgressiveNoticeController extends Controller
     public function destroy($id)
     {
         //
-        $notice =  ProgressiveNotice::find($id);
+        $notice =  ProgressNote::find($id);
         $notice->delete();
     }
 }
