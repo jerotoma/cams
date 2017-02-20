@@ -153,7 +153,7 @@ class ReferralController extends Controller
                 $referral->save();
 
                 //Create references
-                $referral->reference_number="HAI/".date("Y")."/RF-".str_pad($referral->id,4,'0',STR_PAD_LEFT);
+                $referral->reference_no="HAI/".date("Y")."/RF-".str_pad($referral->id,4,'0',STR_PAD_LEFT);
                 $referral->save();
 
                 $agency=new ReceivingAgency;

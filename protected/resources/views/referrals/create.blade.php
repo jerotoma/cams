@@ -267,8 +267,8 @@
                             <div class="col-md-4">
                                 <div class="form-group ">
                                     <label class="control-label">Agency / Org: </label>
-                                    <input type="text" class="form-control" placeholder="Agency / Org: " name="rec_org" id="rec_org"
-                                           value="{{old('rec_org')}}">
+                                    <input type="text" class="form-control" placeholder="Agency / Org: " name="rec_organisation" id="rec_organisation"
+                                           value="{{old('rec_organisation')}}">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -633,7 +633,7 @@
                             confirmButtonColor: "#43ABDB"
                         })
                         setTimeout(function () {
-                            location.replace("{{url('clients')}}");
+                            location.replace("{{url('referrals')}}");
                             $("#output").html("");
                         }, 2000);
                     },
