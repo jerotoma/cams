@@ -212,13 +212,13 @@
         <div class="col-md-12">
             <div class="portlet light bordered">
                 <div class="portlet-body form">
-                    {!! Form::open(array('url'=>'generate/reports/assessments','role'=>'form','id'=>'formClientReport')) !!}
+                    {!! Form::open(array('url'=>'generate/reports/nfis','role'=>'form','id'=>'formClientReport')) !!}
                     <div class="panel panel-flat">
 
 
                         <div class="panel-body">
                             <fieldset class="scheduler-border">
-                                <legend class="text-bold">Client Assessment Report</legend>
+                                <legend class="text-bold">NFIs Distribution Report</legend>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group ">
@@ -256,14 +256,14 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group ">
-                                            <label>Assessment?</label>
+                                            <label>NFI Item?</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
-                                                <optgroup label="Assessments">
+                                                <optgroup label="Specific Needs">
                                                     <option></option>
-                                                    <option value="List of Clients Assessed">List of Clients Assessed</option>
-                                                    <option value="Assessment Type per population">Assessment Type per population</option>
-                                                    <option value="Prepare List for assessment" >Prepare List of client for assessment</option>
-                                                    <option value="List of Clients without assessment" >List of Clients without assessment</option>
+                                                    <option value="All">All</option>
+                                                    @foreach(\App\ItemsInventory::all() as $item)
+                                                        <option value="{{$item->id}}">{{$item->item_name}}</option>
+                                                    @endforeach
                                                 </optgroup>
                                             </select>
                                         </div>
@@ -276,8 +276,8 @@
                                                     <option></option>
                                                     <option value="All">All</option>
                                                     @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
-                                                        <option value="{{$code->id}}">{{$code->description}}</option>
-                                                    @endforeach
+                                                    <option value="{{$code->id}}">{{$code->description}}</option>
+                                                        @endforeach
                                                 </optgroup>
                                             </select>
                                         </div>

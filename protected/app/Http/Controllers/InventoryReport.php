@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\DataVisualization;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
-class DataVisualizationController extends Controller
+class InventoryReport extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,16 +14,7 @@ class DataVisualizationController extends Controller
     public function index()
     {
         //
-    }
-    public function clients()
-    {
-        //
-        return view('reports.clients.index');
-    }
-    public function showAssessments()
-    {
-        //
-        return view('reports.assessments.index');
+        return view('reports.nfis.index');
     }
     public function generateReport(Request $request)
     {   ob_clean();
@@ -77,6 +66,7 @@ class DataVisualizationController extends Controller
 
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -101,10 +91,10 @@ class DataVisualizationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\DataVisualization  $dataVisualization
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(DataVisualization $dataVisualization)
+    public function show($id)
     {
         //
     }
@@ -112,10 +102,10 @@ class DataVisualizationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\DataVisualization  $dataVisualization
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(DataVisualization $dataVisualization)
+    public function edit($id)
     {
         //
     }
@@ -124,10 +114,10 @@ class DataVisualizationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\DataVisualization  $dataVisualization
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, DataVisualization $dataVisualization)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -135,10 +125,10 @@ class DataVisualizationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\DataVisualization  $dataVisualization
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DataVisualization $dataVisualization)
+    public function destroy($id)
     {
         //
     }

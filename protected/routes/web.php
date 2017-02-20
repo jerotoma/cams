@@ -165,6 +165,12 @@ Route::get('reports/referrals','ReferralReportsController@index');
 Route::get('generate/reports/clients','ClientReportsController@index');
 Route::post('generate/reports/clients','ClientReportsController@postGenerate');
 Route::get('reports/assessments','DataVisualizationController@showAssessments');
+Route::get('generate/reports/assessments','DataVisualizationController@postGenerate');
+
+Route::get('reports/nfis','InventoryReport@index');
+Route::post('generate/reports/nfis','InventoryReport@generateReport');
+
+
 
 //Inclusion Assessments
 Route::resource('assessments/inclusion','InclusionAssessmentController');

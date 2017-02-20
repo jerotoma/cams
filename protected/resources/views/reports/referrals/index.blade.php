@@ -56,10 +56,10 @@
                 type: 'column'
             },
             title: {
-                text: 'Monthly Client Registration for year {{date("Y")}}'
+                text: 'Referral processed for year {{date("Y")}}'
             },
             subtitle: {
-                text: 'Number of Registered Clients year {{date('Y')}}',
+                text: 'Number of Referral processed year {{date('Y')}}',
                 x: -20
             },
             credits: {
@@ -114,7 +114,7 @@
                 type: 'pie'
             },
             title: {
-                text: 'Clients registered & their vulnerabilities'
+                text: 'Clients referral & their vulnerabilities'
             },
             credits: {
                 enabled: false
@@ -234,14 +234,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1">
-                                        <div class="form-group ">
-                                            <label class="control-label">All Dates</label>
-                                            <input type="checkbox" class="form-control" value="alldated" name="all_dates">
-
-                                        </div>
-                                    </div>
-
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -279,10 +271,9 @@
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type" data-placeholder="Choose an option...">
                                                 <optgroup label="Report Type">
                                                     <option></option>
-                                                    <option value="Registration by Category">Registration by Category</option>
-                                                    <option value="Population Planning Groups" >Population Planning Groups</option>
-                                                    <option value="Specific needs provided" >Specific needs provided</option>
-                                                    <option value="All Registration Details" >All Registration Details</option>
+                                                    <option value="Referral Per Population">Referral Per Population</option>
+                                                    <option value="List of referral" >List of referral</option>
+                                                    <option value="List of clients need referral" >List of clients need referral</option>
                                                 </optgroup>
                                             </select>
                                         </div>
