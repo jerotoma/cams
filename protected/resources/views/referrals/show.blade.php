@@ -141,57 +141,19 @@
 
             </table>
 
-            <h5> Services Requested </h5>
+            <h5> Background Information/Reason for Referral:
+                (problem description, duration, frequency, etc.) and Services Already Provided
+            </h5>
             <table class="table table-bordered">
                 <tr>
-                    <th style="background-color:#ccc"> Services Requested  </th>
+                    <th style="background-color:#ccc"> Background Information/Reason for Referral:
+                        (problem description, duration, frequency, etc.) and Services Already Provided
+                    </th>
                 </tr>
                 <tr>
-                    <th>Mental Health Services</th>
+                    <th>Has the client been informed of the referral?  :</th>
                     <td></td>
-                    <th>Protection Support/ Services   </th>
-                    <td></td>
-                    <th>Shelter</th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>Psychological Interventions </th>
-                    <td></td>
-                    <th>Community Centre/ Social Services  </th>
-                    <td></td>
-                    <th>Material Assistance</th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>Physical Health Care  </th>
-                    <td></td>
-                    <th>Family Tracing Services   </th>
-                    <td></td>
-                    <th>Nutrition</th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>Physical Rehabilitation   </th>
-                    <td></td>
-                    <th>Legal Assistance   </th>
-                    <td></td>
-                    <th> Financial Assistance  </th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>Physical Rehabilitation   </th>
-                    <td></td>
-                    <th>Legal Assistance   </th>
-                    <td></td>
-                    <th> Financial Assistance  </th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>Psychosocial Activities </th>
-                    <td></td>
-                    <th>Education </th>
-                    <td></td>
-                    <th> Please explain any requested services:  </th>
+                    <th>Has the client been referred to any other organizations?  </th>
                     <td></td>
                 </tr>
 
@@ -207,32 +169,6 @@
                         I authorize this exchange of information:</th>
 
                     <th>Signature of Responsible Party:</th>
-                    <td></td>
-                </tr>
-
-            </table>
-            <h5> Details of Referral</h5>
-
-            <table class="table table-bordered">
-                <tr>
-                    <th style="background-color:#ccc"> Details of Referral</th>
-                </tr>
-                <tr>
-                    <th>Any Contact or other restriction :</th>
-                    <td></td>
-                    <th>Referral delivered via   Phone (Emegency Only);Email;Electronically(App or datbase; </th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>Followup Expected Via Phone ;Email ; in Person by Date(DD/MM/YY);</th>
-                    <td></td>
-                    <th>Intermation agencies Agree to exchange in followup: </th>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th>Name and Signature of  receipient</th>
-                    <td></td>
-                    <th>Date Received(DD/MM/YY) </th>
                     <td></td>
                 </tr>
 
