@@ -39,7 +39,7 @@
 <!-- Main navbar -->
 <div class="navbar navbar-inverse bg-indigo text-center" style="padding-top: 10px">
 
-        <a  href="#" style="color: #FFFFFF; font-size: 20px;font-weight: bold; text-transform: uppercase; margin-top: 10px;">Case Management Database for Person with Special needs</a> <span class="pull-right"><img src="{{asset('assets/images/helpage.png')}}" width="40px" height="40px"/> <img src="{{asset('assets/images/unhcr.png')}}" width="40px" height="40px"/></span>
+        <a  href="#" style="color: #FFFFFF; font-size: 20px;font-weight: bold; text-transform: uppercase; margin-top: 10px;">Case Management Database for Person with Specific Needs</a> <span class="pull-right"><img src="{{asset('assets/images/helpage.png')}}" width="40px" height="40px"/> <img src="{{asset('assets/images/unhcr.png')}}" width="40px" height="40px"/></span>
 
 </div>
 <!-- /main navbar -->

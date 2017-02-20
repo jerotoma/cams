@@ -146,6 +146,8 @@ class ReferralController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
+
+
                 $referral = new ClientReferral;
                 $referral->client_id = $request->client_id;
                 $referral->referral_type = $request->referral_type;
@@ -157,62 +159,62 @@ class ReferralController extends Controller
                 $referral->reference_no="HAI/".date("Y")."/RF-".str_pad($referral->id,4,'0',STR_PAD_LEFT);
                 $referral->save();
 
-                $refagency=new ReferringAgency();
-                $refagency->referral_id = $referral->id;
-                $refagency->ref_organisation = $referral->ref_organisation;
-                $refagency->ref_phone = $referral->ref_phone;
-                $refagency->ref_contact = $referral->ref_contact;
-                $refagency->ref_email = $referral->ref_email;
-                $refagency->ref_location = $referral->ref_location;
-                $refagency->save();
+                $ref_agency=new ReferringAgency;
+                $ref_agency->referral_id = $referral->id;
+                $ref_agency->ref_organisation = $request->ref_organisation;
+                $ref_agency->ref_phone = $request->ref_phone;
+                $ref_agency->ref_contact = $request->ref_contact;
+                $ref_agency->ref_email = $request->ref_email;
+                $ref_agency->ref_location = $request->ref_location;
+                $ref_agency->save();
 
                 $agency=new ReceivingAgency;
                 $agency->referral_id = $referral->id;
-                $agency->rec_organisation = $referral->rec_organisation;
-                $agency->rec_phone = $referral->rec_phone;
-                $agency->rec_contact = $referral->rec_contact;
-                $agency->rec_email = $referral->rec_email;
-                $agency->rec_location = $referral->rec_location;
+                $agency->rec_organisation = $request->rec_organisation;
+                $agency->rec_phone = $request->rec_phone;
+                $agency->rec_contact = $request->rec_contact;
+                $agency->rec_email = $request->rec_email;
+                $agency->rec_location = $request->rec_location;
                 $agency->save();
 
                 $client=new ClientInformation;
                 $client->referral_id= $referral->id;
-                $client->cl_name=$referral->cl_name;
-                $client->cl_address=$referral->cl_address;
-                $client->cl_phone=$referral->cl_phone;
-                $client->cl_age=$referral->cl_age;
-                $client->cl_sex=$referral->cl_sex;
-                $client->cl_nationality=$referral->cl_nationality;
-                $client->cl_language=$referral->cl_language;
-                $client->cl_id_number=$referral->cl_id_number;
-                $client->cl_care_giver=$referral->cl_care_giver;
-                $client->cl_care_giver_relationship=$referral->cl_care_giver_relationship;
-                $client->cl_care_giver_contact=$referral->cl_care_giver_contact;
-                $client->cl_child_separated=$referral->cl_child_separated;
-                $client->cl_care_giver_informed=$referral->cl_care_giver_informed;
+                $client->cl_name=$request->cl_name;
+                $client->cl_address=$request->cl_address;
+                $client->cl_phone=$request->cl_phone;
+                $client->cl_age=$request->cl_age;
+                $client->cl_sex=$request->cl_sex;
+                $client->cl_nationality=$request->cl_nationality;
+                $client->cl_language=$request->cl_language;
+                $client->cl_id_number=$request->cl_id_number;
+                $client->cl_care_giver=$request->cl_care_giver;
+                $client->cl_care_giver_relationship=$request->cl_care_giver_relationship;
+                $client->cl_care_giver_contact=$request->cl_care_giver_contact;
+                $client->cl_child_separated=$request->cl_child_separated;
+                $client->cl_care_giver_informed=$request->cl_care_giver_informed;
                 $client->save();
                 
                 $reason= new ReferralReason;
                 $reason->referral_id=$referral->id;
-                $reason->client_referral_info=$referral->client_referral_info;
-                $reason->client_referral_status=$referral->client_referral_status;
-                $reason->client_referral_info_text=$referral->client_referral_info_text;
-                $reason->client_referral_status_text=$referral->client_referral_status_text;
+                $reason->client_referral_info=$request->client_referral_info;
+                $reason->client_referral_status=$request->client_referral_status;
+                $reason->client_referral_info_text=$request->client_referral_info_text;
+                $reason->client_referral_status_text=$request->client_referral_status_text;
                 $reason->save();
 
                 if (isset($request->service_request)) {
 
                     $service=new ReferralServiceRequested;
                     $service->referral_id=$referral->id;
-                    $service->comments=$referral->comments;
-                    $reason->save();
+                    $service->comments=$request->comments;
+                    $service->save();
 
-                    foreach ($request->service_request as $service){
+                    foreach ($request->service_request as $sevreq ){
 
-                        $service=new RequestedService();
-                        $service->requested_id=$reason->id;
-                        $service->service_request=$service;
-                        $reason->save();
+                        $servicereq=new RequestedService();
+                        $servicereq->requested_id=$service->id;
+                        $servicereq->service_request=$sevreq;
+                        $servicereq->save();
                     }
                 }
 
@@ -276,16 +278,17 @@ class ReferralController extends Controller
     public function update(Request $request, $id)
     {
         //
-        try {
+        //try {
             $validator = Validator::make($request->all(), [
                 'referral_type' => 'required',
                 'referral_date' => 'required|before:tomorrow',
                 'rec_organisation' => 'required',
                 'rec_location' => 'required',
-                'client_referral_info' => 'numeric',
+                'client_referral_info' => 'required',
                 'client_referral_status' => 'required',
                 'service_request' => 'required',
-                'rec_email'=> 'required',
+                'rec_email' => 'email',
+                'ref_email' => 'email',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -293,66 +296,82 @@ class ReferralController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
-                $referral =  ClientReferral::find();
-                $referral->client_id = $request->client_id;
+                $referral =  ClientReferral::find($id);
                 $referral->referral_type = $request->referral_type;
                 $referral->referral_date = date("Y-m-d", strtotime($request->referral_date));
-                $referral->created_by=Auth::user()->username;
+                $referral->updated_by=Auth::user()->username;
+                $referral->status=$request->status;
                 $referral->save();
 
-                $agency= $referral->receivingAgency;
-                $agency->referral_id = $referral->id;
-                $agency->rec_organisation = $referral->rec_organisation;
-                $agency->rec_phone = $referral->rec_phone;
-                $agency->rec_contact = $referral->rec_contact;
-                $agency->rec_email = $referral->rec_email;
-                $agency->rec_location = $referral->rec_location;
-                $agency->save();
+                if (is_object($referral->referringAgency)) {
+                    $ref_agency = $referral->referringAgency;
+                    $ref_agency->referral_id = $referral->id;
+                    $ref_agency->ref_organisation = $request->ref_organisation;
+                    $ref_agency->ref_phone = $request->ref_phone;
+                    $ref_agency->ref_contact = $request->ref_contact;
+                    $ref_agency->ref_email = $request->ref_email;
+                    $ref_agency->ref_location = $request->ref_location;
+                    $ref_agency->save();
+                }
 
-                $client= $referral->clientInformation;
-                $client->referral_id= $referral->id;
-                $client->cl_name=$referral->cl_name;
-                $client->cl_address=$referral->cl_address;
-                $client->cl_phone=$referral->cl_phone;
-                $client->cl_age=$referral->cl_age;
-                $client->cl_sex=$referral->cl_sex;
-                $client->cl_nationality=$referral->cl_nationality;
-                $client->cl_language=$referral->icl_languaged;
-                $client->cl_id_number=$referral->cl_id_number;
-                $client->cl_care_giver=$referral->cl_care_giver;
-                $client->cl_care_giver_relationship=$referral->cl_care_giver_relationship;
-                $client->cl_care_giver_contact=$referral->cl_care_giver_contact;
-                $client->cl_child_separated=$referral->cl_child_separated;
-                $client->cl_care_giver_informed=$referral->cl_care_giver_informed;
-                $client->save();
+                if (is_object($referral->receivingAgency)) {
+                    $agency = $referral->receivingAgency;
+                    $agency->referral_id = $referral->id;
+                    $agency->rec_organisation = $request->rec_organisation;
+                    $agency->rec_phone = $request->rec_phone;
+                    $agency->rec_contact = $request->rec_contact;
+                    $agency->rec_email = $request->rec_email;
+                    $agency->rec_location = $request->rec_location;
+                    $agency->save();
+                }
+                if (is_object($referral->clientInformation)) {
+                    $client = $referral->clientInformation;
+                    $client->referral_id = $referral->id;
+                    $client->cl_name = $request->cl_name;
+                    $client->cl_address = $request->cl_address;
+                    $client->cl_phone = $request->cl_phone;
+                    $client->cl_age = $request->cl_age;
+                    $client->cl_sex = $request->cl_sex;
+                    $client->cl_nationality = $request->cl_nationality;
+                    $client->cl_language = $request->icl_languaged;
+                    $client->cl_id_number = $request->cl_id_number;
+                    $client->cl_care_giver = $request->cl_care_giver;
+                    $client->cl_care_giver_relationship = $request->cl_care_giver_relationship;
+                    $client->cl_care_giver_contact = $request->cl_care_giver_contact;
+                    $client->cl_child_separated = $request->cl_child_separated;
+                    $client->cl_care_giver_informed = $request->cl_care_giver_informed;
+                    $client->save();
+                }
 
-                $reason=$referral->referralReason;
-                $client->referral_id=$referral->id;
-                $client->client_referral_info=$referral->client_referral_info;
-                $client->client_referral_status=$referral->client_referral_status;
-                $client->client_referral_info_text=$referral->client_referral_info_text;
-                $client->client_referral_status_text=$referral->client_referral_status_text;
-                $reason->save();
+                if (is_object($referral->referralReason)) {
+                    $reason = $referral->referralReason;
+                    $reason->referral_id = $referral->id;
+                    $reason->client_referral_info = $request->client_referral_info;
+                    $reason->client_referral_status = $request->client_referral_status;
+                    $reason->client_referral_info_text = $request->client_referral_info_text;
+                    $reason->client_referral_status_text = $request->client_referral_status_text;
+                    $reason->save();
+                }
 
-                if(is_object($referral->referralServiceRequested) && count($referral->referralServiceRequested) >0){
-                    foreach ($referral->referralServiceRequested as $service){
+                if (is_object($referral->referralServiceRequested)) {
+                    foreach (RequestedService::where('requested_id', '=', $referral->referralServiceRequested->id)->get() as $service) {
                         $service->delete();
                     }
                 }
 
                 if (isset($request->service_request)) {
 
-                    $service=$referral->referralServiceRequested;
-                    $service->referral_id=$referral->id;
-                    $service->comments=$referral->comments;
-                    $reason->save();
+                    $servicerec=$referral->referralServiceRequested;
+                    $servicerec->referral_id=$referral->id;
+                    $servicerec->comments=$request->comments;
+                    $servicerec->save();
 
-                    foreach ($request->service_request as $service){
+                    foreach ($request->service_request as $servrec){
 
-                        $service=new ReferralServiceRequested;
-                        $service->requested_id=$reason->id;
-                        $service->service_request=$service;
-                        $reason->save();
+                        $service=new RequestedService;
+                        $service->requested_id=$servicerec->id;
+                        $service->service_request=$servrec;
+                        $service->save();
                     }
                 }
 
@@ -363,14 +382,7 @@ class ReferralController extends Controller
                 ], 200);
 
             }
-        }
-        catch (\Exception $ex)
-        {
-            return Response::json(array(
-                'success' => false,
-                'errors' => $ex->getMessage()
-            ), 402); // 400 being the HTTP code for an invalid request.
-        }
+
     }
 
     /**

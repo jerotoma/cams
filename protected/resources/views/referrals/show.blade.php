@@ -22,12 +22,14 @@
     <div class="row" style="margin-top: 10px">
         <tr class="col-md-12 ">
             <h5><span class="pull-right"><label class="checkbox-inline">
-                                <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities">
+                                <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities"
+                                @if($referral->referral_type =="Routine") checked @endif>
                                 Routine
                             </label> <label class="checkbox-inline" style="margin-left: 10px">
-                                <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities">
-                                Urgent
-                            </label> Date of referral (DD/MM/YY): {{date("d/m/Y",strtotime($referral->referral_date))}}</span> <span class="pull-left">Referring agency copy</span></h5>
+                                <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities"
+                                       @if($referral->referral_type =="Urgent") checked @endif>
+                                Urgent Date of referral: (DD/MM/YY): {{date("d/m/Y",strtotime($referral->referral_date))}}
+                            </label> </span> <span class="pull-left" style="margin-left: 10px; ">Referring agency copy </span></h5>
             <table class="table table-bordered">
                 <tr>
                     <th style="background-color:#ccc" colspan="4">Referring Agency </th>
@@ -35,7 +37,7 @@
                 <tr>
                     <th>Agency /Org</th>
                     <td>@if(is_object($referral->referringAgency)){{$referral->referringAgency->ref_organisation}} @endif</td>
-                    <th>Contact</th>
+                    <th>Contact (if any)</th>
                     <td>@if(is_object($referral->referringAgency)) {{$referral->referringAgency->ref_contact}} @endif</td>
                 </tr>
                 <tr>
@@ -56,14 +58,14 @@
                     <th style="background-color:#ccc" colspan="4">Receiving Agency </th>
                 </tr>
                 <tr>
-                    <th>Agency /Org</th>
-                    <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->rec_email}} @endif</td>
-                    <th>Contact</th>
-                    <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->rec_email}} @endif</td>
+                    <th>Agency / Org:</th>
+                    <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->rec_organisation}} @endif</td>
+                    <th>Contact (if known):</th>
+                    <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->rec_contact}} @endif</td>
                 </tr>
                 <tr>
-                    <th>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->rec_email}} @endif</th>
-                    <td></td>
+                    <td>Phone</td>
+                    <th>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->rec_phone}} @endif</th>
                     <th>Email</th>
                     <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->rec_email}} @endif</td>
                 </tr>
@@ -80,26 +82,26 @@
                 </tr>
                 <tr>
                     <th>Name</th>
-                    <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->cl_name}} @endif</td>
+                    <td>@if(is_object($referral->clientInformation)) {{$referral->clientInformation->cl_name}} @endif</td>
                     <th>Phone</th>
-                    <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->cl_phone}} @endif</td>
+                    <td>@if(is_object($referral->clientInformation)) {{$referral->clientInformation->cl_phone}} @endif</td>
                 </tr>
                 <tr>
                     <th>Address</th>
-                    <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->cl_address}} @endif</td>
+                    <td>@if(is_object($referral->clientInformation)) {{$referral->clientInformation->cl_address}} @endif</td>
                     <th>Age</th>
-                    <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->cl_age}} @endif</td>
+                    <td>@if(is_object($referral->clientInformation)) {{$referral->clientInformation->cl_age}} @endif</td>
                 </tr>
                 <tr>
                     <th>Sex</th>
-                    <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->cl_sex}} @endif</td>
+                    <td>@if(is_object($referral->clientInformation)) {{$referral->clientInformation->cl_sex}} @endif</td>
                     <th>Nationality</th>
-                    <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->cl_nationality}} @endif</td>
+                    <td>@if(is_object($referral->clientInformation)) {{$referral->clientInformation->cl_nationality}} @endif</td>
                 <tr>
                     <th>Language</th>
-                    <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->cl_language}} @endif</td>
+                    <td>@if(is_object($referral->clientInformation)) {{$referral->clientInformation->cl_language}} @endif</td>
                     <th>ID numbers</th>
-                    <td>@if(is_object($referral->receivingAgency)) {{$referral->receivingAgency->cl_id_number}} @endif</td>
+                    <td>@if(is_object($referral->clientInformation)) {{$referral->clientInformation->cl_id_number}} @endif</td>
 
                 </tr>
             </table>
@@ -109,7 +111,7 @@
                 </tr>
                 <tr>
                     <th>Name of primary caregiver:</th>
-                    <td>@if(is_object($referral->clientInformation)) {{$referral->clientInformation->cl_language}} @endif</td>
+                    <td>@if(is_object($referral->clientInformation)) {{$referral->clientInformation->cl_care_giver}} @endif</td>
                     <th>Relationship to child:</th>
                     <td>@if(is_object($referral->clientInformation)) {{$referral->clientInformation->cl_care_giver_relationship}} @endif
                           </td>
@@ -118,12 +120,14 @@
                     <th>Contact information for caregiver</th>
                     <td>@if(is_object($referral->clientInformation)) {{$referral->clientInformation->cl_care_giver_contact}} @endif</td>
                     <th>Is child separated or unaccompanied?  </th>
-                    <td></td>
+                    <td> @if(is_object($referral->clientInformation))
+                            {{$referral->clientInformation->cl_child_separated}}
+                        @endif</td>
                 </tr>
                 <tr>
                     <th>Caregiver is informed of referral?  </th>
                     <td colspan="3">@if(is_object($referral->clientInformation))
-                            <option>  {{$referral->clientInformation->cl_care_giver_informed}}</option>
+                            {{$referral->clientInformation->cl_care_giver_informed}}
                         @endif</td>
 
                 </tr>
@@ -139,11 +143,11 @@
                 <tr>
                     <th>Has the client been informed of the referral?  :</th>
                     <td>@if(is_object($referral->referralReason))
-                            <option> {{$referral->referralReason->client_referral_info}}</option>
+                            {{$referral->referralReason->client_referral_info}}
                         @endif</td>
                     <th>Has the client been referred to any other organizations?  </th>
                     <td>@if(is_object($referral->referralReason))
-                            <option> {{$referral->referralReason->client_referral_status}}</option>
+                           {{$referral->referralReason->client_referral_status}}
                         @endif</td>
                 </tr>
 
@@ -152,100 +156,177 @@
 
             <table class="table table-bordered">
                 <tr>
-                    <th style="background-color:#ccc" colspan="6"> Services Requested  </th>
+                    <th style="background-color:#ccc" > Services Requested  </th>
                 </tr>
                 <tr>
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]"  value="Mental Health Services">
-                            Mental Health Services
-                        </label>
-                    </td>
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]" value="Protection Support/ Services" >
-                            Protection Support/ Services
-                        </label>
-                    </td>
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]" value="Shelter" >
-                            Shelter
-                        </label>
+                    <td>    <div class="row">
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Mental Health Services"
+                                           @if(is_object($referral->referralServiceRequested))
+                                           @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Mental Health Services"))
+                                           checked
+                                            @endif
+                                            @endif
+                                    >
+                                    Mental Health Services
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Protection Support/ Services"
+                                           @if(is_object($referral->referralServiceRequested))
+                                           @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Protection Support/ Services"))
+                                           checked
+                                            @endif
+                                            @endif>
+                                    Protection Support/ Services
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Shelter"
+                                           @if(is_object($referral->referralServiceRequested))
+                                           @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Shelter"))
+                                           checked
+                                            @endif
+                                            @endif>
+                                    Shelter
+                                </label>
+                            </div>
+                        </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="styled" name="service_request[]" value="Psychological Interventions"
+                                               @if(is_object($referral->referralServiceRequested))
+                                               @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Psychological Interventions"))
+                                               checked
+                                                @endif
+                                                @endif>
+                                        Psychological Interventions
+                                    </label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="styled" name="service_request[]" value="Community Centre/ Social Services"
+                                               @if(is_object($referral->referralServiceRequested))
+                                               @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Community Centre/ Social Services"))
+                                               checked
+                                                @endif
+                                                @endif>
+                                        Community Centre/ Social Services
+                                    </label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="styled" name="service_request[]"  value="Material Assistance" `
+
+                                               @if(is_object($referral->referralServiceRequested))
+                                               @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Material Assistance"))
+                                               checked
+                                                @endif
+                                                @endif>
+                                        Material Assistance
+                                    </label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="styled" name="service_request[]" value="Physical Health Care"
+                                               @if(is_object($referral->referralServiceRequested))
+                                               @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Physical Health Care"))
+                                               checked
+                                                @endif
+                                                @endif>
+                                        Physical Health Care
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="styled" name="service_request[]" value="Family Tracing Services"
+                                               @if(is_object($referral->referralServiceRequested))
+                                               @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Family Tracing Services"))
+                                               checked
+                                                @endif
+                                                @endif>
+                                        Family Tracing Services
+                                    </label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="styled" name="service_request[]" value="Nutrition"
+                                               @if(is_object($referral->referralServiceRequested))
+                                               @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Nutrition"))
+                                               checked
+                                                @endif
+                                                @endif>
+                                        Nutrition
+                                    </label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="styled" name="service_request[]"  value="Physical Rehabilitation"
+                                               @if(is_object($referral->referralServiceRequested))
+                                               @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Physical Rehabilitation"))
+                                               checked
+                                                @endif
+                                                @endif>
+                                        Physical Rehabilitation
+                                    </label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="styled" name="service_request[]"  value="Legal Assistance"
+                                               @if(is_object($referral->referralServiceRequested))
+                                               @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Legal Assistance"))
+                                               checked
+                                                @endif
+                                                @endif>
+                                        Legal Assistance
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="styled" name="service_request[]"  value="Financial Assistance"
+                                               @if(is_object($referral->referralServiceRequested))
+                                               @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Financial Assistance"))
+                                               checked
+                                                @endif
+                                                @endif>
+                                        Financial Assistance
+                                    </label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="styled" name="service_request[]" value="Education"
+                                               @if(is_object($referral->referralServiceRequested))
+                                               @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Education"))
+                                               checked
+                                                @endif
+                                                @endif>
+                                        Education
+                                    </label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities"
+                                               @if(is_object($referral->referralServiceRequested))
+                                               @if(isReferralServiceSelected($referral->referralServiceRequested->id,"Psychosocial Activities"))
+                                               checked
+                                                @endif
+                                                @endif
+                                        >
+                                        Psychosocial Activities
+                                    </label>
+                                </div>
+                            </div>
                     </td>
                 </tr>
-                <tr >
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]" >
-                            Psychological Interventions
-                        </label>
-                    </td>
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]" value="Community Centre/ Social Services" >
-                            Community Centre/ Social Services
-                        </label>
-                    </td>
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]"  value="aterial Assistance">
-                            Material Assistance
-                        </label>
-                    </td>
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]" value="Physical Health Care" >
-                            Physical Health Care
-                        </label>
-                    </td>
-                </tr>
-                <tr >
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]" value="Family Tracing Services">
-                            Family Tracing Services
-                        </label>
-                    </td>
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]" value="Nutrition">
-                            Nutrition
-                        </label>
-                    </td>
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]"  value="Physical Rehabilitation">
-                            Physical Rehabilitation
-                        </label>
-                    </td>
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]"  value="Legal Assistance">
-                            Legal Assistance
-                        </label>
-                    </td>
-                </tr>
-                <tr >
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]"  value="Financial Assistance">
-                            Financial Assistance
-                        </label>
-                    </td>
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]" value="Education">
-                            Education
-                        </label>
-                    </td>
-                    <td class="col-sm-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities">
-                            Psychosocial Activities
-                        </label>
-                    </td>
-                </tr>
+
 
             </table>
 

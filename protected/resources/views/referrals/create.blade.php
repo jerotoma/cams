@@ -211,8 +211,8 @@
                             <label class="control-label">Referral Type</label>
                             <select name="referral_type" data-placeholder="Choose an option..." class="select">
                                 <option></option>
-                                <option value="Yes">Routine</option>
-                                <option value="No">Urgent</option>
+                                <option value="Routine">Routine</option>
+                                <option value="Urgent">Urgent</option>
                             </select>
                         </div>
 
@@ -428,7 +428,7 @@
                         <div class="row">
                             <div class="col-sm-3">
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" class="styled" name="service_request[]" >
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Psychological Interventions">
                                     Psychological Interventions
                                 </label>
                             </div>

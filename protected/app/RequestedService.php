@@ -8,8 +8,8 @@ class RequestedService extends Model
 {
     //
 
-    public function services()
+    public function referralServiceRequested()
     {
-        return $this::hasOne('\App\RequestedService','referral_id');
+        return $this::belongsTo('\App\ReferralServiceRequested','requested_id');
     }
 }

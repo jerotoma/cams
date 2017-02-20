@@ -6,7 +6,7 @@
 
             <div class="navbar-collapse collapse" id="navbar-second">
                 <div class="navbar-text text-white">
-                    Copyright &copy; {{date("Y")}}. <a href="#" class="text-white">HelpAge International- Case Management Database for Person with Special needs</a>
+                    Copyright &copy; {{date("Y")}}. <a href="#" class="text-white">HelpAge International- Case Management Database for Person with Specific Needs</a>
                 </div>
 
                 <div class="navbar-right text-white">

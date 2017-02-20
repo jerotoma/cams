@@ -487,4 +487,17 @@ if (!function_exists('isAuthorized')) {
     }
 }
 
+//Check if service was selected
+if (!function_exists('isReferralServiceSelected')) {
+    function isReferralServiceSelected($id,$service_request) {
+
+        if(count(\App\RequestedService::where('service_request','=',$service_request)->where('requested_id','=',$id)->get()) >0){
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
 //Get client ID
