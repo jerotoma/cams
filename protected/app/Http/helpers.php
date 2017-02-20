@@ -474,4 +474,17 @@ if (!function_exists('getAllClientsReceivedItemByItemId')) {
 
     }
 }
+if (!function_exists('isAuthorized')) {
+    function isAuthorized($status) {
+
+        if(strtolower($status) =="pending"){
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+}
+
 //Get client ID

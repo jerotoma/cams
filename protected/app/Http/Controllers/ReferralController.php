@@ -10,6 +10,7 @@ use App\Referral;
 use App\ReferralReason;
 use App\ReferralServiceRequested;
 use App\ReferringAgency;
+use App\RequestedService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -156,15 +157,6 @@ class ReferralController extends Controller
                 $referral->reference_no="HAI/".date("Y")."/RF-".str_pad($referral->id,4,'0',STR_PAD_LEFT);
                 $referral->save();
 
-                $agency=new ReceivingAgency;
-                $agency->referral_id = $referral->id;
-                $agency->rec_organisation = $referral->rec_organisation;
-                $agency->rec_phone = $referral->rec_phone;
-                $agency->rec_contact = $referral->rec_contact;
-                $agency->rec_email = $referral->rec_email;
-                $agency->rec_location = $referral->rec_location;
-                $agency->save();
-
                 $refagency=new ReferringAgency();
                 $refagency->referral_id = $referral->id;
                 $refagency->ref_organisation = $referral->ref_organisation;
@@ -174,6 +166,15 @@ class ReferralController extends Controller
                 $refagency->ref_location = $referral->ref_location;
                 $refagency->save();
 
+                $agency=new ReceivingAgency;
+                $agency->referral_id = $referral->id;
+                $agency->rec_organisation = $referral->rec_organisation;
+                $agency->rec_phone = $referral->rec_phone;
+                $agency->rec_contact = $referral->rec_contact;
+                $agency->rec_email = $referral->rec_email;
+                $agency->rec_location = $referral->rec_location;
+                $agency->save();
+
                 $client=new ClientInformation;
                 $client->referral_id= $referral->id;
                 $client->cl_name=$referral->cl_name;
@@ -182,7 +183,7 @@ class ReferralController extends Controller
                 $client->cl_age=$referral->cl_age;
                 $client->cl_sex=$referral->cl_sex;
                 $client->cl_nationality=$referral->cl_nationality;
-                $client->cl_language=$referral->icl_languaged;
+                $client->cl_language=$referral->cl_language;
                 $client->cl_id_number=$referral->cl_id_number;
                 $client->cl_care_giver=$referral->cl_care_giver;
                 $client->cl_care_giver_relationship=$referral->cl_care_giver_relationship;
@@ -208,7 +209,7 @@ class ReferralController extends Controller
 
                     foreach ($request->service_request as $service){
 
-                        $service=new ReferralServiceRequested;
+                        $service=new RequestedService();
                         $service->requested_id=$reason->id;
                         $service->service_request=$service;
                         $reason->save();

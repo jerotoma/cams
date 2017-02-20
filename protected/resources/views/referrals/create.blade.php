@@ -394,7 +394,7 @@
                             <div class="col-md-6">
                                 <div class="form-group ">
                                     <label class="control-label">If yes Explain here?   </label>
-                                    <textarea  class="form-control" name="referal_other_org" id="referal_other_org"></textarea>
+                                    <textarea  class="form-control" name="client_referral_status_text" id="client_referral_status_text"></textarea>
                                 </div>
                             </div>
 
