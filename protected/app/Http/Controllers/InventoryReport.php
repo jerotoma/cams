@@ -33,12 +33,13 @@ class InventoryReport extends Controller
         $specific_needs= $request->specific_needs;
         $report_type=$request->report_type;
         $all_dates=$request->all_dates;
+        $items=$request->items;
         //return view('reports.clients.registration',compact('range','start_time','end_time','camp_id'));
 
-        if($report_type =="Registration by Category") {
-            \Excel::create("Detailed_Registration_by_Category", function ($excel) use ($range, $start_time, $end_time, $camp_id) {
-                $excel->sheet('sheet', function ($sheet) use ($range, $start_time, $end_time, $camp_id) {
-                    $sheet->loadView('reports.clients.registration', compact('range', 'start_time', 'end_time', 'camp_id'));
+        if($report_type =="List of Clients Received Items" && items) {
+            \Excel::create("Detailed_Registration_by_Category", function ($excel) use ($range, $start_time, $end_time, $camp_id,$items) {
+                $excel->sheet('sheet', function ($sheet) use ($range, $start_time, $end_time, $camp_id,$items) {
+                    $sheet->loadView('reports.nfis.clients', compact('range', 'start_time', 'end_time', 'camp_id','items'));
                 });
             })->download('xlsx');
         }elseif($report_type =="Population Planning Groups") {

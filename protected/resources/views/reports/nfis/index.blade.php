@@ -257,8 +257,8 @@
                                     <div class="col-md-4">
                                         <div class="form-group ">
                                             <label>NFI Item?</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
-                                                <optgroup label="Specific Needs">
+                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="items" id="items" data-placeholder="Choose an option...">
+                                                <optgroup label="NFIS Items">
                                                     <option></option>
                                                     <option value="All">All</option>
                                                     @foreach(\App\ItemsInventory::all() as $item)
