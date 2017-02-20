@@ -132,7 +132,7 @@ class ReferralController extends Controller
                 'referral_date' => 'required|before:tomorrow',
                 'rec_organisation' => 'required',
                 'rec_location' => 'required',
-                'client_referral_info' => 'numeric',
+                'client_referral_info' => 'required',
                 'client_referral_status' => 'required',
                 'service_request' => 'required',
             ]);

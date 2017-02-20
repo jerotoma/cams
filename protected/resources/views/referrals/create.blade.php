@@ -110,7 +110,7 @@
         // Escape any “rule” characters with an exclamation mark (!).
         format: 'yyyy-mm-dd',
     });
-    tinymce.init({ selector:'textarea' });
+    tinymce.init({ selector:'textEditor' });
 </script>
 
 <div class="portlet light bordered">
@@ -208,6 +208,7 @@
                         </div>
 
                         <div class="col-md-4">
+                            <label class="control-label">Referral Type</label>
                             <select name="referral_type" data-placeholder="Choose an option..." class="select">
                                 <option></option>
                                 <option value="Yes">Routine</option>
@@ -428,7 +429,7 @@
                                 (problem description, duration, frequency, etc.) and Services Already Provided
                             </legend>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group ">
                                     <label class="control-label">Has the client been informed of the referral?? </label>
                                     <select name="client_referral_info" data-placeholder="Choose an option..." class="select">
@@ -438,13 +439,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group ">
-                                    <label class="control-label"> If yes Explain here?   </label>
-                                    <textarea  class="form-control" name="client_referral_info_text" id="client_referral_info_text"></textarea>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group ">
                                     <label class="control-label">Has the client been referred to any other organisazation ? </label>
                                     <select name="client_referral_status" data-placeholder="Choose an option..." class="select">
@@ -454,12 +449,21 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label class="control-label"> If yes Explain here?   </label>
+                                    <textarea  class="form-control" name="client_referral_info_text" id="client_referral_info_text"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
                                 <div class="form-group ">
                                     <label class="control-label">If yes Explain here?   </label>
                                     <textarea  class="form-control" name="referal_other_org" id="referal_other_org"></textarea>
                                 </div>
                             </div>
+
 
                         </div>
 
@@ -483,12 +487,6 @@
                             <div class="col-sm-3">
                                 <label class="checkbox-inline">
                                     <input type="checkbox" class="styled" name="service_request[]" value="Shelter" >
-                                    Shelter
-                                </label>
-                            </div>
-                            <div class="col-sm-3">
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" class="styled" name="service_request[]" value="Psychological Interventions" >
                                     Shelter
                                 </label>
                             </div>
