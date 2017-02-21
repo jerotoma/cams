@@ -158,34 +158,8 @@ class ClientsController extends Controller
             {
                 $vcolor="label-success";
             }
-                   $actions='<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">';
-                    if (Auth::user()->can('edit'))
-                    {
-                        $actions .=' <li id="'.$client->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>';
-                    }
-                   if (Auth::user()->can('authorize'))
-                   {
-                       $actions .=' <li id="'.$client->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>';
-                   }
-                   if (Auth::user()->can('edit'))
-                   {
-                       $actions .='<li id="'.$client->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>';
-                   }
-                   if (Auth::user()->can('delete'))
-                   {
-                       $actions .='<li id="'.$client->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>';
 
-                   }
-                   $actions.='   
-                            </ul>
-                        </li>
-                    </ul>';
-            $records["data"][] = array(
+             $records["data"][] = array(
                 $count++,
                 $client->hai_reg_number,
                 $client->full_name,
@@ -194,7 +168,20 @@ class ClientsController extends Controller
                 $client->ration_card_number,
                 date('d M Y',strtotime($client->date_arrival)),
                 $camp,
-                $client->auth_status,$actions
+                $client->auth_status,
+                 '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                              <li id="'.$client->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
+                             <li id="'.$client->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                             <li id="'.$client->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$client->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
 
             );
         }
