@@ -50,16 +50,67 @@
             // Escape any “rule” characters with an exclamation mark (!).
             format: 'yyyy-mm-dd',
         });
+        // Make monochrome colors and set them as default for all pies
+        Highcharts.getOptions().plotOptions.pie.colors = (function () {
+            var colors = [],
+                base = Highcharts.getOptions().colors[0],
+                i;
+
+            for (i = 0; i < 10; i += 1) {
+                // Start out with a darkened base color (negative brighten), and end
+                // up with a much brighter color
+                colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
+            }
+            return colors;
+        }());
+
+        // Build the chart
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Referral Processed for year, <?php echo date('Y')?>'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'Brands',
+                data: [
+                    { name: '0-17', y: 56.33 },
+                    { name: '18-50', y: 24.03 },
+                    { name: '50-60', y: 10.38 },
+                    { name: '60 >', y: 4.77 }
+                ]
+            }]
+        });
 
         $('#clientRegistration').highcharts({
             chart: {
                 type: 'column'
             },
             title: {
-                text: 'Monthly NFIS distribution for year {{date("Y")}}'
+                text: 'Assessments done per year {{date("Y")}}'
             },
             subtitle: {
-                text: 'Item distribution as of year {{date('Y')}}',
+                text: 'Number of assessed Clients processed year {{date('Y')}}',
                 x: -20
             },
             credits: {
@@ -105,42 +156,6 @@
             },
 
             series: [<?php echo getHighChatClientMonthlyCountByYear(date('Y'));?>]
-        });
-        $('#clientsNeeds').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: 'NFI distribution & vulnerability'
-            },
-            credits: {
-                enabled: false
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        style: {
-                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                        },
-                        connectorColor: 'silver'
-                    }
-                }
-            },
-            series: [{
-                name: 'Clients',
-                colorByPoint: true,
-                data: [<?php echo getHighChatClientByCodes();?>]
-            }]
         });
 
         $("#formClientReport").validate({
@@ -205,123 +220,11 @@
         <div class="col-md-12 text-right">
             <a  href="{{url('clients')}}" class="btn btn-primary "><i class="fa fa-list "></i> <span>List All</span></a>
             <a  href="{{url('clients')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Search</span></a>
-            <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import</span></a>
         </div>
     </div>
     <div class="row" style="margin-top: 20px">
         <div class="col-md-12">
-            <div class="portlet light bordered">
-                <div class="portlet-body form">
-                    {!! Form::open(array('url'=>'generate/reports/assessments','role'=>'form','id'=>'formClientReport')) !!}
-                    <div class="panel panel-flat">
-
-
-                        <div class="panel-body">
-                            <fieldset class="scheduler-border">
-                                <legend class="text-bold">Client Assessment Report</legend>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group ">
-                                            <label class="control-label">Start Date</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                                <input type="text" class="form-control pickadate"  value="{{old('start_date')}}" name="start_date" id="start_date">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label class="control-label">End Date</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                                <input type="text" class="form-control pickadate" value="{{old('end_date')}}" name="end_date" id="end_date">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Camp</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="camp_id" id="camp_id">
-                                                <optgroup label="Camp Name">
-                                                    <option value="All">All</option>
-                                                    @foreach(\App\Camp::all() as $item)
-                                                        <option value="{{$item->id}}">{{$item->camp_name}}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Assessment?</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
-                                                <optgroup label="Assessments">
-                                                    <option></option>
-                                                    <option value="List of Clients Assessed">List of Clients Assessed</option>
-                                                    <option value="Assessment Type per population">Assessment Type per population</option>
-                                                    <option value="Prepare List for assessment" >Prepare List of client for assessment</option>
-                                                    <option value="List of Clients without assessment" >List of Clients without assessment</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Vulnerability</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
-                                                <optgroup label="Specific Needs">
-                                                    <option></option>
-                                                    <option value="All">All</option>
-                                                    @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
-                                                        <option value="{{$code->id}}">{{$code->description}}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group ">
-                                            <label>What type of report type do you need?</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type" data-placeholder="Choose an option...">
-                                                <optgroup label="Report Type">
-                                                    <option></option>
-                                                    <option value="List of Clients Received Items">List of Clients Received Items</option>
-                                                    <option value="Prepare list for distribution">Prepare list for distribution</option>
-                                                    <option value="Distribution per population" >Distribution per population</option>
-                                                    <option value="Out of stock Items" >Out of stock Items</option>
-                                                    <option value="List of All Items" >List of All Items</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <div class="row">
-                                <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
-                                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cog"></i> Generate Report </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-    <div class="row" style="margin-top: 20px">
-        <div class="col-md-8">
-            <div style="min-width: 410px; height: 500px; margin: 0 auto" id="clientsNeeds"></div>
-        </div>
-        <div class="col-md-4">
-            <div style="min-width: 310px; height: 500px; margin: 0 auto" id="clientRegistration"></div>
+            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientRegistration"></div>
         </div>
 
     </div>

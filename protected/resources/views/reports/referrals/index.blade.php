@@ -50,6 +50,22 @@
             // Escape any “rule” characters with an exclamation mark (!).
             format: 'yyyy-mm-dd',
         });
+        // Make monochrome colors and set them as default for all pies
+        Highcharts.getOptions().plotOptions.pie.colors = (function () {
+            var colors = [],
+                base = Highcharts.getOptions().colors[0],
+                i;
+
+            for (i = 0; i < 10; i += 1) {
+                // Start out with a darkened base color (negative brighten), and end
+                // up with a much brighter color
+                colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
+            }
+            return colors;
+        }());
+
+        // Build the chart
+
 
         $('#clientRegistration').highcharts({
             chart: {
@@ -104,40 +120,9 @@
                 }
             },
 
-            series: [<?php echo getHighChatClientMonthlyCountByYear(date('Y'));?>]
+            series: [<?php echo getHighChatReferralsMonthlyCountByYear(date('Y'));?>]
         });
-        $('#clientsNeeds').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: 'Clients referral & their vulnerabilities'
-            },
-            credits: {
-                enabled: false
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: false
-                    },
-                    showInLegend: true
-                }
-            },
-            series: [{
-                name: 'Clients',
-                colorByPoint: true,
-                data: [<?php echo getHighChatClientByCodes();?>]
-            }]
-        });
+
 
         $("#formClientReport").validate({
             ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
@@ -198,228 +183,22 @@
 @stop
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
-        <div class="col-md-12 text-right">
-            <a  href="{{url('clients')}}" class="btn btn-primary "><i class="fa fa-list "></i> <span>List All</span></a>
-            <a  href="{{url('clients')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Search</span></a>
-            <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import</span></a>
+        <div class="col-md-4 pull-right" >
+        @permission('create')
+        <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-plus text-success"></i> Client Referral</a>
+        @endpermission
+        @permission('authorize')
+        <a  href="#" class="authorizeAllRecord btn btn-danger"><i class="fa fa- "></i> <span>Authorize All</span></a>
+        @endpermission
+        <a  href="{{url('referrals')}}" class="btn  btn-primary"><i class="fa fa-list text-info"></i> List All Referrals</a>
         </div>
     </div>
     <div class="row" style="margin-top: 20px">
         <div class="col-md-12">
-            <div class="portlet light bordered">
-                <div class="portlet-body form">
-                    {!! Form::open(array('url'=>'generate/reports/clients','role'=>'form','id'=>'formClientReport')) !!}
-                    <div class="panel panel-flat">
-
-
-                        <div class="panel-body">
-                            <fieldset class="scheduler-border">
-                                <legend class="text-bold">Client Registration Report</legend>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group ">
-                                            <label class="control-label">Start Date</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                                <input type="text" class="form-control pickadate"  value="{{old('start_date')}}" name="start_date" id="start_date">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label class="control-label">End Date</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                                <input type="text" class="form-control pickadate" value="{{old('end_date')}}" name="end_date" id="end_date">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group ">
-                                            <label>Camp</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="camp_id" id="camp_id">
-                                                <optgroup label="Camp Name">
-                                                    <option value="All">All</option>
-                                                    @foreach(\App\Camp::all() as $item)
-                                                        <option value="{{$item->id}}">{{$item->camp_name}}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group ">
-                                            <label>Specific Needs?</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
-                                                <optgroup label="Specific Needs">
-                                                    <option></option>
-                                                    <option value="All">All</option>
-                                                    @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
-                                                        <option value="{{$code->id}}">{{$code->description}}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group ">
-                                            <label>What type of report type do you need?</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type" data-placeholder="Choose an option...">
-                                                <optgroup label="Report Type">
-                                                    <option></option>
-                                                    <option value="Referral Per Population">Referral Per Population</option>
-                                                    <option value="List of referral" >List of referral</option>
-                                                    <option value="List of clients need referral" >List of clients need referral</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <div class="row">
-                                <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
-                                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cog"></i> Generate Report </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-    <div class="row" style="margin-top: 20px">
-        <div class="col-md-6">
-            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientsNeeds"></div>
-        </div>
-        <div class="col-md-6">
             <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientRegistration"></div>
         </div>
 
     </div>
-    <div class="row" style="margin-top: 20px">
-        <div class="col-md-12">
-            <div class="panel panel-flat">
-                <div class="panel-body" style="overflow-x: scroll">
-                    <h6 class="text-center text-bold">Summary of Active PSN cases assessed/registered by HelpAge as of {{date('jS F Y')}}</h6>
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th rowspan="3" class="text-center">No</th>
-                            <th rowspan="3" class="text-center" >Specific Needs</th>
-                            <th colspan="9" class="text-center">Active case registered </th>
-                            <th colspan="9" class="text-center">Pending for Assessment/Screening Cases</th>
-                            <th colspan="9" class="text-center">PSN provided with services</th>
-                            <th colspan="9" class="text-center">Receiving Feedback for referred cases</th>
-                        </tr>
-                        <tr>
-                            <th colspan="3" class="text-center">0-17 years old</th>
-                            <th colspan="3" class="text-center">18-49 years old</th>
-                            <th colspan="3" class="text-center">50 years or older</th>
-                            <th colspan="3" class="text-center">0-17 years old</th>
-                            <th colspan="3" class="text-center">18-49 years old</th>
-                            <th colspan="3" class="text-center">50 years or older</th>
-                            <th colspan="3" class="text-center">0-17 years old</th>
-                            <th colspan="3" class="text-center">18-49 years old</th>
-                            <th colspan="3" class="text-center">50 years or older</th>
-                            <th colspan="3" class="text-center">0-17 years old</th>
-                            <th colspan="3" class="text-center">18-49 years old</th>
-                            <th colspan="3" class="text-center">50 years or older</th>
-                        </tr>
-                        <tr>
-                            <th>M</th>
-                            <th>F</th>
-                            <th>Total</th>
-                            <th>M</th>
-                            <th>F</th>
-                            <th>Total</th>
-                            <th>M</th>
-                            <th>F</th>
-                            <th>Total</th>
-                            <th>M</th>
-                            <th>F</th>
-                            <th>Total</th>
-                            <th>M</th>
-                            <th>F</th>
-                            <th>Total</th>
-                            <th>M</th>
-                            <th>F</th>
-                            <th>Total</th>
-                            <th>M</th>
-                            <th>F</th>
-                            <th>Total</th>
-                            <th>M</th>
-                            <th>F</th>
-                            <th>Total</th>
-                            <th>M</th>
-                            <th>F</th>
-                            <th>Total</th>
-                            <th>M</th>
-                            <th>F</th>
-                            <th>Total</th>
-                            <th>M</th>
-                            <th>F</th>
-                            <th>Total</th>
-                            <th>M</th>
-                            <th>F</th>
-                            <th>Total</th>
-                        </tr>
-                        <?php $cou=1;?>
-                        @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as  $cod)
-                            <tr>
-                                <td>{{$cou++}}</td>
-                                <td>{{$cod->description}}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        @endforeach
 
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 
 @stop

@@ -48,6 +48,22 @@ class ReferralController extends Controller
         //
 
     }
+    public function authorizeAllReferrals()
+    {
+        //
+
+        if (Auth::user()->can('authorize')){
+          $referrals=ClientReferral::where('auth_status','=','pending')->get();
+            foreach ($referrals as $referral){
+                $referral->auth_status = 'authorized';
+                $referral->auth_by = Auth::user()->username;
+                $referral->auth_date('Y-m-d H:i');
+                $referral->save();
+            }}else{
+            return null;
+        }
+    }
+
 
     public function downloadPDF($id)
     {
@@ -86,11 +102,13 @@ class ReferralController extends Controller
                 $referral->client->age,
                 $referral->client->sex,
                 $referral->client->camp->camp_name,
+                $referral->status,
                 '<span class="text-center" id="'.$referral->id.'">
                                         <a href="#" class="showRecord btn " > <i class="fa fa-eye green "></i> </a>
                                         <a href="#" class=" btn "> <i class="fa fa-print green " onclick="printPage(\''.url('referrals').'/'.$referral->id.'\');" ></i> </a>
                                         <a href="'.url('download/referrals/form').'/'.$referral->id.'" class=" btn  "> <i class="fa fa-download text-danger "></i> </a>
                 </span>',
+                $referral->auth_status,
                 '<span id="'.$referral->id.'">
                 
                     <a href="#" title="Edit" class="btn btn-icon-only editRecord"> <i class="fa fa-edit text-primary">  </i> </a>

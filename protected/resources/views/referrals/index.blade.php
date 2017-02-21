@@ -86,6 +86,24 @@
 
                     });
 
+                    // Confirmation dialog
+                    $('.authorizeAllRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to athorize record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/referrals') ?>",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+
+                                    }
+                                });
+                            }
+                        });
+                    });
+
                     $(".deleteRecord").click(function(){
                         var id1 = $(this).parent().attr('id');
                         $(".deleteModule").show("slow").parent().parent().find("span").remove();
@@ -218,9 +236,13 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
+            @permission('create')
             <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-plus text-success"></i> Client Referral</a>
+            @endpermission
+            @permission('authorize')
+            <a  href="#" class="authorizeAllRecord btn btn-danger"><i class="fa fa- "></i> <span>Authorize All</span></a>
+            @endpermission
             <a  href="{{url('referrals')}}" class="btn  btn-primary"><i class="fa fa-list text-info"></i> List All Referrals</a>
-            <a  href="{{url('import/referrals')}}" class="btn btn-primary"><i class="fa fa-users text-danger"></i> Go to Clients </a>
         </div>
     </div>
     <div class="panel panel-flat">
@@ -242,7 +264,9 @@
                 <th>Age</th>
                 <th>Sex</th>
                 <th>Camp</th>
+                <th>Progress status</th>
                 <th>Details</th>
+                <th>Auth status</th>
                 <th class="text-center">Actions</th>
             </tr>
             </thead>

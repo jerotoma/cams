@@ -422,7 +422,10 @@ class ClientsController extends Controller
                 $client->marital_status = $request->marital_status;
                 $client->spouse_name = $request->spouse_name;
                 $client->care_giver = $request->care_giver;
-                $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
+                if($request->date_arrival !="" && $request->date_arrival != null)
+                {
+                    $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
+                }
                 $client->present_address = $request->present_address;
                 $client->household_number = $request->household_number;
                 $client->ration_card_number = $request->ration_card_number;
@@ -564,7 +567,10 @@ class ClientsController extends Controller
                 $client->marital_status = $request->marital_status;
                 $client->spouse_name = $request->spouse_name;
                 $client->care_giver = $request->care_giver;
-                $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
+                if($request->date_arrival !="" && $request->date_arrival != null)
+                {
+                    $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
+                }
                 $client->present_address = $request->present_address;
                 $client->household_number = $request->household_number;
                 $client->ration_card_number = $request->ration_card_number;

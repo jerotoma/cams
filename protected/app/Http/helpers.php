@@ -32,6 +32,29 @@ if (!function_exists('reduceItemQuantity')) {
             return false;
     }
 }
+if (!function_exists('getHighChatReferralsMonthlyCountByYear')) {
+    function getHighChatReferralsMonthlyCountByYear($year) {
+
+        $series1="";
+        $seriesdata1="";
+
+            $series1 .= "{ ";
+            $series1 .= " name: 'Referrals',";
+
+            $MonthCount = "";
+            $monthData = "";
+            for ($i = 1; $i <= 12; $i++) {
+                $MonthCount .= count(\App\ClientReferral::where(\DB::raw('Month(referral_date)'), '=', $i)->where(\DB::raw('Year(referral_date)'), '=', $year)->get()) . ",";
+            }
+            $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+            $series1 .= " data:[" . $monthData . "]";
+            $series1 .= "  },";
+
+
+        $seriesdata1=substr($series1,0,strlen($series1)-1);
+        return $seriesdata1;
+    }
+}
 if (!function_exists('getHighChatClientMonthlyCountByYear')) {
     function getHighChatClientMonthlyCountByYear($year) {
 
@@ -50,6 +73,88 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
             $series1 .= " data:[" . $monthData . "]";
             $series1 .= "  },";
         }
+
+        $seriesdata1=substr($series1,0,strlen($series1)-1);
+        return $seriesdata1;
+    }
+}
+if (!function_exists('getHighChatReferralsMonthlyCountByYear')) {
+    function getHighChatReferralsMonthlyCountByYear($year) {
+
+        $series1="";
+        $seriesdata1="";
+
+            $series1 .= "{ ";
+            $series1 .= " name: 'Referrals',";
+
+            $MonthCount = "";
+            $monthData = "";
+            for ($i = 1; $i <= 12; $i++) {
+                $MonthCount .= count(\App\ClientReferral::where(\DB::raw('Month(referral_date)'), '=', $i)->where(\DB::raw('Year(referral_date)'), '=', $year)->get()) . ",";
+            }
+            $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+            $series1 .= " data:[" . $monthData . "]";
+            $series1 .= "  },";
+
+
+        $seriesdata1=substr($series1,0,strlen($series1)-1);
+        return $seriesdata1;
+    }
+}
+if (!function_exists('getHighAssessmentsClientMonthlyCountByYear')) {
+    function getHighAssessmentsClientMonthlyCountByYear($year) {
+
+        $series1="";
+        $seriesdata1="";
+
+            $series1 .= "{ ";
+            $series1 .= " name: 'Vulnerability Assessment',";
+
+            $MonthCount = "";
+            $monthData = "";
+            for ($i = 1; $i <= 12; $i++) {
+                $MonthCount .= count(\App\VulnerabilityAssessment::where(\DB::raw('Month(q1_5)'), '=', $i)->where(\DB::raw('Year(q1_5)'), '=', $year)->get()) . ",";
+            }
+            $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+            $series1 .= " data:[" . $monthData . "]";
+            $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: 'Paediatric Assessment',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\PaediatricAssessment::where(\DB::raw('Month(created_at)'), '=', $i)->where(\DB::raw('Year(created_at)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: 'Function Assessment',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\InclusionAssessment::where(\DB::raw('Month(created_at)'), '=', $i)->where(\DB::raw('Year(created_at)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: 'Function Assessment',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\HomeAssessment::where(\DB::raw('Month(assessment_date)'), '=', $i)->where(\DB::raw('Year(assessment_date)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
 
         $seriesdata1=substr($series1,0,strlen($series1)-1);
         return $seriesdata1;

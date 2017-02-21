@@ -50,6 +50,7 @@ Route::get('fetchitemsbycategoryid/{id}','ItemsCategoriesController@getItemsList
 //Referrals
 Route::resource('referrals','ReferralController');
 Route::get('list-all-referrals','ReferralController@getReferralList');
+Route::get('authorize/referrals','ReferralController@authorizeAllReferrals');
 Route::get('referrals-request','ReferralController@getReferralClientList');
 Route::get('referrals-request/{id}','ReferralController@create');
 Route::get('download/referrals/form/{id}','ReferralController@downloadPDF');
