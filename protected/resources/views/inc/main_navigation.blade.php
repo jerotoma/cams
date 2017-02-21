@@ -27,6 +27,7 @@
                 </ul>
             </li>
             <!-- /main -->
+        @permission('inventory')
             <!-- Forms -->
             <li class="navigation-header"><span>NFIs Distribution</span> <i class="icon-menu" title="Material Distribution"></i></li>
             <li>
@@ -40,6 +41,7 @@
             </li>
 
             <!-- /forms -->
+        @endpermission
             <!-- Forms -->
             <li class="navigation-header"><span>Progress Monitoring</span> <i class="icon-menu" title="Forms"></i></li>
             <li>
@@ -50,6 +52,7 @@
                 </ul>
             </li>
             <!-- /forms -->
+               @permission('reports')
             <!-- Data visualization -->
             <li class="navigation-header"><span>Data visualization</span> <i class="icon-menu" title="Data visualization"></i></li>
             <li>
@@ -77,8 +80,10 @@
                 </ul>
             </li>
             <!-- /data visualization -->
-        @role('admin')
+        @endpermission
+
         <!-- Settings -->
+            @role('admin')
             <li class="navigation-header"><span>Settings</span> <i class="icon-menu" title="Settings"></i></li>
             <li>
                 <a href="#"><i class="icon-list"></i> <span>Countries</span></a>
@@ -139,7 +144,7 @@
                 </ul>
             </li>
             <!-- /Settings -->
-        @endrole
+
 
 
 
@@ -159,6 +164,7 @@
                 </ul>
             </li>
             <!-- /extensions -->
+            @endrole
         </ul>
     </div>
 </div>

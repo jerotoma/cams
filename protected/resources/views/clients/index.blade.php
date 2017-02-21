@@ -23,7 +23,7 @@
                 columnDefs: [{
                     orderable: true,
                     width: '100px',
-                    targets: [ 10 ]
+                    targets: [ 7 ]
                 }],
                 dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
                 language: {
@@ -135,6 +135,40 @@
                             }
                         });
                     });
+                    // Confirmation dialog
+                    $('.authorizeRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to athorize record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize') ?>/"+id1+"/clients",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    // Confirmation dialog
+                    $('.authorizeAllRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to athorize record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/clients') ?>",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+
+                                    }
+                                });
+                            }
+                        });
+                    });
                 }
             });
             table.columns().every( function () {
@@ -214,10 +248,17 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
+            @permission('create')
             <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-file-o "></i> <span>Register New Client</span></a>
+            @endpermission
             <a  href="{{url('clients')}}" class="btn btn-primary "><i class="fa fa-list "></i> <span>List All</span></a>
             <a  href="{{url('clients')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Search</span></a>
+            @permission('authorize')
+            <a  href="#" class="authorizeAllRecord btn btn-danger"><i class="fa fa- "></i> <span>Authorize All</span></a>
+            @endpermission
+            @permission('edit')
             <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import</span></a>
+            @endpermission
         </div>
     </div>
     <div class="panel panel-flat">
@@ -235,10 +276,7 @@
                                 SNO
                             </th>
                             <th class="text-center">
-                                Reg #
-                            </th>
-                            <th class="text-center">
-                                Client Number
+                                HAI Reg #
                             </th>
                             <th class="text-center">
                                 Full Name
@@ -250,9 +288,6 @@
                                 Age
                             </th>
                             <th class="text-center">
-                                Present Address
-                            </th>
-                            <th class="text-center">
                                 Rational Card
                             </th>
                             <th class="text-center">
@@ -262,7 +297,7 @@
                                 Camp
                             </th>
                             <th class="text-center">
-                                Origin
+                                Auth Status
                             </th>
                             <th class="text-center">
                                 Action
@@ -277,10 +312,7 @@
                                 SNO
                             </td>
                             <td class="text-center">
-                                Reg #
-                            </td>
-                            <td class="text-center">
-                                Client Number
+                                HAI Reg #
                             </td>
                             <td class="text-center">
                                 Full Name
@@ -292,9 +324,6 @@
                                 Age
                             </td>
                             <td class="text-center">
-                                Present Address
-                            </td>
-                            <td class="text-center">
                                 Rational Card
                             </td>
                             <td class="text-center">
@@ -304,7 +333,7 @@
                                 Camp
                             </td>
                             <td class="text-center">
-                                Origin
+                                Auth Status
                             </td>
                             <td class="text-center">
                                 Action

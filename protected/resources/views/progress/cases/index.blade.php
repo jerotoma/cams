@@ -214,9 +214,10 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
+            @permission('create')
             <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-plus text-success"></i> <span>Client New Case</span></a>
+            @endpermission
             <a  href="{{url('cases')}}" class="btn  btn-primary"><i class="fa fa-list text-info"></i> <span>List All Cases</span></a>
-            <a  href="{{url('import/cases')}}" class="btn btn-primary"><i class="fa fa-upload text-danger"></i> <span>Import Cases </span></a>
         </div>
     </div>
     <div class="panel panel-flat">

@@ -151,7 +151,7 @@ class UserController extends Controller
                 $user->username = $request->username;
                 $user->status = "Active";
                 $user->save();
-                $user->roles()->attach($request->role_id);
+                $user->attachRole($request->role_id);
                 $user->save();
             }
             return response()->json([
@@ -230,6 +230,8 @@ class UserController extends Controller
                 $user->designation = $request->designation;
                 $user->status = $request->status;
                 $user->locked = $request->locked;
+                $user->save();
+                $user->attachRole($request->role_id);
                 $user->save();
 
 

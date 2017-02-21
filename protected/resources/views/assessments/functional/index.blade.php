@@ -216,9 +216,13 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
+            @permission('create')
             <a  href="#" class="addRecord btn"><i class="fa fa-plus text-success"></i> <span>Assess Client</span></a>
+            @endpermission
             <a  href="{{url('assessments/functional')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All Assessments</span></a>
+            @permission('create')
             <a  href="{{url('import/assessments/functional')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
+            @endpermission
         </div>
     </div>
     <div class="panel panel-flat">

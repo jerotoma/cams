@@ -28,9 +28,45 @@ class ClientsController extends Controller
     public function index()
     {
         //
-        $clients=Client::all();
-        return view('clients.index',compact('clients'));
+        if (Auth::user()->can('viewer')){
+            $clients=Client::all();
+            return view('clients.index',compact('clients'));
+        }
+        else
+        {
+            return redirect('home');
+        }
+
     }
+    public function AuthorizeAll()
+    {
+        //
+        if (Auth::user()->can('authorize')){
+        $clients=Client::where('auth_status', 'pending')->get();
+        foreach ($clients as $client){
+            $client->auth_status = 'authorized';
+            $client->auth_by = Auth::user()->username;
+            $client->auth_date('Y-m-d H:i');
+            $client->save();
+        }}else{
+            return null;
+        }
+
+    }
+    public function AuthorizeClientById($id)
+    {
+        //
+        if (Auth::user()->can('authorize')){
+        $client=Client::find($id);
+        $client->auth_status = 'authorized';
+        $client->auth_by = Auth::user()->username;
+        $client->auth_date('Y-m-d H:i');
+        $client->save();
+        }else{
+            return null;
+        }
+    }
+
     public function  getJSonClientDataSearch()
     {
         //
@@ -90,6 +126,7 @@ class ClientsController extends Controller
     public function getJSonDataSearch()
     {
         //
+
         $clients=Client::orderBy('full_name','ASC')->get();
         $iTotalRecords =count(Client::all());
         $sEcho = intval(10);
@@ -100,6 +137,12 @@ class ClientsController extends Controller
 
         $count=1;
         foreach($clients as $client) {
+
+            if ($client->auth_status == "pending"){
+               if (Auth::user()->hasRole('admin')
+                   || Auth::user()->hasRole('authorizer') ||  $client->created_by = Auth::user()->username){
+
+
             $origin="";
             $status="";
             $camp="";
@@ -111,45 +154,51 @@ class ClientsController extends Controller
             {
                 $camp=$client->camp->camp_name;
             }
-            if(strtolower($client->status) =="active")
-            {
-                $status=' <a href="#" class="label label-success">'.$client->status.'</a>';
-            }
-            else
-            {
-                $status=' <a href="#" class="label label-danger">'.$client->status.'</a>';
-            }
-            $vcolor="label-danger";
-
             if(is_object($client->vulAssessment) && count($client->vulAssessment) >0)
             {
                 $vcolor="label-success";
             }
-            $records["data"][] = array(
-                $count++,
-                $client->hai_reg_number,
-                $client->client_number,
-                $client->full_name,
-                $client->sex,
-                $client->age,
-                $client->present_address,
-                $client->ration_card_number,
-                date('d M Y',strtotime($client->date_arrival)),
-                $camp,
-                $origin,
-                '<ul class="icons-list text-center">
+                   $actions='<ul class="icons-list text-center">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="icon-menu9"></i>
                             </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                                <li id="'.$client->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
-                                <li id="'.$client->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                                <li id="'.$client->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                             <ul class="dropdown-menu dropdown-menu-right">';
+                    if (Auth::user()->can('edit'))
+                    {
+                        $actions .=' <li id="'.$client->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>';
+                    }
+                   if (Auth::user()->can('authorize'))
+                   {
+                       $actions .=' <li id="'.$client->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>';
+                   }
+                   if (Auth::user()->can('edit'))
+                   {
+                       $actions .='<li id="'.$client->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>';
+                   }
+                   if (Auth::user()->can('delete'))
+                   {
+                       $actions .='<li id="'.$client->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>';
+
+                   }
+                   $actions.='   
                             </ul>
                         </li>
-                    </ul>'
+                    </ul>';
+            $records["data"][] = array(
+                $count++,
+                $client->hai_reg_number,
+                $client->full_name,
+                $client->sex,
+                $client->age,
+                $client->ration_card_number,
+                date('d M Y',strtotime($client->date_arrival)),
+                $camp,
+                $client->auth_status,$actions
+
             );
+        }
+            }
         }
 
 
@@ -302,7 +351,12 @@ class ClientsController extends Controller
     public function create()
     {
         //
-        return view('clients.create');
+        if (Auth::user()->can('create')) {
+            return view('clients.create');
+        }
+        else{
+           return redirect('home');
+        }
     }
     /**
      * Store a newly created resource in storage.
@@ -435,8 +489,13 @@ class ClientsController extends Controller
     public function show($id)
     {
         //
-        $client=Client::find($id);
-        return view('clients.show',compact('client'));
+        if (Auth::user()->can('viewer')) {
+            $client = Client::find($id);
+            return view('clients.show', compact('client'));
+        }
+        else{
+
+        }
     }
 
     /**
@@ -448,8 +507,13 @@ class ClientsController extends Controller
     public function edit($id)
     {
         //
-        $client=Client::find($id);
-        return view('clients.edit',compact('client'));
+        if (Auth::user()->can('viewer')) {
+            $client = Client::find($id);
+            return view('clients.edit', compact('client'));
+        }
+        else{
+            return redirect('home');
+        }
     }
 
     /**

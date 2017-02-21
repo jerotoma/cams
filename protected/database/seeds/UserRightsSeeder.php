@@ -36,6 +36,12 @@ class UserRightsSeeder extends Seeder
         $admin->description  = 'Super System Administrator'; // optional
         $admin->save();
 
+        $nfis= new \App\Role();
+        $nfis->name         = 'inventory';
+        $nfis->display_name = 'inventory'; // optional
+        $nfis->description  = 'User for managing inventory'; // optional
+        $nfis->save();
+
 
         //Create permissions
         $create = new \App\Permission();
@@ -56,11 +62,23 @@ class UserRightsSeeder extends Seeder
         $view->description  = 'viewer data only'; // optional
         $view->save();
 
+        $reports = new \App\Permission();
+        $reports->name         = 'reports';
+        $view->display_name = 'reports'; // optional
+        $reports->description  = 'viewer reports'; // optional
+        $reports->save();
+
         $authorze = new \App\Permission();
         $authorze->name         = 'authorize';
         $authorze->display_name = 'Authorize'; // optional
         $authorze->description  = 'Authorize Data imported'; // optional
         $authorze->save();
+
+        $nfis = new \App\Permission();
+        $nfis->name         = 'inventory';
+        $nfis->display_name = 'inventory'; // optional
+        $nfis->description  = 'items Distributions '; // optional
+        $nfis->save();
 
         $delete = new \App\Permission();
         $delete->name         = 'delete';
@@ -68,10 +86,10 @@ class UserRightsSeeder extends Seeder
         $delete->description  = 'delete Data'; // optional
         $delete->save();
 
-        $admin->attachPermissions(array($create, $edit,$view,$delete,$authorze));
+        $admin->attachPermissions(array($create, $edit,$view,$delete,$authorze,$reports,$nfis));
         $inputer->attachPermissions(array($create, $edit,$view,$delete));
         $authorizer->attachPermissions(array($view,$authorze));
-        $viewer->attachPermissions(array($view));
+        $viewer->attachPermissions(array($view,$reports));
 
         $user = \App\User::where('username', '=', 'admin')->first();
         $user->attachRole($admin);

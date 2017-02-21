@@ -29,7 +29,7 @@
                 <th>Vul 5</th>
             </tr>
             <?php $c=1;?>
-            @foreach($itemsUsers= \DB::table('items_disbursement_items')->leftjoin('clients','items_disbursement_items.client_id','=','clients.id')
+            @foreach(\DB::table('items_disbursement_items')->leftjoin('clients','items_disbursement_items.client_id','=','clients.id')
                               ->select('clients.*')
                               ->where('clients.camp_id','=',$camp->id)
                               ->where('items_disbursement_items.item_id','=',$items)
@@ -97,7 +97,7 @@
             <th>Vul 5</th>
         </tr>
         <?php $c=1;?>
-        @foreach($itemsUsers= \DB::table('items_disbursement_items')->leftjoin('clients','items_disbursement_items.client_id','=','clients.id')
+        @foreach(\DB::table('items_disbursement_items')->leftjoin('clients','items_disbursement_items.client_id','=','clients.id')
                           ->select('clients.*')
                           ->where('clients.camp_id','=',$camp->id)
                           ->where('items_disbursement_items.item_id','=',$items)
@@ -165,11 +165,12 @@
                     <th>Vul 5</th>
                 </tr>
                 <?php $c=1;?>
-                @foreach($itemsUsers= \DB::table('clients')->leftjoin('items_disbursement_items','clients.id','=','items_disbursement_items.client_id')
+                @foreach(\DB::table('clients')->leftjoin('items_disbursement_items','items_disbursement_items.client_id','=','clients.id')
                                   ->select('clients.*')
                                   ->where('clients.camp_id','=',$camp->id)
-                                  ->where('items_disbursement_items.item_id','<>',$items)
-                                  ->whereBetween('distribution_date', $range)->get() as $client)
+                                  ->where('items_disbursement_items.item_id','=',$items)
+                                  ->whereBetween('distribution_date', $range)
+                                  ->whereNull('items_disbursement_items.client_id')->get() as $client)
                     <tr>
                         <td>{{$c++}}</td>
                         <td>{{$client->hai_reg_number}}</td>
@@ -233,11 +234,12 @@
                 <th>Vul 5</th>
             </tr>
             <?php $c=1;?>
-            @foreach($itemsUsers= \DB::table('clients')->leftjoin('items_disbursement_items','clients.id','=','items_disbursement_items.client_id')
+            @foreach(\DB::table('clients')->leftjoin('items_disbursement_items','items_disbursement_items.client_id','=','clients.id')
                               ->select('clients.*')
                               ->where('clients.camp_id','=',$camp->id)
-                              ->where('items_disbursement_items.item_id','<>',$items)
-                              ->whereBetween('distribution_date', $range)->get() as $client)
+                              ->where('items_disbursement_items.item_id','=',$items)
+                              ->whereBetween('distribution_date', $range)
+                              ->whereNull('items_disbursement_items.client_id')->get() as $client)
                 <tr>
                     <td>{{$c++}}</td>
                     <td>{{$client->hai_reg_number}}</td>

@@ -44,106 +44,8 @@ class ItemsDisbursementController extends Controller
     
     public function postImport(Request $request)
     {
-        //
-      //  try {
-            $this->validate($request, [
-                'clients_file' => 'required|mimes:xls,xlsx',
-            ]);
 
-            $file= $request->file('clients_file');
-            $destinationPath = public_path() .'/uploads/temp/';
-            $filename   = str_replace(' ', '_', $file->getClientOriginalName());
 
-            $file->move($destinationPath, $filename);
-
-            Excel::load($destinationPath . $filename, function ($reader) {
-
-                $results = $reader->get();
-
-                \DB::table('dump_material_supports')->truncate();
-                $results->each(function($row) {
-
-                    if(count(Beneficiary::where('progress_number','=',str_replace(".","",$row->progress_number))->where('full_name','=',ucwords(strtolower($row->full_name)))->get()) > 0 )
-                    {
-                        $beneficiary=Beneficiary::where('progress_number','=',str_replace(".","",$row->progress_number))
-                                              ->where('full_name','=',ucwords(strtolower($row->full_name)))->get()->first();
-                    }
-                    else
-                    {
-                        $beneficiary = new Beneficiary;
-                        $beneficiary->progress_number = str_replace(".","",$row->progress_number);
-                        $beneficiary->full_name = ucwords(strtolower($row->full_name));
-                        $beneficiary->address = $row->address;
-                        $beneficiary->save();
-                    }
-
-                    if(! count(ItemsCategories::where('category_name','=',ucwords(strtolower($row->category)))->get()) > 0)
-                    {
-                        $categories=new ItemsCategories;
-                        $categories->category_name=ucwords(strtolower($row->category));
-                        $categories->save();
-                    }
-                    else
-                    {
-                        $categories=ItemsCategories::where('category_name','=',ucwords(strtolower($row->category)))->get()->first();
-                    }
-
-                    if(! count(ItemsInventory::where('item_name','=',ucwords(strtolower($row->item)))->get()))
-                    {
-                        $item=new ItemsInventory;
-                        $item->item_name=ucwords(strtolower($row->item));
-                        $item->category_id= $categories->id;
-                        $item->status="Available";
-                        $item->save();
-                    }
-                    else
-                    {
-                        $item=ItemsInventory::where('item_name','=',ucwords(strtolower($row->item)))->get()->first();
-                    }
-                    if(count(ItemsDisbursement::where('beneficiary_id','=',$beneficiary->id)->where('item_id','=',$item->id)->where('distributed_date','=',date("Y-m-d",strtotime($row->distributed_date)))->get()) > 0)
-                    {
-                        $disbursement=new DumpMaterialSupport;
-                        $disbursement->progress_number=$row->progress_number;
-                        $disbursement->donor_type=$row->donor_type;
-                        $disbursement->address=$row->address;
-                        $disbursement->item=$row->item;
-                        $disbursement->quantity=$row->quantity;
-                        $disbursement->distributed_date=date("Y-m-d",strtotime($row->distributed_date));
-                        $disbursement->error_descriptions="Item details already exist";
-                        $disbursement->save();
-                        $this->error_found="Beneficiary already received the items";
-                    }
-                    else
-                    {
-                        $disbursement=new ItemsDisbursement;
-                        $disbursement->donor_type=$row->donor_type;
-                        $disbursement->beneficiary_id=$beneficiary->id;
-                        $disbursement->item_id=$item->id;
-                        $disbursement->quantity=$row->quantity;
-                        $disbursement->distributed_date=date("Y-m-d",strtotime($row->distributed_date));
-
-                        $disbursement->save();
-                    }
-                });
-
-            });
-
-            File::delete($destinationPath . $filename); //Delete after upload
-            if($this->error_found != "")
-            {
-                return  redirect('inventory/disbursement/import/errors');
-            }
-            else
-            {
-                return  redirect('inventory/disbursement');
-            }
-
-      /*  } catch (\Exception $e) {
-
-           // echo $e->getMessage();
-             return  redirect()->back()->with('error',$e->getMessage());
-        }
-      */
     }
     /**
      * Show the form for creating a new resource.
@@ -164,93 +66,127 @@ class ItemsDisbursementController extends Controller
     {
         //
         try {
-            $validator = Validator::make($request->all(), [
+            $this->validate($request, [
                 'disbursements_date' => 'required',
                 'camp_id' => 'required',
                 'category_id' => 'required',
                 'item_id' => 'required',
                 'items_distribution_file' => 'required|mimes:xls,xlsx',
             ]);
-            if ($validator->fails()) {
-                return Response::json(array(
-                    'success' => false,
-                    'errors' => $validator->getMessageBag()->toArray()
-                ), 400); // 400 being the HTTP code for an invalid request.
-            } else {
 
 
-                $camp_id=$request->camp_id;
+
+            $camp_id=$request->camp_id;
                 $item_id=$request->item_id;
+                $import_type=$request->import_type;
 
-                $distribution = new ItemsDisbursement;
-                $distribution->disbursements_date = date('Y-m-d', strtotime($request->disbursements_date));
-                $distribution->camp_id=$camp_id;
-                $distribution->comments = $request->comments;
-                $distribution->disbursements_by = ucwords(strtolower($request->disbursements_by));
-                $distribution->save();
+         if (!isItemOutOfStock($item_id)) {
 
-                $file= $request->file('items_distribution_file');
-                $destinationPath = public_path() .'/uploads/temp/';
-                $filename   = str_replace(' ', '_', $file->getClientOriginalName());
-                $file->move($destinationPath, $filename);
+             $distribution = new ItemsDisbursement;
+             $distribution->disbursements_date = date('Y-m-d', strtotime($request->disbursements_date));
+             $distribution->camp_id = $camp_id;
+             $distribution->comments = $request->comments;
+             $distribution->disbursements_by = ucwords(strtolower($request->disbursements_by));
+             $distribution->save();
 
-                Excel::load($destinationPath . $filename, function ($reader)use ($distribution,$item_id) {
-                    $reader->formatDates(false, 'Y-m-d');
-                    $results= $reader->get();
-                    $results->each(function($row)use ($distribution,$item_id) {
+             $file = $request->file('items_distribution_file');
+             $destinationPath = public_path() . '/uploads/temp/';
+             $filename = str_replace(' ', '_', $file->getClientOriginalName());
+             $file->move($destinationPath, $filename);
+             $orfile=$destinationPath . $filename;
+             Excel::load($destinationPath . $filename, function ($reader) use ($distribution, $item_id, $import_type, $camp_id) {
+                 $reader->formatDates(false, 'Y-m-d');
+                 $results = $reader->get();
 
-                        //Check registrations
-                        $sex="";
-                        if(strtolower($row->sex) =="k" || strtolower($row->sex) =="mk" || strtolower($row->sex) =="f")
-                        {
-                            $sex = "Female";
-                        }
-                        else
-                        {
-                            $sex = "Male";
-                        }
-                        if($row->ration_card_number != "" && $row->sex !="" && $row->age !="" ) {
-                            if (isClientRegistered($row->names,$row->sex,$row->age,$row->present_address,$row->ration_card_number)) {
 
-                                $client = getClientIdFromData($row->names,$row->sex,$row->age,$row->present_address,$row->ration_card_number);
-                                if (!isNotInDistributionLimit($item_id, $client->id)) {
-                                    if (!count(ItemsDisbursementItems::where('item_id', '=', $item_id)
-                                            ->where('distribution_id', '=', $distribution->id)
-                                            ->where('client_id', '=', $client->id)
-                                            ->where('quantity', '=', 1)->get()) > 0
-                                    ) {
-                                        if (!isItemOutOfStock($item_id)) {
-                                            $dist_items = new ItemsDisbursementItems;
-                                            $dist_items->client_id = $client->id;
-                                            $dist_items->item_id = $item_id;
-                                            $dist_items->quantity = 1;
-                                            $dist_items->distribution_id = $distribution->id;
-                                            $dist_items->distribution_date =$distribution->disbursements_date;
-                                            $dist_items->save();
-                                            if (!isItemOutOfStock($item_id)) {
-                                                deductItems($item_id, 1);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                     });
 
-            });
+                 $results->each(function ($row) use ($distribution, $item_id, $import_type, $camp_id) {
 
-                return response()->json([
-                    'success' => true,
-                    'message' => "Record saved"
-                ], 200);
-            }
+                     if ($import_type == 2) {
+
+                         //Check registrations
+                         $sex = "";
+                         if (strtolower($row->sex) == "k" || strtolower($row->sex) == "mk" || strtolower($row->sex) == "f") {
+                             $sex = "Female";
+                         } else {
+                             $sex = "Male";
+                         }
+                         if ($row->ration_card_number != "" && $row->sex != "" && $row->age != "") {
+                             if (isClientRegistered($row->names, $row->sex, $row->age, $row->present_address, $row->ration_card_number)) {
+
+                                 $client = getClientIdFromData($row->names, $row->sex, $row->age, $row->present_address, $row->ration_card_number);
+                                 if (!isNotInDistributionLimit($item_id, $client->id)) {
+                                     if (!count(ItemsDisbursementItems::where('item_id', '=', $item_id)
+                                             ->where('distribution_id', '=', $distribution->id)
+                                             ->where('client_id', '=', $client->id)
+                                             ->where('quantity', '=', 1)->get()) > 0
+                                     ) {
+                                         if (!isItemOutOfStock($item_id)) {
+                                             $dist_items = new ItemsDisbursementItems;
+                                             $dist_items->client_id = $client->id;
+                                             $dist_items->item_id = $item_id;
+                                             $dist_items->quantity = 1;
+                                             $dist_items->distribution_id = $distribution->id;
+                                             $dist_items->distribution_date = $distribution->disbursements_date;
+                                             $dist_items->save();
+                                             if (!isItemOutOfStock($item_id)) {
+                                                 deductItems($item_id, 1);
+                                             }
+                                         }
+                                     }
+                                 }
+                             }
+                         }
+                     } else {
+                         if (count(Client::where('hai_reg_number', '=', $row->hai_reg_number)->where('camp_id', '=', $camp_id)->get()) > 0) {
+
+
+                             $client = Client::where('hai_reg_number', '=', $row->hai_reg_number)->get()->first();
+
+                             if (!isNotInDistributionLimit($item_id, $client->id)) {
+
+                                 if (!isItemOutOfStock($item_id)) {
+
+                                     if (!count(ItemsDisbursementItems::where('item_id', '=', $item_id)
+                                             ->where('distribution_id', '=', $distribution->id)
+                                             ->where('client_id', '=', $client->id)
+                                             ->where('quantity', '=', 1)->get()) > 0
+                                     ) {
+                                         $dist_items = new ItemsDisbursementItems;
+                                         $dist_items->client_id = $client->id;
+                                         $dist_items->item_id = $item_id;
+                                         $dist_items->quantity = 1;
+                                         $dist_items->distribution_id = $distribution->id;
+                                         $dist_items->distribution_date = $distribution->disbursements_date;
+                                         $dist_items->save();
+                                         if (!isItemOutOfStock($item_id)) {
+                                             deductItems($item_id, 1);
+                                         }
+                                     }
+                                 }
+
+
+                             }
+
+                         }
+
+                     }
+                 });
+
+             });
+
+             File::delete($orfile);
+
+            return redirect('items/distributions');
+
+         }else{
+             return redirect()->back()->with('error','Item is out of stock');
+         }
+
         }
         catch (\Exception $ex)
         {
-            return Response::json(array(
-                'success' => false,
-                'errors' => $ex->getMessage()
-            ), 402); // 400 being the HTTP code for an invalid request.
+            return redirect()->back()->with('error',$ex->getMessage());
         }
     }
 
@@ -264,9 +200,11 @@ class ItemsDisbursementController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'disbursements_date' => 'required',
+                'disbursements_date' => 'required|before:tomorrow',
                 'camp_id' => 'required',
                 'item_id' => 'required',
+                'quantity' => 'required|numeric',
+                'hai_reg_number' => 'required',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -275,55 +213,73 @@ class ItemsDisbursementController extends Controller
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
 
-                if(count(Client::where('hai_reg_number','=',$request->hai_reg_number)->get()) > 0 && count(Camp::find($request->camp_id)) >0) {
-                    $distribution = new ItemsDisbursement;
-                    $distribution->disbursements_date = date('Y-m-d', strtotime($request->disbursements_date));
-                    $distribution->camp_id = $request->camp_id;
-                    $distribution->comments = $request->comments;
-                    $distribution->disbursements_by = ucwords(strtolower($request->disbursements_by));
-                    $distribution->save();
+                if(count(Client::where('hai_reg_number','=',$request->hai_reg_number)->where('camp_id','=',$request->camp_id)->get()) > 0) {
+
 
                     $client=Client::where('hai_reg_number','=',$request->hai_reg_number)->get()->first();
 
                     if (!isNotInDistributionLimit($request->item_id, $client->id)) {
-                        if (!count(ItemsDisbursementItems::where('item_id', '=', $request->item_id)
-                                ->where('distribution_id', '=', $distribution->id)
-                                ->where('client_id', '=', $client->id)
-                                ->where('quantity', '=', 1)->get()) > 0
-                        ) {
+
                             if (!isItemOutOfStock($request->item_id)) {
-                                $dist_items = new ItemsDisbursementItems;
-                                $dist_items->client_id = $client->id;
-                                $dist_items->item_id = $request->item_id;
-                                $dist_items->quantity = 1;
-                                $dist_items->distribution_id = $distribution->id;
-                                $dist_items->distribution_date =$distribution->disbursements_date;
-                                $dist_items->save();
-                                if (!isItemOutOfStock($request->item_id)) {
-                                    deductItems($request->item_id, 1);
+
+                                $distribution = new ItemsDisbursement;
+                                $distribution->disbursements_date = date('Y-m-d', strtotime($request->disbursements_date));
+                                $distribution->camp_id = $request->camp_id;
+                                $distribution->comments = $request->comments;
+                                $distribution->disbursements_by = ucwords(strtolower($request->disbursements_by));
+                                $distribution->save();
+                                if (!count(ItemsDisbursementItems::where('item_id', '=', $request->item_id)
+                                        ->where('distribution_id', '=', $distribution->id)
+                                        ->where('client_id', '=', $client->id)
+                                        ->where('quantity', '=', 1)->get()) > 0
+                                ) {
+                                    $dist_items = new ItemsDisbursementItems;
+                                    $dist_items->client_id = $client->id;
+                                    $dist_items->item_id = $request->item_id;
+                                    $dist_items->quantity = $request->quantity;
+                                    $dist_items->distribution_id = $distribution->id;
+                                    $dist_items->distribution_date = $distribution->disbursements_date;
+                                    $dist_items->save();
+                                    if (!isItemOutOfStock($request->item_id)) {
+                                        deductItems($request->item_id, $request->quantity);
+
+                                        return response()->json([
+                                            'success' => true,
+                                            'message' => " Saved Successful"
+                                        ], 200);
+                                    } else {
+                                        return Response::json(array(
+                                            'success' => false,
+                                            'errors' => 1,
+                                            'message' => "Item is out of stock "
+                                        ), 400); // 400 being the HTTP code for an invalid request.
+                                    }
                                 }
                             }
                             else
                             {
                                 return Response::json(array(
                                     'success' => false,
-                                    'errors' => "Item is out of stock "
+                                    'errors' => 1,
+                                    'message' => "Item is out of stock "
                                 ), 400); // 400 being the HTTP code for an invalid request.
                             }
-                        }
+
                     }
                     else
                     {
                         return Response::json(array(
                             'success' => false,
-                            'errors' => "Client is not eligible for receiving the item "
+                            'errors' => 1,
+                            'message' => "Client is not eligible for receiving the item "
                         ), 400); // 400 being the HTTP code for an invalid request.
                     }
                 }
                 else{
                     return Response::json(array(
                         'success' => false,
-                        'errors' => "Client is not registered in mentioned camp"
+                        'errors' => 1,
+                        'message' => "Client is not registered in mentioned camp"
                     ), 400); // 400 being the HTTP code for an invalid request.
                 }
 
@@ -334,7 +290,8 @@ class ItemsDisbursementController extends Controller
         {
             return Response::json(array(
                 'success' => false,
-                'errors' => $ex->getMessage()
+                'errors' => 1,
+                'message' => $ex->getMessage()
             ), 402); // 400 being the HTTP code for an invalid request.
         }
 

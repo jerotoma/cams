@@ -1,67 +1,24 @@
 @extends('site.master')
 @section('page_js')
-    <script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form.min.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form_wizard.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
-    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
-
-    <script type="text/javascript" src="{{asset("assets/js/pages/wizard_form.js")}}"></script>
-
-
+    <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
-    <script>
-        $('.pickadate').pickadate();
-    </script>
-@stop
-@section('scripts')
-    <script>
-        $(".changePassword").click(function(){
-            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-            modaldis+= '<div class="modal-dialog" style="width:60%;margin-right: 20% ;margin-left: 20%">';
-            modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header bg-indigo">';
-            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Change Password</span>';
-            modaldis+= '</div>';
-            modaldis+= '<div class="modal-body">';
-            modaldis+= ' </div>';
-            modaldis+= '</div>';
-            modaldis+= '</div>';
-             $('body').css('overflow-y','scroll');
-
-            $("body").append(modaldis);
-            $("#myModal").modal("show");
-            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("account/settings/access") ?>");
-            $("#myModal").on('hidden.bs.modal',function(){
-                $("#myModal").remove();
-            })
-
-        });
-
-    </script>
 @stop
 @section('main_navigation')
     @include('inc.main_navigation')
 @stop
 @section('page_title')
-    Users Management
+    My Account Profile
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Users Management </span> </h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">My Account Profile </span> </h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li><a href="{{url('users')}}">Users list</a></li>
+        <li><a href="#">Account/profile</a></li>
     </ul>
 @stop
 @section('contents')
@@ -139,7 +96,7 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group ">
                                                                     <label class="control-label">Role</label>
-                                                                    <select class="select" name="role_id" id="role_id" data-placeholder="Choose an option..." readonly>
+                                                                    <select class="form-control" name="role_id" id="role_id" data-placeholder="Choose an option..." readonly>
                                                                         @if(count(\App\RoleUser::where('user_id','=',$user->id)->get()) > 0 )
                                                                             <option value="{{\App\RoleUser::where('user_id','=',$user->id)->get()->first()->role_id}}" selected>{{\App\RoleUser::where('user_id','=',$user->id)->get()->first()->role->display_name}}</option>
                                                                         @endif
@@ -149,7 +106,7 @@
                                                         </div>
                                                         <div class="form-group ">
                                                             <label class="control-label">Department</label>
-                                                            <select class="select" name="department_id" id="department_id" data-placeholder="Choose an option...">
+                                                            <select class="form-control" name="department_id" id="department_id" data-placeholder="Choose an option...">
                                                                 @if($user->department_id != "" && count(\App\Department::find($user->department_id)) > 0 )
                                                                     <option value="{{\App\Department::find($user->department_id)->id}}" selected>{{\App\Department::find($user->department_id)->department_name}}</option>
                                                                 @endif
@@ -163,7 +120,7 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group ">
                                                                     <label class="control-label">Status</label>
-                                                                    <select class="select" name="status" id="status" data-placeholder="Choose an option..." readonly="">
+                                                                    <select class="form-control" name="status" id="status" data-placeholder="Choose an option..." readonly="">
                                                                         @if($user->status !="")
                                                                             <option value="{{$user->status}}">{{$user->status}}</option>
                                                                         @endif
@@ -173,7 +130,7 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group ">
                                                                     <label class="control-label">Locked</label>
-                                                                    <select class="select" name="locked" id="locked" data-placeholder="Choose an option..." readonly="">
+                                                                    <select class="form-control" name="locked" id="locked" data-placeholder="Choose an option..." readonly="">
                                                                         @if($user->locked !="" && $user->locked ==1 )
                                                                             <option value="{{$user->locked}}">Yes</option>
                                                                         @elseif($user->locked ==0)

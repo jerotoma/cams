@@ -46,6 +46,8 @@ class CreateClientsTable extends Migration
             $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
+            $table->dateTime('auth_date')->nullable();
 
             $table->foreign('origin_id')->references('id')->on('origins')
                 ->onUpdate('cascade');

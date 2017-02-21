@@ -102,7 +102,6 @@
                         <textarea class="form-control"  name="comments" id="comments">{{old('comments')}}</textarea>
                     </div>
                 </fieldset>
-                </fieldset>
             </div>
         </div>
         <div class="form-actions">
@@ -216,13 +215,20 @@
                             location.replace('{{url('login')}}');
                         }
                         if( jqXhr.status === 400 ) {
-                            var errors = jqXhr.responseJSON.errors;
-                            errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
-                            $.each(errors, function (key, value) {
-                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
-                            });
-                            errorsHtml += '</ul></di>';
-                            $('#output').html(errorsHtml);
+                            if(jqXhr.responseJSON.errors == 1)
+                            {
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">' + jqXhr.responseJSON.message + '</p></div>';
+                                $('#output').html(errorsHtml);
+                            }
+                            else {
+                                var errors = jqXhr.responseJSON.errors;
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                                $.each(errors, function (key, value) {
+                                    errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                });
+                                errorsHtml += '</ul></di>';
+                                $('#output').html(errorsHtml);
+                            }
                         }
                         else
                         {
