@@ -592,28 +592,17 @@
             client_id: "required",
             referral_type: "required",
 
-            client_age: {
-                number: true
-            },
             referral_date: "required",
             rec_organisation: "required",
-            rec_contact: "required",
-            client_referral_info: "required",
-            ref_organisation: "required",
-            ref_contact: "required",
 
+            ref_organisation: "required",
         },
         messages: {
             client_id: "Please this field is required",
             referral_type: "Please this field is required",
             referral_date: "Please field is required",
             rec_organisation: "Please this field is required",
-            rec_contact: "Please this field is required",
-            client_referral_info: "Please field is required",
-            ref_contact: "Please field is required",
-            client_age: {
-                number: "Please enter valid age",
-            },
+            client_referral_info: "Please field is required"
 
         }, submitHandler: function (form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");

@@ -27,7 +27,6 @@
                 </ul>
             </li>
             <!-- /main -->
-        @permission('inventory')
             <!-- Forms -->
             <li class="navigation-header"><span>NFIs Distribution</span> <i class="icon-menu" title="Material Distribution"></i></li>
             <li>
@@ -41,7 +40,6 @@
             </li>
 
             <!-- /forms -->
-        @endpermission
             <!-- Forms -->
             <li class="navigation-header"><span>Progress Monitoring</span> <i class="icon-menu" title="Forms"></i></li>
             <li>
