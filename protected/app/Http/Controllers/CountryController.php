@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class CountryController extends Controller
 {
@@ -44,19 +46,38 @@ class CountryController extends Controller
     public function store(Request $request)
     {
         //
-        $this->validate($request, [
-            'country_name' => 'required',
-        ]);
-        if(count(Country::where('country_name','=',ucwords($request->country_name))->get()) >0)
-        {
-            return redirect()->back()->withInput()->with('country_error',"Duplicate country name ".$request->country_name);
+        try {
+            $validator = Validator::make($request->all(), [
+                'country_name' => 'required|unique:countries',
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $country = new Country;
+                $country->country_name = ucwords($request->country_name);
+                $country->country_code = strtoupper($request->country_code);
+                $country->created_by = Auth::user()->username;
+                $country->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => " Saved Successful"
+                ], 200);
+            }
         }
-        else{$country=new Country;
-            $country->country_name =ucwords($request->country_name);
-            $country->country_code =strtoupper($request->country_code);
-            $country->created_by =Auth::user()->username;
-            $country->save();
-            return redirect('countries');}
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' =>1,
+                'message' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
+        }
+
 
     }
 
@@ -96,19 +117,38 @@ class CountryController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $this->validate($request, [
-            'country_name' => 'required',
-        ]);
-        if(count(Country::where('country_name','=',ucwords($request->country_name))->where('id','<>',$id)->get()) >0)
-        {
-            return redirect()->back()->withInput()->with('country_error',"Duplicate country name ".$request->country_name);
+        //
+        try {
+            $validator = Validator::make($request->all(), [
+                'country_name' => 'required|unique:countries,country_name,'.$id,
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $country =  Country::find($id);
+                $country->country_name = ucwords($request->country_name);
+                $country->country_code = strtoupper($request->country_code);
+                $country->created_by = Auth::user()->username;
+                $country->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => " Saved Successful"
+                ], 200);
+            }
         }
-        else{$country= Country::find($id);
-            $country->country_name =ucwords($request->country_name);
-            $country->country_code =strtoupper($request->country_code);
-            $country->created_by =Auth::user()->username;
-            $country->save();
-            return redirect('countries');}
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' =>1,
+                'message' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**

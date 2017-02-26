@@ -30,30 +30,16 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-            {!! Form::open(array('url'=>'countries','role'=>'form','id'=>'formCountries')) !!}
+            {!! Form::open(array('url'=>'origins','role'=>'form','id'=>'formOrigin')) !!}
                 <div class="panel panel-flat">
                     <div class="panel-heading">
-                        <h5 class="panel-title">Country Details</h5>
+                        <h5 class="panel-title">Location Details</h5>
                     </div>
 
                     <div class="panel-body">
                         <div class="form-group">
-                            <label>Country Name:</label>
-                            <input type="text" class="form-control" placeholder="Country Name" name="country_name" id="country_name" value="{{old('country_name')}}">
-                            @if($errors->first('country_name') !="")
-                                <label id="country_name-error" class="validation-error-label" for="country_name">{{ $errors->first('country_name') }}</label>
-                            @endif
-                            @if(Session::has('country_error'))
-                                <label id="country_code-error" class="validation-error-label" for="country_code">{{ Session::get('country_error') }}</label>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <label>Country Code:</label>
-                            <input type="text" class="form-control" placeholder="Country Code" name="country_code" id="country_code" value="{{old('country_code')}}">
-                            @if($errors->first('country_code') !="")
-                                <label id="country_code-error" class="validation-error-label" for="country_code">{{ $errors->first('country_code') }}</label>
-                            @endif
-
+                            <label>Location Name:</label>
+                            <input type="text" class="form-control" placeholder="Location Name" name="origin_name" id="origin_name" value="{{old('country_name')}}">
                         </div>
 
                         <div class="row" style="margin-top: 10px">
@@ -73,7 +59,7 @@
 </div>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script>
-    $("#formCountries").validate({
+    $("#formOrigin").validate({
         ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
         errorClass: 'validation-error-label',
         successClass: 'validation-valid-label',
@@ -121,15 +107,15 @@
         },
         errorElement:'div',
         rules: {
-            country_name: "required",
+            origin_name: "required",
         },
         messages: {
-            country_name: "Please this field is required",
+            origin_name: "Please this field is required",
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-            var postData = $('#formCountries').serializeArray();
-            var formURL = $('#formCountries').attr("action");
+            var postData = $('#formOrigin').serializeArray();
+            var formURL = $('#formOrigin').attr("action");
             $.ajax(
                 {
                     url : formURL,
@@ -138,7 +124,7 @@
                     success: function(data){
                         swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                         setTimeout(function() {
-                            location.replace("{{url('countries')}}");
+                            location.replace("{{url('origins')}}");
                             $("#output").html("");
                         }, 2000);
                     },

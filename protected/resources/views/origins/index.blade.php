@@ -18,7 +18,7 @@
             bootbox.confirm("Are You Sure to delete record?", function(result) {
                 if(result){
                     $.ajax({
-                        url:"<?php echo url('countries') ?>/"+id1,
+                        url:"<?php echo url('origins') ?>/"+id1,
                         type: 'post',
                         data: {_method: 'delete', _token :"{{csrf_token()}}"},
                         success:function(msg){
@@ -35,7 +35,7 @@
             modaldis+= '<div class="modal-content">';
             modaldis+= '<div class="modal-header bg-indigo">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Country Details </span>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Location Details </span>';
             modaldis+= '</div>';
             modaldis+= '<div class="modal-body">';
             modaldis+= ' </div>';
@@ -46,7 +46,7 @@
             $("body").append(modaldis);
             $("#myModal").modal("show");
             $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("countries") ?>/"+id1+"/edit");
+            $(".modal-body").load("<?php echo url("origins") ?>/"+id1+"/edit");
             $("#myModal").on('hidden.bs.modal',function(){
                 $("#myModal").remove();
             })
@@ -58,7 +58,7 @@
             modaldis+= '<div class="modal-content">';
             modaldis+= '<div class="modal-header bg-indigo">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Add new Country</span>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Add new Location</span>';
             modaldis+= '</div>';
             modaldis+= '<div class="modal-body">';
             modaldis+= ' </div>';
@@ -69,7 +69,7 @@
             $("body").append(modaldis);
             $("#myModal").modal("show");
             $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("countries/create") ?>");
+            $(".modal-body").load("<?php echo url("origins/create") ?>");
             $("#myModal").on('hidden.bs.modal',function(){
                 $("#myModal").remove();
                 $('body').removeClass('modal-open');
@@ -220,13 +220,13 @@
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
             <a  href="#" class="addRecord btn btn-primary "><i class="fa fa-file-o"></i> <span>Add New</span></a>
-            <a  href="{{url('countries')}}" class="btn btn-primary "><i class="fa fa-list"></i> <span>List All</span></a>
-            <a  href="{{url('countries')}}" class="btn btn-primary "><i class="fa fa-search"></i> <span>Search</span></a>
+            <a  href="{{url('origins')}}" class="btn btn-primary "><i class="fa fa-list"></i> <span>List All</span></a>
+            <a  href="{{url('origins')}}" class="btn btn-primary "><i class="fa fa-search"></i> <span>Search</span></a>
         </div>
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title">Countries</h5>
+            <h5 class="panel-title">Origins</h5>
         </div>
 
         <div class="panel-body">
@@ -236,19 +236,17 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Country Name</th>
-                <th>Code</th>
+                <th>Location Name</th>
                 <th class="text-center">Actions</th>
             </tr>
             </thead>
             <tbody>
             <?php $i=1;?>
-            @foreach($countries as $country)
+            @foreach($origins as $origin)
             <tr>
                 <td>{{$i++}}</td>
-                <td>{{$country->country_name}}</td>
-                <td>{{$country->country_code}}</td>
-                <td class="text-center" id="{{$country->id}}">
+                <td>{{$origin->origin_name}}</td>
+                <td class="text-center" id="{{$origin->id}}">
                     <a href="#" class="editRecord btn "><i class="fa fa-pencil text-success"></i> Edit</a>
                     <a href="#" class="deleteRecord btn" ><i class="fa fa-trash text-danger"></i> Delete</a>
                 </td>

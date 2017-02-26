@@ -19,6 +19,8 @@ Route::post('account/settings/access','UserController@postChangePassword');
 Route::resource('access/rights','RolesController');
 
 Route::resource('countries','CountryController');
+Route::resource('origins','OriginController');
+
 Route::resource('regions','RegionController');
 Route::get('fetch/districts/{id}','RegionController@getDistrictsById');
 Route::resource('districts','DistrictController');

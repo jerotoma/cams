@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\District;
+use App\Origin;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
-class DistrictController extends Controller
+class OriginController extends Controller
 {
     public function __construct()
     {
@@ -22,8 +23,8 @@ class DistrictController extends Controller
     public function index()
     {
         //
-        $districts=District::all();
-        return view('districts.index',compact('districts'));
+        $origins=Origin::all();
+        return view('origins.index',compact('origins'));
     }
 
     /**
@@ -34,7 +35,7 @@ class DistrictController extends Controller
     public function create()
     {
         //
-        return view('districts.create');
+        return view('origins.create');
     }
 
     /**
@@ -48,8 +49,7 @@ class DistrictController extends Controller
         //
         try {
             $validator = Validator::make($request->all(), [
-                'district_name' => 'required|unique:districts',
-                'region_id' => 'required',
+                'origin_name' => 'required|unique:origins',
 
             ]);
             if ($validator->fails()) {
@@ -58,11 +58,10 @@ class DistrictController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
-                $region=new District;
-                $region->district_name =ucwords($request->district_name);
-                $region->region_id =strtoupper($request->region_id);
-                $region->created_by =Auth::user()->username;
-                $region->save();
+                $origin=new Origin;
+                $origin->origin_name = ucwords($request->origin_name);
+                $origin->created_by = Auth::user()->username;
+                $origin->save();
 
                 return response()->json([
                     'success' => true,
@@ -78,6 +77,8 @@ class DistrictController extends Controller
                 'message' => $ex->getMessage()
             ), 402); // 400 being the HTTP code for an invalid request.
         }
+
+
     }
 
     /**
@@ -89,8 +90,8 @@ class DistrictController extends Controller
     public function show($id)
     {
         //
-        $district=District::find($id);
-        return view('districts.edit',compact('district'));
+        $origin=Origin::find($id);
+        return view('origins.index',compact('origin'));
     }
 
     /**
@@ -102,8 +103,8 @@ class DistrictController extends Controller
     public function edit($id)
     {
         //
-        $district=District::find($id);
-        return view('districts.edit',compact('district'));
+        $origin=Origin::find($id);
+        return view('origins.edit',compact('origin'));
     }
 
     /**
@@ -116,10 +117,10 @@ class DistrictController extends Controller
     public function update(Request $request, $id)
     {
         //
+        //
         try {
             $validator = Validator::make($request->all(), [
-                'district_name' => 'required|unique:districts,district_name,'.$id,
-                'region_id' => 'required',
+                'origin_name' => 'required|unique:origins,origin_name,'.$id,
 
             ]);
             if ($validator->fails()) {
@@ -128,11 +129,10 @@ class DistrictController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
-                $region= District::find($id);
-                $region->district_name =ucwords($request->district_name);
-                $region->region_id =strtoupper($request->region_id);
-                $region->created_by =Auth::user()->username;
-                $region->save();
+                $origin=Origin::find($id);
+                $origin->origin_name = ucwords($request->origin_name);
+                $origin->updated_by = Auth::user()->username;
+                $origin->save();
 
                 return response()->json([
                     'success' => true,
@@ -159,7 +159,7 @@ class DistrictController extends Controller
     public function destroy($id)
     {
         //
-        $district=District::find($id);
-        $district->delete();
+        $origin=Origin::find($id);
+        $origin->delete();
     }
 }

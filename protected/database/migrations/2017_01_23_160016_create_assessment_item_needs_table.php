@@ -40,6 +40,8 @@ class CreateAssessmentItemNeedsTable extends Migration
             $table->string('q10_22')->nullable();
             $table->string('q10_23')->nullable();
             $table->string('q10_24')->nullable();
+            $table->string('q10_25')->nullable();
+            $table->string('q10_26')->nullable();
             $table->timestamps();
             $table->foreign('assessment_id')->references('id')->on('vulnerability_assessments')
                 ->onUpdate('cascade')->onDelete('cascade');

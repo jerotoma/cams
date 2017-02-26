@@ -1,3 +1,4 @@
+
 <script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
@@ -30,54 +31,37 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-            {!! Form::open(array('url'=>'districts','role'=>'form','id'=>'formDistricts')) !!}
-                <div class="panel panel-flat">
-                    <div class="panel-heading">
-                        <h5 class="panel-title">District Details</h5>
+            {!! Form::model($origin, array('route' => array('origins.update', $origin->id), 'method' => 'PUT','role'=>'form','id'=>'formOrigin')) !!}
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h5 class="panel-title">Location Details</h5>
+                </div>
+
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>Location Name:</label>
+                        <input type="text" class="form-control" placeholder="Location Name" name="origin_name" id="origin_name"
+                               @if(old('country_name') != "") value="{{old('origin_name')}}" @else value="{{$origin->origin_name}}" @endif>
                     </div>
 
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label>Region Name:</label>
-                            <select class="select" name="region_id" id="region_id">
-                                @if(old('region_id') !="")
-                                    <?php $region=\App\Region::find(old('region_id'));?>
-                                     <option value="{{$region->id}}">{{$region->region_name}}</option>
-                                    @else
-                                    <option value="">--Select--</option>
-                                    @endif
-                                @foreach(\App\Region::orderBy('region_name','ASC')->get() as $item)
-                                     <option value="{{$item->id}}">{{$item->region_name}}</option>
-                                    @endforeach
-                            </select>
-                            @if($errors->first('region_id') !="")
-                                <label id="region_id_name-error" class="validation-error-label" for="region_id">{{ $errors->first('region_id') }}</label>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <label>District Name:</label>
-                            <input type="text" class="form-control" placeholder="District Name" name="district_name" id="district_name" value="{{old('district_name')}}">
-                        </div>
-
-                        <div class="row" style="margin-top: 10px">
-                            <div class="col-md-8 col-sm-8 pull-left" id="output">
-
-                            </div>
-                            <div class="col-md-4 col-sm-4 pull-right text-right">
-                                <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit Form </button>
-                            </div>
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-md-8 col-sm-8 pull-left" id="output">
 
                         </div>
+                        <div class="col-md-4 col-sm-4 pull-right text-right">
+                            <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit Form </button>
+                        </div>
+
                     </div>
                 </div>
-            {!! Form::close() !!}
-
+            </div>
+        {!! Form::close() !!}
         </div>
     </div>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
     <script>
-        $("#formDistricts").validate({
+        $("#formOrigin").validate({
             ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
             errorClass: 'validation-error-label',
             successClass: 'validation-valid-label',
@@ -125,17 +109,15 @@
             },
             errorElement:'div',
             rules: {
-                region_id: "required",
-                district_name: "required",
+                origin_name: "required",
             },
             messages: {
-                region_id: "Please this field is required",
-                district_name: "Please this field is required",
+                origin_name: "Please this field is required",
             },
             submitHandler: function(form) {
                 $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-                var postData = $('#formDistricts').serializeArray();
-                var formURL = $('#formDistricts').attr("action");
+                var postData = $('#formOrigin').serializeArray();
+                var formURL = $('#formOrigin').attr("action");
                 $.ajax(
                     {
                         url : formURL,
@@ -144,7 +126,7 @@
                         success: function(data){
                             swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                             setTimeout(function() {
-                                location.replace("{{url('districts')}}");
+                                location.replace("{{url('origins')}}");
                                 $("#output").html("");
                             }, 2000);
                         },
