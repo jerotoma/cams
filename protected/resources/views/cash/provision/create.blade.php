@@ -30,31 +30,31 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'items/distributions','role'=>'form','id'=>'formItemsReceived','files'=>true)) !!}
+        {!! Form::open(array('url'=>'cash/monitoring/provision','role'=>'form','id'=>'formCashProvision')) !!}
         <div class="panel panel-flat">
             <div class="panel-body">
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold"> NFIs Items Distribution</legend>
+                    <legend class="text-bold"> Cash Provision Details</legend>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="control-label">Distribution Date:</label>
+                                <label class="control-label">Provision Date:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                    <input type="text" class="form-control pickadate"  value="{{old('disbursements_date')}}" name="disbursements_date" id="disbursements_date">
+                                    <input type="text" class="form-control pickadate"  value="{{old('provision_date')}}" name="provision_date" id="provision_date">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="control-label">PSN HAI ID</label>
+                                <label class="control-label">PSN HAI Registration Number</label>
                                 <input type="text" class="form-control" name="hai_reg_number"  id="hai_reg_number" value="" >
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="control-label">Items Distributed By</label>
-                                <input type="text" class="form-control" name="disbursements_by"  id="disbursements_by" value="" >
+                                <label class="control-label">Cash Provided By</label>
+                                <input type="text" class="form-control" name="provided_by"  id="provided_by" value="" >
                             </div>
                         </div>
                     </div>
@@ -66,34 +66,27 @@
                                 <option value="{{$item->id}}">{{$item->camp_name}}</option>
                             @endforeach
                         </select>
-                        @if($errors->first('camp_id') !="")
-                            <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
-                        @endif
                     </div>
 
                 </fieldset>
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold">PSN CLIENTS ITEMS DISTRIBUTION LIST</legend>
+                    <legend class="text-bold">Donor/Activity Details</legend>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Item</label>
-                                <select class="select" name="item_id" id="item_id" data-placeholder="Choose an option..." data-live-search="true" data-width="100%">
+                                <label class="control-label">Activity</label>
+                                <select class="select" name="activity_id" id="activity_id" data-placeholder="Choose an option..." data-live-search="true" data-width="100%">
                                     <option ></option>
-                                    @foreach(\App\ItemsCategories::all() as $category)
-                                        <optgroup label="{{$category->category_name}}">
-                                            @foreach($category->items as $item)
-                                                <option  value="{{$item->id}}"> {{$item->item_name}}</option>
-                                                @endforeach
-                                        </optgroup>
+                                    @foreach(\App\BudgetActivity::all() as $activity)
+                                                <option  value="{{$activity->id}}"> {{$activity->activity_name}} @if($activity->donor != "") - ({{$activity->donor}})@endif</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Quantity</label>
-                                <input type="text" class="form-control" name="quantity"  id="quantity" value="" >
+                                <label class="control-label">Amount</label>
+                                <input type="text" class="form-control" name="amount"  id="amount" value="" >
                             </div>
                         </div>
                     </div>
@@ -123,7 +116,7 @@
 </div>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script>
-    $("#formItemsReceived").validate({
+    $("#formCashProvision").validate({
         ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
         errorClass: 'validation-error-label',
         successClass: 'validation-valid-label',
@@ -171,41 +164,42 @@
         },
         errorElement:'div',
         rules: {
-            disbursements_date: "required",
-            disbursements_by: "required",
-            quantity:"required",
+            provision_date: "required",
+            provided_by: "required",
+            amount: {
+                required: true,
+                number: true
+            },
             camp_id:"required",
-            category_id:"required",
             hai_reg_number:"required",
-            item_id:"required",
+            activity_id:"required",
         },
         messages: {
-            disbursements_date: "Please field is required",
-            disbursements_by: "Please field is required",
+            provision_date: "Please field is required",
+            provided_by: "Please field is required",
             hai_reg_number: "Please enter Registration",
-            quantity:"Please please enter quantity",
+            amount:{
+                required:"Please amount is required",
+                number:"Please enter valid amount",
+            } ,
             camp_id:"Please please select camp",
-            item_id:"Please Please select Items",
+            activity_id:"Please Please select Items",
         },
         submitHandler: function(form) {
-            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Submitting form please wait...</span><h3>");
-            var formURL = $('#formItemsReceived').attr("action");
-            var formData = new FormData(form);
+            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
+            var postData = $('#formCashProvision').serializeArray();
+            var formURL = $('#formCashProvision').attr("action");
             $.ajax(
                 {
                     url : formURL,
                     type: "POST",
-                    data : formData,
-                    async: false,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
+                    data : postData,
                     dataType: 'json',
                     success:function(data)
                     {
                         $("#output").html(data.message);
                         setTimeout(function() {
-                            location.replace('{{url('items/distributions')}}');
+                            location.replace('{{url('cash/monitoring/provision')}}');
                             $("#output").html("");
                         }, 2000);
 
@@ -215,9 +209,10 @@
                             location.replace('{{url('login')}}');
                         }
                         if( jqXhr.status === 400 ) {
-                            if(jqXhr.responseJSON.errors == 1)
-                            {
-                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">' + jqXhr.responseJSON.message + '</p></div>';
+                            if(jqXhr.responseJSON.errors ==1){
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p>';
+                                errorsHtml +='<p>'+ jqXhr.responseJSON.message +'</p></div>';
+
                                 $('#output').html(errorsHtml);
                             }
                             else {

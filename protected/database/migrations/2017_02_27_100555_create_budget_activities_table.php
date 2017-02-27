@@ -19,6 +19,7 @@ class CreateBudgetActivitiesTable extends Migration
             $table->string('description')->nullable();
             $table->double('amount')->nullable()->default(0.0);
             $table->string('currency')->nullable();
+            $table->string('donor')->nullable();
             $table->string('remarks')->nullable();
             $table->integer('provision_limit')->nullable()->default(0);
             $table->string('status')->nullable()->default('Available');

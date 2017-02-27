@@ -31,16 +31,22 @@
                     <textarea class="form-control" name="description" id="description"></textarea>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Amount</label>
                             <input type="text" class="form-control" name="amount" id="amount" value="{{$activity->amount}}">
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>Currency <small>TZS,USD....</small></label>
                             <input type="text" class="form-control" name="currency" id="currency"  value="{{$activity->currency}}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Donor</label>
+                            <input type="text" class="form-control" name="donor" id="donor" value="{{$activity->donor}}">
                         </div>
                     </div>
                 </div>

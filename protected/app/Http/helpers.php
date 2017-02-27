@@ -671,5 +671,110 @@ if (!function_exists('isReferralServiceSelected')) {
     }
 }
 
+//Is client registered
+if (!function_exists('checkRegistrationByHAIReg')) {
+    function checkRegistrationByHAIReg($hai_reg_number) {
 
+        if(count(\App\Client::where('hai_reg_number','=',$hai_reg_number)->get()) > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+if (!function_exists('checkRegistrationByHAIRegCampID')) {
+    function checkRegistrationByHAIRegCampID($hai_reg_number,$camp_id) {
+
+        if(count(\App\Client::where('hai_reg_number','=',$hai_reg_number)->where('camp_id','=',$camp_id)->get()) > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+if (!function_exists('isClientInProvisionLimit')) {
+    function isClientInProvisionLimit($activity_id,$client_id) {
+
+
+        if(count(\App\CashProvisionClient::where('activity_id','=',$activity_id)
+                ->where('client_id','=',$client_id)->orderBy('provision_date','DESC')->get()) >0) {
+
+            $activity_Provision=\App\CashProvisionClient::where('activity_id','=',$activity_id)
+                ->where('client_id','=',$client_id)->orderBy('provision_date','DESC')->get()->first();
+
+            $activity= \App\BudgetActivity::find($activity_id);
+            $limit =$activity->provision_limit;
+
+            $ts1 = strtotime($activity_Provision->provision_date);
+            $ts2 = strtotime(date('Y-m-d'));
+            $dayspass= date("j",($ts2 - $ts1));
+
+            if($dayspass > $limit ){
+
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+}
+
+
+if (!function_exists('isActivityOutOfFunds')) {
+    function isActivityOutOfFunds($activity_id,$amount) {
+
+        $actvy=\App\BudgetActivity::find($activity_id);
+        $current_amount=$actvy->amount;
+        if(($current_amount - $amount) <= 0 )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+//Deduct money
+if (!function_exists('deductActivityAmount')) {
+    function deductActivityAmount($activity_id,$amount){
+
+        $actvy = \App\BudgetActivity::find($activity_id);
+        if (count($actvy) > 0 && $actvy != null) {
+            $current_amount = $actvy->amount;
+            $after_amount = ($current_amount - $amount);
+            if (($current_amount - $amount) <= 0) {
+                $actvy->status = "Insufficient Funds";
+                $actvy->amount = 0.0;
+            } else {
+                $actvy->amount = $after_amount;
+            }
+            $actvy->save();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+}
 //Get client ID

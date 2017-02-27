@@ -19,6 +19,8 @@ Route::post('account/settings/access','UserController@postChangePassword');
 
 Route::resource('cash/monitoring/budget','CashBudgetController');
 Route::resource('cash/monitoring/provision','CashProvisionController');
+Route::get('print/cash/monitoring/provision/{id}','CashProvisionController@showPrint');
+Route::get('download/pdf/cash/monitoring/provision/{id}','CashProvisionController@downloadPdf');
 
 //User rights
 Route::resource('access/rights','RolesController');
@@ -132,6 +134,8 @@ Route::get('distributions/items/bulk','ItemsDisbursementController@showBulk');
 Route::get('distributions/items/import/errors','ItemsDisbursementController@showImportErrors');
 Route::get('download/pdf/items/distributions/{id}','ItemsDisbursementController@downloadPdf');
 Route::get('print/items/distributions/{id}','ItemsDisbursementController@showPrint');
+
+
 
 
 //WheelChairAssessment

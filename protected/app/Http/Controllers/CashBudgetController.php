@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Validator;
 
 class CashBudgetController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -48,6 +52,7 @@ class CashBudgetController extends Controller
                 'activity_name' => 'required|unique:budget_activities',
                 'amount' => 'required|numeric',
                 'status' => 'required',
+                'donor' => 'required',
                 'currency' => 'required',
                 'provision_limit' => 'required|numeric',
             ]);
@@ -65,6 +70,7 @@ class CashBudgetController extends Controller
                 $activity->remarks = $request->remarks;
                 $activity->provision_limit = $request->provision_limit;
                 $activity->status = $request->status;
+                $activity->donor = $request->donor;
                 $activity->created_by = Auth::user()->username;
                 $activity->save();
                 return response()->json([
@@ -124,6 +130,7 @@ class CashBudgetController extends Controller
                 'amount' => 'required|numeric',
                 'status' => 'required',
                 'currency' => 'required',
+                'donor' => 'required',
                 'provision_limit' => 'required|numeric',
             ]);
             if ($validator->fails()) {
@@ -139,6 +146,7 @@ class CashBudgetController extends Controller
                 $activity->currency = $request->currency;
                 $activity->remarks = $request->remarks;
                 $activity->provision_limit = $request->provision_limit;
+                $activity->donor = $request->donor;
                 $activity->status = $request->status;
                 $activity->updated_by = Auth::user()->username;
                 $activity->save();

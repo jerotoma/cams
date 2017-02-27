@@ -18,7 +18,7 @@
                 <div class="col-md-12 col-xs-12 text-center text-uppercase">
                     <h3><strong>HelpAge International</strong></h3>
                     <h4 class="text-uppercase"><strong>
-                            NFIs Items Distribution
+                            {{$provision->activity->activity_name}}
                         </strong></h4>
                 </div>
             </div>
@@ -26,45 +26,46 @@
                 <div class="col-md-12">
                     <table class="table table-bordered">
                         <tr>
-                            <th> Distribution Date:</th>
-                            <td colspan="3" class="text-left">{{$disbursement->disbursements_date}}</td>
-                            <th>  Items Distributed By:</th>
-                            <td class="text-left">{{$disbursement->disbursements_by}}</td>
+                            <th> Provision Date:</th>
+                            <td  class="text-left">{{$provision->provision_date}}</td>
+                            <th>  Donor:</th>
+                            <td class="text-left">@if(is_object($provision->activity)){{$provision->activity->donor}}@endif</td>
+                        </tr>
+                        <tr>
+                            <th> Cash distributed by:</th>
+                            <td class="text-left">{{$provision->provided_by}}</td>
+                            <th>  Camp:</th>
+                            <td class="text-left">@if(is_object($provision->camp)){{$provision->camp->camp_name}}@endif</td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="row" style="margin-top: 20px">
                 <div class="col-md-12">
+                    <h6><strong>List of PSN</strong> </h6>
                     <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th >SNO</th>
-                            <th >Client Number</th>
+                            <th >HAI Reg No</th>
                             <th >Full Name</th>
                             <th >Sex</th>
                             <th >Age</th>
-                            <th >Item Name</th>
-                            <th >Item Category</th>
-                            <th >Quantity</th>
-                            <th >Remarks</th>
+                            <th >Amount</th>
 
                         </tr>
                         </thead>
                         <tbody>
-                        @if(is_object($disbursement->distributions) && $disbursement->distributions != null)
+                        @if(is_object($provision->provisions) && $provision->provisions != null)
                             <?php $c=1;?>
-                            @foreach($disbursement->distributions as $itm)
+                            @foreach($provision->provisions as $itm)
                                 <tr>
                                     <td>{{$c++}}</td>
-                                    <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->client_number}}@endif</td>
+                                    <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->hai_reg_number}}@endif</td>
                                     <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->full_name}}@endif</td>
                                     <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->sex}}@endif</td>
                                     <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->age}}@endif</td>
-                                    <td>@if(is_object($itm->item) && $itm->item != null){{$itm->item->item_name}}@endif</td>
-                                    <td>@if(is_object($itm->item) && is_object($itm->item->category) && $itm->item != null){{$itm->item->category->category_name}}@endif</td>
-                                    <td>{{$itm->quantity}}</td>
-                                    <td>{{$itm->description}}</td>
+                                    <td>{{number_format($itm->amount,2,'.',',')}}</td>
                                 </tr>
                             @endforeach
                         @endif
@@ -76,7 +77,7 @@
             <div class="row" style="margin-top: 30px">
                 <div class="col-md-12 col-xs-12">
                     <h6><strong>Comments</strong></h6>
-                    <p class="text-justify"><?php echo $disbursement->comments;?></p>
+                    <p class="text-justify"><?php echo $provision->comments;?></p>
                 </div>
             </div>
             <div class="row" style="margin-top: 30px">

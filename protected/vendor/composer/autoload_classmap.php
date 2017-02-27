@@ -21,6 +21,8 @@ return array(
     'CreateAuditsTable' => $baseDir . '/database/migrations/2017_02_14_114429_create_audits_table.php',
     'CreateBudgetActivitiesTable' => $baseDir . '/database/migrations/2017_02_27_100555_create_budget_activities_table.php',
     'CreateCampsTable' => $baseDir . '/database/migrations/2017_01_19_144953_create_camps_table.php',
+    'CreateCashProvisionClientsTable' => $baseDir . '/database/migrations/2017_02_27_113312_create_cash_provision_clients_table.php',
+    'CreateCashProvisionsTable' => $baseDir . '/database/migrations/2017_02_27_111849_create_cash_provisions_table.php',
     'CreateClientCasesTable' => $baseDir . '/database/migrations/2017_02_09_221915_create_client_cases_table.php',
     'CreateClientInformationsTable' => $baseDir . '/database/migrations/2017_02_20_005230_create_client_informations_table.php',
     'CreateClientProgressesTable' => $baseDir . '/database/migrations/2017_02_19_081949_create_client_progresses_table.php',

@@ -342,7 +342,7 @@
                     <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-danger"></i> Add New Activity</a>
                     <a href="{{url('cash/monitoring/budget')}}" class="btn btn-primary"><i class="fa fa-server text-danger"></i> List All Activities</a>
                     <a href="{{url('cash/monitoring/provision')}}" class="btn btn-primary"><i class="fa fa-forward text-danger"></i> Cash Provision</a>
-                    <a href="{{url('post/cash/monitoring')}}" class="btn btn-primary"><i class="fa fa-list text-danger"></i> Post Cash onitoring</a>
+                    <a href="{{url('post/cash/monitoring')}}" class="btn btn-primary"><i class="fa fa-list text-danger"></i> Post Cash monitoring</a>
                     <a href="{{url('import/cash/monitoring/budget')}}" class=" btn btn-primary"><i class="fa fa-upload text-danger"></i> Import Items</a>
                 </div>
             </div>
@@ -369,6 +369,9 @@
                             </th>
                             <th class="text-center">
                                 Currency
+                            </th>
+                            <th class="text-center">
+                                Donor
                             </th>
                             <th class="text-center">
                                 Remarks
@@ -398,6 +401,9 @@
                                     </td>
                                     <td>
                                         {{$activity->currency}}
+                                    </td>
+                                    <td>
+                                        {{$activity->donor}}
                                     </td>
                                     <td>
                                         {{$activity->remarks}}
@@ -443,6 +449,9 @@
                             </td>
                             <td class="text-center">
                                 Currency
+                            </td>
+                            <td class="text-center">
+                                Donor
                             </td>
                             <td class="text-center">
                                 Remarks
