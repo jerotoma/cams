@@ -220,21 +220,21 @@
             <ul class="navigation navigation-main navigation-accordion">
                 <li ><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
                 <!-- Main -->
-                
-                <li >
-                    <a href="#" ><i class="icon-users"></i>Clients <span></span></a>
+
+                <li>
+                    <a href="#"><i class="icon-users"></i> <span>Clients</span></a>
                     <ul>
                         <li ><a href="{{url('clients')}}">Clients Management</a></li>
                     </ul>
                 </li>
-                <li >
+                <li>
                     <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
                     <ul>
-                        <li><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
+                        <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
                     </ul>
                 </li>
-                <li >
+                <li>
                     <a href="#"><i class="icon-stack"></i> <span>Client Referrals</span></a>
                     <ul>
                         <li ><a href="{{url('referrals')}}">Referrals</a></li>
@@ -243,20 +243,28 @@
                 <!-- /main -->
                 <!-- Forms -->
                 @permission('inventory')
-                
+
                 <li class="active">
                     <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
                     <ul>
-                        <li ><a href="{{url('items/distributions')}}">Item Distribution</a></li>
-                        <li ><a href="{{url('inventory-received')}}">Received Items</a></li>
+                        <li><a href="{{url('items/distributions')}}">Item Distribution</a></li>
+                        <li><a href="{{url('inventory-received')}}">Received Items</a></li>
                         <li class="active"><a href="{{url('inventory')}}">Items Inventory</a></li>
-                        <li><a href="{{url('inventory-categories')}}">Items Categories</a></li>
+                        <li ><a href="{{url('inventory-categories')}}">Items Categories</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
+                    <ul>
+                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
+                        <li><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
+                        <li><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
                     </ul>
                 </li>
                 @endpermission
             <!-- /forms -->
                 <!-- Forms -->
-                
+
                 <li>
                     <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
                     <ul>
@@ -283,7 +291,7 @@
                 @endpermission
                 @permission('reports')
             <!-- Data visualization -->
-                
+
                 <li>
                     <a href="#"><i class="icon-graph"></i> <span> Reports</span></a>
                     <ul>
@@ -298,17 +306,17 @@
 
             <!-- Settings -->
                 @role('admin')
-                
+
                 <li>
-                <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
-                <ul>
-                    <li><a href="{{url('countries')}}">Countries</a></li>
-                    <li><a href="{{url('regions')}}">Regions</a></li>
-                    <li><a href="{{url('districts')}}">Districts</a></li>
-                    <li><a href="{{url('camps')}}">Camps</a></li>
-					<li><a href="{{url('origins')}}">Origins</a></li>
-                </ul>
-            </li>
+                    <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
+                    <ul>
+                        <li><a href="{{url('countries')}}">Countries</a></li>
+                        <li><a href="{{url('regions')}}">Regions</a></li>
+                        <li><a href="{{url('districts')}}">Districts</a></li>
+                        <li><a href="{{url('camps')}}">Camps</a></li>
+                        <li><a href="{{url('origins')}}">Origins</a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="#"><i class="icon-puzzle4"></i> <span>Vulnerability Codes</span></a>
                     <ul>
@@ -341,7 +349,7 @@
     Item Inventory
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Material Inventory </span> </h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">NFIs Inventory </span> </h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
@@ -417,7 +425,7 @@
                                     <td>
                                         {{$item->unit}}
                                     </td>
-                                    <td>@if(strtolower($item->status) )
+                                    <td>@if(strtolower($item->status)=="available" )
                                             <span class="label label-success">{{$item->status}}</span>
                                         @else
                                             <span class="label label-danger">{{$item->status}}</span>

@@ -138,6 +138,7 @@ class ItemsReceivingController extends Controller
 
                                 //Increase inventory
                                 $invItem->quantity =intval($invItem->quantity) + intval($row->quantity);
+                                $invItem->status="Available";
                                 $invItem->save();
                             }
 
@@ -256,6 +257,39 @@ class ItemsReceivingController extends Controller
                             $items->received_date=date("Y-m-d",strtotime($row->received_date));
                             $items->save();
                         }
+                        if(count(ItemsInventory::where('item_name','=',ucwords($row->item_name))->get()) >0)
+                        {
+                            $invItem =ItemsInventory::where('item_name','=',ucwords($row->item_name))->get()->first();
+                            $itm_id=$invItem->id;
+                        }
+                        else
+                        {
+                            $invItem=new ItemsInventory;
+                            $invItem->item_name=$row->item_name;
+                            $invItem->description=$row->description;
+                            $invItem->remarks=$row->description;
+                            $invItem->status="Available";
+                            $invItem->save();
+
+                            $itm_id=$invItem->id;
+                        }
+
+                        if (!count(ItemReceived::where('received_id','=',$items->id)
+                                ->where('item_id','=',$itm_id)
+                                ->where('quantity','=',$items->quantity)
+                                ->where('description','=',$items->description)->get())>0)
+                        {
+                            $tmreceived=new ItemReceived;
+                            $tmreceived->received_id=$items->id;
+                            $tmreceived->item_id=$invItem->id;
+                            $tmreceived->quantity=intval($row->quantity);
+                            $tmreceived->description=$row->description;
+                            $tmreceived->save();
+
+                            $invItem->quantity =intval($invItem->quantity) + intval($row->quantity);
+                            $invItem->status="Available";
+                            $invItem->save();
+                        }
 
                     }
 
@@ -355,7 +389,7 @@ class ItemsReceivingController extends Controller
                             //Categories
 
                             //Items
-                            if($row->item_name != null & $row->quantity !="")
+                            if($row->item_name != null & $row->quantity !="" && $row->quantity > 0)
                             {
                                 //Get Item
                                 $itm_id="";
@@ -390,6 +424,7 @@ class ItemsReceivingController extends Controller
                                     $tmreceived->save();
 
                                     $invItem->quantity =intval($invItem->quantity) + intval($row->quantity);
+                                    $invItem->status="Available";
                                     $invItem->save();
                                 }
 

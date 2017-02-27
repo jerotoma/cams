@@ -227,10 +227,10 @@
                 <legend class="text-bold">PSN CLIENTS ITEMS DISTRIBUTION LIST</legend>
                 <div class="row">
                     <div class="col-md-6">
-                         <h3 class="help-inline text-bold text-danger">Use this template for importing Items from old data<a href={{asset("assets/templates/bulk_item_distribution_template.xls")}}>Download template here</a> </h3>
+                         <h3 class="help-inline text-bold text-danger">If you have generated the list from old excel use this template <a href={{asset("assets/templates/bulk_item_distribution_old_template.xls")}}>Download template here</a> </h3>
                     </div>
                     <div class="col-md-6">
-                        <h3 class="help-inline text-bold text-danger">Use this template for importing Items for exported data <a href={{asset("assets/templates/bulk_item_distribution_template_new.xls")}}>Download template here</a> </h3>
+                        <h3 class="help-inline text-bold text-danger">If you have generated the list from new system use this template   <a href={{asset("assets/templates/bulk_item_distribution_new_template.xls")}}>Download template here</a> </h3>
                     </div>
                 </div>
                   <div class="row">
@@ -243,6 +243,7 @@
                     <div class="col-md-4">
                         <label class="control-label">Data Import description</label>
                         <select class="select" name="import_type" id="import_type" data-placeholder="Choose an option...">
+                            <option value=""></option>
                             <option value="1">New data- Exported from system</option>
                             <option value="2">Old data- Migrating from old data</option>
                         </select>

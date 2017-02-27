@@ -52,7 +52,7 @@ class CashProvisionController extends Controller
         //
         try {
             $this->validate($request, [
-                'provision_date' => 'required',
+                'provision_date' => 'required|before:tomorrow',
                 'camp_id' => 'required',
                 'activity_id' => 'required',
                 'import_type' => 'required',

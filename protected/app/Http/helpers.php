@@ -587,22 +587,23 @@ if (!function_exists('isNotInDistributionLimit')) {
 
             $inventoryItem= \App\ItemsInventory::find($item_id);
             $limit =$inventoryItem->redistribution_limit;
+
             $ts1 = strtotime($itemsds->distribution_date);
             $ts2 = strtotime(date('Y-m-d'));
-            $dayspass= date("j",($ts1 - $ts2));
+            $dayspass= date("j",($ts2 - $ts1));
 
             if($dayspass > $limit ){
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
 
         }
         else
         {
-            return false;
+            return true;
         }
 
     }
@@ -613,18 +614,35 @@ if (!function_exists('deductItems')) {
        $item=\App\ItemsInventory::find($item_id);
         $item->quantity=$item->quantity - $q;
         $item->save();
+        if($item->quantity <= 0)
+        {
+            $item->quantity=0;
+            $item->status="Out of stock";
+            $item->save();
+        }
     }
 }
 
 if (!function_exists('isItemOutOfStock')) {
-    function isItemOutOfStock($item_id) {
+    function isItemOutOfStock($item_id,$quantity) {
 
         $item=\App\ItemsInventory::find($item_id);
-        if($item->quantity <= 0)
+        if(($item->quantity - $quantity) < 0)
         {
-            $item->quantity=0;
-            $item->status ="Out of stock";
-            $item->save();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+if (!function_exists('isItemOutOfStockNoQ')) {
+    function isItemOutOfStockNoQ($item_id) {
+
+        $item=\App\ItemsInventory::find($item_id);
+        if(($item->quantity) < 0)
+        {
             return true;
         }
         else
