@@ -52,7 +52,7 @@
                 });
             }else{$("#item_id").html("<option value=''>----</option>");}
         });
-        $("#formItemsReceived").validate({
+        $("#formCashBulkProvision").validate({
             ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
             errorClass: 'validation-error-label',
             successClass: 'validation-valid-label',
@@ -100,58 +100,185 @@
             },
             errorElement:'div',
             rules: {
-                disbursements_date: "required",
-                disbursements_by: "required",
-                items_distribution_file:"required",
+                provision_date: "required",
+                provided_by: "required",
+                cash_distribution_file:"required",
                 camp_id:"required",
-                category_id:"required",
-                item_id:"required",
+                activity_id:"required",
                 import_type:"required",
             },
             messages: {
-                disbursements_date: "Please field is required",
-                disbursements_by: "Please field is required",
-                items_distribution_file: "Please upload file",
-                category_id:"Please please select camp",
-                camp_id:"Please please select camp",
-                item_id:"Please Please select Items",
-                import_type:"Please Please select Items",
+                provision_date: "Please field is required",
+                provided_by: "Please field is required",
+                cash_distribution_file: "Please upload file",
+                camp_id:"Please select camp",
+                activity_id:"Please select Items",
+                import_type:"Please select Import type",
             }
+
         });
     </script>
 @stop
 @section('main_navigation')
-    @include('inc.main_navigation')
+    <div class="sidebar-category sidebar-category-visible">
+        <div class="category-content no-padding">
+            <ul class="navigation navigation-main navigation-accordion">
+                <li ><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
+                <!-- Main -->
+
+                <li>
+                    <a href="#"><i class="icon-users"></i> <span>Clients</span></a>
+                    <ul>
+                        <li ><a href="{{url('clients')}}">Clients Management</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
+                    <ul>
+                        <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
+                        <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-stack"></i> <span>Client Referrals</span></a>
+                    <ul>
+                        <li ><a href="{{url('referrals')}}">Referrals</a></li>
+                    </ul>
+                </li>
+                <!-- /main -->
+                <!-- Forms -->
+                @permission('inventory')
+
+                <li>
+                    <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
+                    <ul>
+                        <li><a href="{{url('items/distributions')}}">Item Distribution</a></li>
+                        <li><a href="{{url('inventory-received')}}">Received Items</a></li>
+                        <li><a href="{{url('inventory')}}">Items Inventory</a></li>
+                        <li><a href="{{url('inventory-categories')}}">Items Categories</a></li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
+                    <ul>
+                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
+                        <li class="active"><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
+                        <li><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
+                    </ul>
+                </li>
+                @endpermission
+            <!-- /forms -->
+                <!-- Forms -->
+
+                <li>
+                    <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
+                    <ul>
+                        <li><a href="{{url('cases')}}">Case Management</a></li>
+                        <li><a href="{{url('progressive/notices')}}">Progressive Note</a></li>
+                    </ul>
+                </li>
+                @permission('backup')
+            <!-- Backup Restore-->
+                <li class="navigation-header"><span>Data Sharing/Backup</span> <i class="icon-menu" title="Data Sharing"></i></li>
+                <li>
+                    <a href="#"><i class="icon-puzzle4"></i> <span>Data import</span></a>
+                    <ul>
+                        <li><a href="#">Import</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-puzzle4"></i> <span>Data Export</span></a>
+                    <ul>
+                        <li><a href="#">Export</a></li>
+                    </ul>
+                </li>
+                <!-- End Backup Restore-->
+                @endpermission
+                @permission('reports')
+            <!-- Data visualization -->
+
+                <li>
+                    <a href="#"><i class="icon-graph"></i> <span> Reports</span></a>
+                    <ul>
+                        <li><a href="{{url('reports/clients')}}">Client Reports</a></li>
+                        <li ><a href="{{url('reports/assessments')}}">Assessments Reports</a></li>
+                        <li><a href="{{url('reports/referrals')}}">Referrals Reports</a></li>
+                        <li><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
+                    </ul>
+                </li>
+                <!-- /data visualization -->
+                @endpermission
+
+            <!-- Settings -->
+                @role('admin')
+
+                <li>
+                    <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
+                    <ul>
+                        <li><a href="{{url('countries')}}">Countries</a></li>
+                        <li><a href="{{url('regions')}}">Regions</a></li>
+                        <li><a href="{{url('districts')}}">Districts</a></li>
+                        <li><a href="{{url('camps')}}">Camps</a></li>
+                        <li><a href="{{url('origins')}}">Origins</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-puzzle4"></i> <span>Vulnerability Codes</span></a>
+                    <ul>
+                        <li><a href="{{url('psncodes')}}">Codes</a></li>
+                        <li><a href="{{url('psncodes-categories')}}">Categories</a></li>
+                    </ul>
+                </li>
+
+                <!-- /appearance -->
+
+                <!-- Layout -->
+                <li class="navigation-header"><span>Users Managements</span> <i class="icon-menu" title="Users Managements"></i></li>
+                <li>
+                    <a href="#"><i class="icon-users"></i> <span>Users</span></a>
+                    <ul>
+                        <li><a href="{{url('users')}}">Manage Users</a></li>
+                        <li><a href="{{url('departments')}}">Departments</a></li>
+                        <li><a href="{{url('access/rights')}}">User Rights</a></li>
+                        <li><a href="{{url('audit/los')}}">User Logs</a></li>
+                    </ul>
+                </li>
+                <li class="navigation-header"><span></span> <i class="icon-menu" title="Users Managements"></i></li>
+                <!-- /Settings -->
+                @endrole
+            </ul>
+        </div>
+    </div>
 @stop
 @section('page_title')
-    NFIs Items Distribution
+    Cash Provision
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">  NFIs Items Distribution </span> </h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">   Cash Provision</span> </h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li><a href="{{url('items/distributions')}}"> NFIs Items Distribution</a></li>
+        <li><a href="{{url('items/distributions')}}">  Cash Provision</a></li>
     </ul>
 @stop
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-success"></i>Items Distributions</a>
-            <a href="{{url('distributions/items/bulk')}}" class=" btn btn-primary " title="Item distributions for multiple clients"> <i class="fa fa-plus text-success"></i>Bulk Items Distributions</a>
-            <a href="{{url('items/distributions')}}" class="btn btn-primary"><i class="fa fa-list text-info"></i> List All Records</a>
-            <a href="{{url('inventory')}}" class="btn btn-primary " title="Go to Item inventory list"><i class="fa fa-reply text-danger"></i> Go to Inventory Items</a>
+            <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-success"></i>Provide Cash</a>
+            <a href="{{url('bulk/cash/monitoring/provision')}}" class=" btn btn-primary " title="Item distributions for multiple clients"> <i class="fa fa-plus text-success"></i>Bulk Cash Provision</a>
+            <a href="{{url('cash/monitoring/provision')}}" class="btn btn-primary"><i class="fa fa-list text-info"></i> List All Records</a>
+            <a href="{{url('post/cash/monitoring')}}" class="btn btn-primary"><i class="fa fa-list text-danger"></i> Post Cash monitoring</a>
         </div>
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-uppercase"> <i class="fa fa-upload"></i> Import NFIs Distribution</h5>
+            <h5 class="panel-title text-uppercase"> <i class="fa fa-upload"></i> Import Cash Distribution</h5>
         </div>
 
         <div class="panel-body">
-        {!! Form::open(array('url'=>'distributions/items/bulk','role'=>'form','id'=>'formItemsReceived','files'=>true)) !!}
+        {!! Form::open(array('url'=>'bulk/cash/monitoring/provision','role'=>'form','id'=>'formCashBulkProvision','files'=>true)) !!}
         <div class="panel panel-flat">
             <div class="panel-body">
                 @if (count($errors) > 0)
@@ -171,21 +298,21 @@
                     </div>
                 @endif
             <fieldset class="scheduler-border">
-                <legend class="text-bold"> NFIs Items Distribution</legend>
+                <legend class="text-bold"> Cash Provision Details</legend>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="control-label">Distribution Date:</label>
+                            <label class="control-label">Provision Date:</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                <input type="text" class="form-control pickadate"  value="{{old('disbursements_date')}}" name="disbursements_date" id="disbursements_date">
+                                <input type="text" class="form-control pickadate"  value="{{old('provision_date')}}" name="provision_date" id="provision_date">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label class="control-label">Items Distributed By</label>
-                            <input type="text" class="form-control" name="disbursements_by"  id="disbursements_by" value="" >
+                            <label class="control-label">Cash Provided By</label>
+                            <input type="text" class="form-control" name="provided_by"  id="provided_by" value="" >
                         </div>
                     </div>
                 </div>
@@ -197,54 +324,47 @@
                             <option value="{{$item->id}}">{{$item->camp_name}}</option>
                         @endforeach
                     </select>
-                    @if($errors->first('camp_id') !="")
-                        <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
-                    @endif
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group ">
-                            <label class="control-label">Item Category</label>
-                            <select class="select" name="category_id" id="category_id" data-placeholder="Choose an option...">
-                                <option ></option>
-                                @foreach(\App\ItemsCategories::all() as $category)
-                                    <option value="{{$category->id}}">{{$category->category_name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group ">
-                            <label class="control-label">Item</label>
-                            <select class="select" name="item_id" id="item_id" data-placeholder="Choose an option...">
-                                <option ></option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
             </fieldset>
+             <fieldset class="scheduler-border">
+                        <legend class="text-bold">Donor/Activity Details</legend>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group ">
+                                    <label class="control-label">Activity</label>
+                                    <select class="select" name="activity_id" id="activity_id" data-placeholder="Choose an option..." data-live-search="true" data-width="100%">
+                                        <option ></option>
+                                        @foreach(\App\BudgetActivity::all() as $activity)
+                                            <option  value="{{$activity->id}}"> {{$activity->activity_name}} @if($activity->donor != "") - ({{$activity->donor}})@endif</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
             <fieldset class="scheduler-border">
-                <legend class="text-bold">PSN CLIENTS ITEMS DISTRIBUTION LIST</legend>
+                <legend class="text-bold">PSN CLIENTS CASH DISTRIBUTION LIST</legend>
                 <div class="row">
                     <div class="col-md-6">
-                         <h3 class="help-inline text-bold text-danger">Use this template for importing Items from old data<a href={{asset("assets/templates/bulk_item_distribution_template.xls")}}>Download template here</a> </h3>
+                         <h3 class="help-inline text-bold text-danger">If you have generated the list from old excel use this template<a href={{asset("assets/templates/bulk_cash_distribution_old_template.xls")}}>Download template here</a> </h3>
                     </div>
                     <div class="col-md-6">
-                        <h3 class="help-inline text-bold text-danger">Use this template for importing Items for exported data <a href={{asset("assets/templates/bulk_item_distribution_template_new.xls")}}>Download template here</a> </h3>
+                        <h3 class="help-inline text-bold text-danger">If you have generated the list from new system use this template  <a href={{asset("assets/templates/bulk_cash_distribution_new_template.xls")}}>Download template here</a> </h3>
                     </div>
                 </div>
                   <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
                             <label class="control-label">Data description</label>
-                            <input type="file" class="form-control" name="items_distribution_file" id="items_distribution_file">
+                            <input type="file" class="form-control" name="cash_distribution_file" id="cash_distribution_file">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <label class="control-label">Data Import description</label>
                         <select class="select" name="import_type" id="import_type" data-placeholder="Choose an option...">
+                            <option value=""></option>
                             <option value="1">New data- Exported from system</option>
-                            <option value="2">Old data- Migrating from old data</option>
+                            <option value="2">Old data- Migrating from old System</option>
                         </select>
                     </div>
                 </div>

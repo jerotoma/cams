@@ -10,6 +10,7 @@ use App\PSNCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
@@ -264,7 +265,7 @@ class ClientsController extends Controller
             $filename   = str_replace(' ', '_', $file->getClientOriginalName());
 
             $file->move($destinationPath, $filename);
-
+            $orfile=$destinationPath . $filename;
             Excel::load($destinationPath . $filename, function ($reader) use($request) {
                 $reader->formatDates(false, 'Y-m-d');
                 $results= $reader->get();
@@ -407,6 +408,7 @@ class ClientsController extends Controller
             });
 
             });
+            File::delete($orfile);
            return redirect('clients');
         }
         catch (\Exception $e)

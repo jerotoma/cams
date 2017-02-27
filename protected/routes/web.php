@@ -21,6 +21,9 @@ Route::resource('cash/monitoring/budget','CashBudgetController');
 Route::resource('cash/monitoring/provision','CashProvisionController');
 Route::get('print/cash/monitoring/provision/{id}','CashProvisionController@showPrint');
 Route::get('download/pdf/cash/monitoring/provision/{id}','CashProvisionController@downloadPdf');
+Route::get('bulk/cash/monitoring/provision','CashProvisionController@showBulk');
+Route::post('bulk/cash/monitoring/provision','CashProvisionController@postBulk');
+
 
 //User rights
 Route::resource('access/rights','RolesController');

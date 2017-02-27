@@ -751,6 +751,20 @@ if (!function_exists('isActivityOutOfFunds')) {
         }
     }
 }
+if (!function_exists('isActivityOutOfFundsbyID')) {
+    function isActivityOutOfFundsbyID($activity_id) {
+
+        $actvy=\App\BudgetActivity::find($activity_id);
+        if($actvy->amount <= 0 )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
 
 //Deduct money
 if (!function_exists('deductActivityAmount')) {

@@ -417,8 +417,7 @@
                                         <i class="icon-menu9"></i>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-right">
-                                        <li id="{{$provision->id}}"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                                        <li id="{{$provision->id}}"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                                        <li id="{{$provision->id}}"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger"></i>Delete </a></li>
                                     </ul>
                                 </li>
                             </ul>
