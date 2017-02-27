@@ -60,19 +60,55 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
 
         $series1="";
         $seriesdata1="";
-        foreach (\App\Origin::all() as $origin) {
+
             $series1 .= "{ ";
-            $series1 .= " name: '".$origin->origin_name."',";
+            $series1 .= " name: '0 - 17',";
 
             $MonthCount = "";
             $monthData = "";
             for ($i = 1; $i <= 12; $i++) {
-                $MonthCount .= count(\App\Client::where('origin_id','=',$origin->id)->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+                $MonthCount .= count(\App\Client::where('age_score','=','A')->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
             }
             $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
             $series1 .= " data:[" . $monthData . "]";
             $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '17 - 50',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\Client::where('age_score','=','B')->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
         }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '50 - 60',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\Client::where('age_score','=','C')->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '60 >',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\Client::where('age_score','=','D')->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
 
         $seriesdata1=substr($series1,0,strlen($series1)-1);
         return $seriesdata1;
@@ -634,4 +670,6 @@ if (!function_exists('isReferralServiceSelected')) {
         }
     }
 }
+
+
 //Get client ID

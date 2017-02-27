@@ -2,6 +2,7 @@
 @section('page_js')
     <script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
@@ -17,6 +18,11 @@
             // Setting datatable defaults
             $.extend( $.fn.dataTable.defaults, {
                 autoWidth: false,
+                columnDefs: [{
+                    orderable: false,
+                    width: '100px',
+                    targets: [ 5 ]
+                }],
                 dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
                 language: {
                     search: '<span>Filter:</span> _INPUT_',
@@ -32,9 +38,35 @@
             });
 
 
-            // Basic datatable
-            $('.datatable-basic').DataTable({
+            // Single row selection
+            var singleSelect = $('.datatable-selection-single').DataTable();
+            $('.datatable-selection-single tbody').on('click', 'tr', function() {
+                if ($(this).hasClass('success')) {
+                    $(this).removeClass('success');
+                }
+                else {
+                    singleSelect.$('tr.success').removeClass('success');
+                    $(this).addClass('success');
+                }
+            });
+
+
+            // Multiple rows selection
+            $('.datatable-selection-multiple').DataTable();
+            $('.datatable-selection-multiple tbody').on('click', 'tr', function() {
+                $(this).toggleClass('success');
+            });
+
+
+            // Individual column searching with text inputs
+            $('.datatable-column-search-inputs tfoot td').not(':last-child').each(function () {
+                var title = $('.datatable-column-search-inputs thead th').eq($(this).index()).text();
+                $(this).html('<input type="text" class="form-control input-sm" placeholder="Search '+title+'" />');
+            });
+
+            var table = $('.datatable-column-search-inputs').DataTable({
                 "scrollX": false,
+               // ajax: '{{url('getwaclientsjson')}}this url load JSON Client details to reduce loading time
                 "fnDrawCallback": function (oSettings) {
                     $(".viewRecord").click(function(){
                         var id1 = $(this).parent().attr('id');
@@ -43,7 +75,7 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> User Details</span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Activity Details</span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -54,7 +86,7 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("users") ?>/"+id1);
+                        $(".modal-body").load("<?php echo url("cash/monitoring/budget") ?>/"+id1);
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
@@ -68,7 +100,7 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update User Details </span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Activity Details </span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -79,59 +111,38 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("users") ?>/"+id1+"/edit");
+                        $(".modal-body").load("<?php echo url("cash/monitoring/budget") ?>/"+id1+"/edit");
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
 
                     });
 
-                    $(".deleteRecord").click(function(){
+                    // Confirmation dialog
+                    $('.deleteRecord').on('click', function() {
                         var id1 = $(this).parent().attr('id');
-                        $(".deleteModule").show("slow").parent().parent().find("span").remove();
-                        var btn = $(this).parent().parent();
-                        $(this).hide("slow").parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
-                        $("#no").click(function(){
-                            $(this).parent().parent().find(".deleteRecord").show("slow");
-                            $(this).parent().parent().find("span").remove();
-                        });
-                        $("#yes").click(function(){
-                            $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
-                            $.ajax({
-                                url:"<?php echo url('users') ?>/"+id1,
-                                type: 'post',
-                                data: {_method: 'delete', _token :"{{csrf_token()}}"},
-                                success:function(msg){
-                                    btn.hide("slow").next("hr").hide("slow");
-                                }
-                            });
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to delete record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('cash/monitoring/budget') ?>/"+id1,
+                                    type: 'post',
+                                    data: {_method: 'delete', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        btn.hide("slow").next("hr").hide("slow");
+                                    }
+                                });
+                            }
                         });
                     });
                 }
             });
-
-
-            // Alternative pagination
-            $('.datatable-pagination').DataTable({
-                pagingType: "simple",
-                language: {
-                    paginate: {'next': 'Next &rarr;', 'previous': '&larr; Prev'}
-                }
+            table.columns().every( function () {
+                var that = this;
+                $('input', this.footer()).on('keyup change', function () {
+                    that.search(this.value).draw();
+                });
             });
-
-
-            // Datatable with saving state
-            $('.datatable-save-state').DataTable({
-                stateSave: true
-            });
-
-
-            // Scrollable datatable
-            $('.datatable-scroll-y').DataTable({
-                autoWidth: true,
-                scrollY: 300
-            });
-
 
 
             // External table additions
@@ -147,9 +158,11 @@
                 width: 'auto'
             });
 
-        });
-        // AJAX sourced data
 
+            // Enable Select2 select for individual column searching
+            $('.filter-select').select2();
+
+        });
 
         $(".addRecord").click(function(){
             var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
@@ -157,7 +170,7 @@
             modaldis+= '<div class="modal-content">';
             modaldis+= '<div class="modal-header bg-indigo">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Register New User</span>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i>Create New Actity</span>';
             modaldis+= '</div>';
             modaldis+= '<div class="modal-body">';
             modaldis+= ' </div>';
@@ -168,12 +181,13 @@
             $("body").append(modaldis);
             $("#myModal").modal("show");
             $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("users/create") ?>");
+            $(".modal-body").load("<?php echo url("cash/monitoring/budget/create") ?>");
             $("#myModal").on('hidden.bs.modal',function(){
                 $("#myModal").remove();
             })
 
         });
+
 
     </script>
 @stop
@@ -216,11 +230,12 @@
                         <li><a href="{{url('inventory-categories')}}">Items Categories</a></li>
                     </ul>
                 </li>
-                <li>
+                <li class="active">
                     <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
                     <ul>
-                        <li><a href="{{url('items/distributions')}}">Cash Transfer</a></li>
-                        <li><a href="{{url('inventory-received')}}">Cash Income</a></li>
+                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
+                        <li class="active"><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
+                        <li><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
                     </ul>
                 </li>
                 @endpermission
@@ -291,10 +306,10 @@
 
                 <!-- Layout -->
                 <li class="navigation-header"><span>Users Managements</span> <i class="icon-menu" title="Users Managements"></i></li>
-                <li class="active">
+                <li>
                     <a href="#"><i class="icon-users"></i> <span>Users</span></a>
                     <ul>
-                        <li class="active"><a href="{{url('users')}}">Manage Users</a></li>
+                        <li><a href="{{url('users')}}">Manage Users</a></li>
                         <li><a href="{{url('departments')}}">Departments</a></li>
                         <li><a href="{{url('access/rights')}}">User Rights</a></li>
                         <li><a href="{{url('audit/los')}}">User Logs</a></li>
@@ -308,78 +323,141 @@
     </div>
 @stop
 @section('page_title')
-    Users Management
+    Cash Monitoring
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Users Management </span> </h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Cash Monitoring </span> </h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li><a href="{{url('users')}}">Users list</a></li>
+        <li><a href="{{url('cash/monitoring/budget')}}">Cash Monitoring</a></li>
+        <li><a href="#">Budget Activities</a></li>
     </ul>
 @stop
 @section('contents')
-    <div class="row" style="margin-bottom: 5px">
-        <div class="col-md-12 text-right">
-            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-file-o "></i> <span>Register New User</span></a>
-            <a  href="{{url('users')}}" class="btn btn-primary "><i class="fa fa-users "></i> <span>List All Users</span></a>
-            <a  href="{{url('access/rights')}}" class="btn btn-primary "><i class="fa fa-user-secret "></i> <span>User Access Rights</span></a>
-        </div>
-    </div>
-    <div class="panel panel-flat">
-        <div class="panel-heading">
+                <div class="row" style="margin-bottom: 5px">
+                <div class="col-md-12 text-right">
+                    <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-danger"></i> Add New Activity</a>
+                    <a href="{{url('cash/monitoring/budget')}}" class="btn btn-primary"><i class="fa fa-server text-danger"></i> List All Activities</a>
+                    <a href="{{url('cash/monitoring/provision')}}" class="btn btn-primary"><i class="fa fa-forward text-danger"></i> Cash Provision</a>
+                    <a href="{{url('post/cash/monitoring')}}" class="btn btn-primary"><i class="fa fa-list text-danger"></i> Post Cash onitoring</a>
+                    <a href="{{url('import/cash/monitoring/budget')}}" class=" btn btn-primary"><i class="fa fa-upload text-danger"></i> Import Items</a>
+                </div>
+            </div>
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h5 class="panel-title text-uppercase text-bold text-center">List of All Activities</h5>
+                </div>
 
-            <h5 class="panel-title text-center text-uppercase">List of All Users</h5>
-        </div>
-
-        <div class="panel-body">
-            <table class="table datatable-basic table-hover">
-            <thead>
-            <tr>
-                <th>No</th>
-                <th>Full Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Designation</th>
-                <th>Department</th>
-                <th>Status</th>
-                <th class="text-center">Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php $count = 1; ?>
-             @foreach($users as $key => $user)
-                <tr>
-                <td>{{$count + $key }}</td>
-                <td>{{$user->full_name}}</td>
-                <td>{{$user->phone}}</td>
-                <td>{{$user->email}}</td>
-                <td>{{$user->designation}}</td>
-                <td> @if($user->department_id != "" && count(\App\Department::find($user->department_id)) > 0 )
-                        <option value="{{\App\Department::find($user->department_id)->id}}" selected>{{\App\Department::find($user->department_id)->department_name}}</option>
-                    @endif</td>
-                <td>@if(strtolower($user->status)=="active")<a href="#" class="label label-success">{{$user->status}}</a>
-                    @else
-                        <a href="#" class="label label-danger">{{$user->status}}</a>
+                <div class="panel-body">
+                    <table class="table datatable-column-search-inputs table-bordered table-hover" >
+                        <thead>
+                        <tr >
+                            <th class="text-center">
+                                #
+                            </th>
+                            <th class="text-center">
+                                Activity Name
+                            </th>
+                            <th class="text-center">
+                                Descriptions
+                            </th>
+                            <th class="text-center">
+                                Amount
+                            </th>
+                            <th class="text-center">
+                                Currency
+                            </th>
+                            <th class="text-center">
+                                Remarks
+                            </th>
+                            <th class="text-center">
+                                Status
+                            </th>
+                            <th class="text-center">
+                                Action
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php $count=1;?>
+                        @if(count($activities)>0)
+                            @foreach($activities as $activity)
+                                <tr>
+                                    <td> {{$count++}} </td>
+                                    <td>
+                                        {{$activity->activity_name	}}
+                                    </td>
+                                    <td>
+                                        {{$activity->description}}
+                                    </td>
+                                    <td>
+                                        {{number_format($activity->amount,2,'.',',')}}
+                                    </td>
+                                    <td>
+                                        {{$activity->currency}}
+                                    </td>
+                                    <td>
+                                        {{$activity->remarks}}
+                                    </td>
+                                    <td>@if(strtolower($activity->status) =="available" )
+                                            <span class="label label-success">{{$activity->status}}</span>
+                                        @else
+                                            <span class="label label-danger">{{$activity->status}}</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        <ul class="icons-list text-center">
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="icon-menu9"></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li id="{{$activity->id}}"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                                                    <li id="{{$activity->id}}"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endif
-                </td>
-                <td class="text-center" id="{{$user->id}}">
-                    <a href="#" class="viewRecord btn " title="View user"><i class="fa fa-eye" aria-hidden="true"></i> </a>
-                    <a href="#" class="editRecord btn "><i class="fa fa-pencil text-success"></i> </a>
-                    @if($user->id ==\Auth::user()->id)
-                    <a href="#"  class=" btn" title="Can't delete yourself"><i class="fa fa-trash text-danger"></i></a>
-                        @else
-                        <a href="#"  class="deleteRecord btn" title="delete user"><i class="fa fa-trash text-danger"></i> </a>
-                    @endif
-                </td></td>
-               </tr>
-              @endforeach
-            </tbody>
 
-            </table>
+
+                        </tbody>
+                        <tfoot>
+                        <tr >
+                            <td class="text-center">
+
+                            </td>
+                            <td class="text-center">
+                                Activity Name
+                            </td>
+                            <td class="text-center">
+                                Descriptions
+                            </td>
+                            <td class="text-center">
+                                Amount
+                            </td>
+                            <td class="text-center">
+                                Currency
+                            </td>
+                            <td class="text-center">
+                                Remarks
+                            </td>
+                            <td class="text-center">
+                                Status
+                            </td>
+                            <td class="text-center">
+
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            <!-- END EXAMPLE TABLE PORTLET-->
         </div>
-    </div>
-
-@endsection
+@stop

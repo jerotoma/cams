@@ -108,7 +108,7 @@
                         modaldis+= ' </div>';
                         modaldis+= '</div>';
                         modaldis+= '</div>';
-                        $('body').css('overflow-y','scroll');
+                         $('body').css('overflow-y','scroll');
 
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
@@ -132,7 +132,7 @@
                         modaldis+= ' </div>';
                         modaldis+= '</div>';
                         modaldis+= '</div>';
-                        $('body').css('overflow-y','scroll');
+                         $('body').css('overflow-y','scroll');
 
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
@@ -250,78 +250,6 @@
             })
 
         });
-        $("#formClientsSearch").validate({
-            ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
-            errorClass: 'validation-error-label',
-            successClass: 'validation-valid-label',
-            highlight: function(element, errorClass) {
-                $(element).removeClass(errorClass);
-            },
-            unhighlight: function(element, errorClass) {
-                $(element).removeClass(errorClass);
-            },
-            errorPlacement: function(error, element) {
-
-                // Styled checkboxes, radios, bootstrap switch
-                if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container') ) {
-                    if(element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
-                        error.appendTo( element.parent().parent().parent().parent() );
-                    }
-                    else {
-                        error.appendTo( element.parent().parent().parent().parent().parent() );
-                    }
-                }
-
-                // Unstyled checkboxes, radios
-                else if (element.parents('div').hasClass('checkbox') || element.parents('div').hasClass('radio')) {
-                    error.appendTo( element.parent().parent().parent() );
-                }
-
-                // Input with icons and Select2
-                else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
-                    error.appendTo( element.parent() );
-                }
-
-                // Inline checkboxes, radios
-                else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
-                    error.appendTo( element.parent().parent() );
-                }
-
-                // Input group, styled file input
-                else if (element.parent().hasClass('uploader') || element.parents().hasClass('input-group')) {
-                    error.appendTo( element.parent().parent() );
-                }
-
-                else {
-                    error.insertAfter(element);
-                }
-            },
-            errorElement:'div',
-            rules: {
-
-            },
-            messages: {
-
-            },
-            submitHandler: function(form) {
-                $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Searching please wait...</span><h3>");
-                var postData = $('#formClients').serializeArray();
-                var formURL = $('#formClients').attr("action");
-                $.ajax(
-                    {
-                        url : formURL,
-                        type: "POST",
-                        data : postData,
-                        success: function(data){
-                            $("#dataReseults").html(data);
-                        },
-                        error: function(jqXhr,status, response) {
-                            $("#output").html("");
-                            $("#dataReseults").html("");
-                        }
-                    });
-            }
-        });
 
     </script>
 
@@ -412,15 +340,15 @@
                 @role('admin')
 
                 <li>
-                    <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
-                    <ul>
-                        <li><a href="{{url('countries')}}">Countries</a></li>
-                        <li><a href="{{url('regions')}}">Regions</a></li>
-                        <li><a href="{{url('districts')}}">Districts</a></li>
-                        <li><a href="{{url('camps')}}">Camps</a></li>
-                        <li><a href="{{url('origins')}}">Origins</a></li>
-                    </ul>
-                </li>
+                <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
+                <ul>
+                    <li><a href="{{url('countries')}}">Countries</a></li>
+                    <li><a href="{{url('regions')}}">Regions</a></li>
+                    <li><a href="{{url('districts')}}">Districts</a></li>
+                    <li><a href="{{url('camps')}}">Camps</a></li>
+					<li><a href="{{url('origins')}}">Origins</a></li>
+                </ul>
+            </li>
                 <li>
                     <a href="#"><i class="icon-puzzle4"></i> <span>Vulnerability Codes</span></a>
                     <ul>
@@ -482,7 +410,7 @@
         <div class="col-md-12">
             <div class="portlet light bordered">
                 <div class="portlet-body form">
-                    {!! Form::open(array('url'=>'search/clients','role'=>'form','id'=>'formClientsSearchkk')) !!}
+                    {!! Form::open(array('url'=>'search/clients','role'=>'form','id'=>'formClientReport')) !!}
                     <div class="panel panel-flat">
 
 
@@ -495,7 +423,7 @@
                                             <label class="control-label">Arrival Date: Start Date</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                                <input type="text" class="form-control pickadate"  value="{{old('start_date')}}" name="start_date" id="start_date">
+                                                <input type="text" class="form-control pickadate"  value="{{$request->start_date}}" name="start_date" id="start_date">
                                             </div>
                                         </div>
                                     </div>
@@ -504,7 +432,7 @@
                                             <label class="control-label">End Date</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                                <input type="text" class="form-control pickadate" value="{{old('end_date')}}" name="end_date" id="end_date">
+                                                <input type="text" class="form-control pickadate" value="{{$request->end_date}}" name="end_date" id="end_date">
                                             </div>
                                         </div>
                                     </div>
@@ -513,19 +441,19 @@
                                     <div class="col-md-4">
                                         <div class="form-group ">
                                             <label class="control-label">HAI Reg No</label>
-                                            <input type="text" class="form-control" name="hai_reg_no">
+                                            <input type="text" class="form-control" name="hai_reg_no" value="{{$request->hai_reg_no}}">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group ">
                                             <label class="control-label">Unique ID</label>
-                                            <input type="text" class="form-control" name="unique_id">
+                                            <input type="text" class="form-control" name="unique_id" value="{{$request->unique_id}}">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group ">
                                             <label class="control-label">Full Name</label>
-                                            <input type="text" class="form-control" name="full_name">
+                                            <input type="text" class="form-control" name="full_name" value="{{$request->full_name}}">
                                         </div>
                                     </div>
                                 </div>
@@ -535,6 +463,10 @@
                                             <label>Sex</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="sex" id="sex">
                                                 <optgroup label="Sex">
+                                                    @if($request->sex != "")
+                                                        <option value="{{$request->sex }}" selected>{{$request->sex }}</option>
+                                                        @endif
+                                                        <option></option>
                                                     <option value="All">All</option>
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
@@ -547,6 +479,10 @@
                                             <label>Camp</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="camp_id" id="camp_id">
                                                 <optgroup label="Camp Name">
+                                                    @if($request->camp_id != "" && $request->camp_id != "All")
+                                                        <option value="{{\App\Camp::findorfail($request->camp_id)->id }}" selected>{{\App\Camp::findorfail($request->camp_id)->camp_name }}</option>
+                                                    @endif
+                                                    <option></option>
                                                     <option value="All">All</option>
                                                     @foreach(\App\Camp::all() as $item)
                                                         <option value="{{$item->id}}">{{$item->camp_name}}</option>
@@ -560,6 +496,9 @@
                                             <label>Specific Needs?</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
                                                 <optgroup label="Specific Needs">
+                                                    @if($request->specific_needs != "")
+                                                        <option value="{{\App\PSNCode::findorfail($request->specific_needs)->id }}" selected>{{\App\PSNCode::findorfail($request->specific_needs)->description }}</option>
+                                                    @endif
                                                     <option></option>
                                                     <option value="All">All</option>
                                                     @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
@@ -603,11 +542,7 @@
                                 <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
                                     <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-search"></i> Search Client </button>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8" id="output">
 
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -623,7 +558,7 @@
             <h5 class="panel-title text-bold text-center">Client Search Results</h5>
         </div>
 
-        <div class="panel-body" id="searchResults">
+        <div class="panel-body">
             <div class="row clearfix" style="margin-top: 20px">
                 <div class="col-md-12 column">
                     <table class="table datatable-column-search-inputs table-bordered table-hover" id="tab_logic">
@@ -661,8 +596,56 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody id="dataReseults">
-
+                        <tbody>
+                        <?php $co=1;?>
+                        @foreach($clients as $client)
+                            <tr>
+                                <td class="text-center">
+                                    {{$co++}}
+                                </td>
+                                <td class="text-center">
+                                    {{$client->hai_reg_number}}
+                                </td>
+                                <td class="text-center">
+                                    {{$client->full_name}}
+                                </td>
+                                <td class="text-center">
+                                    {{$client->sex}}
+                                </td>
+                                <td class="text-center">
+                                    {{$client->age}}
+                                </td>
+                                <td class="text-center">
+                                    {{$client->ration_card_number}}
+                                </td>
+                                <td class="text-center">
+                                    {{$client->date_arrival}}
+                                </td>
+                                <td class="text-center">
+                                    @if(is_object($client->camp) && $client->camp != null)
+                                    {{$client->camp->camp_name}}
+                                        @endif
+                                </td>
+                                <td class="text-center">
+                                    {{$client->auth_status}}
+                                </td>
+                                <td class="text-center">
+                                    <ul class="icons-list text-center">
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                <i class="icon-menu9"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li id="{{$client->id}}"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
+                                                <li id="{{$client->id}}"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                                                <li id="{{$client->id}}"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                                                <li id="{{$client->id}}"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                         <tfoot>
                         <tr >

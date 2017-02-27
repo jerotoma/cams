@@ -5,6 +5,157 @@
     <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
+@section('scripts')
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
+    <script>
+        $(".editRecord").click(function(){
+            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+            modaldis+= '<div class="modal-dialog" style="width:60%;margin-right: 20% ;margin-left: 20%">';
+            modaldis+= '<div class="modal-content">';
+            modaldis+= '<div class="modal-header bg-indigo">';
+            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Change My Password</span>';
+            modaldis+= '</div>';
+            modaldis+= '<div class="modal-body">';
+            modaldis+= ' </div>';
+            modaldis+= '</div>';
+            modaldis+= '</div>';
+            $('body').css('overflow-y','scroll');
+
+            $("body").append(modaldis);
+            $("#myModal").modal("show");
+            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+            $(".modal-body").load("<?php echo url("account/settings/access") ?>");
+            $("#myModal").on('hidden.bs.modal',function(){
+                $("#myModal").remove();
+            })
+
+        });
+
+        $("#formUsersProfile").validate({
+            ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
+            errorClass: 'validation-error-label',
+            successClass: 'validation-valid-label',
+            highlight: function(element, errorClass) {
+                $(element).removeClass(errorClass);
+            },
+            unhighlight: function(element, errorClass) {
+                $(element).removeClass(errorClass);
+            },
+            errorPlacement: function(error, element) {
+
+                // Styled checkboxes, radios, bootstrap switch
+                if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container') ) {
+                    if(element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                        error.appendTo( element.parent().parent().parent().parent() );
+                    }
+                    else {
+                        error.appendTo( element.parent().parent().parent().parent().parent() );
+                    }
+                }
+
+                // Unstyled checkboxes, radios
+                else if (element.parents('div').hasClass('checkbox') || element.parents('div').hasClass('radio')) {
+                    error.appendTo( element.parent().parent().parent() );
+                }
+
+                // Input with icons and Select2
+                else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
+                    error.appendTo( element.parent() );
+                }
+
+                // Inline checkboxes, radios
+                else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                    error.appendTo( element.parent().parent() );
+                }
+
+                // Input group, styled file input
+                else if (element.parent().hasClass('uploader') || element.parents().hasClass('input-group')) {
+                    error.appendTo( element.parent().parent() );
+                }
+
+                else {
+                    error.insertAfter(element);
+                }
+            },
+            errorElement:'div',
+            rules: {
+                full_name: "required",
+                phone: "required",
+                username: "required",
+                status: "required",
+                role_id: "required",
+                email: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    minlength: 8
+                },
+                confirm: {
+                    minlength: 8,
+                    equalTo : "#password"
+                }
+            },
+            messages: {
+                full_name: "Please this field is required",
+                phone: "Please field is required",
+                username: "Please this field is required",
+                role_id: "Please this field is required",
+                status: "Please this field is required",
+                email:{
+                    required:"Please this field is required",
+                    email:"Please enter valid email",
+                },
+                password:{
+                    minlength:"Password must have 8 characters",
+                },
+                confirm:{
+                    minlength:"Password must have 8 characters",
+                    equalTo :"Password don't match",
+                }
+            },
+            submitHandler: function(form) {
+                $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
+                var postData = $('#formUsersProfile').serializeArray();
+                var formURL = $('#formUsersProfile').attr("action");
+                $.ajax(
+                    {
+                        url : formURL,
+                        type: "POST",
+                        data : postData,
+                        dataType: "json",
+                        success:function(data)
+                        {
+                            console.log(data);
+                            //data: return data from server
+                            $("#output").html(data.message);
+                            setTimeout(function() {
+                                location.replace('{{url('users')}}');
+                                $("#output").html("");
+                            }, 2000);
+                        },
+                        error: function(jqXhr,status, response) {
+                            if( jqXhr.status === 400 ) {
+                                var errors = jqXhr.responseJSON.errors;
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                                $.each(errors, function (key, value) {
+                                    errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                });
+                                errorsHtml += '</ul></di>';
+                                $('#output').html(errorsHtml);
+                            }
+                            else
+                            {
+                                $('#output').html("");
+                            }
+
+                        }
+                    });
+            }
+        });
+    </script>
+@stop
 @section('main_navigation')
     @include('inc.main_navigation')
 @stop
@@ -155,133 +306,7 @@
                                                 </div>
                                             </div>
                                             {!! Form::close() !!}
-                                            <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
-                                            <script>
 
-
-                                                $("#formUsersProfile").validate({
-                                                    ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
-                                                    errorClass: 'validation-error-label',
-                                                    successClass: 'validation-valid-label',
-                                                    highlight: function(element, errorClass) {
-                                                        $(element).removeClass(errorClass);
-                                                    },
-                                                    unhighlight: function(element, errorClass) {
-                                                        $(element).removeClass(errorClass);
-                                                    },
-                                                    errorPlacement: function(error, element) {
-
-                                                        // Styled checkboxes, radios, bootstrap switch
-                                                        if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container') ) {
-                                                            if(element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
-                                                                error.appendTo( element.parent().parent().parent().parent() );
-                                                            }
-                                                            else {
-                                                                error.appendTo( element.parent().parent().parent().parent().parent() );
-                                                            }
-                                                        }
-
-                                                        // Unstyled checkboxes, radios
-                                                        else if (element.parents('div').hasClass('checkbox') || element.parents('div').hasClass('radio')) {
-                                                            error.appendTo( element.parent().parent().parent() );
-                                                        }
-
-                                                        // Input with icons and Select2
-                                                        else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
-                                                            error.appendTo( element.parent() );
-                                                        }
-
-                                                        // Inline checkboxes, radios
-                                                        else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
-                                                            error.appendTo( element.parent().parent() );
-                                                        }
-
-                                                        // Input group, styled file input
-                                                        else if (element.parent().hasClass('uploader') || element.parents().hasClass('input-group')) {
-                                                            error.appendTo( element.parent().parent() );
-                                                        }
-
-                                                        else {
-                                                            error.insertAfter(element);
-                                                        }
-                                                    },
-                                                    errorElement:'div',
-                                                    rules: {
-                                                        full_name: "required",
-                                                        phone: "required",
-                                                        username: "required",
-                                                        status: "required",
-                                                        role_id: "required",
-                                                        email: {
-                                                            required: true,
-                                                            email: true
-                                                        },
-                                                        password: {
-                                                            minlength: 8
-                                                        },
-                                                        confirm: {
-                                                            minlength: 8,
-                                                            equalTo : "#password"
-                                                        }
-                                                    },
-                                                    messages: {
-                                                        full_name: "Please this field is required",
-                                                        phone: "Please field is required",
-                                                        username: "Please this field is required",
-                                                        role_id: "Please this field is required",
-                                                        status: "Please this field is required",
-                                                        email:{
-                                                            required:"Please this field is required",
-                                                            email:"Please enter valid email",
-                                                        },
-                                                        password:{
-                                                            minlength:"Password must have 8 characters",
-                                                        },
-                                                        confirm:{
-                                                            minlength:"Password must have 8 characters",
-                                                            equalTo :"Password don't match",
-                                                        }
-                                                    },
-                                                    submitHandler: function(form) {
-                                                        $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-                                                        var postData = $('#formUsersProfile').serializeArray();
-                                                        var formURL = $('#formUsersProfile').attr("action");
-                                                        $.ajax(
-                                                            {
-                                                                url : formURL,
-                                                                type: "POST",
-                                                                data : postData,
-                                                                dataType: "json",
-                                                                success:function(data)
-                                                                {
-                                                                    console.log(data);
-                                                                    //data: return data from server
-                                                                    $("#output").html(data.message);
-                                                                    setTimeout(function() {
-                                                                        location.replace('{{url('users')}}');
-                                                                        $("#output").html("");
-                                                                    }, 2000);
-                                                                },
-                                                                error: function(jqXhr,status, response) {
-                                                                    if( jqXhr.status === 400 ) {
-                                                                        var errors = jqXhr.responseJSON.errors;
-                                                                        errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
-                                                                        $.each(errors, function (key, value) {
-                                                                            errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
-                                                                        });
-                                                                        errorsHtml += '</ul></di>';
-                                                                        $('#output').html(errorsHtml);
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        $('#output').html("");
-                                                                    }
-
-                                                                }
-                                                            });
-                                                    }
-                                                });
-                                            </script>
                                         </div>
                                     </div>
                                 </div>
@@ -367,11 +392,6 @@
 
                 <div class="caption text-center">
                     <h6 class="text-semibold no-margin">{{\Auth::user()->full_name}} <small class="display-block">{{\Auth::user()->designation}}</small></h6>
-                    <ul class="icons-list mt-15">
-                        <li><a href="#" data-popup="tooltip" title="Google Drive"><i class="icon-google-drive"></i></a></li>
-                        <li><a href="#" data-popup="tooltip" title="Twitter"><i class="icon-twitter"></i></a></li>
-                        <li><a href="#" data-popup="tooltip" title="Github"><i class="icon-github"></i></a></li>
-                    </ul>
                 </div>
             </div>
             <!-- /user thumbnail -->
@@ -388,7 +408,7 @@
 
                 <div class="list-group no-border no-padding-top">
                     <a href="{{url('account/profile')}}" class="list-group-item"><i class="icon-user"></i> My profile</a>
-                    <a href="#" class=" changePassword list-group-item"><i class="icon-cash3"></i> Change Password</a>
+                    <a href="#" class=" editRecord list-group-item"><i class="icon-cash3"></i> Change Password</a>
                     <a href="#" class="list-group-item"><i class="icon-tree7"></i>Pending Items <span class="badge bg-danger pull-right">29</span></a>
                     <div class="list-group-divider"></div>
                     <a href="#" class="list-group-item"><i class="icon-calendar3"></i> Events <span class="badge bg-teal-400 pull-right">48</span></a>

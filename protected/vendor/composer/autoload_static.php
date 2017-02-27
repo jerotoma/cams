@@ -391,6 +391,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'CreateAssessmentReferralsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_29_072501_create_assessment_referrals_table.php',
         'CreateAssessmentVulnerabilityTypesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_23_153008_create_assessment_vulnerability_types_table.php',
         'CreateAuditsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_14_114429_create_audits_table.php',
+        'CreateBudgetActivitiesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_27_100555_create_budget_activities_table.php',
         'CreateCampsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_19_144953_create_camps_table.php',
         'CreateClientCasesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_09_221915_create_client_cases_table.php',
         'CreateClientInformationsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_20_005230_create_client_informations_table.php',

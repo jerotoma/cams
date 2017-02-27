@@ -5,7 +5,7 @@
             <!-- Main -->
             
             <li>
-                <a href="#"><i class="icon-users"></i>Clients <span></span></a>
+                <a href="#"><i class="icon-users"></i> <span>Clients</span></a>
                 <ul>
                     <li ><a href="{{url('clients')}}">Clients Management</a></li>
                 </ul>
@@ -25,18 +25,26 @@
             </li>
             <!-- /main -->
             <!-- Forms -->
-      @permission('inventory')
-            
+          @permission('inventory')
+
+                <li>
+                    <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
+                    <ul>
+                        <li><a href="{{url('items/distributions')}}">Item Distribution</a></li>
+                        <li><a href="{{url('inventory-received')}}">Received Items</a></li>
+                        <li><a href="{{url('inventory')}}">Items Inventory</a></li>
+                        <li><a href="{{url('inventory-categories')}}">Items Categories</a></li>
+                    </ul>
+                </li>
             <li>
-                <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
+                <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
                 <ul>
-                    <li><a href="{{url('items/distributions')}}">Item Distribution</a></li>
-                    <li><a href="{{url('inventory-received')}}">Received Items</a></li>
-                    <li><a href="{{url('inventory')}}">Items Inventory</a></li>
-                    <li><a href="{{url('inventory-categories')}}">Items Categories</a></li>
+                    <li><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
+                    <li><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
+                    <li><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
                 </ul>
             </li>
-        @endpermission
+            @endpermission
             <!-- /forms -->
             <!-- Forms -->
             

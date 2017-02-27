@@ -15,6 +15,11 @@ Route::get('account/settings','UserController@getSettings');
 Route::get('account/settings/access','UserController@showChangePassword');
 Route::post('account/settings/access','UserController@postChangePassword');
 
+//Cash monitoring
+
+Route::resource('cash/monitoring/budget','CashBudgetController');
+Route::resource('cash/monitoring/provision','CashProvisionController');
+
 //User rights
 Route::resource('access/rights','RolesController');
 

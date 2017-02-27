@@ -145,6 +145,7 @@ class ClientsController extends Controller
 
             $origin="";
             $status="";
+            $datearv="";
             $camp="";
             if(is_object($client->fromOrigin) && $client->fromOrigin != null )
             {
@@ -158,6 +159,10 @@ class ClientsController extends Controller
             {
                 $vcolor="label-success";
             }
+            if($client->date_arrival != "" && $client->date_arrival != null)
+            {
+                $datearv =date('d M Y',strtotime($client->date_arrival));
+           }
 
              $records["data"][] = array(
                 $count++,
@@ -166,7 +171,7 @@ class ClientsController extends Controller
                 $client->sex,
                 $client->age,
                 $client->ration_card_number,
-                date('d M Y',strtotime($client->date_arrival)),
+                 $datearv,
                 $camp,
                 $client->auth_status,
                  '<ul class="icons-list text-center">
@@ -201,33 +206,45 @@ class ClientsController extends Controller
     }
     public function postSearchClient(Request $request)
     {
-      $query=Client::all();
+      $query=Client::query();
+        $end_time ="";
+        $start_time="";
+        if($request->start_date != ""){
+            $start_time = date("Y-m-d", strtotime($request->start_date));
+        }
+        if($request->end_date != ""){
+            $end_time = date("Y-m-d", strtotime($request->end_date));
+        }
       if($request->hai_reg_no != ""){
-          $query=$query->where('hai_reg_number','LIKE',"%{$request->hai_reg_no}%");
+         $query->where('hai_reg_number','LIKE',"%{$request->hai_reg_no}%");
       }
         if($request->unique_id != ""){
-            $query=$query->where('client_number','LIKE',"%{$request->unique_id}%");
+            $query->where('client_number','LIKE',"%{$request->unique_id}%");
         }
         if($request->full_name != ""){
-            $query=$query->where('full_name','LIKE',"%{$request->full_name}%");
+           $query->where('full_name','LIKE',"%{$request->full_name}%");
         }
         if($request->sex != "" && $request->sex != "All"){
-            $query=$query->where('sex','=',"$request->sex");
+          $query->where('sex','=',"$request->sex");
         }
-        if($request->camp_id != ""){
-            $query=$query->where('camp_id','=',"$request->camp_id");
-        }
-        if($request->origin_id != ""){
-            $query=$query->where('origin_id','=',"$request->origin_id");
+        if($request->age_score != ""){
+           $query->where('age_score','=',"$request->age_score");
         }
         if($request->ration_card_number != ""){
-            $query=$query->where('ration_card_number','LIKE',"%{$request->ration_card_number}%");
+           $query->where('ration_card_number','LIKE',"%{$request->ration_card_number}%");
         }
         if($request->ration_card_number != ""){
-            $query=$query->where('present_address','LIKE',"%{$request->present_address}%");
+            $query->where('present_address','LIKE',"%{$request->present_address}%");
         }
-
-        dump($query);
+        if($request->camp_id != "" && $request->camp_id !="All"){
+            $query->where('camp_id','=',"$request->camp_id");
+        }
+        if($start_time != "" && $end_time !=""){
+            $range = [$start_time, $end_time];
+            $query->whereBetween('date_arrival', $range);
+        }
+      $clients=$query->get();
+       return view('clients.clients',compact('clients','request'));
 
     }
     public function showImport()
@@ -253,6 +270,7 @@ class ClientsController extends Controller
                 $results= $reader->get();
                 $results->each(function($row) use($request) {
 
+            if($row->names != "" && $row->names != null && $row->sex != "" && $row->sex != null){
                     $sex ="";
                     if(strtolower($row->sex) =="k" || strtolower($row->sex) =="mk" || strtolower($row->sex) =="f")
                     {
@@ -264,7 +282,7 @@ class ClientsController extends Controller
                     }
                     $client_number=strtoupper(strtolower(preg_replace('/\s+/S', "",$row->unique_id)));
                     $full_name=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->names)));
-                    $age=$row->age;
+                    $age=intval($row->age);
                     $present_address=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->present_address)));
                     $ration_card_number=strtoupper(strtolower(preg_replace('/\s+/S', "",$row->ration_card_number)));
                     $marital_status=ucwords(strtolower(preg_replace('/\s+/S', "",$row->marital_status)));
@@ -318,8 +336,8 @@ class ClientsController extends Controller
 
                         $client->sex = $sex;
                         $client->age = $age;
-                        if ($row->age != null) {
-                            $agedef=Date("Y") - $row->age;
+                        if ($age != null) {
+                            $agedef=intval(Date("Y")) - $age;
                             $birthdate=$agedef."-01-01";
                             $client->birth_date = $birthdate;
                         }
@@ -385,7 +403,8 @@ class ClientsController extends Controller
                         }
 
                     }
-                });
+                }
+            });
 
             });
            return redirect('clients');

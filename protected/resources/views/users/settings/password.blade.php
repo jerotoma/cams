@@ -26,35 +26,30 @@
         <input type="text" class="form-control" id="username " name="username" placeholder="Enter Username" required @if(old('username') !="")value="{{old('username')}}" @else value="{{$user->username}}" @endif readonly>
     </div>
     <div class="form-group">
+        <label for="username">Old Password</label>
+        <input type="password" class="form-control" id="old_userpass " name="old_userpass" placeholder="Enter Old Password">
+    </div>
+    <div class="form-group">
         <div class="row">
             <div class="col-md-6">
                 <label for="userpass">Password</label>
                 <input type="password" class="form-control"  id="userpass" name="userpass" placeholder="Enter Password" required>
-                @if($errors->first('userpass'))
-                    <label for="userpass" class="error">{{$errors->first('userpass')}}</label>
-                @endif
             </div>
             <div class="col-md-6">
                 <label for="passconfirmation">Confirm Password</label>
                 <input type="password" class="form-control"  id="passconfirmation" name="passconfirmation" placeholder="Confirm Password" required>
-                @if($errors->first('passconfirmation'))
-                    <label for="confirmation" class="error">{{$errors->first('passconfirmation')}}</label>
-                @endif
             </div>
         </div>
     </div>
-    <div class="row">
-
-        <div class="col-md-3 col-sm-3 col-xs-3 pull-right">
-            <input type="hidden" value="{{$user->id}}" name="user_id" id="user_id">
-            <button type="submit" class="btn btn-primary btn-block">Change Password</button>
-        </div>
-        <div class="col-md-2 col-sm-2 col-xs-2 pull-right">
-            <a href="#" data-dismiss="modal" class="btn btn-danger btn-block"> <i class="icon-remove"></i>  Cancel</a>
-        </div>
-        <div class="col-md-7 col-sm-7 col-xs-7 pull-left" id="output">
+    <div class="row" style="margin-top: 10px">
+        <div class="col-md-8 col-sm-8 pull-left" id="outputPassword">
 
         </div>
+        <div class="col-md-4 col-sm-4 pull-right text-right">
+            <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-refresh"></i> Submit Form </button>
+        </div>
+
     </div>
 </fieldset>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
@@ -106,6 +101,7 @@
             }
         },
         rules: {
+            old_userpass: "required",
             userpass: {
                 required: true,
                 minlength: 5
@@ -117,6 +113,7 @@
             }
         },
         messages: {
+            old_userpass: "Please enter old password",
             userpass: {
                 required: "Please provide a password",
                 minlength: "Your password must be at least 5 characters long"
@@ -128,7 +125,7 @@
             }
         },
         submitHandler: function(form) {
-            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
+            $("#outputPassword").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
             var postData = $('#adminPassChange').serializeArray();
             var formURL = $('#adminPassChange').attr("action");
             $.ajax(
@@ -137,10 +134,22 @@
                     type: "POST",
                     data : postData,
                     success: function(data){
-                        swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
-                        setTimeout(function() {
-                            $("#output").html("");
-                        }, 2000);
+                        if(data.errors ==1){
+                            $("#outputPassword").html(data.message);
+                        }else {
+                            swal({
+                                title: "Password Change!",
+                                text: data.message,
+                                type: "success",
+                                timer: 2000,
+                                confirmButtonColor: "#43ABDB"
+                            })
+                            setTimeout(function () {
+                                $("#outputPassword").html("");
+                                location.replace("{{url('account/profile')}}");
+                            }, 2000);
+
+                        }
                     },
                     error: function(jqXhr,status, response) {
                         console.log(jqXhr);
@@ -154,11 +163,11 @@
                                 errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
                             });
                             errorsHtml += '</ul></di>';
-                            $('#output').html(errorsHtml);
+                            $('#outputPassword').html(errorsHtml);
                         }
                         else
                         {
-                            $('#output').html(jqXhr.message);
+                            $('#outputPassword').html(jqXhr.message);
                         }
 
                     }

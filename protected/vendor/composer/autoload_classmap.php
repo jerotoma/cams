@@ -19,6 +19,7 @@ return array(
     'CreateAssessmentReferralsTable' => $baseDir . '/database/migrations/2017_01_29_072501_create_assessment_referrals_table.php',
     'CreateAssessmentVulnerabilityTypesTable' => $baseDir . '/database/migrations/2017_01_23_153008_create_assessment_vulnerability_types_table.php',
     'CreateAuditsTable' => $baseDir . '/database/migrations/2017_02_14_114429_create_audits_table.php',
+    'CreateBudgetActivitiesTable' => $baseDir . '/database/migrations/2017_02_27_100555_create_budget_activities_table.php',
     'CreateCampsTable' => $baseDir . '/database/migrations/2017_01_19_144953_create_camps_table.php',
     'CreateClientCasesTable' => $baseDir . '/database/migrations/2017_02_09_221915_create_client_cases_table.php',
     'CreateClientInformationsTable' => $baseDir . '/database/migrations/2017_02_20_005230_create_client_informations_table.php',
