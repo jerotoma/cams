@@ -30,7 +30,7 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'items/distributions','role'=>'form','id'=>'formItemsReceived','files'=>true)) !!}
+        {!! Form::open(array('url'=>'items/distributions','role'=>'form','id'=>'formItemsReceived')) !!}
         <div class="panel panel-flat">
             <div class="panel-body">
                 <fieldset class="scheduler-border">
@@ -188,18 +188,14 @@
             item_id:"Please Please select Items",
         },
         submitHandler: function(form) {
-            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Submitting form please wait...</span><h3>");
+            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
+            var postData = $('#formItemsReceived').serializeArray();
             var formURL = $('#formItemsReceived').attr("action");
-            var formData = new FormData(form);
             $.ajax(
                 {
                     url : formURL,
                     type: "POST",
-                    data : formData,
-                    async: false,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
+                    data : postData,
                     dataType: 'json',
                     success:function(data)
                     {
@@ -215,9 +211,10 @@
                             location.replace('{{url('login')}}');
                         }
                         if( jqXhr.status === 400 ) {
-                            if(jqXhr.responseJSON.errors == 1)
-                            {
-                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">' + jqXhr.responseJSON.message + '</p></div>';
+                            if(jqXhr.responseJSON.errors ==1){
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p>';
+                                errorsHtml +='<p>'+ jqXhr.responseJSON.message +'</p></div>';
+
                                 $('#output').html(errorsHtml);
                             }
                             else {

@@ -117,7 +117,6 @@ class ItemsReceivingController extends Controller
                                 $invItem=new ItemsInventory;
                                 $invItem->item_name=$row->item_name;
                                 $invItem->description=$row->description;
-                                $invItem->quantity=$row->quantity;
                                 $invItem->remarks=$row->description;
                                 $invItem->status="Available";
                                 $invItem->save();
@@ -132,10 +131,14 @@ class ItemsReceivingController extends Controller
                             {
                                 $tmreceived=new ItemReceived;
                                 $tmreceived->received_id=$items->id;
-                                $tmreceived->item_id=$itm_id;
-                                $tmreceived->quantity=$row->quantity;
+                                $tmreceived->item_id=$invItem->id;
+                                $tmreceived->quantity=intval($row->quantity);
                                 $tmreceived->description=$row->description;
                                 $tmreceived->save();
+
+                                //Increase inventory
+                                $invItem->quantity =intval($invItem->quantity) + intval($row->quantity);
+                                $invItem->save();
                             }
 
 
@@ -367,7 +370,6 @@ class ItemsReceivingController extends Controller
                                     $invItem=new ItemsInventory;
                                     $invItem->item_name=$row->item_name;
                                     $invItem->description=$row->description;
-                                    $invItem->quantity=$row->quantity;
                                     $invItem->remarks=$row->description;
                                     $invItem->status="Available";
                                     $invItem->save();
@@ -382,10 +384,13 @@ class ItemsReceivingController extends Controller
                                 {
                                     $tmreceived=new ItemReceived;
                                     $tmreceived->received_id=$items->id;
-                                    $tmreceived->item_id=$itm_id;
-                                    $tmreceived->quantity=$row->quantity;
+                                    $tmreceived->item_id=$invItem->id;
+                                    $tmreceived->quantity=intval($row->quantity);
                                     $tmreceived->description=$row->description;
                                     $tmreceived->save();
+
+                                    $invItem->quantity =intval($invItem->quantity) + intval($row->quantity);
+                                    $invItem->save();
                                 }
 
 
