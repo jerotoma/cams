@@ -2,34 +2,86 @@
 @section('page_js')
     <script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/pages/datatables_basic.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
 @section('scripts')
     <script>
-        $(".deleteRecord").click(function(){
+        $(".editRecord").click(function(){
             var id1 = $(this).parent().attr('id');
-            $(".deleteModule").show("slow").parent().parent().find("span").remove();
-            var btn = $(this).parent().parent();
-            $(this).hide("slow").parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
-            $("#no").click(function(){
-                $(this).parent().parent().find(".deleteRecord").show("slow");
-                $(this).parent().parent().find("span").remove();
-            });
-            $("#yes").click(function(){
-                $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
-                $.ajax({
-                    url:"<?php echo url('countries') ?>/"+id1,
-                    type: 'post',
-                    data: {_method: 'delete', _token :"{{csrf_token()}}"},
-                    success:function(msg){
-                        btn.hide("slow").next("hr").hide("slow");
-                    }
-                });
+            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+            modaldis+= '<div class="modal-content">';
+            modaldis+= '<div class="modal-header bg-indigo">';
+            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Client Details </span>';
+            modaldis+= '</div>';
+            modaldis+= '<div class="modal-body">';
+            modaldis+= ' </div>';
+            modaldis+= '</div>';
+            modaldis+= '</div>';
+            $('body').css('overflow-y','scroll');
+
+            $("body").append(modaldis);
+            $("#myModal").modal("show");
+            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+            $(".modal-body").load("<?php echo url("clients") ?>/"+id1+"/edit");
+            $("#myModal").on('hidden.bs.modal',function(){
+                $("#myModal").remove();
+            })
+
+        });
+        // Confirmation dialog
+        $('.deleteRecord').on('click', function() {
+            var id1 = $(this).parent().attr('id');
+            var btn=$(this).parent().parent().parent().parent().parent().parent();
+            bootbox.confirm("Are You Sure to delete record?", function(result) {
+                if(result){
+                    $.ajax({
+                        url:"<?php echo url('countries') ?>/"+id1,
+                        type: 'post',
+                        data: {_method: 'delete', _token :"{{csrf_token()}}"},
+                        success:function(msg){
+                            btn.hide("slow").next("hr").hide("slow");
+                        }
+                    });
+                }
             });
         });
+
+        $(".addRecord").click(function(){
+            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" class="modal fade" role="dialog" data-backdrop="false">';
+            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+            modaldis+= '<div class="modal-content">';
+            modaldis+= '<div class="modal-header bg-indigo">';
+            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Add New Country</span>';
+            modaldis+= '</div>';
+            modaldis+= '<div class="modal-body">';
+            modaldis+= ' </div>';
+            modaldis+= '</div>';
+            modaldis+= '</div>';
+            $('body').css('overflow-y','scroll');
+
+            $("body").append(modaldis);
+            $("#myModal").modal("show");
+            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+            $(".modal-body").load("<?php echo url("countries/create") ?>");
+            $("#myModal").on('hidden.bs.modal',function(){
+                $("#myModal").remove();
+                $('body').removeClass('modal-open');
+                $('#specific-div').modal('hide');
+                $('.modal-backdrop').remove();
+            })
+
+        });
+
     </script>
+
 @stop
 @section('main_navigation')
     @include('inc.main_navigation')
@@ -50,7 +102,7 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="{{url('countries/create')}}" class="btn btn-info "><i class="fa fa-file-o"></i> <span>Add New</span></a>
+            <a  href="#" class="addRecord btn btn-info "><i class="fa fa-file-o"></i> <span>Add New</span></a>
             <a  href="{{url('countries')}}" class="btn btn-info "><i class="fa fa-list"></i> <span>List All</span></a>
             <a  href="{{url('countries')}}" class="btn btn-info "><i class="fa fa-search"></i> <span>Search</span></a>
         </div>
