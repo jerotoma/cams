@@ -205,9 +205,93 @@ class ClientsController extends Controller
     {
         return view('clients.search');
     }
+    public function advancedSearchClient(Request $request)
+    {
+      try {
+          $query = Client::query();
+          $end_time = "";
+          $start_time = "";
+          if ($request->start_date != "") {
+              $start_time = date("Y-m-d", strtotime($request->start_date));
+          }
+          if ($request->end_date != "") {
+              $end_time = date("Y-m-d", strtotime($request->end_date));
+          }
+          if ($request->hai_reg_no != "") {
+              $query->where('hai_reg_number', 'LIKE', "%{$request->hai_reg_no}%");
+          }
+          if ($request->unique_id != "") {
+              $query->where('client_number', 'LIKE', "%{$request->unique_id}%");
+          }
+          if ($request->full_name != "") {
+              $query->where('full_name', 'LIKE', "%{$request->full_name}%");
+          }
+          if ($request->sex != "" && $request->sex != "All") {
+              $query->where('sex', '=', "$request->sex");
+          }
+          if ($request->age_score != "") {
+              $query->where('age_score', '=', "$request->age_score");
+          }
+          if ($request->ration_card_number != "") {
+              $query->where('ration_card_number', 'LIKE', "%{$request->ration_card_number}%");
+          }
+          if ($request->ration_card_number != "") {
+              $query->where('present_address', 'LIKE', "%{$request->present_address}%");
+          }
+          if ($request->camp_id != "" && $request->camp_id != "All") {
+              $query->where('camp_id', '=', "$request->camp_id");
+          }
+          if ($start_time != "" && $end_time != "") {
+              $range = [$start_time, $end_time];
+              $query->whereBetween('date_arrival', $range);
+          }
+
+          $clients = $query->get();
+
+          $iTotalRecords = count($clients);
+          $sEcho = intval(10);
+
+          $records = array();
+
+
+
+          $count = 1;
+          foreach ($clients as $client) {
+              $origin = "";
+              $status = "";
+              $camp = "";
+              if (is_object($client->camp) && $client->camp != null) {
+                  $camp = $client->camp->camp_name;
+              }
+              $records[] = array(
+                  $count++,
+                  $client->hai_reg_number,
+                  $client->client_number,
+                  $client->full_name,
+                  $client->sex,
+                  $client->age,
+                  $client->ration_card_number,
+                  $camp,
+                  '<label><input type="radio" name="client_id" value="' . $client->id . ' " onclick="getPSNProfile(this.value);"></label>',
+              );
+          }
+
+
+          echo json_encode($records);
+      }
+      catch (\Exception $ex)
+      {
+          return Response::json(array(
+              'success' => false,
+              'errors' => 1,
+              'messagge' => $ex->getMessage()
+          ), 402); // 400 being the HTTP code for an invalid request.
+      }
+
+    }
     public function postSearchClient(Request $request)
     {
-      $query=Client::query();
+        $query=Client::query();
         $end_time ="";
         $start_time="";
         if($request->start_date != ""){
@@ -216,23 +300,23 @@ class ClientsController extends Controller
         if($request->end_date != ""){
             $end_time = date("Y-m-d", strtotime($request->end_date));
         }
-      if($request->hai_reg_no != ""){
-         $query->where('hai_reg_number','LIKE',"%{$request->hai_reg_no}%");
-      }
+        if($request->hai_reg_no != ""){
+            $query->where('hai_reg_number','LIKE',"%{$request->hai_reg_no}%");
+        }
         if($request->unique_id != ""){
             $query->where('client_number','LIKE',"%{$request->unique_id}%");
         }
         if($request->full_name != ""){
-           $query->where('full_name','LIKE',"%{$request->full_name}%");
+            $query->where('full_name','LIKE',"%{$request->full_name}%");
         }
         if($request->sex != "" && $request->sex != "All"){
-          $query->where('sex','=',"$request->sex");
+            $query->where('sex','=',"$request->sex");
         }
         if($request->age_score != ""){
-           $query->where('age_score','=',"$request->age_score");
+            $query->where('age_score','=',"$request->age_score");
         }
         if($request->ration_card_number != ""){
-           $query->where('ration_card_number','LIKE',"%{$request->ration_card_number}%");
+            $query->where('ration_card_number','LIKE',"%{$request->ration_card_number}%");
         }
         if($request->ration_card_number != ""){
             $query->where('present_address','LIKE',"%{$request->present_address}%");
@@ -244,8 +328,8 @@ class ClientsController extends Controller
             $range = [$start_time, $end_time];
             $query->whereBetween('date_arrival', $range);
         }
-      $clients=$query->get();
-       return view('clients.clients',compact('clients','request'));
+        $clients=$query->get();
+        return view('clients.clients',compact('clients','request'));
 
     }
     public function showImport()

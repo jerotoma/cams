@@ -343,7 +343,6 @@
                     <a href="{{url('cash/monitoring/budget')}}" class="btn btn-primary"><i class="fa fa-server text-danger"></i> List All Activities</a>
                     <a href="{{url('cash/monitoring/provision')}}" class="btn btn-primary"><i class="fa fa-forward text-danger"></i> Cash Provision</a>
                     <a href="{{url('post/cash/monitoring')}}" class="btn btn-primary"><i class="fa fa-list text-danger"></i> Post Cash monitoring</a>
-                    <a href="{{url('import/cash/monitoring/budget')}}" class=" btn btn-primary"><i class="fa fa-upload text-danger"></i> Import Items</a>
                 </div>
             </div>
             <div class="panel panel-flat">

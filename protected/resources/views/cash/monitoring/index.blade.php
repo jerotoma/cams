@@ -75,7 +75,7 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Activity Details</span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Cash Post Distribution Monitoring</span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -86,7 +86,7 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("cash/monitoring/budget") ?>/"+id1);
+                        $(".modal-body").load("<?php echo url("post/cash/monitoring") ?>/"+id1);
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
@@ -100,7 +100,7 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Activity Details </span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Cash Post Distribution Monitoring </span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -111,7 +111,7 @@
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
                         $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("cash/monitoring/budget") ?>/"+id1+"/edit");
+                        $(".modal-body").load("<?php echo url("post/cash/monitoring") ?>/"+id1+"/edit");
                         $("#myModal").on('hidden.bs.modal',function(){
                             $("#myModal").remove();
                         })
@@ -125,7 +125,7 @@
                         bootbox.confirm("Are You Sure to delete record?", function(result) {
                             if(result){
                                 $.ajax({
-                                    url:"<?php echo url('cash/monitoring/budget') ?>/"+id1,
+                                    url:"<?php echo url('post/cash/monitoring') ?>/"+id1,
                                     type: 'post',
                                     data: {_method: 'delete', _token :"{{csrf_token()}}"},
                                     success:function(msg){
@@ -170,7 +170,7 @@
             modaldis+= '<div class="modal-content">';
             modaldis+= '<div class="modal-header bg-indigo">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i>Create New Actity</span>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Cash Post Distribution Monitoring</span>';
             modaldis+= '</div>';
             modaldis+= '<div class="modal-body">';
             modaldis+= ' </div>';
@@ -181,12 +181,34 @@
             $("body").append(modaldis);
             $("#myModal").modal("show");
             $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("cash/monitoring/budget/create") ?>");
+            $(".modal-body").load("<?php echo url("post/cash/monitoring/create") ?>");
             $("#myModal").on('hidden.bs.modal',function(){
                 $("#myModal").remove();
             })
 
         });
+        function closePrint () {
+            document.body.removeChild(this.__container__);
+        }
+
+        function setPrint () {
+            this.contentWindow.__container__ = this;
+            this.contentWindow.onbeforeunload = closePrint;
+            this.contentWindow.onafterprint = closePrint;
+            this.contentWindow.focus(); // Required for IE
+            this.contentWindow.print();
+        }
+
+        function printPage (sURL) {
+            var oHiddFrame = document.createElement("iframe");
+            oHiddFrame.onload = setPrint;
+            oHiddFrame.style.visibility = "hidden";
+            oHiddFrame.style.position = "fixed";
+            oHiddFrame.style.right = "0";
+            oHiddFrame.style.bottom = "0";
+            oHiddFrame.src = sURL;
+            document.body.appendChild(oHiddFrame);
+        }
 
 
     </script>
@@ -339,16 +361,14 @@
 @section('contents')
                 <div class="row" style="margin-bottom: 5px">
                 <div class="col-md-12 text-right">
-                    <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-danger"></i> Add New Activity</a>
-                    <a href="{{url('cash/monitoring/budget')}}" class="btn btn-primary"><i class="fa fa-server text-danger"></i> List All Activities</a>
+                    <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-danger"></i> Assess Client</a>
+                    <a href="{{url('post/cash/monitoring')}}" class="btn btn-primary"><i class="fa fa-server text-danger"></i> List All Assessments</a>
                     <a href="{{url('cash/monitoring/provision')}}" class="btn btn-primary"><i class="fa fa-forward text-danger"></i> Cash Provision</a>
-                    <a href="{{url('post/cash/monitoring')}}" class="btn btn-primary"><i class="fa fa-list text-danger"></i> Post Cash monitoring</a>
-                    <a href="{{url('import/cash/monitoring/budget')}}" class=" btn btn-primary"><i class="fa fa-upload text-danger"></i> Import Items</a>
                 </div>
             </div>
             <div class="panel panel-flat">
                 <div class="panel-heading">
-                    <h5 class="panel-title text-uppercase text-bold text-center">List of All Activities</h5>
+                    <h5 class="panel-title text-uppercase text-bold text-center">List of All Cash Post Monitoring Assessments</h5>
                 </div>
 
                 <div class="panel-body">
@@ -359,25 +379,25 @@
                                 #
                             </th>
                             <th class="text-center">
-                                Activity Name
+                                HAI Reg No
                             </th>
                             <th class="text-center">
-                                Descriptions
+                                Names
                             </th>
                             <th class="text-center">
-                                Amount
+                                Sex
                             </th>
                             <th class="text-center">
-                                Currency
+                                Age
                             </th>
                             <th class="text-center">
-                                Donor
+                                Rational Cards
                             </th>
                             <th class="text-center">
-                                Remarks
+                                Present Address
                             </th>
                             <th class="text-center">
-                                Status
+                                Camp
                             </th>
                             <th class="text-center">
                                 Action
@@ -421,6 +441,9 @@
                                                     <i class="icon-menu9"></i>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li id="{{$assessment->id}}"><a href="#" class="showRecord label label-success"> <i class="fa fa-eye"></i> View</a></li>
+                                                    <li id="{{$assessment->id}}"><a href="#" class=" label label-info" onclick="printPage('{{url('print/post/cash/monitoring')}}/{{$provision->id}}');"> <i class="fa fa-print"></i> Print </a></li>
+                                                    <li id="{{$assessment->id}}"><a href="{{url('download/pdf/post/cash/monitoring')}}/{{$provision->id}}" class="label label-primary"> <i class="fa fa-file-pdf-o"></i> Download </a></li>
                                                     <li id="{{$assessment->id}}"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
                                                     <li id="{{$assessment->id}}"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
                                                 </ul>

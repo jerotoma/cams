@@ -49,6 +49,8 @@ Route::get('getclientsjson','ClientsController@getJSonDataSearch');
 Route::get('getclientslist','ClientsController@getJSonClientDataSearch');
 Route::get('search/clients','ClientsController@searchClient');
 Route::post('search/clients','ClientsController@postSearchClient');
+Route::post('advanced/search/clients','ClientsController@advancedSearchClient');
+
 Route::get('create-client','ClientsController@createClient');
 
 //NFIs Item inventory
