@@ -39,12 +39,12 @@
                     <legend class="text-bold">User Details</legend>
                     <div class="form-group ">
                         <label class="control-label">Full Name</label>
-                        <input type="text" class="form-control" placeholder="Username" name="full_name" id="full_name"
+                        <input type="text" class="form-control" placeholder="Full Name" name="full_name" id="full_name"
                                value="">
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Designation</label>
-                        <input type="text" class="form-control" placeholder="Designation" name="designation" id="designation"
+                        <input type="text" class="form-control" placeholder="Designation/Job title" name="designation" id="designation"
                                value="">
                     </div>
                     <div class="row">
@@ -66,9 +66,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Username</label>
-                                <input type="text" class="form-control" placeholder="Username" name="username" id="username"
-                                       value="">
+                                <label class="control-label">Department</label>
+                                <select class="select" name="department_id" id="department_id" data-placeholder="Choose an option...">
+                                    <option></option>
+                                    @foreach(\App\Department::all() as $department)
+                                        <option value="{{$department->id}}">{{$department->department_name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -82,15 +86,6 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Department</label>
-                        <select class="select" name="department_id" id="department_id" data-placeholder="Choose an option...">
-                            <option></option>
-                            @foreach(\App\Department::all() as $department)
-                            <option value="{{$department->id}}">{{$department->department_name}}</option>
-                                @endforeach
-                        </select>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -116,7 +111,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 pull-right text-right">
                         <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Add  User </button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i> Add  User </button>
                     </div>
 
                 </div>
@@ -143,7 +138,6 @@
         rules: {
             full_name: "required",
             phone: "required",
-            username: "required",
             status: "required",
             role_id: "required",
             email: {
@@ -163,7 +157,6 @@
         messages: {
             full_name: "Please this field is required",
             phone: "Please field is required",
-            username: "Please this field is required",
             role_id: "Please this field is required",
             status: "Please this field is required",
             email:{

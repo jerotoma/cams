@@ -989,6 +989,7 @@
                         if(jqXhr.responseJSON.errors ==1){
                             errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p>';
                             errorsHtml += '<p>'+ jqXhr.responseJSON.message +'</p></div>';
+                            $('#output').html(errorsHtml);
                         }else {
                             var errors = jqXhr.responseJSON.errors;
                             errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';

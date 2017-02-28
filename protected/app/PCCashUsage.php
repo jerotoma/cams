@@ -10,6 +10,6 @@ class PCCashUsage extends Model
 
     public function usages()
     {
-        return $this::hasMany('\App\PCCashUsageCategory ','usage_id','id');
+        return $this::hasMany('\App\PCCashUsageCategory','usage_id','id');
     }
 }

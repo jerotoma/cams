@@ -391,10 +391,13 @@
                                 Age
                             </th>
                             <th class="text-center">
-                                Rational Cards
+                                Date of interview
                             </th>
                             <th class="text-center">
-                                Present Address
+                                Name of Enumerator
+                            </th>
+                            <th class="text-center">
+                                Organisation
                             </th>
                             <th class="text-center">
                                 Camp
@@ -411,27 +414,37 @@
                                 <tr>
                                     <td> {{$count++}} </td>
                                     <td>
-                                        {{$assessment->activity_name	}}
+                                        @if(is_object($assessment->client) && $assessment->client != null)
+                                            {{$assessment->client->hai_reg_number}}
+                                            @endif
                                     </td>
                                     <td>
-                                        {{$assessment->description}}
+                                        @if(is_object($assessment->client) && $assessment->client != null)
+                                            {{$assessment->client->full_name}}
+                                        @endif
                                     </td>
                                     <td>
-                                        {{number_format($assessment->amount,2,'.',',')}}
+                                        @if(is_object($assessment->client) && $assessment->client != null)
+                                            {{$assessment->client->sex}}
+                                        @endif
                                     </td>
                                     <td>
-                                        {{$assessment->currency}}
+                                        @if(is_object($assessment->client) && $assessment->client != null)
+                                            {{$assessment->client->age}}
+                                        @endif
                                     </td>
                                     <td>
-                                        {{$assessment->donor}}
+                                        {{$assessment->interview_date}}
                                     </td>
                                     <td>
-                                        {{$assessment->remarks}}
+                                        {{$assessment->enumerator_name}}
                                     </td>
-                                    <td>@if(strtolower($assessment->status) =="available" )
-                                            <span class="label label-success">{{$assessment->status}}</span>
-                                        @else
-                                            <span class="label label-danger">{{$assessment->status}}</span>
+                                    <td>
+                                        {{$assessment->organisation}}
+                                    </td>
+                                    <td>
+                                        @if(is_object($assessment->camp) && $assessment->camp != null)
+                                            {{$assessment->camp->camp_name}}
                                         @endif
                                     </td>
                                     <td class="text-center">
@@ -442,10 +455,10 @@
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-right">
                                                     <li id="{{$assessment->id}}"><a href="#" class="showRecord label label-success"> <i class="fa fa-eye"></i> View</a></li>
-                                                    <li id="{{$assessment->id}}"><a href="#" class=" label label-info" onclick="printPage('{{url('print/post/cash/monitoring')}}/{{$provision->id}}');"> <i class="fa fa-print"></i> Print </a></li>
-                                                    <li id="{{$assessment->id}}"><a href="{{url('download/pdf/post/cash/monitoring')}}/{{$provision->id}}" class="label label-primary"> <i class="fa fa-file-pdf-o"></i> Download </a></li>
-                                                    <li id="{{$assessment->id}}"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                                                    <li id="{{$assessment->id}}"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                                                    <li id="{{$assessment->id}}"><a href="#" class=" label label-info" onclick="printPage('{{url('print/post/cash/monitoring')}}/{{$assessment->id}}');"> <i class="fa fa-print"></i> Print </a></li>
+                                                    <li id="{{$assessment->id}}"><a href="{{url('download/pdf/post/cash/monitoring')}}/{{$assessment->id}}" class="label label-primary"> <i class="fa fa-file-pdf-o"></i> Download </a></li>
+                                                    <li id="{{$assessment->id}}"><a href="#" class="editRecord label label-primary"><i class="fa fa-pencil "></i> Edit </a></li>
+                                                    <li id="{{$assessment->id}}"><a href="#" class="deleteRecord label label-danger"><i class="fa fa-trash  "></i> Delete </a></li>
                                                 </ul>
                                             </li>
                                         </ul>
@@ -462,25 +475,28 @@
 
                             </td>
                             <td class="text-center">
-                                Activity Name
+                                HAI Reg No
                             </td>
                             <td class="text-center">
-                                Descriptions
+                                Names
                             </td>
                             <td class="text-center">
-                                Amount
+                                Sex
                             </td>
                             <td class="text-center">
-                                Currency
+                                Age
                             </td>
                             <td class="text-center">
-                                Donor
+                                Date of interview
                             </td>
                             <td class="text-center">
-                                Remarks
+                                Name of Enumerator
                             </td>
                             <td class="text-center">
-                                Status
+                                Organisation
+                            </td>
+                            <td class="text-center">
+                                Camp
                             </td>
                             <td class="text-center">
 

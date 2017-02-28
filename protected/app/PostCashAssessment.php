@@ -21,22 +21,22 @@ class PostCashAssessment extends Model
     }
     public function demographicDetails()
     {
-        return $this::hasOne('\App\PCDemographicDetails ','assessment_id');
+        return $this::hasOne('\App\PCDemographicDetails','assessment_id');
     }
     public function cashWithdrawal()
     {
-        return $this::hasOne('\App\PCCashWithdrawal ','assessment_id');
+        return $this::hasOne('\App\PCCashWithdrawal','assessment_id');
     }
     public function physicallyReceivingCash()
     {
-        return $this::hasOne('\App\PCPhysicallyReceivingCash ','assessment_id');
+        return $this::hasOne('\App\PCPhysicallyReceivingCash','assessment_id');
     }
     public function communalRelations()
     {
-        return $this::hasOne('\App\PCCommunalRelations ','assessment_id');
+        return $this::hasOne('\App\PCCommunalRelations','assessment_id');
     }
     public function cashUsage()
     {
-        return $this::hasOne('\App\PCCashUsage ','assessment_id');
+        return $this::hasOne('\App\PCCashUsage','assessment_id');
     }
 }

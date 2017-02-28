@@ -20,7 +20,7 @@ class AuditController extends Controller
     {
         //
         $logs =Audit::all();
-        return view('users.audit',compact('logs'));
+        return view('users.audit.index',compact('logs'));
 
     }
 

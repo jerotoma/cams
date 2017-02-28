@@ -335,7 +335,6 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-file-o "></i> <span>Add New Role</span></a>
             <a  href="{{url('access/rights')}}" class="btn btn-primary "><i class="fa fa-users "></i> <span>List All Roles</span></a>
             <a  href="{{url('users')}}" class="btn btn-primary "><i class="fa fa-user-secret "></i> <span>User</span></a>
         </div>

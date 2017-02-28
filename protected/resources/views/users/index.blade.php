@@ -323,7 +323,7 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-file-o "></i> <span>Register New User</span></a>
+            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-user-plus"></i> <span>Register New User</span></a>
             <a  href="{{url('users')}}" class="btn btn-primary "><i class="fa fa-users "></i> <span>List All Users</span></a>
             <a  href="{{url('access/rights')}}" class="btn btn-primary "><i class="fa fa-user-secret "></i> <span>User Access Rights</span></a>
         </div>

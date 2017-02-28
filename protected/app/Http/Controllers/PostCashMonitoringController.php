@@ -163,9 +163,9 @@ class PostCashMonitoringController extends Controller
 
                 return Response::json(array(
                     'success' => false,
-                    'errors' => 1,
+                    'errors' => 0,
                     'message' => "Record Saved successfully"
-                ), 400); // 400 being the HTTP code for an invalid request.
+                ), 200); // 400 being the HTTP code for an invalid request.
 
             }
         }
@@ -232,7 +232,6 @@ class PostCashMonitoringController extends Controller
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
                 $assessment= PostCashAssessment::find($id);
-                $assessment->client_id =$request->client_id;
                 $assessment->camp_id =$request->camp_id;
                 $assessment->district_id =$request->district_id;
                 $assessment->interview_date =$request->interview_date;
@@ -338,9 +337,9 @@ class PostCashMonitoringController extends Controller
 
                 return Response::json(array(
                     'success' => false,
-                    'errors' => 1,
+                    'errors' => 0,
                     'message' => "Record Saved successfully"
-                ), 400); // 400 being the HTTP code for an invalid request.
+                ), 200); // 400 being the HTTP code for an invalid request.
 
             }
         }
