@@ -343,7 +343,6 @@
             marital_status: "required",
             share_info: "required",
             hh_relation: "required",
-            present_address: "required",
             full_name: "required",
             sex: "required",
             age: {
@@ -367,7 +366,6 @@
             marital_status: "Please this field is required",
             share_info: "Please this field is required",
             hh_relation: "Please Relation to the head of household is required",
-            present_address: "Please client address is required",
             full_name: "Please full name is required",
             sex: "Please sex is required",
             age:{

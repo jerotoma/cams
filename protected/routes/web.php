@@ -19,6 +19,8 @@ Route::post('account/settings/access','UserController@postChangePassword');
 
 Route::resource('cash/monitoring/budget','CashBudgetController');
 Route::resource('cash/monitoring/provision','CashProvisionController');
+Route::resource('post/cash/monitoring','PostCashMonitoringController');
+
 Route::get('print/cash/monitoring/provision/{id}','CashProvisionController@showPrint');
 Route::get('download/pdf/cash/monitoring/provision/{id}','CashProvisionController@downloadPdf');
 Route::get('bulk/cash/monitoring/provision','CashProvisionController@showBulk');
