@@ -76,16 +76,38 @@ class ClientReportsController extends Controller
                 ->select('clients.*');
         }
 
+        $clients = $query->get();
+
+
         //Export now
-        if($request->export_type)
+        switch ($request->report_type)
         {
+            case 1:
+                echo "1";
+                break;
+            case  2:
+                echo "2";
+                break;
+            case 3:
+                echo "3";
+                break;
+            case 4:
+                if($request->export_type ==1){
+                    return view('reports.clients.html.registration',compact('clients'));
+                }
+                elseif($request->export_type ==3){
+
+                    \Excel::create("Client_registration_reports", function($excel) use($clients)  {
+                        $excel->sheet('sheet', function($sheet) use($clients){
+                            $sheet->loadView('reports.clients.html.registration',compact('clients'));
+                        });
+                    })->download('xlsx');
+                }
+                break;
+            default:
 
         }
 
-        $clients = $query->get();
-        dump($clients);
-
-
-
     }
+
 }
