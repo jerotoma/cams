@@ -475,15 +475,15 @@
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
             @permission('create')
-            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-file-o "></i> <span>Register New Client</span></a>
+            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-user-plus "></i> <span>Register New Client</span></a>
             @endpermission
             <a  href="{{url('clients')}}" class="btn btn-primary "><i class="fa fa-list "></i> <span>List All</span></a>
             <a  href="{{url('search/clients')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Search</span></a>
             @permission('authorize')
-            <a  href="#" class="authorizeAllRecord btn btn-danger"><i class="fa fa- "></i> <span>Authorize All</span></a>
+            <a  href="#" class="authorizeAllRecord btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
             @endpermission
             @permission('edit')
-            <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import</span></a>
+            <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import Clients</span></a>
             @endpermission
         </div>
     </div>

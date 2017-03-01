@@ -129,6 +129,42 @@
 
 
         });
+        $('#clientsNeeds').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Clients registered & their vulnerabilities'
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            series: [{
+                name: 'Clients',
+                colorByPoint: true,
+                data: [<?php echo getHighChatClientByCodes();?>]
+            }]
+        });
         $('#clientRegistration').highcharts({
             chart: {
                 type: 'column'
@@ -352,12 +388,18 @@
     </div>
     <div class="row" style="margin-top: 10px">
         <div class="col-md-6">
-            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientRegistration"></div>
+            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientsNeeds"></div>
         </div>
 
         <div class="col-md-6">
             <div style="min-width: 310px; height: 400px; margin: 0 auto" id="nfidistribution"></div>
         </div>
+    </div>
+    <div class="row" style="margin-top: 10px">
+        <div class="col-md-12">
+            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientRegistration"></div>
+        </div>
+
     </div>
     <div class="row" style="margin-top: 20px">
         <div class="col-md-6">

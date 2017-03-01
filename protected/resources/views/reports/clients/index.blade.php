@@ -179,7 +179,78 @@
             // Escape any “rule” characters with an exclamation mark (!).
             format: 'yyyy-mm-dd',
         });
-
+        $('#clientsNeeds').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Clients registered & their vulnerabilities'
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            series: [{
+                name: 'Clients',
+                colorByPoint: true,
+                data: [<?php echo getHighChatClientByCodes();?>]
+            }]
+        });
+        $('#clientRegistrationdistribution').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Client Registration'
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            series: [{
+                name: 'Clients',
+                colorByPoint: true,
+                data: [<?php echo getHighChatClientMonthlyCountByNationality();?>]
+            }]
+        });
         $('#clientRegistration').highcharts({
             chart: {
                 type: 'column'
@@ -220,8 +291,8 @@
             },
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><th style="color:{series.color};padding:0">{series.name}: </th>' +
-                '<th style="padding:0"><b>{point.y:.0f} </b></th></tr>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.0f} </b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -235,42 +306,7 @@
 
             series: [<?php echo getHighChatClientMonthlyCountByYear(date('Y'));?>]
         });
-        $('#clientsNeeds').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: 'Clients registered & their vulnerabilities'
-            },
-            credits: {
-                enabled: false
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        style: {
-                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                        },
-                        connectorColor: 'silver'
-                    }
-                }
-            },
-            series: [{
-                name: 'Clients',
-                colorByPoint: true,
-                data: [<?php echo getHighChatClientByCodes();?>]
-            }]
-        });
+
 
         $("#formClientReport").validate({
             ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
@@ -320,11 +356,13 @@
             },
             errorElement:'div',
             rules: {
+                export_type: "required",
                 report_type: "required"
+
             },
             messages: {
-                report_type: "Please report type is required"
-
+                export_type: "Please this field is required",
+                report_type: "Please this field is required"
             }
         });
     </script>
@@ -332,10 +370,16 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
+            @permission('create')
+            <a  href="{{url('clients')}}"  class=" btn btn-primary"><i class="fa fa-user-plus "></i> <span>Register New Client</span></a>
+            @endpermission
             <a  href="{{url('clients')}}" class="btn btn-primary "><i class="fa fa-list "></i> <span>List All</span></a>
             <a  href="{{url('search/clients')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Search</span></a>
+            @permission('authorize')
+            <a  href="{{url('clients')}}" class=" btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
+            @endpermission
             @permission('edit')
-            <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import</span></a>
+            <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import Clients</span></a>
             @endpermission
         </div>
     </div>
@@ -349,18 +393,18 @@
 
                         <div class="panel-body">
                             <fieldset class="scheduler-border">
-                                <legend class="text-bold">Client Registration Report</legend>
+                                <legend class="text-bold">Client Registration Reports</legend>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group ">
-                                            <label class="control-label">Start Date</label>
+                                            <label class="control-label">Arrival Date: Start Date</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="icon-calendar22"></i></span>
                                                 <input type="text" class="form-control pickadate"  value="{{old('start_date')}}" name="start_date" id="start_date">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group ">
                                             <label class="control-label">End Date</label>
                                             <div class="input-group">
@@ -369,10 +413,41 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label class="control-label">HAI Reg No</label>
+                                            <input type="text" class="form-control" name="hai_reg_no">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label class="control-label">Unique ID</label>
+                                            <input type="text" class="form-control" name="unique_id">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label class="control-label">Full Name</label>
+                                            <input type="text" class="form-control" name="full_name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label>Sex</label>
+                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="sex" id="sex">
+                                                <optgroup label="Sex">
+                                                    <option value="All">All</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="form-group ">
                                             <label>Camp</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="camp_id" id="camp_id">
@@ -385,7 +460,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group ">
                                             <label>Specific Needs?</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
@@ -393,15 +468,43 @@
                                                     <option></option>
                                                     <option value="All">All</option>
                                                     @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
-                                                    <option value="{{$code->id}}">{{$code->description}}</option>
-                                                        @endforeach
+                                                        <option value="{{$code->id}}">{{$code->description}}</option>
+                                                    @endforeach
                                                 </optgroup>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label class="control-label"> Ration Card Number </label>
+                                            <input type="text" class="form-control" placeholder="Ration Card Number " name="ration_card_number" id="ration_card_number" value="{{old('ration_card_number')}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label>Age Group</label>
+                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="age_score" id="age_score">
+                                                <optgroup label="Group">
+                                                    <option></option>
+                                                    <option value="A">0 - 17</option>
+                                                    <option value="B">17 - 50</option>
+                                                    <option value="C">50 - 60</option>
+                                                    <option value="D">60 ></option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label class="control-label"> Present address (Zone, Cluster, Neibourhood etc)</label>
+                                            <input type="text" class="form-control" placeholder="Present address " name="present_address" id="present_address" value="{{old('address')}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
                                         <div class="form-group ">
                                             <label>What type of report type do you need?</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type" data-placeholder="Choose an option...">
@@ -415,13 +518,31 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label>Export Type</label>
+                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="export_type" id="export_type" data-placeholder="Choose an option...">
+                                                <optgroup label="Export Type">
+                                                    <option></option>
+                                                    <option value="1" >Preview -(All Data)</option>
+                                                    <option value="2" >Preview -(Graphical)</option>
+                                                    <option value="3">Export to MS Excel</option>
+                                                    <option value="4">Export to PDF</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </fieldset>
                             <div class="row">
                                 <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
-                                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cog"></i> Generate Report </button>
+                                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cogs"></i> Generate report </button>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8" id="output">
 
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -432,12 +553,18 @@
 
 
     </div>
-    <div class="row" style="margin-top: 20px">
-        <div class="col-md-8">
-            <div style="min-width: 410px; height: 500px; margin: 0 auto" id="clientsNeeds"></div>
+    <div class="row" style="margin-top: 10px">
+        <div class="col-md-6">
+            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientsNeeds"></div>
         </div>
-        <div class="col-md-4">
-            <div style="min-width: 310px; height: 500px; margin: 0 auto" id="clientRegistration"></div>
+
+        <div class="col-md-6">
+            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientRegistrationdistribution"></div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px">
+        <div class="col-md-12">
+            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientRegistration"></div>
         </div>
 
     </div>

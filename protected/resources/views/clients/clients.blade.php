@@ -403,15 +403,15 @@
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
             @permission('create')
-            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-file-o "></i> <span>Register New Client</span></a>
+            <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-user-plus "></i> <span>Register New Client</span></a>
             @endpermission
             <a  href="{{url('clients')}}" class="btn btn-primary "><i class="fa fa-list "></i> <span>List All</span></a>
             <a  href="{{url('search/clients')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Search</span></a>
             @permission('authorize')
-            <a  href="#" class="authorizeAllRecord btn btn-danger"><i class="fa fa- "></i> <span>Authorize All</span></a>
+            <a  href="#" class="authorizeAllRecord btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
             @endpermission
             @permission('edit')
-            <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import</span></a>
+            <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import Clients</span></a>
             @endpermission
         </div>
     </div>
@@ -505,7 +505,7 @@
                                             <label>Specific Needs?</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
                                                 <optgroup label="Specific Needs">
-                                                    @if($request->specific_needs != "")
+                                                    @if($request->specific_needs != "" && $request->specific_needs != "All")
                                                         <option value="{{\App\PSNCode::findorfail($request->specific_needs)->id }}" selected>{{\App\PSNCode::findorfail($request->specific_needs)->description }}</option>
                                                     @endif
                                                     <option></option>
@@ -598,6 +598,9 @@
                                 Camp
                             </th>
                             <th class="text-center">
+                                Vulnerability Codes
+                            </th>
+                            <th class="text-center">
                                 Auth Status
                             </th>
                             <th class="text-center">
@@ -631,9 +634,21 @@
                                     {{$client->date_arrival}}
                                 </td>
                                 <td class="text-center">
-                                    @if(is_object($client->camp) && $client->camp != null)
-                                    {{$client->camp->camp_name}}
+                                    @if(is_object(\App\Client::find($client->id)->camp) && \App\Client::find($client->id)->camp != null)
+                                    {{\App\Client::find($client->id)->camp->camp_name}}
                                         @endif
+                                </td>
+                                <td class="text-center">
+                                    <?php $codes=""; ?>
+                                @if(is_object(\App\Client::find($client->id)->vulnerabilityCodes) && count(\App\Client::find($client->id)->vulnerabilityCodes) >0)
+                                    @foreach(\App\Client::find($client->id)->vulnerabilityCodes as $code)
+                                        @if(is_object($code->code) && $code->code != null)
+                                        <?php $codes .= $code->code->code ." -";?>
+                                          @endif
+                                        @endforeach
+                                        @endif
+                                       <?php $codes=substr($codes,0,strlen($codes)-1)?>
+                                    {{$codes}}
                                 </td>
                                 <td class="text-center">
                                     {{$client->auth_status}}
@@ -681,6 +696,9 @@
                             </td>
                             <td class="text-center">
                                 Camp
+                            </td>
+                            <td class="text-center">
+                                Vulnerability Codes
                             </td>
                             <td class="text-center">
                                 Auth Status

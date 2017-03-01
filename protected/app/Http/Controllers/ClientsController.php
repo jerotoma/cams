@@ -291,7 +291,7 @@ class ClientsController extends Controller
     }
     public function postSearchClient(Request $request)
     {
-        $query=Client::query();
+        $query=\DB::table('clients');
         $end_time ="";
         $start_time="";
         if($request->start_date != ""){
@@ -328,6 +328,23 @@ class ClientsController extends Controller
             $range = [$start_time, $end_time];
             $query->whereBetween('date_arrival', $range);
         }
+        elseif($start_time != "" && $end_time ==""){
+            $query->where('date_arrival', $start_time);
+        }
+        elseif($start_time == "" && $end_time !=""){
+            $query->where('date_arrival', $end_time);
+        }
+        else{
+            $query->where('date_arrival', null);
+        }
+
+        if ($request->specific_needs != "All" && $request->specific_needs !=""){
+
+            $query->join('client_vulnerability_codes', 'clients.id', '=', 'client_vulnerability_codes.client_id')
+                ->where('code_id', '=', "$request->specific_needs")
+                ->select('clients.*');
+        }
+
         $clients=$query->get();
         return view('clients.clients',compact('clients','request'));
 

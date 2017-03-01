@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
 
@@ -21,6 +22,7 @@ class ClientReportsController extends Controller
     }
     public function postGenerate(Request $request)
     {   ob_clean();
+        $query=\DB::table('clients');
         $end_time ="";
         $start_time="";
         if($request->start_date != ""){
@@ -29,42 +31,60 @@ class ClientReportsController extends Controller
         if($request->end_date != ""){
             $end_time = date("Y-m-d", strtotime($request->end_date));
         }
-
-
-        $range = [$start_time, $end_time];
-        $camp_id=$request->camp_id;
-        $specific_needs= $request->specific_needs;
-        $report_type=$request->report_type;
-        $all_dates=$request->all_dates;
-        //return view('reports.clients.registration',compact('range','start_time','end_time','camp_id'));
-
-        if($report_type =="Registration by Category") {
-            \Excel::create("Detailed_Registration_by_Category", function ($excel) use ($range, $start_time, $end_time, $camp_id) {
-                $excel->sheet('sheet', function ($sheet) use ($range, $start_time, $end_time, $camp_id) {
-                    $sheet->loadView('reports.clients.registration', compact('range', 'start_time', 'end_time', 'camp_id'));
-                });
-            })->download('xlsx');
-        }elseif($report_type =="Population Planning Groups") {
-            \Excel::create("Detailed_Population_Planning_Groups", function ($excel) use ($range, $start_time, $end_time, $camp_id,$all_dates) {
-                $excel->sheet('sheet', function ($sheet) use ($range, $start_time, $end_time, $camp_id,$all_dates) {
-                    $sheet->loadView('reports.clients.population', compact('range', 'start_time', 'end_time', 'camp_id','all_dates'));
-                });
-            })->download('xlsx');
-        }elseif($report_type =="Specific needs provided") {
-            \Excel::create("Detailed_specific_needs_provided", function ($excel) use ($range, $start_time, $end_time, $camp_id,$all_dates,$specific_needs) {
-                $excel->sheet('sheet', function ($sheet) use ($range, $start_time, $end_time, $camp_id,$all_dates,$specific_needs) {
-                    $sheet->loadView('reports.clients.specialneeds', compact('range', 'start_time', 'end_time', 'camp_id','all_dates','specific_needs'));
-                });
-            })->download('xlsx');
+        if($request->hai_reg_no != ""){
+            $query->where('hai_reg_number','LIKE',"%{$request->hai_reg_no}%");
         }
-        elseif($report_type =="All Registration Details") {
-            \Excel::create("Detailed_PSN_Registration", function ($excel) use ($range, $start_time, $end_time, $camp_id,$all_dates,$specific_needs) {
-                $excel->sheet('sheet', function ($sheet) use ($range, $start_time, $end_time, $camp_id,$all_dates,$specific_needs) {
-                    $sheet->loadView('reports.clients.clients', compact('range', 'start_time', 'end_time', 'camp_id','all_dates','specific_needs'));
-                });
-            })->download('xlsx');
+        if($request->unique_id != ""){
+            $query->where('client_number','LIKE',"%{$request->unique_id}%");
         }
-        else{ return redirect()->back();}
+        if($request->full_name != ""){
+            $query->where('full_name','LIKE',"%{$request->full_name}%");
+        }
+        if($request->sex != "" && $request->sex != "All"){
+            $query->where('sex','=',"$request->sex");
+        }
+        if($request->age_score != ""){
+            $query->where('age_score','=',"$request->age_score");
+        }
+        if($request->ration_card_number != ""){
+            $query->where('ration_card_number','LIKE',"%{$request->ration_card_number}%");
+        }
+        if($request->ration_card_number != ""){
+            $query->where('present_address','LIKE',"%{$request->present_address}%");
+        }
+        if($request->camp_id != "" && $request->camp_id !="All"){
+            $query->where('camp_id','=',"$request->camp_id");
+        }
+        if($start_time != "" && $end_time !=""){
+            $range = [$start_time, $end_time];
+            $query->whereBetween('date_arrival', $range);
+        }
+        elseif($start_time != "" && $end_time ==""){
+            $query->where('date_arrival', $start_time);
+        }
+        elseif($start_time == "" && $end_time !=""){
+            $query->where('date_arrival', $end_time);
+        }
+        else{
+            $query->where('date_arrival', null);
+        }
+
+        if ($request->specific_needs != "All" && $request->specific_needs !=""){
+
+            $query->join('client_vulnerability_codes', 'clients.id', '=', 'client_vulnerability_codes.client_id')
+                ->where('code_id', '=', "$request->specific_needs")
+                ->select('clients.*');
+        }
+
+        //Export now
+        if($request->export_type)
+        {
+
+        }
+
+        $clients = $query->get();
+        dump($clients);
+
 
 
     }
