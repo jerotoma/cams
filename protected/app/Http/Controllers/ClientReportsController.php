@@ -99,7 +99,7 @@ class ClientReportsController extends Controller
 
                     \Excel::create("Client_registration_reports", function($excel) use($clients)  {
                         $excel->sheet('sheet', function($sheet) use($clients){
-                            $sheet->loadView('reports.clients.html.registration',compact('clients'));
+                            $sheet->loadView('reports.clients.excel.registration',compact('clients'));
                         });
                     })->download('xlsx');
                 }

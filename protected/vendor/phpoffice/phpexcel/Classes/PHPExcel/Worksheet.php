@@ -833,7 +833,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 
     public function setTitle($pValue = 'Worksheet', $updateFormulaCellReferences = true)
     {
-        $pValue = substr($pValue, 0, 31);
+        //$pValue = substr($pValue, 0, 31);
         // Is this a 'rename' or not?
         if ($this->getTitle() == $pValue) {
             return $this;
