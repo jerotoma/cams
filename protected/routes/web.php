@@ -15,10 +15,24 @@ Route::get('account/settings','UserController@getSettings');
 Route::get('account/settings/access','UserController@showChangePassword');
 Route::post('account/settings/access','UserController@postChangePassword');
 
+//Cash monitoring
+
+Route::resource('cash/monitoring/budget','CashBudgetController');
+Route::resource('cash/monitoring/provision','CashProvisionController');
+Route::resource('post/cash/monitoring','PostCashMonitoringController');
+
+Route::get('print/cash/monitoring/provision/{id}','CashProvisionController@showPrint');
+Route::get('download/pdf/cash/monitoring/provision/{id}','CashProvisionController@downloadPdf');
+Route::get('bulk/cash/monitoring/provision','CashProvisionController@showBulk');
+Route::post('bulk/cash/monitoring/provision','CashProvisionController@postBulk');
+
+
 //User rights
 Route::resource('access/rights','RolesController');
 
 Route::resource('countries','CountryController');
+Route::resource('origins','OriginController');
+
 Route::resource('regions','RegionController');
 Route::get('fetch/districts/{id}','RegionController@getDistrictsById');
 Route::resource('districts','DistrictController');
@@ -35,6 +49,8 @@ Route::get('getclientsjson','ClientsController@getJSonDataSearch');
 Route::get('getclientslist','ClientsController@getJSonClientDataSearch');
 Route::get('search/clients','ClientsController@searchClient');
 Route::post('search/clients','ClientsController@postSearchClient');
+Route::post('advanced/search/clients','ClientsController@advancedSearchClient');
+
 Route::get('create-client','ClientsController@createClient');
 
 //NFIs Item inventory
@@ -125,6 +141,8 @@ Route::get('distributions/items/bulk','ItemsDisbursementController@showBulk');
 Route::get('distributions/items/import/errors','ItemsDisbursementController@showImportErrors');
 Route::get('download/pdf/items/distributions/{id}','ItemsDisbursementController@downloadPdf');
 Route::get('print/items/distributions/{id}','ItemsDisbursementController@showPrint');
+
+
 
 
 //WheelChairAssessment

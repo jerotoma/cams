@@ -65,16 +65,13 @@
 
 
         // Individual column searching with text inputs
-        $('.datatable-column-search-inputs tfoot td').not(':last-child').each(function () {
-            var title = $('.datatable-column-search-inputs thead th').eq($(this).index()).text();
+        $('.datatable-column-search-inputs-select-client tfoot td').not(':last-child').each(function () {
+            var title = $('.datatable-column-search-inputs-select-client thead th').eq($(this).index()).text();
             $(this).html('<input type="text" class="form-control input-sm" placeholder="Search '+title+'" />');
         });
 
-        var table = $('.datatable-column-search-inputs').DataTable({
+        var table = $('.datatable-column-search-inputs-select-client').DataTable({
             "scrollX": false,
-            ajax: '{{url('getwaclientsjson')}}', //this url load JSON Client details to reduce loading time
-            "fnDrawCallback": function (oSettings) {
-            }
         });
         table.columns().every( function () {
             var that = this;
@@ -115,6 +112,7 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
+        @include('clients.findclient')
         {!! Form::open(array('url'=>'assessments/home','role'=>'form','id'=>'formClients')) !!}
         <div class="panel panel-flat">
 
@@ -125,7 +123,7 @@
                     <div class="form-group">
                         <div class="row clearfix">
                             <div class="col-md-12 column">
-                                <table class="table datatable-column-search-inputs table-bordered table-hover" id="tab_logic">
+                                <table class="table datatable-column-search-inputs-select-client table-bordered table-hover" id="tab_logic">
                                     <thead>
                                     <tr >
                                         <th class="text-center">
@@ -271,7 +269,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 pull-right text-right">
                         <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit Form </button>
                     </div>
 
                 </div>

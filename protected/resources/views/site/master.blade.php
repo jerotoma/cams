@@ -73,9 +73,12 @@
                         @yield("page_heading_title")
 
                     </div>
-
                     <div class="heading-elements">
-
+                        <div class="heading-btn-group">
+                            <a href="{{url('search/clients')}}" class="btn btn-link btn-float has-text"><i class="icon-users4 text-primary"></i><span>Registration</span></a>
+                            <a href="{{url('assessments/vulnerability')}}" class="btn btn-link btn-float has-text"><i class="icon-lab text-primary"></i> <span>Assessments</span></a>
+                            <a href="{{url('cases')}}" class="btn btn-link btn-float has-text"><i class="fa fa-file text-primary"></i> <span>Open Case</span></a>
+                        </div>
                     </div>
                 </div>
                 <div class="breadcrumb-line">

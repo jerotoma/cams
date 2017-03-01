@@ -36,11 +36,11 @@ class UserRightsSeeder extends Seeder
         $admin->description  = 'Super System Administrator'; // optional
         $admin->save();
 
-        $nfis= new \App\Role();
-        $nfis->name         = 'inventory';
-        $nfis->display_name = 'inventory'; // optional
-        $nfis->description  = 'User for managing inventory'; // optional
-        $nfis->save();
+        $inventory= new \App\Role();
+        $inventory->name         = 'inventory';
+        $inventory->display_name = 'inventory'; // optional
+        $inventory->description  = 'Access to inventory'; // optional
+        $inventory->save();
 
 
         //Create permissions
@@ -77,7 +77,7 @@ class UserRightsSeeder extends Seeder
         $nfis = new \App\Permission();
         $nfis->name         = 'inventory';
         $nfis->display_name = 'inventory'; // optional
-        $nfis->description  = 'items Distributions '; // optional
+        $nfis->description  = 'Access to NFIs Inventory '; // optional
         $nfis->save();
 
         $delete = new \App\Permission();
@@ -86,10 +86,17 @@ class UserRightsSeeder extends Seeder
         $delete->description  = 'delete Data'; // optional
         $delete->save();
 
-        $admin->attachPermissions(array($create, $edit,$view,$delete,$authorze,$reports,$nfis));
-        $inputer->attachPermissions(array($create, $edit,$view,$delete));
-        $authorizer->attachPermissions(array($view,$authorze));
+        $backup = new \App\Permission();
+        $backup->name         = 'backup';
+        $backup->display_name = 'backup'; // optional
+        $backup->description  = 'Access to data export and import'; // optional
+        $backup->save();
+
+        $admin->attachPermissions(array($create, $edit,$view,$delete,$authorze,$reports,$nfis,$backup));
+        $inputer->attachPermissions(array($create, $edit,$view,$delete,$backup));
+        $authorizer->attachPermissions(array($authorze,$edit,$view,$delete));
         $viewer->attachPermissions(array($view,$reports));
+        $inventory->attachPermissions(array($create, $edit,$view,$delete,$backup));
 
         $user = \App\User::where('username', '=', 'admin')->first();
         $user->attachRole($admin);

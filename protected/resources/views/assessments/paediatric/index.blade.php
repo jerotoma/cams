@@ -217,12 +217,12 @@
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
             @permission('authorize')
-            <a  href="#" class="addRecord btn "><i class="fa fa-plus text-success"></i> <span>Assess Client</span></a>
+            <a  href="#" class="addRecord btn btn-primary "><i class="fa fa-plus text-success"></i> <span>Assess Client</span></a>
             @endpermission
             @permission('authorize')
-            <a  href="#" class="authorizeAllRecord btn btn-danger"><i class="fa fa- "></i> <span>Authorize All</span></a>
+            <a  href="#" class="authorizeAllRecord btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
             @endpermission
-            <a  href="{{url('assessments/paediatric')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All Assessments</span></a>
+            <a  href="{{url('assessments/paediatric')}}" class="btn btn-primary "><i class="fa fa-list text-info"></i> <span>List All Assessments</span></a>
         </div>
     </div>
     <div class="panel panel-flat">

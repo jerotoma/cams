@@ -27,4 +27,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function detachAllRoles()
+    {
+        \DB::table('role_user')->where('user_id', $this->id)->delete();
+
+        return $this;
+    }
 }

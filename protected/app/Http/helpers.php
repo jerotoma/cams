@@ -60,19 +60,55 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
 
         $series1="";
         $seriesdata1="";
-        foreach (\App\Origin::all() as $origin) {
+
             $series1 .= "{ ";
-            $series1 .= " name: '".$origin->origin_name."',";
+            $series1 .= " name: '0 - 17',";
 
             $MonthCount = "";
             $monthData = "";
             for ($i = 1; $i <= 12; $i++) {
-                $MonthCount .= count(\App\Client::where('origin_id','=',$origin->id)->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+                $MonthCount .= count(\App\Client::where('age_score','=','A')->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
             }
             $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
             $series1 .= " data:[" . $monthData . "]";
             $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '17 - 50',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\Client::where('age_score','=','B')->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
         }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '50 - 60',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\Client::where('age_score','=','C')->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '60 >',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\Client::where('age_score','=','D')->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
 
         $seriesdata1=substr($series1,0,strlen($series1)-1);
         return $seriesdata1;
@@ -551,22 +587,23 @@ if (!function_exists('isNotInDistributionLimit')) {
 
             $inventoryItem= \App\ItemsInventory::find($item_id);
             $limit =$inventoryItem->redistribution_limit;
+
             $ts1 = strtotime($itemsds->distribution_date);
             $ts2 = strtotime(date('Y-m-d'));
-            $dayspass= date("j",($ts1 - $ts2));
+            $dayspass= date("j",($ts2 - $ts1));
 
             if($dayspass > $limit ){
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
 
         }
         else
         {
-            return false;
+            return true;
         }
 
     }
@@ -577,18 +614,35 @@ if (!function_exists('deductItems')) {
        $item=\App\ItemsInventory::find($item_id);
         $item->quantity=$item->quantity - $q;
         $item->save();
+        if($item->quantity <= 0)
+        {
+            $item->quantity=0;
+            $item->status="Out of stock";
+            $item->save();
+        }
     }
 }
 
 if (!function_exists('isItemOutOfStock')) {
-    function isItemOutOfStock($item_id) {
+    function isItemOutOfStock($item_id,$quantity) {
 
         $item=\App\ItemsInventory::find($item_id);
-        if($item->quantity <= 0)
+        if(($item->quantity - $quantity) < 0)
         {
-            $item->quantity=0;
-            $item->status ="Out of stock";
-            $item->save();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+if (!function_exists('isItemOutOfStockNoQ')) {
+    function isItemOutOfStockNoQ($item_id) {
+
+        $item=\App\ItemsInventory::find($item_id);
+        if(($item->quantity) < 0)
+        {
             return true;
         }
         else
@@ -633,5 +687,126 @@ if (!function_exists('isReferralServiceSelected')) {
             return false;
         }
     }
+}
+
+//Is client registered
+if (!function_exists('checkRegistrationByHAIReg')) {
+    function checkRegistrationByHAIReg($hai_reg_number) {
+
+        if(count(\App\Client::where('hai_reg_number','=',$hai_reg_number)->get()) > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+if (!function_exists('checkRegistrationByHAIRegCampID')) {
+    function checkRegistrationByHAIRegCampID($hai_reg_number,$camp_id) {
+
+        if(count(\App\Client::where('hai_reg_number','=',$hai_reg_number)->where('camp_id','=',$camp_id)->get()) > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+if (!function_exists('isClientInProvisionLimit')) {
+    function isClientInProvisionLimit($activity_id,$client_id) {
+
+
+        if(count(\App\CashProvisionClient::where('activity_id','=',$activity_id)
+                ->where('client_id','=',$client_id)->orderBy('provision_date','DESC')->get()) >0) {
+
+            $activity_Provision=\App\CashProvisionClient::where('activity_id','=',$activity_id)
+                ->where('client_id','=',$client_id)->orderBy('provision_date','DESC')->get()->first();
+
+            $activity= \App\BudgetActivity::find($activity_id);
+            $limit =$activity->provision_limit;
+
+            $ts1 = strtotime($activity_Provision->provision_date);
+            $ts2 = strtotime(date('Y-m-d'));
+            $dayspass= date("j",($ts2 - $ts1));
+
+            if($dayspass > $limit ){
+
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+}
+
+
+if (!function_exists('isActivityOutOfFunds')) {
+    function isActivityOutOfFunds($activity_id,$amount) {
+
+        $actvy=\App\BudgetActivity::find($activity_id);
+        $current_amount=$actvy->amount;
+        if(($current_amount - $amount) <= 0 )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+if (!function_exists('isActivityOutOfFundsbyID')) {
+    function isActivityOutOfFundsbyID($activity_id) {
+
+        $actvy=\App\BudgetActivity::find($activity_id);
+        if($actvy->amount <= 0 )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+//Deduct money
+if (!function_exists('deductActivityAmount')) {
+    function deductActivityAmount($activity_id,$amount){
+
+        $actvy = \App\BudgetActivity::find($activity_id);
+        if (count($actvy) > 0 && $actvy != null) {
+            $current_amount = $actvy->amount;
+            $after_amount = ($current_amount - $amount);
+            if (($current_amount - $amount) <= 0) {
+                $actvy->status = "Insufficient Funds";
+                $actvy->amount = 0.0;
+            } else {
+                $actvy->amount = $after_amount;
+            }
+            $actvy->save();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
 }
 //Get client ID

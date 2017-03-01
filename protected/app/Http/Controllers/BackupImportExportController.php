@@ -15,6 +15,23 @@ class BackupImportExportController extends Controller
     {
         //
     }
+    public function showExport()
+    {
+        //
+    }
+    public function postExport(Request $request)
+    {
+        //
+    }
+    //Data export
+    public function showImport()
+    {
+        //
+    }
+    public function postImport(Request $request)
+    {
+        //
+    }
 
     /**
      * Show the form for creating a new resource.

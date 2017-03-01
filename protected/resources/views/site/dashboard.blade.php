@@ -192,7 +192,7 @@
                 type: 'pie'
             },
             title: {
-                text: 'Client Registration Per Population'
+                text: 'Client Registration'
             },
             credits: {
                 enabled: false
@@ -205,9 +205,13 @@
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                        enabled: false
-                    },
-                    showInLegend: true
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
                 }
             },
             series: [{
@@ -346,16 +350,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="Cases"></div>
-        </div>
-
-        <div class="col-md-6">
-            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="CasesPerStatus"></div>
-        </div>
-    </div>
-    <div class="row" style="margin-top: 20px">
+    <div class="row" style="margin-top: 10px">
         <div class="col-md-6">
             <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientRegistration"></div>
         </div>
@@ -364,6 +359,16 @@
             <div style="min-width: 310px; height: 400px; margin: 0 auto" id="nfidistribution"></div>
         </div>
     </div>
+    <div class="row" style="margin-top: 20px">
+        <div class="col-md-6">
+            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="Cases"></div>
+        </div>
+
+        <div class="col-md-6">
+            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="CasesPerStatus"></div>
+        </div>
+    </div>
+
     <div class="row" style="margin-top: 20px">
         <div class="col-md-12">
             <div style="min-width: 310px; height: 400px; margin: 0 auto" id="MothNFIsdistribution"></div>

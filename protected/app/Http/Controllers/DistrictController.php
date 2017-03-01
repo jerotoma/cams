@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\District;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class DistrictController extends Controller
 {
@@ -44,21 +46,38 @@ class DistrictController extends Controller
     public function store(Request $request)
     {
         //
-        $this->validate($request, [
-            'district_name' => 'required',
-            'region_id' => 'required',
-        ]);
-        if(count(District::where('district_name','=',ucwords($request->district_name))
-                ->where('region_id','=',$request->region_id)->get()) >0)
-        {
-            return redirect()->back()->withInput()->with('district_error',"Duplicate district name ".$request->district_name);
+        try {
+            $validator = Validator::make($request->all(), [
+                'district_name' => 'required|unique:districts',
+                'region_id' => 'required',
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $region=new District;
+                $region->district_name =ucwords($request->district_name);
+                $region->region_id =strtoupper($request->region_id);
+                $region->created_by =Auth::user()->username;
+                $region->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => " Saved Successful"
+                ], 200);
+            }
         }
-        else{$region=new District;
-            $region->district_name =ucwords($request->district_name);
-            $region->region_id =strtoupper($request->region_id);
-            $region->created_by =Auth::user()->username;
-            $region->save();
-            return redirect('districts');}
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' =>1,
+                'message' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**
@@ -97,21 +116,38 @@ class DistrictController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $this->validate($request, [
-            'district_name' => 'required',
-            'region_id' => 'required',
-        ]);
-        if(count(District::where('district_name','=',ucwords($request->district_name))
-                ->where('region_id','=',$request->region_id)->where('id','<>',$id)->get()) >0)
-        {
-            return redirect()->back()->withInput()->with('district_error',"Duplicate district name ".$request->district_name);
+        try {
+            $validator = Validator::make($request->all(), [
+                'district_name' => 'required|unique:districts,district_name,'.$id,
+                'region_id' => 'required',
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $region= District::find($id);
+                $region->district_name =ucwords($request->district_name);
+                $region->region_id =strtoupper($request->region_id);
+                $region->created_by =Auth::user()->username;
+                $region->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => " Saved Successful"
+                ], 200);
+            }
         }
-        else{$region= District::find($id);
-            $region->district_name =ucwords($request->district_name);
-            $region->region_id =strtoupper($request->region_id);
-            $region->created_by =Auth::user()->username;
-            $region->save();
-            return redirect('districts');}
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' =>1,
+                'message' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**

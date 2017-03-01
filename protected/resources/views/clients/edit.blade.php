@@ -361,7 +361,6 @@
         rules: {
             share_info: "required",
             hh_relation: "required",
-            present_address: "required",
             client_number: "required",
             full_name: "required",
             sex: "required",
@@ -385,7 +384,6 @@
         messages: {
             share_info: "Please this field is required",
             hh_relation: "Please Relation to the head of household is required",
-            present_address: "Please client number is required",
             client_number: "Please client number is required",
             full_name: "Please full name is required",
             sex: "Please sex is required",

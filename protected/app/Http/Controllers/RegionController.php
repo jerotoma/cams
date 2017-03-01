@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class RegionController extends Controller
 {
@@ -53,21 +55,39 @@ class RegionController extends Controller
     public function store(Request $request)
     {
         //
-        $this->validate($request, [
-            'region_name' => 'required',
-            'country_id' => 'required',
-        ]);
-        if(count(Region::where('region_name','=',ucwords($request->region_name))
-                ->where('country_id','=',$request->country_id)->get()) >0)
-        {
-            return redirect()->back()->withInput()->with('region_error',"Duplicate region name ".$request->region_name);
+        try {
+            $validator = Validator::make($request->all(), [
+                'region_name' => 'required|unique:regions',
+                'country_id' => 'required',
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $region=new Region;
+                $region->region_name =ucwords($request->region_name);
+                $region->country_id =strtoupper($request->country_id);
+                $region->created_by =Auth::user()->username;
+                $region->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => " Saved Successful"
+                ], 200);
+            }
         }
-        else{$region=new Region;
-            $region->region_name =ucwords($request->region_name);
-            $region->country_id =strtoupper($request->country_id);
-            $region->created_by =Auth::user()->username;
-            $region->save();
-            return redirect('regions');}
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' =>1,
+                'message' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
+        }
+
     }
 
     /**
@@ -115,21 +135,38 @@ class RegionController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $this->validate($request, [
-            'region_name' => 'required',
-            'country_id' => 'required',
-        ]);
-        if(count(Region::where('region_name','=',ucwords($request->region_name))
-                ->where('country_id','=',$request->country_id)->where('id','<>',$id)->get()) >0)
-        {
-            return redirect()->back()->withInput()->with('region_error',"Duplicate region name ".$request->region_name);
+        try {
+            $validator = Validator::make($request->all(), [
+                'region_name' => 'required|unique:regions,region_name,'.$id,
+                'country_id' => 'required',
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $region=Region::find($id);
+                $region->region_name =ucwords($request->region_name);
+                $region->country_id =strtoupper($request->country_id);
+                $region->created_by =Auth::user()->username;
+                $region->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => " Saved Successful"
+                ], 200);
+            }
         }
-        else{$region=Region::find($id);
-            $region->region_name =ucwords($request->region_name);
-            $region->country_id =strtoupper($request->country_id);
-            $region->created_by =Auth::user()->username;
-            $region->save();
-            return redirect('regions');}
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' =>1,
+                'message' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**

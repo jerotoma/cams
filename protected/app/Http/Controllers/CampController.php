@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Camp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class CampController extends Controller
 {
@@ -45,30 +47,47 @@ class CampController extends Controller
     public function store(Request $request)
     {
         //
-        $this->validate($request, [
-            'camp_name' => 'required',
-            'region_id' => 'required',
-            'district_id' => 'required',
-            'status' => 'required',
-           ]);
-        if(count(Camp::where('camp_name','=',ucwords($request->camp_name))
-                ->where('region_id','=',$request->region_id)
-                ->where('district_id','=',$request->district_id)->get()) >0)
-        {
-            return redirect()->back()->withInput()->with('district_error',"Duplicate district name ".$request->camp_name);
+        try {
+            $validator = Validator::make($request->all(), [
+                'camp_name' => 'required|unique:camps',
+                'region_id' => 'required',
+                'district_id' => 'required',
+                'status' => 'required',
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $camp=new Camp;
+                $camp->reg_no =ucwords($request->reg_no);
+                $camp->camp_name =ucwords($request->camp_name);
+                $camp->description =ucwords($request->description);
+                $camp->address =ucwords($request->address);
+                $camp->tel =ucwords($request->tel);
+                $camp->region_id =ucwords($request->region_id);
+                $camp->district_id =ucwords($request->district_id);
+                $camp->status =ucwords($request->status);
+                $camp->created_by =Auth::user()->username;
+                $camp->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => " Saved Successful"
+                ], 200);
+            }
         }
-        else{$camp=new Camp;
-            $camp->reg_no =ucwords($request->reg_no);
-            $camp->camp_name =ucwords($request->camp_name);
-            $camp->description =ucwords($request->description);
-            $camp->address =ucwords($request->address);
-            $camp->tel =ucwords($request->tel);
-            $camp->region_id =ucwords($request->region_id);
-            $camp->district_id =ucwords($request->district_id);
-            $camp->status =ucwords($request->status);
-            $camp->created_by =Auth::user()->username;
-            $camp->save();
-            return redirect('camps');}
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' =>1,
+                'message' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
+        }
+
     }
 
     /**
@@ -107,31 +126,46 @@ class CampController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $this->validate($request, [
-          'camp_name' => 'required',
-            'region_id' => 'required',
-            'district_id' => 'required',
-            'status' => 'required',
-           ]);
-        if(count(Camp::where('camp_name','=',ucwords($request->camp_name))
-                ->where('region_id','=',$request->region_id)
-                ->where('district_id','=',$request->district_id)
-                ->where('id','<>',$id)->get()) >0)
-        {
-            return redirect()->back()->withInput()->with('camp_error',"Duplicate camp name ".$request->camp_name);
+        try {
+            $validator = Validator::make($request->all(), [
+                'camp_name' => 'required|unique:camps,camp_name,'.$id,
+                'region_id' => 'required',
+                'district_id' => 'required',
+                'status' => 'required',
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $camp= Camp::find($id);
+                $camp->reg_no =ucwords($request->reg_no);
+                $camp->camp_name =ucwords($request->camp_name);
+                $camp->description =ucwords($request->description);
+                $camp->address =ucwords($request->address);
+                $camp->tel =ucwords($request->tel);
+                $camp->region_id =ucwords($request->region_id);
+                $camp->district_id =ucwords($request->district_id);
+                $camp->status =ucwords($request->status);
+                $camp->created_by =Auth::user()->username;
+                $camp->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => " Saved Successful"
+                ], 200);
+            }
         }
-        else{$camp= Camp::find($id);
-            $camp->reg_no =ucwords($request->reg_no);
-            $camp->camp_name =ucwords($request->camp_name);
-            $camp->description =ucwords($request->description);
-            $camp->address =ucwords($request->address);
-            $camp->tel =ucwords($request->tel);
-            $camp->region_id =ucwords($request->region_id);
-            $camp->district_id =ucwords($request->district_id);
-            $camp->status =ucwords($request->status);
-            $camp->created_by =Auth::user()->username;
-            $camp->save();
-            return redirect('camps');}
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' =>1,
+                'message' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**

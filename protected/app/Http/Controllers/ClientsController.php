@@ -10,6 +10,7 @@ use App\PSNCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
@@ -145,6 +146,7 @@ class ClientsController extends Controller
 
             $origin="";
             $status="";
+            $datearv="";
             $camp="";
             if(is_object($client->fromOrigin) && $client->fromOrigin != null )
             {
@@ -158,6 +160,10 @@ class ClientsController extends Controller
             {
                 $vcolor="label-success";
             }
+            if($client->date_arrival != "" && $client->date_arrival != null)
+            {
+                $datearv =date('d M Y',strtotime($client->date_arrival));
+           }
 
              $records["data"][] = array(
                 $count++,
@@ -166,7 +172,7 @@ class ClientsController extends Controller
                 $client->sex,
                 $client->age,
                 $client->ration_card_number,
-                date('d M Y',strtotime($client->date_arrival)),
+                 $datearv,
                 $camp,
                 $client->auth_status,
                  '<ul class="icons-list text-center">
@@ -199,8 +205,131 @@ class ClientsController extends Controller
     {
         return view('clients.search');
     }
+    public function advancedSearchClient(Request $request)
+    {
+      try {
+          $query = Client::query();
+          $end_time = "";
+          $start_time = "";
+          if ($request->start_date != "") {
+              $start_time = date("Y-m-d", strtotime($request->start_date));
+          }
+          if ($request->end_date != "") {
+              $end_time = date("Y-m-d", strtotime($request->end_date));
+          }
+          if ($request->hai_reg_no != "") {
+              $query->where('hai_reg_number', 'LIKE', "%{$request->hai_reg_no}%");
+          }
+          if ($request->unique_id != "") {
+              $query->where('client_number', 'LIKE', "%{$request->unique_id}%");
+          }
+          if ($request->full_name != "") {
+              $query->where('full_name', 'LIKE', "%{$request->full_name}%");
+          }
+          if ($request->sex != "" && $request->sex != "All") {
+              $query->where('sex', '=', "$request->sex");
+          }
+          if ($request->age_score != "") {
+              $query->where('age_score', '=', "$request->age_score");
+          }
+          if ($request->ration_card_number != "") {
+              $query->where('ration_card_number', 'LIKE', "%{$request->ration_card_number}%");
+          }
+          if ($request->ration_card_number != "") {
+              $query->where('present_address', 'LIKE', "%{$request->present_address}%");
+          }
+          if ($request->camp_id != "" && $request->camp_id != "All") {
+              $query->where('camp_id', '=', "$request->camp_id");
+          }
+          if ($start_time != "" && $end_time != "") {
+              $range = [$start_time, $end_time];
+              $query->whereBetween('date_arrival', $range);
+          }
+
+          $clients = $query->get();
+
+          $iTotalRecords = count($clients);
+          $sEcho = intval(10);
+
+          $records = array();
+
+
+
+          $count = 1;
+          foreach ($clients as $client) {
+              $origin = "";
+              $status = "";
+              $camp = "";
+              if (is_object($client->camp) && $client->camp != null) {
+                  $camp = $client->camp->camp_name;
+              }
+              $records[] = array(
+                  $count++,
+                  $client->hai_reg_number,
+                  $client->client_number,
+                  $client->full_name,
+                  $client->sex,
+                  $client->age,
+                  $client->ration_card_number,
+                  $camp,
+                  '<label><input type="radio" name="client_id" value="' . $client->id . ' " onclick="getPSNProfile(this.value);"></label>',
+              );
+          }
+
+
+          echo json_encode($records);
+      }
+      catch (\Exception $ex)
+      {
+          return Response::json(array(
+              'success' => false,
+              'errors' => 1,
+              'messagge' => $ex->getMessage()
+          ), 402); // 400 being the HTTP code for an invalid request.
+      }
+
+    }
     public function postSearchClient(Request $request)
     {
+        $query=Client::query();
+        $end_time ="";
+        $start_time="";
+        if($request->start_date != ""){
+            $start_time = date("Y-m-d", strtotime($request->start_date));
+        }
+        if($request->end_date != ""){
+            $end_time = date("Y-m-d", strtotime($request->end_date));
+        }
+        if($request->hai_reg_no != ""){
+            $query->where('hai_reg_number','LIKE',"%{$request->hai_reg_no}%");
+        }
+        if($request->unique_id != ""){
+            $query->where('client_number','LIKE',"%{$request->unique_id}%");
+        }
+        if($request->full_name != ""){
+            $query->where('full_name','LIKE',"%{$request->full_name}%");
+        }
+        if($request->sex != "" && $request->sex != "All"){
+            $query->where('sex','=',"$request->sex");
+        }
+        if($request->age_score != ""){
+            $query->where('age_score','=',"$request->age_score");
+        }
+        if($request->ration_card_number != ""){
+            $query->where('ration_card_number','LIKE',"%{$request->ration_card_number}%");
+        }
+        if($request->ration_card_number != ""){
+            $query->where('present_address','LIKE',"%{$request->present_address}%");
+        }
+        if($request->camp_id != "" && $request->camp_id !="All"){
+            $query->where('camp_id','=',"$request->camp_id");
+        }
+        if($start_time != "" && $end_time !=""){
+            $range = [$start_time, $end_time];
+            $query->whereBetween('date_arrival', $range);
+        }
+        $clients=$query->get();
+        return view('clients.clients',compact('clients','request'));
 
     }
     public function showImport()
@@ -220,26 +349,66 @@ class ClientsController extends Controller
             $filename   = str_replace(' ', '_', $file->getClientOriginalName());
 
             $file->move($destinationPath, $filename);
-
+            $orfile=$destinationPath . $filename;
             Excel::load($destinationPath . $filename, function ($reader) use($request) {
                 $reader->formatDates(false, 'Y-m-d');
                 $results= $reader->get();
                 $results->each(function($row) use($request) {
 
-                    if(!count(Client::where('client_number','=',strtoupper(strtolower(preg_replace('/\s+/S', "",$row->unique_id))))
-                            ->where('full_name','=',ucwords(strtolower(preg_replace('/\s+/S', " ",$row->names))))
-                            ->where('age','=',$row->age)
-                            ->where('sex','=',$row->sex)
-                            ->where('present_address','=',ucwords(strtolower(preg_replace('/\s+/S', " ",$row->present_address))))
-                            ->where('ration_card_number','=',preg_replace('/\s+/S', "",$row->ration_card_number))->get()) >0)
+            if($row->names != "" && $row->names != null && $row->sex != "" && $row->sex != null){
+                    $sex ="";
+                    if(strtolower($row->sex) =="k" || strtolower($row->sex) =="mk" || strtolower($row->sex) =="f")
                     {
-                        $origin="";
+                        $sex = "Female";
+                    }
+                    else
+                    {
+                        $sex = "Male";
+                    }
+                    $client_number=strtoupper(strtolower(preg_replace('/\s+/S', "",$row->unique_id)));
+                    $full_name=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->names)));
+                    $age=intval($row->age);
+                    $present_address=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->present_address)));
+                    $ration_card_number=strtoupper(strtolower(preg_replace('/\s+/S', "",$row->ration_card_number)));
+                    $marital_status=ucwords(strtolower(preg_replace('/\s+/S', "",$row->marital_status)));
+                    $spouse_name=ucwords(strtolower(preg_replace('/\s+/S', "",$row->spouse_name)));
+                    $care_giver=ucwords(strtolower(preg_replace('/\s+/S', "",$row->name_of_parents)));
+                    $date_arrival=null;
+                    if($row->date_of_arrival != "") {
+                        $date_arrival = date("Y-m-d", strtotime(preg_replace('/\s+/S', "",$row->date_of_arrival)));
+                    }
+
+                    $origin="";
+                    $origin_name=ucwords(strtolower(preg_replace('/\s+/S', "", $row->origin)));
+                    if($origin_name =="Nyarugusu" || $origin_name =="Nyrugusu" || $origin_name =="Nyarugusi"|| $origin_name =="Nyaruguu"){
+
+                        $origin_name="Nyarugusu";
+                    }
+                    $household_number=intval($row->t);
+                    $females_total=intval($row->f);
+                    $males_total=intval($row->m);
+
+                    if(count(Client::where('client_number','=',$client_number)
+                            ->where('full_name','=',$full_name)
+                            ->where('age','=',$age)
+                            ->where('sex','=',$sex)
+                            ->where('marital_status','=',$marital_status)
+                            ->where('spouse_name','=',$spouse_name)
+                            ->where('care_giver','=',$care_giver)
+                            ->where('date_arrival','=',$date_arrival)
+                            ->where('household_number','=',$household_number)
+                            ->where('females_total','=',$females_total)
+                            ->where('males_total','=',$males_total)
+                            ->where('present_address','=',$present_address)
+                            ->where('ration_card_number','=',$ration_card_number)->get()) <= 0)
+                    {
+
                         if($row->origin !="") {
-                            if (count(Origin::where('origin_name', '=', ucwords(strtolower(preg_replace('/\s+/S', "", $row->origin))))->get()) > 0) {
-                                $origin = Origin::where('origin_name', '=', ucwords(strtolower(preg_replace('/\s+/S', "", $row->origin))))->get()->first();
+                            if (count(Origin::where('origin_name', '=', $origin_name)->get()) > 0) {
+                                $origin = Origin::where('origin_name', '=', $origin_name)->get()->first();
                             } else {
                                 $co = new Origin;
-                                $co->origin_name = ucwords(strtolower(preg_replace('/\s+/S', "", $row->origin)));
+                                $co->origin_name = $origin_name;
                                 $co->save();
                                 $origin = $co;
                             }
@@ -247,34 +416,27 @@ class ClientsController extends Controller
 
 
                         $client=new Client;
-                        $client->client_number = strtoupper(strtolower(preg_replace('/\s+/S', "",$row->unique_id)));
-                        $client->full_name = ucwords(strtolower(preg_replace('/\s+/S', " ",$row->names)));
-                        if(strtolower($row->sex) =="k" || strtolower($row->sex) =="mk" || strtolower($row->sex) =="f")
-                        {
-                            $client->sex = "Female";
-                        }
-                        else
-                        {
-                            $client->sex = "Male";
-                        }
-                        $client->age = $row->age;
-                        if ($row->age != null) {
-                            $agedef=Date("Y") - $row->age;
+                        $client->client_number = $client_number;
+                        $client->full_name = $full_name;
+
+                        $client->sex = $sex;
+                        $client->age = $age;
+                        if ($age != null) {
+                            $agedef=intval(Date("Y")) - $age;
                             $birthdate=$agedef."-01-01";
                             $client->birth_date = $birthdate;
                         }
-                        $client->marital_status = ucwords(strtolower(preg_replace('/\s+/S', "",$row->marital_status)));
-                        $client->spouse_name = ucwords(strtolower(preg_replace('/\s+/S', "",$row->spouse_name)));
-                        $client->care_giver = ucwords(strtolower(preg_replace('/\s+/S', "",$row->name_of_parents)));
-                        if($row->date_of_arrival != "") {
-                            $client->date_arrival = date("Y-m-d", strtotime(preg_replace('/\s+/S', "",$row->date_of_arrival)));
-                        }
-                        $client->present_address = ucwords(strtolower(preg_replace('/\s+/S', " ",$row->present_address)));
+                        $client->marital_status = $marital_status;
+                        $client->spouse_name = $spouse_name;
+                        $client->care_giver = $care_giver;
+
+                        $client->date_arrival =$date_arrival;
+                        $client->present_address =$present_address;
                         $client->household_number = $row->t;
-                        $client->ration_card_number = preg_replace('/\s+/S', "",$row->ration_card_number);
+                        $client->ration_card_number =$ration_card_number;
                         $client->camp_id = $request->camp_id;
-                        $client->females_total = $row->f;
-                        $client->males_total = $row->m;
+                        $client->females_total = $females_total;
+                        $client->males_total = $males_total;
                         $client->created_by = Auth::user()->username;
                         if($row->origin !="") {
                             $client->origin_id = $origin->id;
@@ -283,9 +445,18 @@ class ClientsController extends Controller
                         $client->save();
 
                         //Generate computer number
-                        $client->hai_reg_number="HAI-".str_pad($client->id,4,'0',STR_PAD_LEFT).$row->vul_1."-".$row->vul_2;
-                        $client->save();
+
                         $psnCodes=array($row->vul_1,$row->vul_2,$row->vul_3,$row->vul_4,$row->vul_5);
+                        $hai_psn_code="";
+                        foreach ($psnCodes as $data )
+                        {
+                           if($data != "" && $data != null) {
+                               $hai_psn_code .= $data . "-";
+                           }
+                        }
+                        $hai_psn_code=substr($hai_psn_code,0,strlen($hai_psn_code)-1);
+                        $client->hai_reg_number="HAI-".str_pad($client->id,4,'0',STR_PAD_LEFT).$hai_psn_code;
+                        $client->save();
 
                         $vn="";
                         foreach ($psnCodes as $data ){
@@ -298,29 +469,30 @@ class ClientsController extends Controller
                         {
 
                             $pcode="";
-                            if (count(PSNCode::where('code','=',strtoupper(strtolower($data)))->get()) >0)
-                            {
-                                $pcode=PSNCode::where('code','=',strtoupper(strtolower($data)))->get()->first();
-                            }
-                            else{
-                                $psc=new PSNCode;
-                                $psc->code=strtoupper($data);
-                                $psc->save();
-                                $pcode=$psc;
-                            }
-                            if($pcode != "")
-                            {
-                                $codes=new ClientVulnerabilityCode;
-                                $codes->client_id=$client->id;
-                                $codes->code_id=$pcode->id;
-                                $codes->save();
+                            if($data != "" && $data != null) {
+                                if (count(PSNCode::where('code', '=', strtoupper(strtolower($data)))->get()) > 0) {
+                                    $pcode = PSNCode::where('code', '=', strtoupper(strtolower($data)))->get()->first();
+                                } else {
+                                    $psc = new PSNCode;
+                                    $psc->code = strtoupper(strtolower($data));
+                                    $psc->save();
+                                    $pcode = $psc;
+                                }
+                                if ($pcode != "") {
+                                    $codes = new ClientVulnerabilityCode;
+                                    $codes->client_id = $client->id;
+                                    $codes->code_id = $pcode->id;
+                                    $codes->save();
+                                }
                             }
                         }
 
                     }
-                });
+                }
+            });
 
             });
+            File::delete($orfile);
            return redirect('clients');
         }
         catch (\Exception $e)

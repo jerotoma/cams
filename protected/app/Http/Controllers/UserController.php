@@ -29,9 +29,15 @@ class UserController extends Controller
 
     public function index()
     {
-        $users =  User::all();
+        if (\Auth::user()->hasRole('admin')) {
+            $users = User::all();
+            return view('users.index', ['users' => $users]);
+        }
+        else
+        {
+            return redirect('home');
+        }
 
-       return view('users.index', ['users' =>  $users  ] );
     }
 
     //Get profile
@@ -54,12 +60,8 @@ class UserController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'full_name' => 'required',
-                'username' => 'required|unique:users',
-                'email' => 'required|email|unique:users',
-                'password' => 'required|min:8',
-                'role_id' => 'required',
-                'phone' => 'required',
+                'userpass' => 'required|min:8',
+                'old_userpass' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -68,15 +70,26 @@ class UserController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
-                $user = User::find(Auth::user()->id);
-                $user->password = bcrypt($request->userpass);
-                $user->save();
-                //Audit log
-                $auditMsg = "Changed password for " . $user->username . " with status " . $user->status;
-                return response()->json([
-                    'success' => true,
-                    'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Your have changed your password</span><h3>"
-                ], 200);
+                if(count(User::where('id','=',Auth::user()->id)->where('password','=',bcrypt($request->old_userpass))->get()) > 0) {
+                    $user = User::find(Auth::user()->id);
+                    $user->password = bcrypt($request->userpass);
+                    $user->save();
+                    //Audit log
+                    $auditMsg = "Changed password for " . $user->username . " with status " . $user->status;
+                    return response()->json([
+                        'success' => true,
+                        'errors' =>0,
+                        'message' => "Your have changed your password"
+                    ], 200);
+                }
+                else
+                {
+                    return Response::json(array(
+                        'success' => false,
+                        'errors' =>1,
+                        'message' =>'<div class="alert alert-danger">Password change failed! Invalid old password</div>'
+                    ), 200); // 400 being the HTTP code for an invalid request.
+                }
             }
         }
         catch (\Exception $ex)
@@ -99,7 +112,13 @@ class UserController extends Controller
     public function create()
     {
         //
-       return view('users.create');
+        if (\Auth::user()->hasRole('admin')) {
+            return view('users.create');
+        }
+        else
+        {
+            return redirect('home');
+        }
     }
      public function createUser(Request $request)
 	 {
@@ -127,7 +146,6 @@ class UserController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'full_name' => 'required',
-                'username' => 'required|unique:users',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:8',
                 'role_id' => 'required',
@@ -148,7 +166,7 @@ class UserController extends Controller
                 $user->department_id = $request->department_id;
                 $user->designation = $request->designation;
                 $user->status = $request->status;
-                $user->username = $request->username;
+                $user->username = $request->email;
                 $user->status = "Active";
                 $user->save();
                 $user->attachRole($request->role_id);
@@ -177,8 +195,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findorfail($id);
-        return view('users.show',compact('user'));
+
+        if (\Auth::user()->hasRole('admin')) {
+            $user = User::findorfail($id);
+            return view('users.show',compact('user'));
+        }
+        else
+        {
+            return redirect('home');
+        }
     }
 
     /**
@@ -189,8 +214,14 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findorfail($id);
-        return view('users.edit',compact('user'));
+        if (\Auth::user()->hasRole('admin')) {
+            $user = User::findorfail($id);
+            return view('users.edit',compact('user'));
+        }
+        else
+        {
+            return redirect('home');
+        }
     }
 
     /**
@@ -231,6 +262,7 @@ class UserController extends Controller
                 $user->status = $request->status;
                 $user->locked = $request->locked;
                 $user->save();
+                $user->detachAllRoles();
                 $user->attachRole($request->role_id);
                 $user->save();
 
@@ -260,5 +292,6 @@ class UserController extends Controller
 	{
            $user = User::find($id);
            $user ->delete();
+
     }
 }
