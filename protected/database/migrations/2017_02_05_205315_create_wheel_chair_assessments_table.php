@@ -36,8 +36,6 @@ class CreateWheelChairAssessmentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('wheel_chair_assessments', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('wheel_chair_assessments');
     }
 }

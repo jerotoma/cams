@@ -207,10 +207,20 @@
 @stop
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
-        <div class="col-md-12 text-right">
-            <a  href="{{url('clients')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All</span></a>
-            <a  href="{{url('clients')}}" class="btn "><i class="fa fa-search text-primary"></i> <span>Search</span></a>
-            <a  href="{{url('import/clients')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
+        <div class="row" style="margin-bottom: 5px">
+            <div class="col-md-12 text-right">
+                @permission('create')
+                <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-user-plus "></i> <span>Register New Client</span></a>
+                @endpermission
+                <a  href="{{url('clients')}}" class="btn btn-primary "><i class="fa fa-list "></i> <span>List All</span></a>
+                <a  href="{{url('search/clients')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Search</span></a>
+                @permission('authorize')
+                <a  href="#" class="authorizeAllRecord btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
+                @endpermission
+                @permission('edit')
+                <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import Clients</span></a>
+                @endpermission
+            </div>
         </div>
     </div>
     <div class="panel panel-flat">

@@ -231,6 +231,7 @@
                     <ul>
                         <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
+                        <li><a href="{{url('assessments/paediatric')}}">Paediatric Assessment </a></li>
                     </ul>
                 </li>
                 <li>
@@ -243,19 +244,19 @@
                 <!-- Forms -->
                 @permission('inventory')
 
-                <li>
+                <li >
                     <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
                     <ul>
-                        <li><a href="{{url('items/distributions')}}">Item Distribution</a></li>
-                        <li><a href="{{url('inventory-received')}}">Received Items</a></li>
-                        <li><a href="{{url('inventory')}}">Items Inventory</a></li>
-                        <li><a href="{{url('inventory-categories')}}">Items Categories</a></li>
+                        <li ><a href="{{url('items/distributions')}}">Item Distribution</a></li>
+                        <li ><a href="{{url('inventory-received')}}">Received Items</a></li>
+                        <li ><a href="{{url('inventory')}}">Items Inventory</a></li>
+                        <li ><a href="{{url('inventory-categories')}}">Items Categories</a></li>
                     </ul>
                 </li>
                 <li class="active">
                     <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
                     <ul>
-                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
+                        <li ><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
                         <li><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
                         <li class="active"><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
                     </ul>
@@ -275,15 +276,15 @@
             <!-- Backup Restore-->
                 <li class="navigation-header"><span>Data Sharing/Backup</span> <i class="icon-menu" title="Data Sharing"></i></li>
                 <li>
-                    <a href="#"><i class="icon-puzzle4"></i> <span>Data import</span></a>
+                    <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
-                        <li><a href="#">Import</a></li>
+                        <li><a href="{{url('backup/import/advanced')}}">Import data</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#"><i class="icon-puzzle4"></i> <span>Data Export</span></a>
+                    <a href="#"><i class="fa fa-download"></i> <span>Data Export</span></a>
                     <ul>
-                        <li><a href="#">Export</a></li>
+                        <li><a href="{{url('backup/export/advanced')}}">Export data</a></li>
                     </ul>
                 </li>
                 <!-- End Backup Restore-->

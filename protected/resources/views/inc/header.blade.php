@@ -17,6 +17,7 @@
 
         <div class="navbar-right">
             <ul class="nav navbar-nav">
+                @permission('authorize')
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="icon-bell2"></i>
@@ -104,7 +105,7 @@
                         </ul>
                     </div>
                 </li>
-
+                @endpermission
                 <li class="dropdown">
                     <a href="{{url('logout')}}" class="dropdown-toggle" >
                         <i class="icon-switch2"> </i> Logout

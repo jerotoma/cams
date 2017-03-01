@@ -54,8 +54,6 @@ class CreateAssessmentInterviewsTable extends Migration
      */
     public function down()
     {
-        Schema::table('assessmentinterviews', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('assessment_interviews');
     }
 }

@@ -235,6 +235,7 @@
                     <ul>
                         <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
+                        <li><a href="{{url('assessments/paediatric')}}">Paediatric Assessment </a></li>
                     </ul>
                 </li>
                 <li>
@@ -279,15 +280,15 @@
             <!-- Backup Restore-->
                 <li class="navigation-header"><span>Data Sharing/Backup</span> <i class="icon-menu" title="Data Sharing"></i></li>
                 <li>
-                    <a href="#"><i class="icon-puzzle4"></i> <span>Data import</span></a>
+                    <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
-                        <li><a href="#">Import</a></li>
+                        <li><a href="{{url('backup/import/advanced')}}">Import data</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#"><i class="icon-puzzle4"></i> <span>Data Export</span></a>
+                    <a href="#"><i class="fa fa-download"></i> <span>Data Export</span></a>
                     <ul>
-                        <li><a href="#">Export</a></li>
+                        <li><a href="{{url('backup/export/advanced')}}">Export data</a></li>
                     </ul>
                 </li>
                 <!-- End Backup Restore-->
