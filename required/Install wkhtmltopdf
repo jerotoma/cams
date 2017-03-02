@@ -1,0 +1,75 @@
+
+
+Quick installation of wkhtmltopdf:
+
+Step 1: Update system:
+
+	sudo apt-get update
+
+Step 2: Install: wkhtmltopdf
+
+Ater updaing the OS run following command to install the packae:
+
+	sudo apt-get install wkhtmltopdf
+
+Package Details
+Package:	wkhtmltopdf
+Version:	0.12.2.4-1
+Maintainer:	Ubuntu Developers
+Home page:	http://wkhtmltopdf.org/
+Description:	Command line utilities to convert html to pdf or image using WebKit
+Distro:	Ubuntu 16.04
+Release:	Xenial Xerus
+Repo/Section:	universe/utils
+How to install wkhtmltopdf on Ubuntu 16.04?
+
+First of all update your system with the command:
+
+sudo apt-get update
+
+Ads
+
+Above command will download the package lists for Ubuntu 16.04 on your system. This will update the list of newest versions of packages and its dependencies on your system.
+
+After downloading the latest package list with the help of above you can run the installation process.
+
+If wkhtmltopdf is not installed on your compter then the command 'dpkg -L wkhtmltopdf' will give followin error.
+
+deepak@deepakub16:~$ dpkg -L wkhtmltopdf
+dpkg-query: package 'wkhtmltopdf' is not installed
+Use dpkg --info (= dpkg-deb --info) to examine archive files,
+and dpkg --contents (= dpkg-deb --contents) to list their contents.
+deepak@deepakub16:~$ 
+
+Installing wkhtmltopdf:
+
+After system update use the following command to install wkhtmltopdf:
+
+sudo apt-get install wkhtmltopdf
+
+Above command will confirm before installing the package on your Ubuntu 16.04 Operating System. If you are not already logged in as su, installer will ask you the root password. After completion of the installation you can use the package on your system.
+How to uninstall/remove wkhtmltopdf from Ubuntu 16.04?
+
+Now we will see the commands for uninstalling the wkhtmltopdf from Ubuntu 16.04. For uninstalling this package you can easily use the apt command and remove the package from Linux Operating System.
+
+To remove the wkhtmltopdf following command is used:
+
+sudo apt-get remove  wkhtmltopdf
+
+Following command is used to remove the wkhtmltopdf package along with its dependencies:
+
+sudo apt-get remove --auto-remove wkhtmltopdf
+
+This will remove wkhtmltopdf and all its dependent packages which is no longer needed in the system.
+
+Completely removing wkhtmltopdf with all configuration files:
+
+Following command should be used with care as it deletes all the configuration files and data:
+
+sudo apt-get purge wkhtmltopdf
+
+or you can use following command also:
+
+sudo apt-get purge --auto-remove wkhtmltopdf
+
+Above command will remove all the configuration files and data associated with wkhtmltopdf package. You can can't recover the delete data, so, use this command with care.
