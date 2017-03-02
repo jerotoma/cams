@@ -58,28 +58,35 @@ class HomeAssessmentController extends Controller
 
         $count=1;
         foreach($assessments as $assessment) {
-            $origin="";
-            $status="";
-
-            $vcolor="label-danger";
-
-
+           $camp_name="";
+           if (is_object($assessment->client) && is_object($assessment->client->camp)){
+               $camp_name =$assessment->client->camp->camp_name;
+           }
             $records["data"][] = array(
                 $count++,
+                $assessment->assessment_date,
+                $assessment->case_code,
+                $assessment->client->hai_reg_number,
                 $assessment->client->client_number,
                 $assessment->client->full_name,
                 $assessment->client->sex,
                 $assessment->client->age,
-                '<span class="text-center" id="'.$assessment->id.'">
-                                        <a href="#" class="showRecord btn " > <i class="fa fa-eye green "></i> </a>
-                                        <a href="#" class=" btn "> <i class="fa fa-print green " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');" ></i> </a>
-                                        <a href="'.url('download/assessments/home').'/'.$assessment->id.'" class=" btn  "> <i class="fa fa-download text-danger "></i> </a>
-                </span>',
-                '<span id="'.$assessment->id.'">
-                
-                    <a href="#" title="Edit" class="btn btn-icon-only editRecord"> <i class="fa fa-edit text-primary">  </i> </a>
-                    <a href="#" title="Delete" class="btn btn-icon-only  deleteRecord"> <i class="fa fa-trash text-danger"></i> </a>
-                 </span>',
+                $camp_name,
+                '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord label " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/assessments/home').'/'.$assessment->id.'" class="showRecord label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
             );
         }
 
@@ -113,7 +120,7 @@ class HomeAssessmentController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'client_id' => 'required',
-                'assessment_date' => 'required',
+                'assessment_date' => 'required|before:tomorrow',
                 'case_code' => 'required'
 
 
@@ -193,11 +200,8 @@ class HomeAssessmentController extends Controller
         //
         try {
             $validator = Validator::make($request->all(), [
-                'assessment_date' => 'required',
+                'assessment_date' => 'required|before:tomorrow',
                 'case_code' => 'required'
-
-
-
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -242,7 +246,6 @@ class HomeAssessmentController extends Controller
     public function destroy($id)
     {
         //
-        $assessment =  HomeAssessment::find($id);
-        $assessment->delete();
+        $assessment =  HomeAssessment::find($id)->delete();
     }
 }

@@ -64,7 +64,7 @@
         <div class="col-md-6">
             <div class="form-group ">
                 <label class="control-label">Ration card number (if any)</label>
-                <input type="text" class="form-control" placeholder="" name="case_code" id="case_code"
+                <input type="text" class="form-control" placeholder="" name="ration_card_number" id="ration_card_number"
                        value="{{$client->ration_card_number}}" readonly >
             </div>
         </div>
