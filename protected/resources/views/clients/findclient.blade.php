@@ -8,7 +8,7 @@
 
                     <div class="panel-body">
                         <fieldset class="scheduler-border">
-                            <legend class="text-bold">Client Advanced Search</legend>
+                            <legend class="text-bold">Client Registration Reports</legend>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group ">
@@ -80,7 +80,6 @@
                                         <label>Specific Needs?</label>
                                         <select  class="select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
                                             <optgroup label="Specific Needs">
-                                                <option></option>
                                                 <option value="All">All</option>
                                                 @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
                                                     <option value="{{$code->id}}">{{$code->description}}</option>
@@ -124,7 +123,7 @@
                                 <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-search"></i> Search Client </button>
                             </div>
                             <div class="col-md-2 col-sm-2 ">
-                                <button type="reset" class="btn btn-block btn-default"><i class="fa fa-refresh"></i> Resert </button>
+                                <button type="reset" class="btn btn-block btn-default"><i class="fa fa-refresh"></i> Reset </button>
                             </div>
                         </div>
                         <div class="row">

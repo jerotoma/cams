@@ -208,60 +208,69 @@ class ClientsController extends Controller
     public function advancedSearchClient(Request $request)
     {
       try {
-          $query = Client::query();
-          $end_time = "";
-          $start_time = "";
-          if ($request->start_date != "") {
+          $query=\DB::table('clients');
+          $end_time ="";
+          $start_time="";
+          if($request->start_date != ""){
               $start_time = date("Y-m-d", strtotime($request->start_date));
           }
-          if ($request->end_date != "") {
+          if($request->end_date != ""){
               $end_time = date("Y-m-d", strtotime($request->end_date));
           }
-          if ($request->hai_reg_no != "") {
-              $query->where('hai_reg_number', 'LIKE', "%{$request->hai_reg_no}%");
+          if($request->hai_reg_no != ""){
+              $query->where('hai_reg_number','LIKE',"%{$request->hai_reg_no}%");
           }
-          if ($request->unique_id != "") {
-              $query->where('client_number', 'LIKE', "%{$request->unique_id}%");
+          if($request->unique_id != ""){
+              $query->where('client_number','LIKE',"%{$request->unique_id}%");
           }
-          if ($request->full_name != "") {
-              $query->where('full_name', 'LIKE', "%{$request->full_name}%");
+          if($request->full_name != ""){
+              $query->where('full_name','LIKE',"%{$request->full_name}%");
           }
-          if ($request->sex != "" && $request->sex != "All") {
-              $query->where('sex', '=', "$request->sex");
+          if($request->sex != "" && $request->sex != "All"){
+              $query->where('sex','=',"$request->sex");
           }
-          if ($request->age_score != "") {
-              $query->where('age_score', '=', "$request->age_score");
+          if($request->age_score != ""){
+              $query->where('age_score','=',"$request->age_score");
           }
-          if ($request->ration_card_number != "") {
-              $query->where('ration_card_number', 'LIKE', "%{$request->ration_card_number}%");
+          if($request->ration_card_number != ""){
+              $query->where('ration_card_number','LIKE',"%{$request->ration_card_number}%");
           }
-          if ($request->ration_card_number != "") {
-              $query->where('present_address', 'LIKE', "%{$request->present_address}%");
+          if($request->ration_card_number != ""){
+              $query->where('present_address','LIKE',"%{$request->present_address}%");
           }
-          if ($request->camp_id != "" && $request->camp_id != "All") {
-              $query->where('camp_id', '=', "$request->camp_id");
+          if($request->camp_id != "" && $request->camp_id !="All"){
+              $query->where('camp_id','=',"$request->camp_id");
           }
-          if ($start_time != "" && $end_time != "") {
+          if($start_time != "" && $end_time !=""){
               $range = [$start_time, $end_time];
               $query->whereBetween('date_arrival', $range);
+          }
+          elseif($start_time != "" && $end_time ==""){
+              $query->where('date_arrival', $start_time);
+          }
+          elseif($start_time == "" && $end_time !=""){
+              $query->where('date_arrival', $end_time);
+          }
+          else{
+              $query->where('date_arrival', null);
+          }
+
+          if ($request->specific_needs != "All" && $request->specific_needs !=""){
+
+              $query->join('client_vulnerability_codes', 'clients.id', '=', 'client_vulnerability_codes.client_id')
+                  ->where('code_id', '=', "$request->specific_needs")
+                  ->select('clients.*');
           }
 
           $clients = $query->get();
 
-          $iTotalRecords = count($clients);
-          $sEcho = intval(10);
-
           $records = array();
-
-
 
           $count = 1;
           foreach ($clients as $client) {
-              $origin = "";
-              $status = "";
               $camp = "";
-              if (is_object($client->camp) && $client->camp != null) {
-                  $camp = $client->camp->camp_name;
+              if (is_object(Client::find($client->id)->camp) && Client::find($client->id)->camp != null) {
+                  $camp = Client::find($client->id)->camp->camp_name;
               }
               $records[] = array(
                   $count++,
@@ -275,7 +284,6 @@ class ClientsController extends Controller
                   '<label><input type="radio" name="client_id" value="' . $client->id . ' " onclick="getPSNProfile(this.value);"></label>',
               );
           }
-
 
           echo json_encode($records);
       }
