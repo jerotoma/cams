@@ -79,8 +79,8 @@ class HomeAssessmentController extends Controller
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
                              <li id="'.$assessment->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
-                             <li id="'.$assessment->id.'"><a href="#" class="showRecord label " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
-                             <li id="'.$assessment->id.'"><a href="'.url('download/assessments/home').'/'.$assessment->id.'" class="showRecord label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class=" label " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/assessments/home').'/'.$assessment->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
                              <li id="'.$assessment->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
                              <li id="'.$assessment->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
                              <li id="'.$assessment->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
