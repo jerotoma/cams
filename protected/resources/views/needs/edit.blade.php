@@ -1,5 +1,3 @@
-
-
 <script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
@@ -23,67 +21,39 @@
 <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
-    $('.pickadate').pickadate();
+    $('.pickadate').pickadate({
+
+        // Escape any “rule” characters with an exclamation mark (!).
+        format: 'yyyy-mm-dd',
+    });
 </script>
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::model($code,array('route' => array('psncodes.update', $code->id), 'method' => 'PUT','role'=>'form','id'=>'formClients')) !!}
+        {!! Form::model($need,array('route' => array('needs.update', $need->id), 'method' => 'PUT','role'=>'form','id'=>'formOrigin')) !!}
         <div class="panel panel-flat">
             <div class="panel-heading">
-                <h5 class="panel-title">PSN Code Details</h5>
+                <h5 class="panel-title">Needs Details</h5>
             </div>
 
             <div class="panel-body">
                 <div class="form-group">
-                    <label>PSN Code:</label>
-                    <input type="text" class="form-control" placeholder="PSN Code" name="code" id="code"
-                           @if(old('code'))value="{{old('code')}}"@else value="{{$code->code}}" @endif>
-                    @if($errors->first('code') !="")
-                        <label id="code-error" class="validation-error-label" for="code">{{ $errors->first('code') }}</label>
-                    @endif
-                    @if(Session::has('code_error'))
-                        <label id="code_error-error" class="validation-error-label" for="code_error">{{ Session::get('code_error') }}</label>
-                    @endif
+                    <label>Client Need:</label>
+                    <input type="text" class="form-control" placeholder="Need Name" name="need_name" id="need_name" value="{{$need->need_name}}">
                 </div>
                 <div class="form-group ">
                     <label class="control-label">Category</label>
                     <select class="select withOthers" name="category_id" id="category_id" data-placeholder="Choose an option...">
-                        @if(is_object(\App\PSNCodeCategory::find($code->category_id) ))
-                            <option value="{{\App\PSNCodeCategory::find($code->category_id)->id}}" selected>{{\App\PSNCodeCategory::find($code->category_id)->code}}</option>
-                            @endif
+                        @if(is_object(\App\NeedCategory::find($need->category_id)))
+                            <option value="{{$need->category_id}}" selected>{{\App\NeedCategory::find($need->category_id)->category_name}}</option>
+                        @endif
                         <option ></option>
-                        @foreach(\App\PSNCodeCategory::all() as $item)
-                            <option value="{{$item->id}}">{{$item->code}}</option>
+                        @foreach(\App\NeedCategory::all() as $item)
+                            <option value="{{$item->id}}">{{$item->category_name}}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea class="form-control" placeholder="Descriptions" name="description" id="description">@if(old('description')){{old('description')}}@else{{$code->description}}@endif</textarea>
-                    @if($errors->first('description') !="")
-                        <label id="description-error" class="validation-error-label" for="description">{{ $errors->first('description') }}</label>
-                    @endif
-
-                </div>
-                <div class="form-group">
-                    <label>Definition</label>
-                    <textarea class="form-control" rows="5" placeholder="definition" name="definition" id="definition">@if(old('definition')){{old('definition')}}@else{{$code->definition}}@endif</textarea>
-                    @if($errors->first('description') !="")
-                        <label id="definition-error" class="validation-error-label" for="definition">{{ $errors->first('definition') }}</label>
-                    @endif
-
-                </div>
-                <div class="form-group">
-                    <label>Used in reporting</label>
-                    <select class="select" name="for_reporting" id="for_reporting">
-                        <option></option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                    </select>
-                </div>
-
-                <div class="row">
+                <div class="row" style="margin-top: 10px">
                     <div class="col-md-8 col-sm-8 pull-left" id="output">
 
                     </div>
@@ -100,7 +70,7 @@
 </div>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script>
-    $("#formClients").validate({
+    $("#formOrigin").validate({
         ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
         errorClass: 'validation-error-label',
         successClass: 'validation-valid-label',
@@ -148,21 +118,17 @@
         },
         errorElement:'div',
         rules: {
-
-            code: "required",
-            description: "required",
-            definition: "required"
+            need_name: "required",
+            category_id: "required",
         },
         messages: {
-            code: "Please category_name is required",
-            description: "Please description is required",
-            definition: "Please full name is required",
-
+            origin_name: "Please this field is required",
+            category_id: "Please this field is required",
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-            var postData = $('#formClients').serializeArray();
-            var formURL = $('#formClients').attr("action");
+            var postData = $('#formOrigin').serializeArray();
+            var formURL = $('#formOrigin').attr("action");
             $.ajax(
                 {
                     url : formURL,
@@ -171,7 +137,7 @@
                     success: function(data){
                         swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                         setTimeout(function() {
-                            location.replace("{{url('psncodes')}}");
+                            location.replace("{{url('origins')}}");
                             $("#output").html("");
                         }, 2000);
                     },
@@ -181,13 +147,20 @@
                             location.replace('{{url('login')}}');
                         }
                         if( jqXhr.status === 400 ) {
-                            var errors = jqXhr.responseJSON.errors;
-                            errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
-                            $.each(errors, function (key, value) {
-                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
-                            });
-                            errorsHtml += '</ul></di>';
-                            $('#output').html(errorsHtml);
+                            if(jqXhr.responseJSON.errors ==1)
+                            {
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p>';
+                                errorsHtml += '<h5 class="text-danger">'+jqXhr.responseJSON.message + '</h5>'
+                                $('#output').html(errorsHtml);
+                            }else {
+                                var errors = jqXhr.responseJSON.errors;
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                                $.each(errors, function (key, value) {
+                                    errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                });
+                                errorsHtml += '</ul></di>';
+                                $('#output').html(errorsHtml);
+                            }
                         }
                         else
                         {
@@ -198,43 +171,4 @@
                 });
         }
     });
-    $(".withOthers").change(function () {
-        var id1 =  $(this[this.selectedIndex]).val();
-        var txt = $(this[this.selectedIndex]).text();
-        var slt= $(this);
-        if(id1 == "Other")
-        {
-            bootbox.prompt("Please specify the other", function(result) {
-                if (result === null) {
-                    bootbox.alert("Nothing entered");
-                } else {
-                    slt.append('<option value="'+ result +'" selected>'+ result +'</option>');
-
-                }
-            });
-
-        }
-    });
 </script>
-@section('contents')
-    <!-- Vertical form options -->
-    <div class="row" style="margin-bottom: 5px">
-        <div class="col-md-12 text-right">
-            <a  href="{{url('psncodes/create')}}" class="btn btn-info "><i class="fa fa-file-o"></i> <span>Add New</span></a>
-            <a  href="{{url('psncodes')}}" class="btn btn-info "><i class="fa fa-list"></i> <span>List All</span></a>
-            <a  href="{{url('psncodes')}}" class="btn btn-info "><i class="fa fa-search"></i> <span>Search</span></a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-
-            <!-- Basic layout-->
-
-        <!-- /basic layout -->
-
-        </div>
-
-
-    </div>
-    <!-- /vertical form options -->
-@stop

@@ -10,9 +10,9 @@
         <th>Marital Status
         <th>Name of Parents
         <th>Name of Spouse
-        <th>M</th>
-        <th>F</th>
-        <th>T</th>
+        <th>Number of Males</th>
+        <th>Number of Females</th>
+        <th>Household Number</th>
         <th>Origin</th>
         <th>Date of Arrival</th>
         <th>Present address</th>
@@ -79,9 +79,9 @@
         <th>Marital Status
         <th>Name of Parents
         <th>Name of Spouse
-        <th>M</th>
-        <th>F</th>
-        <th>T</th>
+        <th>Number of Males</th>
+        <th>Number of Females</th>
+        <th>Household Number</th>
         <th>Origin</th>
         <th>Date of Arrival</th>
         <th>Present address</th>

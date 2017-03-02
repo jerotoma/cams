@@ -108,6 +108,9 @@
                     <li><a href="{{url('psncodes-categories')}}">Categories</a></li>
                 </ul>
             </li>
+            <li>
+                <a href="{{url('setting/client/needs')}}"><i class="icon-puzzle4"></i> <span>Client Needs Setting</span></a>
+            </li>
 
             <!-- /appearance -->
 

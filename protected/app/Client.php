@@ -47,5 +47,9 @@ class Client extends Model
     {
         return $this::hasMany('\App\WheelChairAssessment','client_id');
     }
+    public function clientNeeds()
+    {
+        return $this::hasMany('\App\ClientNeed','client_id');
+    }
 
 }

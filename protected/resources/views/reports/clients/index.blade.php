@@ -465,7 +465,6 @@
                                             <label>Specific Needs?</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
                                                 <optgroup label="Specific Needs">
-                                                    <option></option>
                                                     <option value="All">All</option>
                                                     @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
                                                         <option value="{{$code->id}}">{{$code->description}}</option>

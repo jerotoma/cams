@@ -553,7 +553,6 @@
                                             <label>Specific Needs?</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
                                                 <optgroup label="Specific Needs">
-                                                    <option></option>
                                                     <option value="All">All</option>
                                                     @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
                                                         <option value="{{$code->id}}">{{$code->description}}</option>
@@ -661,9 +660,9 @@
                             <th>Marital Status
                             <th>Name of Parents
                             <th>Name of Spouse
-                            <th>M</th>
-                            <th>F</th>
-                            <th>T</th>
+                            <th>Number of Males</th>
+                            <th>Number of Females</th>
+                            <th>Household Number</th>
                             <th>Origin</th>
                             <th>Date of Arrival</th>
                             <th>Present address</th>
@@ -730,9 +729,9 @@
                             <th>Marital Status
                             <th>Name of Parents
                             <th>Name of Spouse
-                            <th>M</th>
-                            <th>F</th>
-                            <th>T</th>
+                            <th>Number of Males</th>
+                            <th>Number of Females</th>
+                            <th>Household Number</th>
                             <th>Origin</th>
                             <th>Date of Arrival</th>
                             <th>Present address</th>

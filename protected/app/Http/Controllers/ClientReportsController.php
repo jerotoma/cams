@@ -83,13 +83,115 @@ class ClientReportsController extends Controller
         switch ($request->report_type)
         {
             case 1:
-                echo "1";
+                if($request->export_type ==1){
+                    return view('reports.clients.html.registration_by_category',compact('request'));
+                }
+                elseif($request->export_type ==3){
+
+                    \Excel::create("registration_by_category_report", function($excel) use($request)  {
+                        $excel->sheet('sheet', function($sheet) use($request){
+                            $sheet->loadView('reports.clients.excel.registration_by_category',compact('request'));
+                            $sheet->setWidth(array(
+                                'A'     =>  50,
+                                'B'     =>  10,
+                                'C'     =>  10,
+                                'D'     =>  10,
+                                'E'     =>  10,
+                                'F'     =>  10,
+                                'G'     =>  10,
+                                'H'     =>  10,
+                                'I'     =>  10,
+                                'J'     =>  10,
+                                'K'     =>  10,
+                                'L'     =>  10,
+                                'M'     =>  10,
+                                'N'     =>  10,
+                                'O'     =>  10,
+                                'P'     =>  10,
+                                'Q'     =>  10,
+                                'R'     =>  10,
+                                'S'     =>  10,
+                                'T'     =>  10
+                            ));
+                            $sheet->getDefaultStyle()->getAlignment()->setWrapText(true);
+                            // $sheet->setAutoFilter('E2:F2');
+                        });
+                    })->download('xlsx');
+                }
                 break;
             case  2:
-                echo "2";
+                if($request->export_type ==1){
+                    return view('reports.clients.html.population',compact('request'));
+                }
+                elseif($request->export_type ==3){
+
+                    \Excel::create("registration_by_population_group", function($excel) use($request)  {
+                        $excel->sheet('sheet', function($sheet) use($request){
+                            $sheet->loadView('reports.clients.excel.population',compact('request'));
+                            $sheet->setWidth(array(
+                                'A'     =>  50,
+                                'B'     =>  10,
+                                'C'     =>  10,
+                                'D'     =>  10,
+                                'E'     =>  10,
+                                'F'     =>  10,
+                                'G'     =>  10,
+                                'H'     =>  10,
+                                'I'     =>  10,
+                                'J'     =>  10,
+                                'K'     =>  10,
+                                'L'     =>  10,
+                                'M'     =>  10,
+                                'N'     =>  10,
+                                'O'     =>  10,
+                                'P'     =>  10,
+                                'Q'     =>  10,
+                                'R'     =>  10,
+                                'S'     =>  10,
+                                'T'     =>  10
+                            ));
+                            $sheet->getDefaultStyle()->getAlignment()->setWrapText(true);
+                            // $sheet->setAutoFilter('E2:F2');
+                        });
+                    })->download('xlsx');
+                }
                 break;
             case 3:
-                echo "3";
+                if($request->export_type ==1){
+                    return view('reports.clients.html.specialneeds',compact('request'));
+                }
+                elseif($request->export_type ==3){
+
+                    \Excel::create("registration_by_specific_needs", function($excel) use($request)  {
+                        $excel->sheet('sheet', function($sheet) use($request){
+                            $sheet->loadView('reports.clients.excel.specialneeds',compact('request'));
+                            $sheet->setWidth(array(
+                                'A'     =>  50,
+                                'B'     =>  10,
+                                'C'     =>  10,
+                                'D'     =>  10,
+                                'E'     =>  10,
+                                'F'     =>  10,
+                                'G'     =>  10,
+                                'H'     =>  10,
+                                'I'     =>  10,
+                                'J'     =>  10,
+                                'K'     =>  10,
+                                'L'     =>  10,
+                                'M'     =>  10,
+                                'N'     =>  10,
+                                'O'     =>  10,
+                                'P'     =>  10,
+                                'Q'     =>  10,
+                                'R'     =>  10,
+                                'S'     =>  10,
+                                'T'     =>  10
+                            ));
+                            $sheet->getDefaultStyle()->getAlignment()->setWrapText(true);
+                            // $sheet->setAutoFilter('E2:F2');
+                        });
+                    })->download('xlsx');
+                }
                 break;
             case 4:
                 if($request->export_type ==1){

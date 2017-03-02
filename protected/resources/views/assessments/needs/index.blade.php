@@ -331,7 +331,6 @@
         </div>
     </div>
 @stop
-@stop
 @section('page_title')
     PSN Needs/Home assessment
 @stop
