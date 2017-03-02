@@ -19,6 +19,7 @@ class CreateClientNeedsTable extends Migration
             $table->integer('client_id')->unsigned();
             $table->integer('assessment_id')->unsigned();
             $table->string('status')->nullable()->default('No');
+            $table->string('location')->nullable();
             $table->timestamps();
 
             $table->foreign('need_id')->references('id')->on('needs')
