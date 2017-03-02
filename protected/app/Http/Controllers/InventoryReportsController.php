@@ -10,10 +10,10 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryReportsController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth');
     }
+    //
 
     /**
      * Display a listing of the resource.
@@ -23,7 +23,7 @@ class InventoryReportsController extends Controller
     public function index()
     {
         //
-        return view('reports.inventory.index');
+        return view('reports.nfis.index');
     }
     public function showReportView()
     {
@@ -31,86 +31,108 @@ class InventoryReportsController extends Controller
         return view('reports.inventory.generate');
     }
 
-    public function generateReportView(Request $request)
-    {
-        //
-        $startDate=$request->date_from;
-        $endDate=$request->date_to;
-        $range = [$startDate, $endDate];
+    public function generateReport(Request $request)
+    {   ob_clean();
 
-        if($startDate != "" && $endDate != "" ) {
-            if ($request->report_type == "all") {
-                $items = MateriaSupport::whereBetween('distributed_date', $range)->get();
-                    Excel::create("material_support_report", function ($excel) use ($items,$startDate,$endDate) {
-                        $excel->sheet('sheet', function ($sheet) use ($items,$startDate,$endDate) {
-                            $sheet->loadView('reports.inventory.detailed',compact('items','startDate','endDate'));
-                            $sheet->setWidth(array(
-                                'A'     =>  25,
-                                'B'     =>  25,
-                                'C'     =>  20,
-                                'D'     =>  25,
-                                'E'     =>  25,
-                                'F'     =>  20,
-                                'G'     =>  20,
-                                'H'     =>  25,
-                                'I'     =>  20,
-                                'J'     =>  25,
-                                'K'     =>  50,
-                                'L'     =>  50,
-                                'M'     =>  20,
-                                'N'     =>  50,
-                                'O'     =>  25,
-                                'P'     =>  25,
-                                'Q'     =>  25,
-                                'R'     =>  25,
-                                'S'     =>  25,
-                                'T'     =>  25,
-                                'U'     =>  25,
-                                'V'     =>  25
+        $query=\DB::table('items_disbursement_items');
+        $end_time ="";
+        $start_time="";
+        if($request->start_date != ""){
+            $start_time = date("Y-m-d", strtotime($request->start_date));
+        }
+        if($request->end_date != ""){
+            $end_time = date("Y-m-d", strtotime($request->end_date));
+        }
+        if($request->start_date != ""){
+            $start_time = date("Y-m-d", strtotime($request->start_date));
+        }
+        if($request->end_date != ""){
+            $end_time = date("Y-m-d", strtotime($request->end_date));
+        }
+        if($start_time != "" && $end_time !=""){
+            $range = [$start_time, $end_time];
+            $query->whereBetween('items_disbursement_items.distribution_date', $range);
+        }
+        if($start_time == "" && $end_time !=""){
 
-                            ));
-                            $sheet->getDefaultStyle()->getAlignment()->setWrapText(true);
-                            // $sheet->setAutoFilter('E2:F2');
-                        });
-                    })->download('xlsx');
-
-            } else {
-                $items = MateriaSupport::whereBetween('distributed_date', $range)->where('item_id','=',$request->report_type)->get();
-                Excel::create("material_support_report", function ($excel) use ($items,$startDate,$endDate) {
-                    $excel->sheet('sheet', function ($sheet) use ($items,$startDate,$endDate) {
-                        $sheet->loadView('reports.inventory.detailed',compact('items','startDate','endDate'));
-                        $sheet->setWidth(array(
-                            'A'     =>  25,
-                            'B'     =>  25,
-                            'C'     =>  20,
-                            'D'     =>  25,
-                            'E'     =>  25,
-                            'F'     =>  20,
-                            'G'     =>  20,
-                            'H'     =>  25,
-                            'I'     =>  20,
-                            'J'     =>  25,
-                            'K'     =>  50,
-                            'L'     =>  50,
-                            'M'     =>  20,
-                            'N'     =>  50,
-                            'O'     =>  25,
-                            'P'     =>  25,
-                            'Q'     =>  25,
-                            'R'     =>  25,
-                            'S'     =>  25,
-                            'T'     =>  25,
-                            'U'     =>  25,
-                            'V'     =>  25
-
-                        ));
-                        $sheet->getDefaultStyle()->getAlignment()->setWrapText(true);
-                        // $sheet->setAutoFilter('E2:F2');
-                    });
-                })->download('xlsx');
-            }
+            $query->where('distribution_date', $end_time);
+        }
+        if($start_time != "" && $end_time ==""){
+            $query->where('distribution_date', $start_time);
+        }
+        if ($request->items !="All"){
+            $query->where('items_disbursement_items.item_id', $request->items);
+        }
+        if($request->camp_id != "All"){
+            $query->join('items_disbursements', 'items_disbursement_items.distribution_id', '=', 'items_disbursements.id')
+                ->where('items_disbursements.camp_id', $request->camp_id);
         }
 
+        switch ($request->report_type){
+            case 1:
+                $query->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+                    ->select('clients.*','item_id','quantity','distribution_date');
+                $clients= $query->get();
+
+                if($start_time == "" && $end_time =="") {
+                    return redirect()->back();
+                }else{
+                    if ($request->export_type == 1) {
+                        return view('reports.nfis.html.clients', compact('request', 'clients'));
+                    } else {
+                        \Excel::create("List_of_Clients_Received_Items", function ($excel) use ($request, $clients) {
+                            $excel->sheet('sheet', function ($sheet) use ($request, $clients) {
+                                $sheet->loadView('reports.nfis.excel.clients', compact('request', 'clients'));
+                            });
+                        })->download('xlsx');
+                    }
+                }
+                break;
+            case 2:
+                $query->join('clients', 'items_disbursement_items.client_id', '<>', 'clients.id')
+                    ->select('clients.*','item_id','quantity','distribution_date');
+                $clients= $query->get();
+
+                if($start_time == "" && $end_time =="") {
+                    return redirect()->back();
+                }else{
+                    if ($request->export_type == 1) {
+                        return view('reports.nfis.html.registration', compact('request', 'clients'));
+                    } else {
+                        \Excel::create("List_of_Clients_report", function ($excel) use ($request, $clients) {
+                            $excel->sheet('sheet', function ($sheet) use ($request, $clients) {
+                                $sheet->loadView('reports.nfis.excel.registration', compact('request', 'clients'));
+                            });
+                        })->download('xlsx');
+                    }
+                }
+                break;
+            case 3:
+                if($start_time == "" && $end_time =="") {
+                    return redirect()->back();
+                }else{
+                    $range = [$start_time, $end_time];
+                    if ($request->export_type == 1) {
+                        return view('reports.nfis.html.population', compact('request','range'));
+                    } else {
+                        \Excel::create("List_of_Clients_report", function ($excel) use ($request,$range) {
+                            $excel->sheet('sheet', function ($sheet) use ($request,$range) {
+                                $sheet->loadView('reports.nfis.excel.population', compact('request','range'));
+                            });
+                        })->download('xlsx');
+                    }
+                }
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            default:
+                return redirect()->back();
+
+        }
     }
 
     /**

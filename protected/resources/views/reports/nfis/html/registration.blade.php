@@ -1,4 +1,3 @@
-
 @extends('site.master')
 @section('page_js')
     <script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
@@ -318,10 +317,10 @@
                 <li ><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
                 <!-- Main -->
 
-                <li class="active">
+                <li>
                     <a href="#"><i class="icon-users"></i> <span>Clients</span></a>
                     <ul>
-                        <li class="active"><a href="{{url('clients')}}">Clients Management</a></li>
+                        <li ><a href="{{url('clients')}}">Clients Management</a></li>
                     </ul>
                 </li>
                 <li>
@@ -390,13 +389,13 @@
                 @permission('reports')
             <!-- Data visualization -->
 
-                <li>
+                <li class="active">
                     <a href="#"><i class="icon-graph"></i> <span> Reports</span></a>
                     <ul>
                         <li><a href="{{url('reports/clients')}}">Client Reports</a></li>
                         <li ><a href="{{url('reports/assessments')}}">Assessments Reports</a></li>
                         <li><a href="{{url('reports/referrals')}}">Referrals Reports</a></li>
-                        <li><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
+                        <li class="active"><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
                     </ul>
                 </li>
                 <!-- /data visualization -->
@@ -421,6 +420,9 @@
                         <li><a href="{{url('psncodes')}}">Codes</a></li>
                         <li><a href="{{url('psncodes-categories')}}">Categories</a></li>
                     </ul>
+                </li>
+                <li>
+                    <a href="{{url('setting/client/needs')}}"><i class="icon-puzzle4"></i> <span>Client Needs Setting</span></a>
                 </li>
 
                 <!-- /appearance -->
@@ -641,158 +643,114 @@
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-bold text-center">Client Registration By category</h5>
+            <h5 class="panel-title text-bold text-center">Client Registration details</h5>
         </div>
 
         <div class="panel-body">
-
-                    <?php
-                    $end_time ="";
-                    $start_time="";
-                    $range="";
-                    if($request->start_date != ""){
-                        $start_time = date("Y-m-d", strtotime($request->start_date));
-                    }
-                    if($request->end_date != ""){
-                        $end_time = date("Y-m-d", strtotime($request->end_date));
-                    }
-                    if($start_time != "" && $end_time !=""){
-                        $range = [$start_time, $end_time];
-                    }
-                    ?>
-                    @if($request->camp_id=="All")
-                        @foreach(\App\Camp::all() as $camp)
-                                <div class="row clearfix" style="margin-top: 20px">
-                                    <div class="col-md-10 col-md-offset-1">
-                                <table  class=" table table-bordered table-hover ">
-                                <thead>
-                                <tr>
-                                    <th style="text-align:center; background-color: #cccccc" colspan="10">Detailed Registration by Category for {{$camp->camp_name}} ({{$start_time. " to ". $end_time}} )</th>
-                                </tr>
-                                <tr>
-                                    <th rowspan="2"  >Specific Needs & Codes </th>
-                                    <th colspan="2" style="text-align:center; background-color: #cccccc">0-17 Yrs</th>
-                                    <th colspan="2" style="text-align:center; background-color: #cccccc">18-49 Yrs</th>
-                                    <th colspan="2" style="text-align:center; background-color: #cccccc">50-59yrs</th>
-                                    <th colspan="2" style="text-align:center; background-color: #cccccc">60 and ></th>
-                                    <th style="text-align:center; background-color: #cccccc"></th>
-                                </tr>
-                                <tr>
-                                    <th  style="text-align:center; background-color: #cccccc">F</th>
-                                    <th  style="text-align:center; background-color: #cccccc">M</th>
-                                    <th  style="text-align:center; background-color: #cccccc">F</th>
-                                    <th  style="text-align:center; background-color: #cccccc">M</th>
-                                    <th  style="text-align:center; background-color: #cccccc">F</th>
-                                    <th  style="text-align:center; background-color: #cccccc">M</th>
-                                    <th  style="text-align:center; background-color: #cccccc">F</th>
-                                    <th  style="text-align:center; background-color: #cccccc">M</th>
-                                    <th style="text-align:center; background-color: #cccccc">Total</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                $t1=$t2=$t3=$t4=$t5=$t6=$t7=$t8=$t9=0
-                                ?>
-                                @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
-                                    <tr>
-                                        <td>{{$code->description}}</td>
-                                        <td>{{getClientsCountByCreteria($code->id,'Female','A',$camp->id,$range)}}<?php $t1 = $t1 + getClientsCountByCreteria($code->id,'Female','A',$camp->id,$range);?></td>
-                                        <td>{{getClientsCountByCreteria($code->id,'Male','A',$camp->id,$range)}}<?php $t2 = $t2 + getClientsCountByCreteria($code->id,'Male','A',$camp->id,$range);?></td>
-                                        <td>{{getClientsCountByCreteria($code->id,'Female','B',$camp->id,$range)}}<?php $t3 = $t3 + getClientsCountByCreteria($code->id,'Female','B',$camp->id,$range);?></td>
-                                        <td>{{getClientsCountByCreteria($code->id,'Male','B',$camp->id,$range)}}<?php $t4 = $t4 + getClientsCountByCreteria($code->id,'Male','B',$camp->id,$range);?></td>
-                                        <td>{{getClientsCountByCreteria($code->id,'Female','C',$camp->id,$range)}}<?php $t5 = $t5 + getClientsCountByCreteria($code->id,'Female','C',$camp->id,$range);?></td>
-                                        <td>{{getClientsCountByCreteria($code->id,'Male','C',$camp->id,$range)}}<?php $t6 = $t6 +getClientsCountByCreteria($code->id,'Male','C',$camp->id,$range);?></td>
-                                        <td>{{getClientsCountByCreteria($code->id,'Female','D',$camp->id,$range)}}<?php $t7 = $t7 + getClientsCountByCreteria($code->id,'Female','D',$camp->id,$range);?></td>
-                                        <td>{{getClientsCountByCreteria($code->id,'Male','D',$camp->id,$range)}}<?php $t8 = $t8 + getClientsCountByCreteria($code->id,'Male','D',$camp->id,$range);?></td>
-                                        <td>{{getClientsCountAll($code->id,$range,$camp->id)}}<?php $t9 = $t9 + getClientsCountAll($code->id,$range,$camp->id);?></td>
-                                    </tr>
-                                @endforeach
-                                <tr>
-                                    <th>Total</th>
-                                    <td>{{$t1}}</td>
-                                    <td>{{$t2}}</td>
-                                    <td>{{$t3}}</td>
-                                    <td>{{$t4}}</td>
-                                    <td>{{$t5}}</td>
-                                    <td>{{$t6}}</td>
-                                    <td>{{$t7}}</td>
-                                    <td>{{$t8}}</td>
-                                    <td>{{$t9}}</td>
-                                </tr>
-                                </tbody>
-                                <tfoot></tfoot>
-                            </table>
-                                    </div>
-                                </div>
-                        @endforeach
-                    @else
-                        <?php $camp=\App\Camp::find($request->camp_id);?>
-                            <div class="row clearfix" style="margin-top: 20px">
-                                <div class="col-md-10 col-md-offset-1">
-                                    <table  class=" table table-bordered table-hover ">
-                                        <thead>
-                                        <tr>
-                                            <th style="text-align:center; background-color: #cccccc" colspan="10">Detailed Registration by Category for {{$camp->camp_name}} ({{$start_time. " to ". $end_time}} )</th>
-                                        </tr>
-                                        <tr>
-                                            <th rowspan="2"  >Specific Needs & Codes </th>
-                                            <th colspan="2" style="text-align:center; background-color: #cccccc">0-17 Yrs</th>
-                                            <th colspan="2" style="text-align:center; background-color: #cccccc">18-49 Yrs</th>
-                                            <th colspan="2" style="text-align:center; background-color: #cccccc">50-59yrs</th>
-                                            <th colspan="2" style="text-align:center; background-color: #cccccc">60 and ></th>
-                                            <th style="text-align:center; background-color: #cccccc"></th>
-                                        </tr>
-                                        <tr>
-                                            <th  style="text-align:center; background-color: #cccccc">F</th>
-                                            <th  style="text-align:center; background-color: #cccccc">M</th>
-                                            <th  style="text-align:center; background-color: #cccccc">F</th>
-                                            <th  style="text-align:center; background-color: #cccccc">M</th>
-                                            <th  style="text-align:center; background-color: #cccccc">F</th>
-                                            <th  style="text-align:center; background-color: #cccccc">M</th>
-                                            <th  style="text-align:center; background-color: #cccccc">F</th>
-                                            <th  style="text-align:center; background-color: #cccccc">M</th>
-                                            <th style="text-align:center; background-color: #cccccc">Total</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php
-                                        $t1=$t2=$t3=$t4=$t5=$t6=$t7=$t8=$t9=0
-                                        ?>
-                                        @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
-                                            <tr>
-                                                <td>{{$code->description}}</td>
-                                                <td>{{getClientsCountByCreteria($code->id,'Female','A',$camp->id,$range)}}<?php $t1 = $t1 + getClientsCountByCreteria($code->id,'Female','A',$camp->id,$range);?></td>
-                                                <td>{{getClientsCountByCreteria($code->id,'Male','A',$camp->id,$range)}}<?php $t2 = $t2 + getClientsCountByCreteria($code->id,'Male','A',$camp->id,$range);?></td>
-                                                <td>{{getClientsCountByCreteria($code->id,'Female','B',$camp->id,$range)}}<?php $t3 = $t3 + getClientsCountByCreteria($code->id,'Female','B',$camp->id,$range);?></td>
-                                                <td>{{getClientsCountByCreteria($code->id,'Male','B',$camp->id,$range)}}<?php $t4 = $t4 + getClientsCountByCreteria($code->id,'Male','B',$camp->id,$range);?></td>
-                                                <td>{{getClientsCountByCreteria($code->id,'Female','C',$camp->id,$range)}}<?php $t5 = $t5 + getClientsCountByCreteria($code->id,'Female','C',$camp->id,$range);?></td>
-                                                <td>{{getClientsCountByCreteria($code->id,'Male','C',$camp->id,$range)}}<?php $t6 = $t6 +getClientsCountByCreteria($code->id,'Male','C',$camp->id,$range);?></td>
-                                                <td>{{getClientsCountByCreteria($code->id,'Female','D',$camp->id,$range)}}<?php $t7 = $t7 + getClientsCountByCreteria($code->id,'Female','D',$camp->id,$range);?></td>
-                                                <td>{{getClientsCountByCreteria($code->id,'Male','D',$camp->id,$range)}}<?php $t8 = $t8 + getClientsCountByCreteria($code->id,'Male','D',$camp->id,$range);?></td>
-                                                <td>{{getClientsCountAll($code->id,$range,$camp->id)}}<?php $t9 = $t9 + getClientsCountAll($code->id,$range,$camp->id);?></td>
-                                            </tr>
+            <div class="row clearfix" style="margin-top: 20px">
+                <div class="col-md-12 column">
+                    <table class="table datatable-column-search-inputs table-bordered table-hover" id="tab_logic">
+                        <thead>
+                        <tr >
+                            <th>No</th>
+                            <th>Reg #</th>
+                            <th>Unique id</th>
+                            <th>Names
+                            <th>Sex
+                            <th>Age
+                            <th>Marital Status
+                            <th>Name of Parents
+                            <th>Name of Spouse
+                            <th>Number of Males</th>
+                            <th>Number of Females</th>
+                            <th>Household Number</th>
+                            <th>Origin</th>
+                            <th>Date of Arrival</th>
+                            <th>Present address</th>
+                            <th>Ration Card Number</th>
+                            <th>Relation to the head of household</th>
+                            <th>Vul 1</th>
+                            <th>Vul 2</th>
+                            <th>Vul 3</th>
+                            <th>Vul 4</th>
+                            <th>Vul 5</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php $c=1;?>
+                        @foreach($clients as $client)
+                            <tr>
+                                <td>{{$c++}}</td>
+                                <td>{{$client->hai_reg_number}}</td>
+                                <td>{{$client->client_number}}</td>
+                                <td>{{$client->full_name}}</td>
+                                <td>{{$client->sex}}</td>
+                                <td>{{$client->age}}</td>
+                                <td>{{$client->marital_status}}</td>
+                                <td>{{$client->care_giver}}</td>
+                                <td>{{$client->spouse_name}}</td>
+                                <td>{{$client->males_total}}</td>
+                                <td>{{$client->females_total}}</td>
+                                <td>{{$client->females_total + $client->males_total }}</td>
+                                <td>
+                                    @if(is_object(\App\Client::find($client->id)->fromOrigin) && \App\Client::find($client->id)->fromOrigin)
+                                        {{\App\Client::find($client->id)->fromOrigin->origin_name}}
+                                    @endif
+                                </td>
+                                <td> @if( $client->date_arrival !="1970-01-01"){{$client->date_arrival}}@endif </td>
+                                <td>{{$client->present_address}}</td>
+                                <td>{{$client->ration_card_number}}</td>
+                                <td>{{$client->hh_relation}}</td>
+                                    @if(is_object(\App\Client::find($client->id)->vulnerabilityCodes) && count(\App\Client::find($client->id)->vulnerabilityCodes) >0)
+                                        @foreach(\App\Client::find($client->id)->vulnerabilityCodes as $code)
+                                            @if(is_object($code->code) && $code->code != null)
+                                            <td class="text-center">{{$code->code->code}}</td>
+                                            @endif
                                         @endforeach
-                                        <tr>
-                                            <th>Total</th>
-                                            <td>{{$t1}}</td>
-                                            <td>{{$t2}}</td>
-                                            <td>{{$t3}}</td>
-                                            <td>{{$t4}}</td>
-                                            <td>{{$t5}}</td>
-                                            <td>{{$t6}}</td>
-                                            <td>{{$t7}}</td>
-                                            <td>{{$t8}}</td>
-                                            <td>{{$t9}}</td>
-                                        </tr>
-                                        </tbody>
-                                        <tfoot></tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                    @endif
+                                            @for($i=0; $i <(5-count(\App\Client::find($client->id)->vulnerabilityCodes)) ; $i++)
+                                                <td></td>
+                                            @endfor
+                                        @else
+                                    @for($i=0; $i <5 ; $i++)
+                                        <td></td>
+                                    @endfor
+                                    @endif
+
+                            </tr>
+                        @endforeach
+                        </tbody>
+                        <tfoot>
+                        <tr >
+                            <th>No</th>
+                            <th>Reg #</th>
+                            <th>Unique id</th>
+                            <th>Names
+                            <th>Sex
+                            <th>Age
+                            <th>Marital Status
+                            <th>Name of Parents
+                            <th>Name of Spouse
+                            <th>Number of Males</th>
+                            <th>Number of Females</th>
+                            <th>Household Number</th>
+                            <th>Origin</th>
+                            <th>Date of Arrival</th>
+                            <th>Present address</th>
+                            <th>Ration Card Number</th>
+                            <th>Relation to the head of household</th>
+                            <th>Vul 1</th>
+                            <th>Vul 2</th>
+                            <th>Vul 3</th>
+                            <th>Vul 4</th>
+                            <th>Vul 5</th>
+                        </tr>
+                        </tfoot>
+                    </table>
                 </div>
 
             </div>
+        </div>
 
+
+    </div>
 @stop
-

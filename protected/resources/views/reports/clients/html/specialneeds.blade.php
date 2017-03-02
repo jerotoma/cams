@@ -611,10 +611,8 @@
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="export_type" id="export_type" data-placeholder="Choose an option...">
                                                 <optgroup label="Export Type">
                                                     <option></option>
-                                                    <option value="1" >Preview -(All Data)</option>
-                                                    <option value="2" >Preview -(Graphical)</option>
-                                                    <option value="3">Export to MS Excel</option>
-                                                    <option value="4">Export to PDF</option>
+                                                    <option value="1" >Preview</option>
+                                                    <option value="2">Export to MS Excel</option>
                                                 </optgroup>
                                             </select>
                                         </div>

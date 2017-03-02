@@ -107,7 +107,7 @@
                 <li class="active">
                     <a href="#"><i class="icon-graph"></i> <span> Reports</span></a>
                     <ul>
-                        <li ><a href="{{url('reports/clients')}}">Client Reports</a></li>
+                        <li><a href="{{url('reports/clients')}}">Client Reports</a></li>
                         <li ><a href="{{url('reports/assessments')}}">Assessments Reports</a></li>
                         <li><a href="{{url('reports/referrals')}}">Referrals Reports</a></li>
                         <li class="active"><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
@@ -136,6 +136,9 @@
                         <li><a href="{{url('psncodes-categories')}}">Categories</a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="{{url('setting/client/needs')}}"><i class="icon-puzzle4"></i> <span>Client Needs Setting</span></a>
+                </li>
 
                 <!-- /appearance -->
 
@@ -161,13 +164,13 @@
     Clients Reports!
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Reports</span> - Clients</h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Reports</span> - NFIs and Cash Distribution</h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li class="active">Clients Reports</li>
+        <li class="active">NFIs & Cash Distribution Reports</li>
     </ul>
 @stop
 @section('scripts')
@@ -180,7 +183,7 @@
             format: 'yyyy-mm-dd',
         });
 
-        $('#clientRegistration').highcharts({
+        $('#monthlyNfisDistributions').highcharts({
             chart: {
                 type: 'column'
             },
@@ -271,6 +274,42 @@
                 data: [<?php echo getHighChatClientByCodes();?>]
             }]
         });
+        $('#nfidistribution').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Client Registration'
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            series: [{
+                name: 'Clients',
+                colorByPoint: true,
+                data: [<?php echo getHighChatClientMonthlyCountByNationality();?>]
+            }]
+        });
 
         $("#formClientReport").validate({
             ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
@@ -320,10 +359,12 @@
             },
             errorElement:'div',
             rules: {
-                report_type: "required"
+                report_type: "required",
+                export_type: "required"
             },
             messages: {
-                report_type: "Please report type is required"
+                report_type: "Please report type is required",
+                export_type: "Please Export type is required"
 
             }
         });
@@ -341,7 +382,7 @@
         <div class="col-md-12">
             <div class="portlet light bordered">
                 <div class="portlet-body form">
-                    {!! Form::open(array('url'=>'generate/reports/nfis','role'=>'form','id'=>'formClientReport')) !!}
+                    {!! Form::open(array('url'=>'reports/nfis','role'=>'form','id'=>'formClientReport')) !!}
                     <div class="panel panel-flat">
 
 
@@ -358,7 +399,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group ">
                                             <label class="control-label">End Date</label>
                                             <div class="input-group">
@@ -385,10 +426,9 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group ">
-                                            <label>NFI Item?</label>
+                                            <label>NFIs Item?</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="items" id="items" data-placeholder="Choose an option...">
                                                 <optgroup label="NFIS Items">
-                                                    <option></option>
                                                     <option value="All">All</option>
                                                     @foreach(\App\ItemsInventory::all() as $item)
                                                         <option value="{{$item->id}}">{{$item->item_name}}</option>
@@ -402,7 +442,6 @@
                                             <label>Vulnerability</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
                                                 <optgroup label="Specific Needs">
-                                                    <option></option>
                                                     <option value="All">All</option>
                                                     @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
                                                     <option value="{{$code->id}}">{{$code->description}}</option>
@@ -413,17 +452,29 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-8">
                                         <div class="form-group ">
                                             <label>What type of report type do you need?</label>
                                             <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type" data-placeholder="Choose an option...">
                                                 <optgroup label="Report Type">
                                                     <option></option>
-                                                    <option value="List of Clients Received Items">List of Clients Received Items</option>
-                                                    <option value="Prepare list for distribution">Prepare list for distribution</option>
-                                                    <option value="Distribution per population" >Distribution per population</option>
-                                                    <option value="Out of stock Items" >Out of stock Items</option>
-                                                    <option value="List of All Items" >List of All Items</option>
+                                                    <option value="1">List of Clients Received Items</option>
+                                                    <option value="2">Prepare list for distribution</option>
+                                                    <option value="3" >Distribution per population</option>
+                                                    <option value="4" >cash grant or voucher provided</option>
+                                                    <option value="5" >Out of stock Items</option>
+                                                    <option value="6" >List of All Items</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label>Export Type</label>
+                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="export_type" id="export_type" data-placeholder="Choose an option...">
+                                                <optgroup label="Export Type">
+                                                    <option value="1" >Preview</option>
+                                                    <option value="2">Export to MS Excel</option>
                                                 </optgroup>
                                             </select>
                                         </div>
@@ -442,18 +493,21 @@
                 </div>
             </div>
         </div>
-
+    </div>
+    <div class="row" style="margin-top: 20px">
+        <div class="col-md-12">
+            <div style="min-width: 310px; height: 500px; margin: 0 auto" id="monthlyNfisDistributions"></div>
+        </div>
 
     </div>
     <div class="row" style="margin-top: 20px">
-        <div class="col-md-8">
-            <div style="min-width: 410px; height: 500px; margin: 0 auto" id="clientsNeeds"></div>
+        <div class="col-md-6">
+            <div style="min-width: 310px; height: 500px; margin: 0 auto" id="nfidistribution"></div>
         </div>
-        <div class="col-md-4">
-            <div style="min-width: 310px; height: 500px; margin: 0 auto" id="clientRegistration"></div>
+        <div class="col-md-6">
+            <div style="min-width: 410px; height: 500px; margin: 0 auto" id="clientsNeeds"></div>
         </div>
 
     </div>
-
 
 @stop

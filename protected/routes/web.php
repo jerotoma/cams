@@ -191,9 +191,8 @@ Route::post('generate/reports/clients','ClientReportsController@postGenerate');
 Route::get('reports/assessments','DataVisualizationController@showAssessments');
 Route::get('generate/reports/assessments','DataVisualizationController@postGenerate');
 
-Route::get('reports/nfis','InventoryReport@index');
-Route::post('generate/reports/nfis','InventoryReport@generateReport');
-
+Route::get('reports/nfis','InventoryReportsController@index');
+Route::post('reports/nfis','InventoryReportsController@generateReport');
 
 
 //Inclusion Assessments

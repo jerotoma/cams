@@ -86,7 +86,7 @@ class ClientReportsController extends Controller
                 if($request->export_type ==1){
                     return view('reports.clients.html.registration_by_category',compact('request'));
                 }
-                elseif($request->export_type ==3){
+                elseif($request->export_type ==2){
 
                     \Excel::create("registration_by_category_report", function($excel) use($request)  {
                         $excel->sheet('sheet', function($sheet) use($request){
@@ -123,7 +123,7 @@ class ClientReportsController extends Controller
                 if($request->export_type ==1){
                     return view('reports.clients.html.population',compact('request'));
                 }
-                elseif($request->export_type ==3){
+                elseif($request->export_type ==2){
 
                     \Excel::create("registration_by_population_group", function($excel) use($request)  {
                         $excel->sheet('sheet', function($sheet) use($request){
@@ -160,7 +160,7 @@ class ClientReportsController extends Controller
                 if($request->export_type ==1){
                     return view('reports.clients.html.specialneeds',compact('request'));
                 }
-                elseif($request->export_type ==3){
+                elseif($request->export_type ==2){
 
                     \Excel::create("registration_by_specific_needs", function($excel) use($request)  {
                         $excel->sheet('sheet', function($sheet) use($request){
@@ -197,7 +197,7 @@ class ClientReportsController extends Controller
                 if($request->export_type ==1){
                     return view('reports.clients.html.registration',compact('clients'));
                 }
-                elseif($request->export_type ==3){
+                elseif($request->export_type ==2){
 
                     \Excel::create("Client_registration_reports", function($excel) use($clients)  {
                         $excel->sheet('sheet', function($sheet) use($clients){
@@ -207,6 +207,7 @@ class ClientReportsController extends Controller
                 }
                 break;
             default:
+                return redirect()->back();
 
         }
 
