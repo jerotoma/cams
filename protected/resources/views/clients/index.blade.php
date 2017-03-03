@@ -135,6 +135,7 @@
                             }
                         });
                     });
+
                     // Confirmation dialog
                     $('.authorizeRecord').on('click', function() {
                         var id1 = $(this).parent().attr('id');
@@ -146,7 +147,7 @@
                                     type: 'post',
                                     data: {_method: 'post', _token :"{{csrf_token()}}"},
                                     success:function(msg){
-
+                                        location.reload();
                                     }
                                 });
                             }
@@ -156,17 +157,8 @@
                     $('.authorizeAllRecord').on('click', function() {
                         var id1 = $(this).parent().attr('id');
                         var btn=$(this).parent().parent().parent().parent().parent().parent();
-                        bootbox.confirm("Are You Sure to athorize record?", function(result) {
-                            if(result){
-                                $.ajax({
-                                    url:"<?php echo url('authorize/clients') ?>",
-                                    type: 'post',
-                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
-                                    success:function(msg){
+                        bootbox.confirm("You can not authorize all here!, Please click search and select pending ", function(result) {
 
-                                    }
-                                });
-                            }
                         });
                     });
                 }

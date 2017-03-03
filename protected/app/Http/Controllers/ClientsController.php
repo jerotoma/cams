@@ -43,13 +43,18 @@ class ClientsController extends Controller
     {
         //
         if (Auth::user()->can('authorize')){
-        $clients=Client::where('auth_status', 'pending')->get();
-        foreach ($clients as $client){
-            $client->auth_status = 'authorized';
-            $client->auth_by = Auth::user()->username;
-            $client->auth_date('Y-m-d H:i');
-            $client->save();
-        }}else{
+
+            $client=Client::where('auth_status', '=', 'pending')
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => 'Auth::user()->username',
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+
+            //Audit trail
+            AuditRegister("ClientsController","AuthorizeClientById",$client);
+
+        }else{
             return null;
         }
 
@@ -58,14 +63,15 @@ class ClientsController extends Controller
     {
         //
         if (Auth::user()->can('authorize')){
-        $client=Client::find($id);
-        $client->auth_status = 'authorized';
-        $client->auth_by = Auth::user()->username;
-        $client->auth_date('Y-m-d H:i');
-        $client->save();
 
+            $client=Client::find($id)
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => 'Auth::user()->username',
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
             //Audit trail
-            AuditRegister("ClientsController","VAuthorizeClientById",$client);
+            AuditRegister("ClientsController","AuthorizeClientById",$client);
         }else{
             return null;
         }
@@ -334,6 +340,9 @@ class ClientsController extends Controller
         }
         if($request->camp_id != "" && $request->camp_id !="All"){
             $query->where('camp_id','=',"$request->camp_id");
+        }
+        if($request->auth_status != "" && $request->auth_status !="All"){
+            $query->where('auth_status','=',"$request->auth_status");
         }
         if($start_time != "" && $end_time !=""){
             $range = [$start_time, $end_time];

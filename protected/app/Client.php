@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Client extends Model
 {
     //
+    protected $fillable = ['auth_status', 'auth_by', 'auth_date'];
+
     public function fromOrigin()
     {
         return $this::belongsTo('\App\Origin','origin_id');

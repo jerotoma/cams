@@ -47,7 +47,7 @@ Route::resource('psncodes','PSNCodesController');
 Route::resource('psncodes-categories','PSNCodeCategoryController');
 
 Route::resource('clients','ClientsController');
-Route::post('authorize/clients','ClientsController@AuthorizeAll');
+Route::post('authorize/all/clients','ClientsController@AuthorizeAll');
 Route::post('authorize/{id}/clients','ClientsController@AuthorizeClientById');
 
 Route::get('getclientsjson','ClientsController@getJSonDataSearch');
