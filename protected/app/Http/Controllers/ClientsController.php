@@ -148,58 +148,183 @@ class ClientsController extends Controller
         $count=1;
         foreach($clients as $client) {
 
-            if ($client->auth_status == "pending"){
-               if (Auth::user()->hasRole('admin')
-                   || Auth::user()->hasRole('authorizer') ||  $client->created_by = Auth::user()->username){
+            if ($client->auth_status == "pending")
+            {
+                if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('authorizer'))
+                {
+                    $origin = "";
+                    $status = "";
+                    $datearv = "";
+                    $camp = "";
+                    if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
+                        $origin = $client->fromOrigin->origin_name;
+                    }
+                    if (is_object($client->camp) && $client->camp != null) {
+                        $camp = $client->camp->camp_name;
+                    }
+                    if (is_object($client->vulAssessment) && count($client->vulAssessment) > 0) {
+                        $vcolor = "label-success";
+                    }
+                    if ($client->date_arrival != "" && $client->date_arrival != null) {
+                        $datearv = date('d M Y', strtotime($client->date_arrival));
+                    }
 
-
-            $origin="";
-            $status="";
-            $datearv="";
-            $camp="";
-            if(is_object($client->fromOrigin) && $client->fromOrigin != null )
-            {
-                $origin=$client->fromOrigin->origin_name;
-            }
-            if(is_object($client->camp) && $client->camp != null )
-            {
-                $camp=$client->camp->camp_name;
-            }
-            if(is_object($client->vulAssessment) && count($client->vulAssessment) >0)
-            {
-                $vcolor="label-success";
-            }
-            if($client->date_arrival != "" && $client->date_arrival != null)
-            {
-                $datearv =date('d M Y',strtotime($client->date_arrival));
-           }
-
-             $records["data"][] = array(
-                $count++,
-                $client->hai_reg_number,
-                $client->full_name,
-                $client->sex,
-                $client->age,
-                $client->ration_card_number,
-                 $datearv,
-                $camp,
-                $client->auth_status,
-                 '<ul class="icons-list text-center">
+                    $records["data"][] = array(
+                        $count++,
+                        $client->hai_reg_number,
+                        $client->full_name,
+                        $client->sex,
+                        $client->age,
+                        $client->ration_card_number,
+                        $datearv,
+                        $camp,
+                        $client->auth_status,
+                        '<ul class="icons-list text-center">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="icon-menu9"></i>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
-                              <li id="'.$client->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
-                             <li id="'.$client->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
-                             <li id="'.$client->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                             <li id="'.$client->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
+                             <li id="' . $client->id . '"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                             <li id="' . $client->id . '"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="' . $client->id . '"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
                             </ul>
                         </li>
                     </ul>'
 
-            );
-        }
+                    );
+                }
+                else {
+                    $origin = "";
+                    $status = "";
+                    $datearv = "";
+                    $camp = "";
+                    if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
+                        $origin = $client->fromOrigin->origin_name;
+                    }
+                    if (is_object($client->camp) && $client->camp != null) {
+                        $camp = $client->camp->camp_name;
+                    }
+                    if (is_object($client->vulAssessment) && count($client->vulAssessment) > 0) {
+                        $vcolor = "label-success";
+                    }
+                    if ($client->date_arrival != "" && $client->date_arrival != null) {
+                        $datearv = date('d M Y', strtotime($client->date_arrival));
+                    }
+
+                    $records["data"][] = array(
+                        $count++,
+                        $client->hai_reg_number,
+                        $client->full_name,
+                        $client->sex,
+                        $client->age,
+                        $client->ration_card_number,
+                        $datearv,
+                        $camp,
+                        $client->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
+                             <li id="' . $client->id . '"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="' . $client->id . '"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+
+                    );
+                }
+            }
+            else{
+                if (Auth::user()->hasRole('admin'))
+                {
+                    $origin = "";
+                    $status = "";
+                    $datearv = "";
+                    $camp = "";
+                    if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
+                        $origin = $client->fromOrigin->origin_name;
+                    }
+                    if (is_object($client->camp) && $client->camp != null) {
+                        $camp = $client->camp->camp_name;
+                    }
+                    if (is_object($client->vulAssessment) && count($client->vulAssessment) > 0) {
+                        $vcolor = "label-success";
+                    }
+                    if ($client->date_arrival != "" && $client->date_arrival != null) {
+                        $datearv = date('d M Y', strtotime($client->date_arrival));
+                    }
+
+                    $records["data"][] = array(
+                        $count++,
+                        $client->hai_reg_number,
+                        $client->full_name,
+                        $client->sex,
+                        $client->age,
+                        $client->ration_card_number,
+                        $datearv,
+                        $camp,
+                        $client->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
+                             <li id="' . $client->id . '"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="' . $client->id . '"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+
+                    );
+                }
+                else {
+                    $origin = "";
+                    $status = "";
+                    $datearv = "";
+                    $camp = "";
+                    if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
+                        $origin = $client->fromOrigin->origin_name;
+                    }
+                    if (is_object($client->camp) && $client->camp != null) {
+                        $camp = $client->camp->camp_name;
+                    }
+                    if (is_object($client->vulAssessment) && count($client->vulAssessment) > 0) {
+                        $vcolor = "label-success";
+                    }
+                    if ($client->date_arrival != "" && $client->date_arrival != null) {
+                        $datearv = date('d M Y', strtotime($client->date_arrival));
+                    }
+
+                    $records["data"][] = array(
+                        $count++,
+                        $client->hai_reg_number,
+                        $client->full_name,
+                        $client->sex,
+                        $client->age,
+                        $client->ration_card_number,
+                        $datearv,
+                        $camp,
+                        $client->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+
+                    );
+                }
             }
         }
 
