@@ -16,11 +16,11 @@ class AuditController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($request="")
     {
         //
-        $logs =Audit::all();
-        return view('users.audit.index',compact('logs'));
+        $logs =Audit::orderBy('activity_date','DESC')->get()->take(500);
+        return view('users.audit.index',compact('logs','request'));
 
     }
 
@@ -41,8 +41,34 @@ class AuditController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {ob_clean();
         //
+        $this->validate($request, [
+            'start_date' => 'required',
+            'end_date' => 'required',
+        ]);
+        $end_time ="";
+        $start_time="";
+        if($request->start_date != ""){
+            $start_time = date("Y-m-d", strtotime($request->start_date));
+        }
+        if($request->end_date != ""){
+            $end_time = date("Y-m-d", strtotime($request->end_date));
+        }
+        $range = [$start_time, $end_time];
+        $logs =Audit::whereBetween('activity_date', $range)->orderBy('activity_date','DESC')->get();
+
+        if ($request->export_type == 2 && count($logs) > 0){
+
+            \Excel::create("System_audit_logs", function ($excel) use ($request, $logs) {
+                $excel->sheet('sheet', function ($sheet) use ($request, $logs) {
+                    $sheet->loadView('users.audit.logs', compact('logs', 'request'));
+                });
+            })->download('xlsx');
+        }
+        else {
+            return view('users.audit.index', compact('logs', 'request'));
+        }
     }
 
     /**

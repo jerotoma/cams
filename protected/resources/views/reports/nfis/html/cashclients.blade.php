@@ -317,10 +317,10 @@
                 <li ><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
                 <!-- Main -->
 
-                <li class="active">
+                <li>
                     <a href="#"><i class="icon-users"></i> <span>Clients</span></a>
                     <ul>
-                        <li class="active"><a href="{{url('clients')}}">Clients Management</a></li>
+                        <li ><a href="{{url('clients')}}">Clients Management</a></li>
                     </ul>
                 </li>
                 <li>
@@ -389,13 +389,13 @@
                 @permission('reports')
             <!-- Data visualization -->
 
-                <li>
+                <li class="active">
                     <a href="#"><i class="icon-graph"></i> <span> Reports</span></a>
                     <ul>
                         <li><a href="{{url('reports/clients')}}">Client Reports</a></li>
                         <li ><a href="{{url('reports/assessments')}}">Assessments Reports</a></li>
                         <li><a href="{{url('reports/referrals')}}">Referrals Reports</a></li>
-                        <li><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
+                        <li class="active"><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
                     </ul>
                 </li>
                 <!-- /data visualization -->
@@ -420,6 +420,9 @@
                         <li><a href="{{url('psncodes')}}">Codes</a></li>
                         <li><a href="{{url('psncodes-categories')}}">Categories</a></li>
                     </ul>
+                </li>
+                <li>
+                    <a href="{{url('setting/client/needs')}}"><i class="icon-puzzle4"></i> <span>Client Needs Setting</span></a>
                 </li>
 
                 <!-- /appearance -->
@@ -471,305 +474,90 @@
             @endpermission
         </div>
     </div>
-    <div class="row" style="margin-top: 20px">
-        <div class="col-md-12">
-            <div class="portlet light bordered">
-                <div class="portlet-body form">
-                    {!! Form::open(array('url'=>'generate/reports/clients','role'=>'form','id'=>'formClientReport')) !!}
-                    <div class="panel panel-flat">
-
-
-                        <div class="panel-body">
-                            <fieldset class="scheduler-border">
-                                <legend class="text-bold">Client Registration Reports</legend>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group ">
-                                            <label class="control-label">Arrival Date: Start Date</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                                <input type="text" class="form-control pickadate"  value="{{old('start_date')}}" name="start_date" id="start_date">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group ">
-                                            <label class="control-label">End Date</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                                <input type="text" class="form-control pickadate" value="{{old('end_date')}}" name="end_date" id="end_date">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label class="control-label">HAI Reg No</label>
-                                            <input type="text" class="form-control" name="hai_reg_no">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label class="control-label">Unique ID</label>
-                                            <input type="text" class="form-control" name="unique_id">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label class="control-label">Full Name</label>
-                                            <input type="text" class="form-control" name="full_name">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Sex</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="sex" id="sex">
-                                                <optgroup label="Sex">
-                                                    <option value="All">All</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Female">Female</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Camp</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="camp_id" id="camp_id">
-                                                <optgroup label="Camp Name">
-                                                    <option value="All">All</option>
-                                                    @foreach(\App\Camp::all() as $item)
-                                                        <option value="{{$item->id}}">{{$item->camp_name}}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Specific Needs?</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
-                                                <optgroup label="Specific Needs">
-                                                    <option value="All">All</option>
-                                                    @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
-                                                        <option value="{{$code->id}}">{{$code->description}}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label class="control-label"> Ration Card Number </label>
-                                            <input type="text" class="form-control" placeholder="Ration Card Number " name="ration_card_number" id="ration_card_number" value="{{old('ration_card_number')}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Age Group</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="age_score" id="age_score">
-                                                <optgroup label="Group">
-                                                    <option></option>
-                                                    <option value="A">0 - 17</option>
-                                                    <option value="B">17 - 50</option>
-                                                    <option value="C">50 - 60</option>
-                                                    <option value="D">60 ></option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label class="control-label"> Present address (Zone, Cluster, Neibourhood etc)</label>
-                                            <input type="text" class="form-control" placeholder="Present address " name="present_address" id="present_address" value="{{old('address')}}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="form-group ">
-                                            <label>What type of report type do you need?</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type" data-placeholder="Choose an option...">
-                                                <optgroup label="Report Type">
-                                                    <option></option>
-                                                    <option value="1">Registration by Category</option>
-                                                    <option value="2" >Population Planning Groups</option>
-                                                    <option value="3" >Specific needs provided</option>
-                                                    <option value="4" >All Registration Details</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Export Type</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="export_type" id="export_type" data-placeholder="Choose an option...">
-                                                <optgroup label="Export Type">
-                                                    <option></option>
-                                                    <option value="1" >Preview</option>
-                                                    <option value="2">Export to MS Excel</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <div class="row">
-                                <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
-                                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cogs"></i> Generate report </button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8" id="output">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-
-
-    </div>
+    @include('reports.nfis.searchform')
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-bold text-center">Client Registration details</h5>
+            <h5 class="panel-title text-bold text-center">Items Distribution Report as of {{$request->start_date}} - {{$request->end_date}} </h5>
         </div>
 
         <div class="panel-body">
             <div class="row clearfix" style="margin-top: 20px">
                 <div class="col-md-12 column">
-                    <?php
-                    $end_time ="";
-                    $start_time="";
-                    $range="";
-                    if($request->start_date != ""){
-                        $start_time = date("Y-m-d", strtotime($request->start_date));
-                    }
-                    if($request->end_date != ""){
-                        $end_time = date("Y-m-d", strtotime($request->end_date));
-                    }
-                    if($start_time != "" && $end_time !=""){
-                        $range = [$start_time, $end_time];
-                    }
-                    ?>
-                        @if($request->camp_id=="All")
-                            @foreach(\App\Camp::all() as $camp)
-                                <div class="row clearfix" style="margin-top: 20px">
-                                    <div class="col-md-12 column">
-                                <table class="table table-bordered table-hover">
-                                    <tr>
-                                        <th style="text-align: center; background-color: #ccc" colspan="5">Population Planning Groups as at {{$camp->camp_name}} ({{$start_time. " to ". $end_time}}</th>
-                                    </tr>
-                                    <tr>
-                                        <th style="text-align: center; background-color: #ccc">Age group</th>
-                                        <th style="text-align: center; background-color: #ccc">Females</th>
-                                        <th style="text-align: center; background-color: #ccc">Males</th>
-                                        <th style="text-align: center; background-color: #ccc">Total</th>
-                                        <th style="text-align: center; background-color: #ccc">%</th>
-                                    </tr>
-                                    <tr>
-                                        <td>0-17 Yrs   </td>
-                                        <td> {{getClientNumberBySexAgescoreByCamp('Female','A',$camp->id,$range)}} </td>
-                                        <td> {{getClientNumberBySexAgescoreByCamp('Male','A',$camp->id,$range)}} </td>
-                                        <td> {{getClientNumberByAgeScoreByCamp('A',$camp->id,$range)}} </td>
-                                        <td> {{getClientPercentageByAgeScoreByCamp('A',$camp->id,$range)}} </td>
-                                    </tr>
-                                    <tr>
-                                        <td>18-49 Yrs  </td>
-                                        <td> {{getClientNumberBySexAgescoreByCamp('Female','B',$camp->id,$range)}} </td>
-                                        <td> {{getClientNumberBySexAgescoreByCamp('Male','B',$camp->id,$range)}} </td>
-                                        <td> {{getClientNumberByAgeScoreByCamp('B',$camp->id,$range)}} </td>
-                                        <td> {{getClientPercentageByAgeScoreByCamp('B',$camp->id,$range)}} </td>
-                                    </tr>
-                                    <tr>
-                                        <td>50-59 Yrs   </td>
-                                        <td> {{getClientNumberBySexAgescoreByCamp('Female','C',$camp->id,$range)}} </td>
-                                        <td> {{getClientNumberBySexAgescoreByCamp('Male','C',$camp->id,$range)}} </td>
-                                        <td> {{getClientNumberByAgeScoreByCamp('C',$camp->id,$range)}} </td>
-                                        <td> {{getClientPercentageByAgeScoreByCamp('C',$camp->id,$range)}} </td>
-                                    </tr>
-                                    <tr>
+                    <table class="table datatable-column-search-inputs table-bordered table-hover" id="tab_logic">
+                        <thead>
+                        <tr >
+                            <th>No</th>
+                            <th>HAI Reg #</th>
+                            <th>Unique id</th>
+                            <th>Names
+                            <th>Sex
+                            <th>Age
+                            <th>Origin</th>
+                            <th>Date of Arrival</th>
+                            <th>Present address</th>
+                            <th>Ration Card Number</th>
+                            <th></th>
+                            <th>Budget Activity</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Camp Name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php $c=1;?>
+                        @foreach($clients as $client)
+                            <tr>
+                                <td>{{$c++}}</td>
+                                <td>{{$client->hai_reg_number}}</td>
+                                <td>{{$client->client_number}}</td>
+                                <td>{{$client->full_name}}</td>
+                                <td>{{$client->sex}}</td>
+                                <td>{{$client->age}}</td>
+                                <td>
+                                    @if(is_object(\App\Client::find($client->id)->fromOrigin) && \App\Client::find($client->id)->fromOrigin != null)
+                                        {{\App\Client::find($client->id)->fromOrigin->origin_name}}
+                                    @endif
+                                </td>
+                                <td>{{$client->date_arrival}}</td>
+                                <td>{{$client->present_address}}</td>
+                                <td>{{$client->ration_card_number}}</td>
+                                <td></td>
+                                <td>
+                                    @if(is_object(\App\BudgetActivity::find($client->activity_id)) && \App\BudgetActivity::find($client->activity_id) != null)
+                                        {{\App\BudgetActivity::find($client->activity_id)->activity_name}}
+                                    @endif
+                                </td>
+                                <td>{{$client->amount}}</td>
+                                <td>{{$client->provision_date}}</td>
+                                <td>
+                                    @if(is_object(\App\Client::find($client->id)->camp) && \App\Client::find($client->id)->camp)
+                                        {{\App\Client::find($client->id)->camp->camp_name}}
+                                    @endif
+                                </td>
 
-                                        <td>60 and > Yrs</td>
-                                        <td> {{getClientNumberBySexAgescoreByCamp('Female','D',$camp->id,$range)}} </td>
-                                        <td> {{getClientNumberBySexAgescoreByCamp('Male','D',$camp->id,$range)}} </td>
-                                        <td> {{getClientNumberByAgeScoreByCamp('D',$camp->id,$range)}} </td>
-                                        <td> {{getClientPercentageByAgeScoreByCamp('D',$camp->id,$range)}} </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total</th>
-                                        <td> {{getClientNumberBySexByCamp('Female',$camp->id,$range)}} </td>
-                                        <td> {{getClientNumberBySexByCamp('Male',$camp->id,$range)}} </td>
-                                        <td> {{getAllClientsNumberByCamp($camp->id,$range)}} </td>
-                                        <td> 100% </td>
-                                    </tr>
-                                </table>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @else
-                            <?php $camp=\App\Camp::find($request->camp_id);?>
-                                <div class="row clearfix" style="margin-top: 20px">
-                                    <div class="col-md-12 column">
-                                        <table class="table table-bordered table-hover">
-                                            <tr>
-                                                <th style="text-align: center; background-color: #ccc" colspan="5">Population Planning Groups as at {{$camp->camp_name}} ({{$start_time. " to ". $end_time}}</th>
-                                            </tr>
-                                            <tr>
-                                                <th style="text-align: center; background-color: #ccc">Age group</th>
-                                                <th style="text-align: center; background-color: #ccc">Females</th>
-                                                <th style="text-align: center; background-color: #ccc">Males</th>
-                                                <th style="text-align: center; background-color: #ccc">Total</th>
-                                                <th style="text-align: center; background-color: #ccc">%</th>
-                                            </tr>
-                                            <tr>
-                                                <td>0-17 Yrs   </td>
-                                                <td> {{getClientNumberBySexAgescoreByCamp('Female','A',$camp->id,$range)}} </td>
-                                                <td> {{getClientNumberBySexAgescoreByCamp('Male','A',$camp->id,$range)}} </td>
-                                                <td> {{getClientNumberByAgeScoreByCamp('A',$camp->id,$range)}} </td>
-                                                <td> {{getClientPercentageByAgeScoreByCamp('A',$camp->id,$range)}} </td>
-                                            </tr>
-                                            <tr>
-                                                <td>18-49 Yrs  </td>
-                                                <td> {{getClientNumberBySexAgescoreByCamp('Female','B',$camp->id,$range)}} </td>
-                                                <td> {{getClientNumberBySexAgescoreByCamp('Male','B',$camp->id,$range)}} </td>
-                                                <td> {{getClientNumberByAgeScoreByCamp('B',$camp->id,$range)}} </td>
-                                                <td> {{getClientPercentageByAgeScoreByCamp('B',$camp->id,$range)}} </td>
-                                            </tr>
-                                            <tr>
-                                                <td>50-59 Yrs   </td>
-                                                <td> {{getClientNumberBySexAgescoreByCamp('Female','C',$camp->id,$range)}} </td>
-                                                <td> {{getClientNumberBySexAgescoreByCamp('Male','C',$camp->id,$range)}} </td>
-                                                <td> {{getClientNumberByAgeScoreByCamp('C',$camp->id,$range)}} </td>
-                                                <td> {{getClientPercentageByAgeScoreByCamp('C',$camp->id,$range)}} </td>
-                                            </tr>
-                                            <tr>
-
-                                                <td>60 and > Yrs</td>
-                                                <td> {{getClientNumberBySexAgescoreByCamp('Female','D',$camp->id,$range)}} </td>
-                                                <td> {{getClientNumberBySexAgescoreByCamp('Male','D',$camp->id,$range)}} </td>
-                                                <td> {{getClientNumberByAgeScoreByCamp('D',$camp->id,$range)}} </td>
-                                                <td> {{getClientPercentageByAgeScoreByCamp('D',$camp->id,$range)}} </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Total</th>
-                                                <td> {{getClientNumberBySexByCamp('Female',$camp->id,$range)}} </td>
-                                                <td> {{getClientNumberBySexByCamp('Male',$camp->id,$range)}} </td>
-                                                <td> {{getAllClientsNumberByCamp($camp->id,$range)}} </td>
-                                                <td> 100% </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                        @endif
+                            </tr>
+                        @endforeach
+                        </tbody>
+                        <tfoot>
+                        <tr >
+                            <th>No</th>
+                            <th>HAI Reg #</th>
+                            <th>Unique id</th>
+                            <th>Names
+                            <th>Sex
+                            <th>Age
+                            <th>Origin</th>
+                            <th>Date of Arrival</th>
+                            <th>Present address</th>
+                            <th>Ration Card Number</th>
+                            <th></th>
+                            <th>Activity Name</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Camp Name</th>
+                        </tr>
+                        </tfoot>
+                    </table>
                 </div>
 
             </div>

@@ -435,7 +435,7 @@
                         <li><a href="{{url('users')}}">Manage Users</a></li>
                         <li><a href="{{url('departments')}}">Departments</a></li>
                         <li><a href="{{url('access/rights')}}">User Rights</a></li>
-                        <li><a href="{{url('audit/los')}}">User Logs</a></li>
+                        <li><a href="{{url('audit/logs')}}">User Logs</a></li>
                     </ul>
                 </li>
                 <li class="navigation-header"><span></span> <i class="icon-menu" title="Users Managements"></i></li>
@@ -474,125 +474,10 @@
             @endpermission
         </div>
     </div>
-    <div class="row" style="margin-top: 20px">
-        <div class="col-md-12">
-            <div class="portlet light bordered">
-                <div class="portlet-body form">
-                    {!! Form::open(array('url'=>'reports/nfis','role'=>'form','id'=>'formClientReport')) !!}
-                    <div class="panel panel-flat">
-
-
-                        <div class="panel-body">
-                            <fieldset class="scheduler-border">
-                                <legend class="text-bold">NFIs Distribution Report</legend>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group ">
-                                            <label class="control-label">Start Date</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                                <input type="text" class="form-control pickadate"  value="{{old('start_date')}}" name="start_date" id="start_date">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group ">
-                                            <label class="control-label">End Date</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                                <input type="text" class="form-control pickadate" value="{{old('end_date')}}" name="end_date" id="end_date">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Camp</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="camp_id" id="camp_id">
-                                                <optgroup label="Camp Name">
-                                                    <option value="All">All</option>
-                                                    @foreach(\App\Camp::all() as $item)
-                                                        <option value="{{$item->id}}">{{$item->camp_name}}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>NFIs Item?</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="items" id="items" data-placeholder="Choose an option...">
-                                                <optgroup label="NFIS Items">
-                                                    <option value="All">All</option>
-                                                    @foreach(\App\ItemsInventory::all() as $item)
-                                                        <option value="{{$item->id}}">{{$item->item_name}}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Vulnerability</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
-                                                <optgroup label="Specific Needs">
-                                                    <option value="All">All</option>
-                                                    @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
-                                                        <option value="{{$code->id}}">{{$code->description}}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="form-group ">
-                                            <label>What type of report type do you need?</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type" data-placeholder="Choose an option...">
-                                                <optgroup label="Report Type">
-                                                    <option></option>
-                                                    <option value="1">List of Clients Received Items</option>
-                                                    <option value="2">Prepare list for distribution</option>
-                                                    <option value="3" >Distribution per population</option>
-                                                    <option value="4" >cash grant or voucher provided</option>
-                                                    <option value="5" >Out of stock Items</option>
-                                                    <option value="6" >List of All Items</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Export Type</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="export_type" id="export_type" data-placeholder="Choose an option...">
-                                                <optgroup label="Export Type">
-                                                    <option value="1">Preview</option>
-                                                    <option value="2">Export to MS Excel</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <div class="row">
-                                <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
-                                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cog"></i> Generate Report </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('reports.nfis.searchform')
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-bold text-center">Items Distribution Report as of {{$request->start_date}} - {{$request->end_date}} </h5>
+            <h5 class="panel-title text-bold text-center">Cash Provision Report as of {{$request->start_date}} - {{$request->end_date}} </h5>
         </div>
 
         <div class="panel-body">
@@ -602,7 +487,7 @@
                         <table class="table table-bordered table-hover">
                             <tr>
                                 <td colspan="3" valign="top" style="background-color: #ccc">Name of Population Planning Group:</td>
-                                <td  colspan="4" valign="top" style="background-color: #ccc">Activity 1.2.9: Provision of    unconditional cash assistance to 500 EVIs to cater for unmet needs.</td>
+                                <td  colspan="4" valign="top" style="background-color: #ccc">Activity 1.2.9: Provision of    unconditional cash assistance to {{getClientCountCashProvisionByCriteriaInNumberTotalByAll($range)}} EVIs to cater for unmet needs.</td>
                             </tr>
                             <tr style="background-color: #ccc">
                                 <td rowspan="2" style="background-color: #ccc"><strong>Age Group</strong></td>
@@ -656,12 +541,12 @@
                             </tr>
                             <tr>
                                 <td  valign="top" ><strong>Total:</strong></td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
+                                <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberTotalBySex('Male',$range)}}</td>
+                                <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageTotalBySex('Male',$range)}} </td>
+                                <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberTotalBySex('Female',$range)}}</td>
+                                <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageTotalBySex('Female',$range)}} </td>
+                                <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberTotalByAll($range)}}</td>
+                                <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageTotalByAll($range)}} </td>
                             </tr>
                             <tr>
                                 <td  colspan="2" valign="top" style="background-color: #ccc">Major locations:</td>
@@ -670,148 +555,75 @@
                         </table>
                         @else
                         <?php $camp=\App\Camp::find($request->camp_id);?>
-                        @if($request->items =="All")
-                            <table class="table table-bordered table-hover">
-                            <tr>
-                                <td colspan="3" valign="top" style="background-color: #ccc">Name of Population Planning Group:</td>
-                                <td  colspan="4" valign="top" style="background-color: #ccc">Activity 1.2.9: Provision of    unconditional cash assistance to 500 EVIs to cater for unmet needs.</td>
-                            </tr>
-                            <tr style="background-color: #ccc">
-                                <td rowspan="2" style="background-color: #ccc"><strong>Age Group</strong></td>
-                                <td  colspan="2" valign="top" style="background-color: #ccc"><strong>Male</strong></td>
-                                <td  colspan="2" valign="top" style="background-color: #ccc"><strong>Female</strong></td>
-                                <td  colspan="2" valign="top" style="background-color: #ccc"><strong>Total</strong></td>
-                            </tr>
-                            <tr>
-                                <td  valign="top" style="background-color: #ccc"><strong>in    numbers</strong></td>
-                                <td  valign="top" style="background-color: #ccc"><strong>in %</strong></td>
-                                <td  valign="top" style="background-color: #ccc"><strong>in    numbers</strong></td>
-                                <td  valign="top" style="background-color: #ccc"><strong>in %</strong></td>
-                                <td  valign="top" style="background-color: #ccc"><strong>in    numbers</strong></td>
-                                <td  valign="top" style="background-color: #ccc"><strong>in %</strong></td>
-                            </tr>
-                            <tr>
-                                <td  valign="top">0-17</td>
-                                <td  valign="bottom"></td>
-                                <td  valign="bottom">00%</td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                            </tr>
-                            <tr>
-                                <td  valign="top">18-49</td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                            </tr>
-                            <tr>
-                                <td  valign="top">50-59</td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                            </tr>
-                            <tr>
-                                <td  valign="top">60 and &gt;</td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                            </tr>
-                            <tr>
-                                <td  valign="top" ><strong>Total:</strong></td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                                <td  valign="bottom"></td>
-                                <td  valign="top">00% </td>
-                            </tr>
-                            <tr>
-                                <td  colspan="2" valign="top" style="background-color: #ccc">Major locations:</td>
-                                <td  colspan="5" valign="top" style="background-color: #ccc">{{$camp->camp_name}}</td>
-                            </tr>
-                        </table>
-                            @else
-
-                                <table class="table table-bordered table-hover">
-                                    <tr>
-                                        <td colspan="3" valign="top" style="background-color: #ccc">Name of Population Planning Group:</td>
-                                        <td  colspan="4" valign="top" style="background-color: #ccc">Activity 1.2.9: Provision of    unconditional cash assistance to 500 EVIs to cater for unmet needs.</td>
-                                    </tr>
-                                    <tr style="background-color: #ccc">
-                                        <td rowspan="2" style="background-color: #ccc"><strong>Age Group</strong></td>
-                                        <td  colspan="2" valign="top" style="background-color: #ccc"><strong>Male</strong></td>
-                                        <td  colspan="2" valign="top" style="background-color: #ccc"><strong>Female</strong></td>
-                                        <td  colspan="2" valign="top" style="background-color: #ccc"><strong>Total</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td  valign="top" style="background-color: #ccc"><strong>in    numbers</strong></td>
-                                        <td  valign="top" style="background-color: #ccc"><strong>in %</strong></td>
-                                        <td  valign="top" style="background-color: #ccc"><strong>in    numbers</strong></td>
-                                        <td  valign="top" style="background-color: #ccc"><strong>in %</strong></td>
-                                        <td  valign="top" style="background-color: #ccc"><strong>in    numbers</strong></td>
-                                        <td  valign="top" style="background-color: #ccc"><strong>in %</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td  valign="top">0-17</td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="bottom">00%</td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                    </tr>
-                                    <tr>
-                                        <td  valign="top">18-49</td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                    </tr>
-                                    <tr>
-                                        <td  valign="top">50-59</td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                    </tr>
-                                    <tr>
-                                        <td  valign="top">60 and &gt;</td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                    </tr>
-                                    <tr>
-                                        <td  valign="top" ><strong>Total:</strong></td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                        <td  valign="bottom"></td>
-                                        <td  valign="top">00% </td>
-                                    </tr>
-                                    <tr>
-                                        <td  colspan="2" valign="top" style="background-color: #ccc">Major locations:</td>
-                                        <td  colspan="5" valign="top" style="background-color: #ccc">{{$camp->camp_name}}</td>
-                                    </tr>
-                                </table>
-                            @endif
+                        <table class="table table-bordered table-hover">
+                                <tr>
+                                    <td colspan="3" valign="top" style="background-color: #ccc">Name of Population Planning Group:</td>
+                                    <td  colspan="4" valign="top" style="background-color: #ccc">Activity 1.2.9: Provision of    unconditional cash assistance to {{getClientCountCashProvisionByCriteriaInNumberTotalByAllByCamp($range,$camp->id)}} EVIs to cater for unmet needs.</td>
+                                </tr>
+                                <tr style="background-color: #ccc">
+                                    <td rowspan="2" style="background-color: #ccc"><strong>Age Group</strong></td>
+                                    <td  colspan="2" valign="top" style="background-color: #ccc"><strong>Male</strong></td>
+                                    <td  colspan="2" valign="top" style="background-color: #ccc"><strong>Female</strong></td>
+                                    <td  colspan="2" valign="top" style="background-color: #ccc"><strong>Total</strong></td>
+                                </tr>
+                                <tr>
+                                    <td  valign="top" style="background-color: #ccc"><strong>in    numbers</strong></td>
+                                    <td  valign="top" style="background-color: #ccc"><strong>in %</strong></td>
+                                    <td  valign="top" style="background-color: #ccc"><strong>in    numbers</strong></td>
+                                    <td  valign="top" style="background-color: #ccc"><strong>in %</strong></td>
+                                    <td  valign="top" style="background-color: #ccc"><strong>in    numbers</strong></td>
+                                    <td  valign="top" style="background-color: #ccc"><strong>in %</strong></td>
+                                </tr>
+                                <tr>
+                                    <td  valign="top">0-17</td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberByCamp('A','Male',$range,$camp->id)}}</td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInPercentageByCamp('A','Male',$range,$camp->id)}}</td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberByCamp('A','Female',$range,$camp->id)}}</td>
+                                    <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageByCamp('A','Female',$range,$camp->id)}} </td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberTotalByCamp('A',$range,$camp->id)}} </td>
+                                    <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageTotalByCamp('A',$range,$camp->id)}}</td>
+                                </tr>
+                                <tr>
+                                    <td  valign="top">18-49</td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberByCamp('B','Male',$range,$camp->id)}}</td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInPercentageByCamp('B','Male',$range,$camp->id)}}</td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberByCamp('B','Female',$range,$camp->id)}}</td>
+                                    <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageByCamp('B','Female',$range,$camp->id)}} </td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberTotalByCamp('B',$range,$camp->id)}} </td>
+                                    <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageTotalByCamp('B',$range,$camp->id)}}</td>
+                                </tr>
+                                <tr>
+                                    <td  valign="top">50-59</td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberByCamp('C','Male',$range,$camp->id)}}</td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInPercentageByCamp('C','Male',$range,$camp->id)}}</td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberByCamp('C','Female',$range,$camp->id)}}</td>
+                                    <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageByCamp('C','Female',$range,$camp->id)}} </td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberTotalByCamp('C',$range,$camp->id)}} </td>
+                                    <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageTotalByCamp('C',$range,$camp->id)}}</td>
+                                </tr>
+                                <tr>
+                                    <td  valign="top">60 and &gt;</td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberByCamp('D','Male',$range,$camp->id)}}</td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInPercentageByCamp('D','Male',$range,$camp->id)}}</td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberByCamp('D','Female',$range,$camp->id)}}</td>
+                                    <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageByCamp('D','Female',$range,$camp->id)}} </td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberTotalByCamp('D',$range,$camp->id)}} </td>
+                                    <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageTotalByCamp('D',$range,$camp->id)}}</td>
+                                </tr>
+                                <tr>
+                                    <td  valign="top" ><strong>Total:</strong></td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberTotalBySexByCamp('Male',$range,$camp->id)}}</td>
+                                    <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageTotalBySexByCamp('Male',$range,$camp->id)}} </td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberTotalBySexByCamp('Female',$range,$camp->id)}}</td>
+                                    <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageTotalBySexByCamp('Female',$range,$camp->id)}} </td>
+                                    <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberTotalByAllByCamp($range,$camp->id)}}</td>
+                                    <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageTotalByAllByCamp($range,$camp->id)}} </td>
+                                </tr>
+                                <tr>
+                                    <td  colspan="2" valign="top" style="background-color: #ccc">Major locations:</td>
+                                    <td  colspan="5" valign="top" style="background-color: #ccc">{{$camp->camp_name}}</td>
+                                </tr>
+                            </table>
                     @endif
                 </div>
 

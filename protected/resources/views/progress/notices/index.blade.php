@@ -318,7 +318,7 @@
                         <li><a href="{{url('users')}}">Manage Users</a></li>
                         <li><a href="{{url('departments')}}">Departments</a></li>
                         <li><a href="{{url('access/rights')}}">User Rights</a></li>
-                        <li><a href="{{url('audit/los')}}">User Logs</a></li>
+                        <li><a href="{{url('audit/logs')}}">User Logs</a></li>
                     </ul>
                 </li>
                 <li class="navigation-header"><span></span> <i class="icon-menu" title="Users Managements"></i></li>

@@ -150,7 +150,7 @@
                         <li><a href="{{url('users')}}">Manage Users</a></li>
                         <li><a href="{{url('departments')}}">Departments</a></li>
                         <li><a href="{{url('access/rights')}}">User Rights</a></li>
-                        <li><a href="{{url('audit/los')}}">User Logs</a></li>
+                        <li><a href="{{url('audit/logs')}}">User Logs</a></li>
                     </ul>
                 </li>
                 <li class="navigation-header"><span></span> <i class="icon-menu" title="Users Managements"></i></li>
@@ -218,7 +218,7 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Number of clients'
+                    text: 'Number of Items'
                 }
             },
             tooltip: {
@@ -236,80 +236,64 @@
                 }
             },
 
-            series: [<?php echo getHighChatClientMonthlyCountByYear(date('Y'));?>]
+            series: [<?php echo getHighItemsDistributionsMonthlyCountByYear(date('Y'));?>]
         });
-        $('#clientsNeeds').highcharts({
+        $('#monthlyCashProvisions').highcharts({
             chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
+                type: 'column'
             },
             title: {
-                text: 'NFI distribution & vulnerability'
+                text: 'Monthly Cash Provision for year {{date("Y")}}'
+            },
+            subtitle: {
+                text: 'Cash provision as of year {{date('Y')}}',
+                x: -20
             },
             credits: {
                 enabled: false
             },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+
+            xAxis: {
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec'
+                ],
+                crosshair: true
             },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        style: {
-                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                        },
-                        connectorColor: 'silver'
-                    }
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Amounts in TZS'
                 }
             },
-            series: [{
-                name: 'Clients',
-                colorByPoint: true,
-                data: [<?php echo getHighChatClientByCodes();?>]
-            }]
-        });
-        $('#nfidistribution').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: 'Client Registration'
-            },
-            credits: {
-                enabled: false
-            },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><th style="color:{series.color};padding:0">{series.name}: </th>' +
+                '<th style="padding:0"><b>{point.y:.0f} </b></th></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
             },
             plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        style: {
-                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                        },
-                        connectorColor: 'silver'
-                    }
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
                 }
             },
-            series: [{
-                name: 'Clients',
-                colorByPoint: true,
-                data: [<?php echo getHighChatClientMonthlyCountByNationality();?>]
-            }]
+
+            series: [<?php echo getHighCashProvisionsMonthlyCountByYear(date('Y'));?>]
         });
+
 
         $("#formClientReport").validate({
             ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
@@ -378,122 +362,7 @@
             <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import</span></a>
         </div>
     </div>
-    <div class="row" style="margin-top: 20px">
-        <div class="col-md-12">
-            <div class="portlet light bordered">
-                <div class="portlet-body form">
-                    {!! Form::open(array('url'=>'reports/nfis','role'=>'form','id'=>'formClientReport')) !!}
-                    <div class="panel panel-flat">
-
-
-                        <div class="panel-body">
-                            <fieldset class="scheduler-border">
-                                <legend class="text-bold">NFIs Distribution Report</legend>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group ">
-                                            <label class="control-label">Start Date</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                                <input type="text" class="form-control pickadate"  value="{{old('start_date')}}" name="start_date" id="start_date">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group ">
-                                            <label class="control-label">End Date</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                                <input type="text" class="form-control pickadate" value="{{old('end_date')}}" name="end_date" id="end_date">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Camp</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="camp_id" id="camp_id">
-                                                <optgroup label="Camp Name">
-                                                    <option value="All">All</option>
-                                                    @foreach(\App\Camp::all() as $item)
-                                                        <option value="{{$item->id}}">{{$item->camp_name}}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>NFIs Item?</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="items" id="items" data-placeholder="Choose an option...">
-                                                <optgroup label="NFIS Items">
-                                                    <option value="All">All</option>
-                                                    @foreach(\App\ItemsInventory::all() as $item)
-                                                        <option value="{{$item->id}}">{{$item->item_name}}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Vulnerability</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="specific_needs" id="specific_needs" data-placeholder="Choose an option...">
-                                                <optgroup label="Specific Needs">
-                                                    <option value="All">All</option>
-                                                    @foreach(\App\PSNCode::where('for_reporting','=','Yes')->get() as $code)
-                                                    <option value="{{$code->id}}">{{$code->description}}</option>
-                                                        @endforeach
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="form-group ">
-                                            <label>What type of report type do you need?</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type" data-placeholder="Choose an option...">
-                                                <optgroup label="Report Type">
-                                                    <option></option>
-                                                    <option value="1">List of Clients Received Items</option>
-                                                    <option value="2">Prepare list for distribution</option>
-                                                    <option value="3" >Distribution per population</option>
-                                                    <option value="4" >cash grant or voucher provided</option>
-                                                    <option value="5" >Out of stock Items</option>
-                                                    <option value="6" >List of All Items</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label>Export Type</label>
-                                            <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="export_type" id="export_type" data-placeholder="Choose an option...">
-                                                <optgroup label="Export Type">
-                                                    <option value="1" >Preview</option>
-                                                    <option value="2">Export to MS Excel</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <div class="row">
-                                <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
-                                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cog"></i> Generate Report </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('reports.nfis.searchform')
     <div class="row" style="margin-top: 20px">
         <div class="col-md-12">
             <div style="min-width: 310px; height: 500px; margin: 0 auto" id="monthlyNfisDistributions"></div>
@@ -501,11 +370,8 @@
 
     </div>
     <div class="row" style="margin-top: 20px">
-        <div class="col-md-6">
-            <div style="min-width: 310px; height: 500px; margin: 0 auto" id="nfidistribution"></div>
-        </div>
-        <div class="col-md-6">
-            <div style="min-width: 410px; height: 500px; margin: 0 auto" id="clientsNeeds"></div>
+        <div class="col-md-12">
+            <div style="min-width: 310px; height: 500px; margin: 0 auto" id="monthlyCashProvisions"></div>
         </div>
 
     </div>

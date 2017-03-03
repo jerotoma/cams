@@ -55,6 +55,158 @@ if (!function_exists('getHighChatReferralsMonthlyCountByYear')) {
         return $seriesdata1;
     }
 }
+if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
+    function getHighCashProvisionsMonthlyCountByYear($year) {
+
+        $series1="";
+        $seriesdata1="";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '0 - 17',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+
+            $MonthCount .=\DB::table('cash_provision_clients')
+                    ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','A')
+                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
+                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '17 - 50',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .=\DB::table('cash_provision_clients')
+                    ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','B')
+                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
+                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '50 - 60',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .=\DB::table('cash_provision_clients')
+                    ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','C')
+                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
+                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '60 >',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .=\DB::table('cash_provision_clients')
+                    ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','D')
+                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
+                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+
+        $seriesdata1=substr($series1,0,strlen($series1)-1);
+        return $seriesdata1;
+    }
+}
+if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
+    function getHighItemsDistributionsMonthlyCountByYear($year) {
+
+        $series1="";
+        $seriesdata1="";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '0 - 17',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+
+            $MonthCount .= count(\DB::table('items_disbursement_items')
+                                ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+                                ->where('clients.age_score','=','A')
+                                ->where(\DB::raw('Month(distribution_date)'), '=', $i)
+                                ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '17 - 50',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\DB::table('items_disbursement_items')
+                    ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','B')
+                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
+                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '50 - 60',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .=count(\DB::table('items_disbursement_items')
+                    ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','C')
+                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
+                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: '60 >',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\DB::table('items_disbursement_items')
+                    ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','D')
+                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
+                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+
+        $seriesdata1=substr($series1,0,strlen($series1)-1);
+        return $seriesdata1;
+    }
+}
 if (!function_exists('getHighChatClientMonthlyCountByYear')) {
     function getHighChatClientMonthlyCountByYear($year) {
 
@@ -964,6 +1116,9 @@ if (!function_exists('deductActivityAmount')) {
 
 
 }
+
+
+///Cash distribution per populations reports
 if (!function_exists('getClientCountCashProvisionByCriteriaInNumber')) {
     function getClientCountCashProvisionByCriteriaInNumber($age_score,$sex,$range){
         $query=\DB::table('cash_provision_clients')
@@ -973,7 +1128,7 @@ if (!function_exists('getClientCountCashProvisionByCriteriaInNumber')) {
             ->whereBetween('cash_provision_clients.provision_date', $range)
             ->select('clients.*');
 
-        return count($query);
+        return count($query->get());
     }
 
 }
@@ -984,13 +1139,13 @@ if (!function_exists('getClientCountCashProvisionByCriteriaInPercentage')) {
             ->where('clients.sex','=',$sex)
             ->where('clients.age_score','=',$age_score)
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*');
+            ->select('clients.*')->get();
 
         $qtotal=\DB::table('cash_provision_clients')
             ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
-            ->where('clients.age_score','=',$age_score)
+            ->where('clients.sex','=',$sex)
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*');
+            ->select('clients.*')->get();
         $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
 
         $percentage=number_format($calcper,2) ."%";
@@ -1005,7 +1160,7 @@ if (!function_exists('getClientCountCashProvisionByCriteriaInNumberTotal')) {
             ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
             ->where('clients.age_score','=',$age_score)
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*');
+            ->select('clients.*')->get();
 
         return count($query);
     }
@@ -1017,12 +1172,74 @@ if (!function_exists('getClientCountCashProvisionByCriteriaInPercentageTotal')) 
             ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
             ->where('clients.age_score','=',$age_score)
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*');
+            ->select('clients.*')->get();
 
         $qtotal=\DB::table('cash_provision_clients')
             ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*');
+            ->select('clients.*')->get();
+        $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
+
+        $percentage=number_format($calcper,2) ."%";
+
+        return $percentage;
+    }
+
+}
+if (!function_exists('getClientCountCashProvisionByCriteriaInNumberTotalBySex')) {
+    function getClientCountCashProvisionByCriteriaInNumberTotalBySex($sex,$range){
+        $query=\DB::table('cash_provision_clients')
+            ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
+            ->whereBetween('cash_provision_clients.provision_date', $range)
+            ->select('clients.*')->get();
+
+        return count($query);
+    }
+
+}
+if (!function_exists('getClientCountCashProvisionByCriteriaInPercentageTotalBySex')) {
+    function getClientCountCashProvisionByCriteriaInPercentageTotalBySex($sex,$range){
+        $qsex=\DB::table('cash_provision_clients')
+            ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
+            ->whereBetween('cash_provision_clients.provision_date', $range)
+            ->select('clients.*')->get();
+
+        $qtotal=\DB::table('cash_provision_clients')
+            ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->whereBetween('cash_provision_clients.provision_date', $range)
+            ->select('clients.*')->get();
+        $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
+
+        $percentage=number_format($calcper,2) ."%";
+
+        return $percentage;
+    }
+
+}
+if (!function_exists('getClientCountCashProvisionByCriteriaInNumberTotalByAll')) {
+    function getClientCountCashProvisionByCriteriaInNumberTotalByAll($range){
+        $query=\DB::table('cash_provision_clients')
+            ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->whereBetween('cash_provision_clients.provision_date', $range)
+            ->select('clients.*')->get();
+
+        return count($query);
+    }
+
+}
+if (!function_exists('getClientCountCashProvisionByCriteriaInPercentageTotalByAll')) {
+    function getClientCountCashProvisionByCriteriaInPercentageTotalByAll($range){
+        $qsex=\DB::table('cash_provision_clients')
+            ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->whereBetween('cash_provision_clients.provision_date', $range)
+            ->select('clients.*')->get();
+
+        $qtotal=\DB::table('cash_provision_clients')
+            ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->whereBetween('cash_provision_clients.provision_date', $range)
+            ->select('clients.*')->get();
         $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
 
         $percentage=number_format($calcper,2) ."%";
@@ -1039,7 +1256,7 @@ if (!function_exists('getClientCountCashProvisionByCriteriaInNumberByCamp')) {
             ->where('clients.age_score','=',$age_score)
             ->where('clients.camp_id','=',$camp_id)
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*');
+            ->select('clients.*')->get();
 
         return count($query);
     }
@@ -1054,14 +1271,14 @@ if (!function_exists('getClientCountCashProvisionByCriteriaInPercentageByCamp'))
             ->where('clients.age_score','=',$age_score)
             ->where('clients.camp_id','=',$camp_id)
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*');
+            ->select('clients.*')->get();
 
         $qtotal=\DB::table('cash_provision_clients')
             ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
             ->where('clients.age_score','=',$age_score)
             ->where('clients.camp_id','=',$camp_id)
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*');
+            ->select('clients.*')->get();
         $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
 
         $percentage=number_format($calcper,2) ."%";
@@ -1070,34 +1287,101 @@ if (!function_exists('getClientCountCashProvisionByCriteriaInPercentageByCamp'))
     }
 
 }
-
-if (!function_exists('getClientCountCashProvisionByCriteriaInNumberByCampTotal')) {
-    function getClientCountCashProvisionByCriteriaInNumberByCampTotal($age_score,$range,$camp_id){
+if (!function_exists('getClientCountCashProvisionByCriteriaInNumberTotalByCamp')) {
+    function getClientCountCashProvisionByCriteriaInNumberTotalByCamp($age_score,$range,$camp_id){
         $query=\DB::table('cash_provision_clients')
             ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
             ->where('clients.age_score','=',$age_score)
             ->where('clients.camp_id','=',$camp_id)
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*');
+            ->select('clients.*')->get();
 
         return count($query);
     }
 
 }
-if (!function_exists('getClientCountCashProvisionByCriteriaInPercentageByCampTotal')) {
-    function getClientCountCashProvisionByCriteriaInPercentageByCampTotal($age_score,$range,$camp_id){
+if (!function_exists('getClientCountCashProvisionByCriteriaInPercentageTotalByCamp')) {
+    function getClientCountCashProvisionByCriteriaInPercentageTotalByCamp($age_score,$range,$camp_id){
         $qsex=\DB::table('cash_provision_clients')
             ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
             ->where('clients.age_score','=',$age_score)
             ->where('clients.camp_id','=',$camp_id)
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*');
+            ->select('clients.*')->get();
 
         $qtotal=\DB::table('cash_provision_clients')
             ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->whereBetween('cash_provision_clients.provision_date', $range)
+            ->where('clients.camp_id','=',$camp_id)
+            ->select('clients.*')->get();
+        $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
+
+        $percentage=number_format($calcper,2) ."%";
+
+        return $percentage;
+    }
+
+}
+if (!function_exists('getClientCountCashProvisionByCriteriaInNumberTotalBySexByCamp')) {
+    function getClientCountCashProvisionByCriteriaInNumberTotalBySexByCamp($sex,$range,$camp_id){
+        $query=\DB::table('cash_provision_clients')
+            ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
             ->where('clients.camp_id','=',$camp_id)
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*');
+            ->select('clients.*')->get();
+
+        return count($query);
+    }
+
+}
+if (!function_exists('getClientCountCashProvisionByCriteriaInPercentageTotalBySexByCamp')) {
+    function getClientCountCashProvisionByCriteriaInPercentageTotalBySexByCamp($sex,$range,$camp_id){
+        $qsex=\DB::table('cash_provision_clients')
+            ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
+            ->where('clients.camp_id','=',$camp_id)
+            ->whereBetween('cash_provision_clients.provision_date', $range)
+            ->select('clients.*')->get();
+
+        $qtotal=\DB::table('cash_provision_clients')
+            ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->whereBetween('cash_provision_clients.provision_date', $range)
+            ->where('clients.camp_id','=',$camp_id)
+            ->select('clients.*')->get();
+        $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
+
+        $percentage=number_format($calcper,2) ."%";
+
+        return $percentage;
+    }
+
+}
+if (!function_exists('getClientCountCashProvisionByCriteriaInNumberTotalByAllByCamp')) {
+    function getClientCountCashProvisionByCriteriaInNumberTotalByAllByCamp($range,$camp_id){
+        $query=\DB::table('cash_provision_clients')
+            ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->whereBetween('cash_provision_clients.provision_date', $range)
+            ->where('clients.camp_id','=',$camp_id)
+            ->select('clients.*')->get();
+
+        return count($query);
+    }
+
+}
+if (!function_exists('getClientCountCashProvisionByCriteriaInPercentageTotalByAllByCamp')) {
+    function getClientCountCashProvisionByCriteriaInPercentageTotalByAllByCamp($range,$camp_id){
+        $qsex=\DB::table('cash_provision_clients')
+            ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->whereBetween('cash_provision_clients.provision_date', $range)
+            ->where('clients.camp_id','=',$camp_id)
+            ->select('clients.*')->get();
+
+        $qtotal=\DB::table('cash_provision_clients')
+            ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+            ->whereBetween('cash_provision_clients.provision_date', $range)
+            ->where('clients.camp_id','=',$camp_id)
+            ->select('clients.*')->get();
         $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
 
         $percentage=number_format($calcper,2) ."%";
@@ -1107,4 +1391,301 @@ if (!function_exists('getClientCountCashProvisionByCriteriaInPercentageByCampTot
 
 }
 
+
+//Items distributions
+if (!function_exists('getClientCountItemDistributionByCriteriaInNumber')) {
+    function getClientCountItemDistributionByCriteriaInNumber($age_score,$sex,$range,$item_id){
+        $query=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
+            ->where('clients.age_score','=',$age_score)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*');
+
+        return count($query->get());
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInPercentage')) {
+    function getClientCountItemDistributionByCriteriaInPercentage($age_score,$sex,$range,$item_id){
+        $qsex=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
+            ->where('clients.age_score','=',$age_score)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+
+        $qtotal=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+        $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
+
+        $percentage=number_format($calcper,2) ."%";
+
+        return $percentage;
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInNumberTotal')) {
+    function getClientCountItemDistributionByCriteriaInNumberTotal($age_score,$range,$item_id){
+        $query=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.age_score','=',$age_score)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+
+        return count($query);
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInPercentageTotal')) {
+    function getClientCountItemDistributionByCriteriaInPercentageTotal($age_score,$range,$item_id){
+        $qsex=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.age_score','=',$age_score)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+
+        $qtotal=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->select('clients.*')->get();
+        $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
+
+        $percentage=number_format($calcper,2) ."%";
+
+        return $percentage;
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInNumberTotalBySex')) {
+    function getClientCountItemDistributionByCriteriaInNumberTotalBySex($sex,$range,$item_id){
+        $query=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+
+        return count($query);
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInPercentageTotalBySex')) {
+    function getClientCountItemDistributionByCriteriaInPercentageTotalBySex($sex,$range,$item_id){
+        $qsex=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+
+        $qtotal=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->select('clients.*')->get();
+        $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
+
+        $percentage=number_format($calcper,2) ."%";
+
+        return $percentage;
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInNumberTotalByAll')) {
+    function getClientCountItemDistributionByCriteriaInNumberTotalByAll($range,$item_id){
+        $query=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->select('clients.*')->get();
+
+        return count($query);
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInPercentageTotalByAll')) {
+    function getClientCountItemDistributionByCriteriaInPercentageTotalByAll($range,$item_id){
+        $qsex=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->select('clients.*')->get();
+
+        $qtotal=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->select('clients.*')->get();
+        $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
+
+        $percentage=number_format($calcper,2) ."%";
+
+        return $percentage;
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInNumberByCamp')) {
+    function getClientCountItemDistributionByCriteriaInNumberByCamp($age_score,$sex,$range,$camp_id,$item_id){
+        $query=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
+            ->where('clients.age_score','=',$age_score)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+
+        return count($query);
+    }
+
+}
+
+if (!function_exists('getClientCountItemDistributionByCriteriaInPercentageByCamp')) {
+    function getClientCountItemDistributionByCriteriaInPercentageByCamp($age_score,$sex,$range,$camp_id,$item_id){
+        $qsex=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
+            ->where('clients.age_score','=',$age_score)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+
+        $qtotal=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.age_score','=',$age_score)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+        $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
+
+        $percentage=number_format($calcper,2) ."%";
+
+        return $percentage;
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInNumberTotalByCamp')) {
+    function getClientCountItemDistributionByCriteriaInNumberTotalByCamp($age_score,$range,$camp_id,$item_id){
+        $query=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.age_score','=',$age_score)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+
+        return count($query);
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInPercentageTotalByCamp')) {
+    function getClientCountItemDistributionByCriteriaInPercentageTotalByCamp($age_score,$range,$camp_id,$item_id){
+        $qsex=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.age_score','=',$age_score)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+
+        $qtotal=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->select('clients.*')->get();
+        $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
+
+        $percentage=number_format($calcper,2) ."%";
+
+        return $percentage;
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInNumberTotalBySexByCamp')) {
+    function getClientCountItemDistributionByCriteriaInNumberTotalBySexByCamp($sex,$range,$camp_id,$item_id){
+        $query=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+
+        return count($query);
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInPercentageTotalBySexByCamp')) {
+    function getClientCountItemDistributionByCriteriaInPercentageTotalBySexByCamp($sex,$range,$camp_id,$item_id){
+        $qsex=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->where('clients.sex','=',$sex)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->select('clients.*')->get();
+
+        $qtotal=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->select('clients.*')->get();
+        $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
+
+        $percentage=number_format($calcper,2) ."%";
+
+        return $percentage;
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInNumberTotalByAllByCamp')) {
+    function getClientCountItemDistributionByCriteriaInNumberTotalByAllByCamp($range,$camp_id,$item_id){
+        $query=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->select('clients.*')->get();
+
+        return count($query);
+    }
+
+}
+if (!function_exists('getClientCountItemDistributionByCriteriaInPercentageTotalByAllByCamp')) {
+    function getClientCountItemDistributionByCriteriaInPercentageTotalByAllByCamp($range,$camp_id,$item_id){
+        $qsex=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->select('clients.*')->get();
+
+        $qtotal=\DB::table('items_disbursement_items')
+            ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+            ->whereBetween('items_disbursement_items.distribution_date', $range)
+            ->where('clients.camp_id','=',$camp_id)
+            ->where('items_disbursement_items.item_id','=',$item_id)
+            ->select('clients.*')->get();
+        $calcper=(intval(count($qsex))/intval(count($qtotal))) * 100 ;
+
+        $percentage=number_format($calcper,2) ."%";
+
+        return $percentage;
+    }
+
+}
 //Get client ID

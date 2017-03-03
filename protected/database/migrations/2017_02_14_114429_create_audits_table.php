@@ -18,8 +18,10 @@ class CreateAuditsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('module')->nullable();
             $table->string('activity')->nullable();
+            $table->string('page')->nullable();
             $table->text('data')->nullable();
-            $table->date('date')->nullable();
+            $table->string('ip_address')->nullable();
+            $table->date('activity_date')->nullable();
             $table->dateTime('log_time')->nullable();
             $table->timestamps();
         });
