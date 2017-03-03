@@ -9,8 +9,8 @@
         <th>Module</th>
         <th>Activity</th>
         <th>Related Page</th>
-        <th>Related Data</th>
         <th>IP Address</th>
+        <th>Related Data</th>
     </tr>
     </thead>
     <tbody>
@@ -22,6 +22,7 @@
             <td>{{$log->module}}</td>
             <td>{{$log->activity}}</td>
             <td>{{$log->page}}</td>
+            <td>{{$log->ip_address}}</td>
             <td>{{$log->data}}</td>
         </tr>
     @endforeach
@@ -33,8 +34,8 @@
         <td>Module</td>
         <td>Activity</td>
         <td>Related Page</td>
-        <td>Related Data</td>
         <td>IP Address</td>
+        <td>Related Data</td>
     </tr>
     </tfoot>
 

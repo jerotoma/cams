@@ -63,6 +63,9 @@ class ClientsController extends Controller
         $client->auth_by = Auth::user()->username;
         $client->auth_date('Y-m-d H:i');
         $client->save();
+
+            //Audit trail
+            AuditRegister("ClientsController","VAuthorizeClientById",$client);
         }else{
             return null;
         }
@@ -518,6 +521,8 @@ class ClientsController extends Controller
 
             });
             File::delete($orfile);
+            //Audit trail
+            AuditRegister("ClientsController","Import Clients",$orfile);
            return redirect('clients');
         }
         catch (\Exception $e)
@@ -651,6 +656,9 @@ class ClientsController extends Controller
                     $codes->code_id = $item;
                     $codes->save();
                 }
+
+                //Audit trail
+                AuditRegister("ClientsController","Created new  Clients",$client);
                 return response()->json([
                     'success' => true,
                     'message' => " Saved Successful"
@@ -785,6 +793,10 @@ class ClientsController extends Controller
                     $codes->code_id = $item;
                     $codes->save();
                 }
+
+                //Audit trail
+                AuditRegister("ClientsController","Updated Clients Details",$client);
+
                 return response()->json([
                     'success' => true,
                     'message' => " Saved Successful"
@@ -812,6 +824,9 @@ class ClientsController extends Controller
         //
         $client=Client::find($id);
         $client->delete();
+
+        //Audit trail
+        AuditRegister("ClientsController","Deleted Clients Details",$client);
     }
     //This here for testing otoman
     public function createClient(){

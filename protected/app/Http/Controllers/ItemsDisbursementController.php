@@ -33,6 +33,9 @@ class ItemsDisbursementController extends Controller
     {
         //
         $disbursements =ItemsDisbursement::all();
+
+        //Audit trail
+        AuditRegister("ItemsDisbursementController","View All ","");
         return view('inventory.disbursement.index',compact('disbursements'));
     }
     
@@ -217,6 +220,9 @@ class ItemsDisbursementController extends Controller
 
              File::delete($orfile);
 
+             //Audit trail
+             AuditRegister("ItemsDisbursementController","Imported Item Distribution ",$orfile);
+
             return redirect('items/distributions');
 
          }else{
@@ -280,6 +286,10 @@ class ItemsDisbursementController extends Controller
                                     $dist_items->distribution_id = $distribution->id;
                                     $dist_items->distribution_date = $distribution->disbursements_date;
                                     $dist_items->save();
+
+                                    //Audit trail
+                                    AuditRegister("ItemsDisbursementController","Imported Item Distribution ",$dist_items);
+
                                     if (!isItemOutOfStock($request->item_id,intval($request->quantity))) {
                                         deductItems($request->item_id, intval($request->quantity));
 
@@ -415,6 +425,10 @@ class ItemsDisbursementController extends Controller
             {
                 $itm->delete();
             }
+
+        //Audit trail
+        AuditRegister("ItemsDisbursementController","Deleted items distributions",$disbursement);
+
         $disbursement->delete();
     }
 }

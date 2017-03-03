@@ -18,6 +18,9 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
         '6d394c3a532652dafb4dd296ba6a3f0b' => __DIR__ . '/../..' . '/app/Http/helpers.php',
+        '09a46661d67c8d9b8f71dd46914ca190' => __DIR__ . '/../..' . '/app/Http/cashReportHelper.php',
+        '7ccccd6f5c7439f34442a3fa50b9f0d9' => __DIR__ . '/../..' . '/app/Http/inventoryReportHelper.php',
+        'dc0a5f8d42024bf101a64e1ff6bd2d40' => __DIR__ . '/../..' . '/app/Http/SystemAuditHelper.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -397,6 +400,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'CreateCashProvisionsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_27_111849_create_cash_provisions_table.php',
         'CreateClientCasesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_09_221915_create_client_cases_table.php',
         'CreateClientInformationsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_20_005230_create_client_informations_table.php',
+        'CreateClientNeedsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_02_030727_create_client_needs_table.php',
         'CreateClientProgressesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_19_081949_create_client_progresses_table.php',
         'CreateClientReferralsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_20_003348_create_client_referrals_table.php',
         'CreateClientVulnerabilityCodesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_20_100418_create_client_vulnerability_codes_table.php',
@@ -438,6 +442,8 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'CreateMpcPerformanceAreasTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_13_051214_create_mpc_performance_areas_table.php',
         'CreateMpcShortRehabsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_13_161820_create_mpc_short_rehabs_table.php',
         'CreateMpcSwotsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_13_051300_create_mpc_swots_table.php',
+        'CreateNeedCategoriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_02_030643_create_need_categories_table.php',
+        'CreateNeedsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_02_030709_create_needs_table.php',
         'CreateOriginsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_14_081_create_origins_table.php',
         'CreatePCCashUsageCategoriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_28_191421_create_p_c_cash_usage_categories_table.php',
         'CreatePCCashUsagesTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_28_190952_create_p_c_cash_usages_table.php',
@@ -575,6 +581,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'Maatwebsite\\Excel\\Readers\\LaravelExcelReader' => __DIR__ . '/..' . '/maatwebsite/excel/src/Maatwebsite/Excel/Readers/LaravelExcelReader.php',
         'Maatwebsite\\Excel\\Writers\\CellWriter' => __DIR__ . '/..' . '/maatwebsite/excel/src/Maatwebsite/Excel/Writers/CellWriter.php',
         'Maatwebsite\\Excel\\Writers\\LaravelExcelWriter' => __DIR__ . '/..' . '/maatwebsite/excel/src/Maatwebsite/Excel/Writers/LaravelExcelWriter.php',
+        'NeedsSeeder' => __DIR__ . '/../..' . '/database/seeds/NeedsSeeder.php',
         'PCCategorySeeder' => __DIR__ . '/../..' . '/database/seeds/PCCategorySeeder.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/Assert.php',
         'PHPUnit\\Framework\\BaseTestListener' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/BaseTestListener.php',
@@ -884,6 +891,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'PHP_Token_NEW' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_NS_C' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_NS_SEPARATOR' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
+        'PHP_Token_NULLSAFE_OBJECT_OPERATOR' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_NUM_STRING' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_OBJECT_CAST' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_OBJECT_OPERATOR' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',

@@ -31,10 +31,14 @@ class UserController extends Controller
     {
         if (\Auth::user()->hasRole('admin')) {
             $users = User::all();
+            //Audit trail
+            AuditRegister("UserController","View",$users);
             return view('users.index', ['users' => $users]);
         }
         else
         {
+            //Audit trail
+            AuditRegister("UserController","Access but no rights","");
             return redirect('home');
         }
 
@@ -76,6 +80,9 @@ class UserController extends Controller
                     $user->save();
                     //Audit log
                     $auditMsg = "Changed password for " . $user->username . " with status " . $user->status;
+
+                    //Audit trail
+                    AuditRegister("postChangePassword","Update",$user);
                     return response()->json([
                         'success' => true,
                         'errors' =>0,
@@ -133,6 +140,9 @@ class UserController extends Controller
                 $user->status = "Active";
                 $user->save();
 
+         //Audit trail
+         AuditRegister("UserController","createUser",$user);
+
 		 return 'User Created';
 	 }
     /**
@@ -171,6 +181,9 @@ class UserController extends Controller
                 $user->save();
                 $user->attachRole($request->role_id);
                 $user->save();
+
+                //Audit trail
+                AuditRegister("UserController","createUser",$user);
             }
             return response()->json([
                 'success' => true,
@@ -198,6 +211,9 @@ class UserController extends Controller
 
         if (\Auth::user()->hasRole('admin')) {
             $user = User::findorfail($id);
+
+            //Audit trail
+            AuditRegister("UserController","View User",$user);
             return view('users.show',compact('user'));
         }
         else
@@ -266,6 +282,8 @@ class UserController extends Controller
                 $user->attachRole($request->role_id);
                 $user->save();
 
+                //Audit trail
+                AuditRegister("UserController","Update",$user);
 
                 return response()->json([
                     'success' => true,
@@ -291,6 +309,8 @@ class UserController extends Controller
     public function destroy($id)
 	{
            $user = User::find($id);
+          //Audit trail
+          AuditRegister("UserController","Delete User",$user);
            $user ->delete();
 
     }

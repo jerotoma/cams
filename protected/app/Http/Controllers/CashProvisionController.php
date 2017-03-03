@@ -29,6 +29,10 @@ class CashProvisionController extends Controller
     {
         //
         $provisions=CashProvision::all();
+
+        //Audit trail
+        AuditRegister("CashProvisionController","View All Cash distributions","");
+
         return view('cash.provision.index',compact('provisions'));
     }
 
@@ -84,6 +88,9 @@ class CashProvisionController extends Controller
                             $provision->activity_id =$request->activity_id;
                             $provision->save();
 
+                            //Audit trail
+                            AuditRegister("CashProvisionController","Created CashProvision",$provision);
+
                             $results->each(function ($row) use ($provision,$request) {
 
                                 if ($row->names != "" && $row->names != null && $row->sex != "" && $row->sex != null) {
@@ -134,6 +141,8 @@ class CashProvisionController extends Controller
                                                         $provision_client->provision_date = $provision->provision_date;
                                                         $provision_client->save();
 
+                                                        //Audit trail
+                                                        AuditRegister("CashProvisionController","Created CashProvisionClient",$provision_client);
                                                         //Deduct money
                                                         deductActivityAmount($request->activity_id, $amount);
 
@@ -180,7 +189,8 @@ class CashProvisionController extends Controller
                                                     $provision_client->provision_id = $provision->id;
                                                     $provision_client->provision_date = $provision->provision_date;
                                                     $provision_client->save();
-
+//Audit trail
+                                                    AuditRegister("CashProvisionController","Created CashProvisionClient",$provision_client);
                                                     //Deduct money
                                                     deductActivityAmount($request->activity_id, $amount);
                                                 }
@@ -278,7 +288,8 @@ class CashProvisionController extends Controller
                                 $provision_client->provision_id=$provision->id;
                                 $provision_client->provision_date=$provision->provision_date;
                                 $provision_client->save();
-
+                                //Audit trail
+                                AuditRegister("CashProvisionController","Created CashProvisionClient",$provision_client);
                                 //Deduct money
                                 deductActivityAmount($request->activity_id,$request->amount);
 
@@ -379,5 +390,7 @@ class CashProvisionController extends Controller
     {
         //
         $provision=CashProvision::findorfail($id)->delete();
+        //Audit trail
+        AuditRegister("CashProvisionController","Deleted cash provision",$provision);
     }
 }

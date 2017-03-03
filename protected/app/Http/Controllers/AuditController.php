@@ -63,6 +63,16 @@ class AuditController extends Controller
             \Excel::create("System_audit_logs", function ($excel) use ($request, $logs) {
                 $excel->sheet('sheet', function ($sheet) use ($request, $logs) {
                     $sheet->loadView('users.audit.logs', compact('logs', 'request'));
+                    $sheet->setWidth(array(
+                        'A'     =>  10,
+                        'B'     =>  20,
+                        'C'     =>  20,
+                        'D'     =>  20,
+                        'E'     =>  25,
+                        'F'     =>  20,
+                        'G'     =>  70,
+                    ));
+                    $sheet->getDefaultStyle()->getAlignment()->setWrapText(true);
                 });
             })->download('xlsx');
         }
@@ -80,6 +90,8 @@ class AuditController extends Controller
     public function show($id)
     {
         //
+        $log=Audit::find($id);
+        return view('users.audit.show',compact('log'));
     }
 
     /**

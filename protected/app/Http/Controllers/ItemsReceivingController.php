@@ -89,6 +89,9 @@ class ItemsReceivingController extends Controller
                 $items->checked_by = $request->checked_by;
                 $items->save();
 
+                //Audit trail
+                AuditRegister("ItemsReceivingController","InventoryReceived",$items);
+
                 $file= $request->file('items_file');
                 $destinationPath = public_path() .'/uploads/temp/';
                 $filename   = str_replace(' ', '_', $file->getClientOriginalName());
@@ -140,6 +143,9 @@ class ItemsReceivingController extends Controller
                                 $invItem->quantity =intval($invItem->quantity) + intval($row->quantity);
                                 $invItem->status="Available";
                                 $invItem->save();
+
+                                //Audit trail
+                                AuditRegister("ItemsReceivingController","Received items",$tmreceived);
                             }
 
 
@@ -371,6 +377,9 @@ class ItemsReceivingController extends Controller
                     $items->checked_by = $request->checked_by;
                     $items->save();
 
+                    //Audit trail
+                    AuditRegister("ItemsReceivingController","Updates InventoryReceived",$items);
+
                     foreach (ItemReceived::where('received_id','=',$items->id)->get() as $item)
                     {
                         $item->delete();
@@ -426,6 +435,9 @@ class ItemsReceivingController extends Controller
                                     $invItem->quantity =intval($invItem->quantity) + intval($row->quantity);
                                     $invItem->status="Available";
                                     $invItem->save();
+
+                                    //Audit trail
+                                    AuditRegister("ItemsReceivingController","Updates ItemReceived",$tmreceived);
                                 }
 
 
@@ -480,6 +492,9 @@ class ItemsReceivingController extends Controller
                 $itm->delete();
             }
         }
+
+        //Audit trail
+        AuditRegister("ItemsReceivingController","Deleted ItemReceived",$item);
         $item->delete();
     }
 }

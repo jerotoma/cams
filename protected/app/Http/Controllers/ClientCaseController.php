@@ -22,6 +22,8 @@ class ClientCaseController extends Controller
     public function index()
     {
         //
+        //Audit trail
+        AuditRegister("ClientCaseController","View all cases","");
          return view('progress.cases.index');
     }
     public function downloadPDF($id)
@@ -143,6 +145,10 @@ class ClientCaseController extends Controller
                 //Create references
                 $case->reference_number="HAI/".date("Y")."/CS-".str_pad($case->id,4,'0',STR_PAD_LEFT);
                 $case->save();
+
+                //Audit trail
+                AuditRegister("ClientCaseController","Create new case",$case);
+
                 return response()->json([
                     'success' => true,
                     'message' => "Record saved"
@@ -223,6 +229,9 @@ class ClientCaseController extends Controller
                 $case->status= $request->status;
                 $case->camp_id= $request->camp_id;
                 $case->save();
+
+                //Audit trail
+                AuditRegister("ClientCaseController","Update",$case);
                 return response()->json([
                     'success' => true,
                     'message' => "Record saved"
@@ -249,6 +258,10 @@ class ClientCaseController extends Controller
     {
         //
         $case= ClientCase::findorfail($id);
+
+        //Audit trail
+        AuditRegister("ClientCaseController","Delete",$case);
+
         $case->delete();
     }
 }

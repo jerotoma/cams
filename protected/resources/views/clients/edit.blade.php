@@ -359,7 +359,7 @@
         },
         errorElement:'div',
         rules: {
-            share_info: "required",
+            status: "required",
             hh_relation: "required",
             client_number: "required",
             full_name: "required",
@@ -382,7 +382,7 @@
             camp_id:"required"
         },
         messages: {
-            share_info: "Please this field is required",
+            status: "Please this field is required",
             hh_relation: "Please Relation to the head of household is required",
             client_number: "Please client number is required",
             full_name: "Please full name is required",
