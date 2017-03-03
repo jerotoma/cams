@@ -208,6 +208,13 @@ Route::get('assessments/inclusion/view/{id}','InclusionAssessmentController@getC
 Route::get('assessments/inclusion/view/inclusion/client-to-assess/{id}','InclusionAssessmentController@getSelectedClientInfo');
 Route::post('assessments/inclusion/{id}/update-assessment','InclusionAssessmentController@update');
 
+//System backups imports and exports
+Route::get('backup/import/advanced','BackupImportExportController@showImport');
+Route::post('backup/import/advanced','BackupImportExportController@postImport');
+
+Route::get('backup/export/advanced','BackupImportExportController@showExport');
+Route::post('backup/export/advanced','BackupImportExportController@postExport');
+
 
 
 

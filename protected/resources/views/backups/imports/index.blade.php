@@ -1,483 +1,274 @@
-@extends('layout.main')
-@section('page-title')
-    System backup-Export data
+@extends('site.master')
+@section('page_js')
+    <script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_multiselect.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_select.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/selectboxit.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/typeahead/typeahead.bundle.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/tags/tagsinput.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/tags/tokenfield.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/touchspin.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/maxlength.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/formatter.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/ui/moment/moment.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/daterangepicker.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/anytime.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.time.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/legacy.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/editors/wysihtml5/wysihtml5.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/editors/wysihtml5/toolbar.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/editors/wysihtml5/parsers.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/editors/wysihtml5/locales/bootstrap-wysihtml5.ua-UA.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/jgrowl.min.js")}}"></script>
+
+    <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/pages/picker_date.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/pages/editor_wysihtml5.js")}}"></script>
+
+    <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
-@section('page-style')
-    {!! Html::style("assets/global/plugins/datatables/datatables.min.css" ) !!}
-    {!! Html::style("assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" ) !!}
-@stop
-@section('menu-sidebar')
-    <ul class="page-sidebar-menu   " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-        <li class="nav-item ">
-            <a href="{{url('home')}}" class="nav-link nav-toggle">
-                <i class="icon-home"></i>
-                <span class="title">Home</span>
-                <span class="selected"></span>
-            </a>
-
-        </li>
-        <li class="nav-item  ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="fa fa-users fa-2x"></i>
-                <span class="title">Clients</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-
-                <li class="nav-item active ">
-                    <a href="{{url('clients')}}" class="nav-link ">
-                        <span class="title">Clients</span>
-                    </a>
-                </li> <li class="nav-item  ">
-                    <a href="{{url('assessment/roam')}}" class="nav-link ">
-                        <span class="title">Assessment</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('disabilities')}}" class="nav-link ">
-                        <span class="title">Disabilities</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('referrals')}}" class="nav-link ">
-                        <span class="title">Client Referral</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item ">
-            <a href="{{url('rehabilitation/services')}}" class="nav-link nav-toggle">
-                <i class="fa fa-cogs fa-2x"></i>
-                <span class="title">Physiotherapy treatment </span>
-            </a>
-
-        </li>
-        <li class="nav-item ">
-            <a href="{{url('orthopedic/services')}}" class="nav-link nav-toggle">
-                <i class="fa fa-cogs fa-2x"></i>
-                <span class="title">Orthopedic services</span>
-
-            </a>
-
-        </li>
-        <li class="nav-item ">
-            <a href="{{url('beneficiaries')}}" class="nav-link nav-toggle">
-                <i class="fa fa-users fa-2x"></i>
-                <span class="title">Beneficiaries</span>
-
-            </a>
-
-        </li>
-        <li class="nav-item ">
-            <a href="{{url('social/needs')}}" class="nav-link nav-toggle">
-                <i class="fa fa-users fa-2x"></i>
-                <span class="title">Social needs/Support</span>
-
-            </a>
-
-        </li>
-        <li class="nav-item ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="icon-list"></i>
-                <span class="title">Material support</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-                <li class="nav-item  active">
-                    <a href="{{url('inventory')}}" class="nav-link ">
-                        <span class="title">Inventory</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('inventory/received')}}" class="nav-link ">
-                        <span class="title">Received Items</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('inventory/disbursement')}}" class="nav-link ">
-                        <span class="title">Distribute Items</span>
-                    </a>
-                </li>
-
-            </ul>
-        </li>
-        <li class="nav-item  ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="icon-users"></i>
-                <span class="title"> LiveliHoods Tracking</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-                <li class="nav-item  ">
-                    <a href="{{url('livelihood/clients')}}" class="nav-link ">
-                        <span class="title">Clients</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('livelihood/groups')}}" class="nav-link ">
-                        <span class="title">Groups</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('livelihood/materials')}}" class="nav-link ">
-                        <span class="title">Material Support</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('livelihood/reports')}}" class="nav-link ">
-                        <span class="title">Reports</span>
-                    </a>
-                </li>
-
-            </ul>
-        </li>
-        <li class="nav-item  ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="fa fa-line-chart fa-2x"></i>
-                <span class="title"> Reports</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-                <li class="nav-item  ">
-                    <a href="{{url('reports/assessment/roam')}}" class="nav-link ">
-                        <span class="title">Assessment roam</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('reports/rehabilitation/services')}}" class="nav-link ">
-                        <span class="title">Physiotherapy treatment </span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('reports/orthopedic/services')}}" class="nav-link ">
-                        <span class="title">Orthopedic services</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('reports/material/support')}}" class="nav-link ">
-                        <span class="title">Material support</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('reports/beneficiaries')}}" class="nav-link ">
-                        <span class="title">Beneficiaries  Identification/Registration</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('reports/social/needs')}}" class="nav-link ">
-                        <span class="title">Social needs/Support</span>
-                    </a>
-                </li><li class="nav-item  ">
-                    <a href="{{url('reports/livelihood')}}" class="nav-link ">
-                        <span class="title">Livelihood Tracking</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="heading">
-            <h3 class="uppercase">SYSTEM SETTINGS</h3>
-        </li>
-        <li class="nav-item ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="icon-settings"></i>
-                <span class="title"> General Settings</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-                <li class="nav-item  ">
-                    <a href="{{url('setting/organization')}}" class="nav-link ">
-                        <span class="title">Organization</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('disabilities')}}" class="nav-link ">
-                        <span class="title">Disabilities</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{{url('camps')}}" class="nav-link ">
-                        <span class="title">Camps</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('centres')}}" class="nav-link ">
-                        <span class="title">Centres</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('departments')}}" class="nav-link ">
-                        <span class="title">Departments</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('countries')}}" class="nav-link ">
-                        <span class="title">Countries</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('regions')}}" class="nav-link ">
-                        <span class="title">Regions</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('districts')}}" class="nav-link ">
-                        <span class="title">Districts</span>
-                    </a>
-                </li>
-
-            </ul>
-        </li><li class="heading">
-            <h3 class="uppercase">SYSTEM BACKUPS</h3>
-        </li>
-        <li class="nav-item start active open ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="fa fa-database fa-2x"></i>
-                <span class="title"> Data Import/Export</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-                <li class="nav-item  ">
-                    <a href="{{url('backup/imports')}}" class="nav-link ">
-                        <span class="title">Data Import</span>
-                    </a>
-                </li>
-                <li class="nav-item active ">
-                    <a href="{{url('backup/exports')}}" class="nav-link ">
-                        <span class="title">Data Export</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="heading">
-            <h3 class="uppercase"> ADMINISTRATION</h3>
-        </li>
-        <li class="nav-item  ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="icon-users"></i>
-                <span class="title"> Users</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-                <li class="nav-item  ">
-                    <a href="{{url('users')}}" class="nav-link ">
-                        <span class="title">List All Users</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('access/roles')}}" class="nav-link ">
-                        <span class="title">User Roles</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-    </ul>
-@stop
-@section('page-scripts-level1')
-    {!! Html::script("assets/global/scripts/datatable.js" ) !!}
-    {!! Html::script("assets/global/plugins/datatables/datatables.min.js" ) !!}
-    {!! Html::script("assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js") !!}
-    {!! Html::script("assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js" ) !!}
-@stop
-@section('page-scripts-level2')
-    {!! Html::script("assets/pages/scripts/table-datatables-managed.min.js" ) !!}
-    {!! Html::script("assets/pages/scripts/ui-confirmations.min.js" ) !!}
-
-@stop
-@section('custom-scripts')
+@section('scripts')
     <script>
-        $(".addRegion").click(function(){
-            var modaldis = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
-            modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header">';
-            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Add Item</span>';
-            modaldis+= '</div>';
-            modaldis+= '<div class="modal-body">';
-            modaldis+= ' </div>';
-            modaldis+= '</div>';
-            modaldis+= '</div>';
-            $('body').css('overflow','hidden');
-
-            $("body").append(modaldis);
-            $("#myModal").modal("show");
-            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("inventory/create") ?>");
-            $("#myModal").on('hidden.bs.modal',function(){
-                $("#myModal").remove();
-            })
-
-        });
-        $(".showImport").click(function(){
-            var modaldis = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
-            modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header">';
-            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Add Item</span>';
-            modaldis+= '</div>';
-            modaldis+= '<div class="modal-body">';
-            modaldis+= ' </div>';
-            modaldis+= '</div>';
-            modaldis+= '</div>';
-            $('body').css('overflow','hidden');
-
-            $("body").append(modaldis);
-            $("#myModal").modal("show");
-            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("inventory/import") ?>");
-            $("#myModal").on('hidden.bs.modal',function(){
-                $("#myModal").remove();
-            })
-
-        });
-
-        $(".editRecord").click(function(){
-            var id1 = $(this).parent().attr('id');
-            var modaldis = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-            modaldis+= '<div class="modal-dialog" style="width:60%;margin-right: 20% ;margin-left: 20%">';
-            modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header">';
-            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update item details</span>';
-            modaldis+= '</div>';
-            modaldis+= '<div class="modal-body">';
-            modaldis+= ' </div>';
-            modaldis+= '</div>';
-            modaldis+= '</div>';
-            $('body').css('overflow','hidden');
-
-            $("body").append(modaldis);
-            $("#myModal").modal("show");
-            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("inventory/edit") ?>/"+id1);
-            $("#myModal").on('hidden.bs.modal',function(){
-                $("#myModal").remove();
-            })
-
-        });
-
-        $(".deleteRecord").click(function(){
-            var id1 = $(this).parent().attr('id');
-            $(".deleteModule").show("slow").parent().parent().find("span").remove();
-            var btn = $(this).parent().parent();
-            $(this).hide("slow").parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
-            $("#no").click(function(){
-                $(this).parent().parent().find(".deleteRecord").show("slow");
-                $(this).parent().parent().find("span").remove();
-            });
-            $("#yes").click(function(){
-                $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
-                $.get("<?php echo url('inventory/remove') ?>/"+id1,function(data){
-                    btn.hide("slow").next("hr").hide("slow");
-                });
-            });
-        });
-    </script>
-    <!-- END SAMPLE FORM PORTLET-->
-    {!! Html::script("assets/pages/scripts/jquery.validate.min.js") !!}
-    <script>
-
-        $("#DepartmentFormUN").validate({
+        $("#formImportItems").validate({
+            ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
+            errorClass: 'validation-error-label',
+            successClass: 'validation-valid-label',
+            highlight: function(element, errorClass) {
+                $(element).removeClass(errorClass);
+            },
+            unhighlight: function(element, errorClass) {
+                $(element).removeClass(errorClass);
+            },
+            errorElement:'div',
             rules: {
-                uploaded_file: "required",
-                module_choice: "required",
-                quantity: "required"
+                clients_import: "required",
+                camp_id: "required",
             },
             messages: {
-                uploaded_file: "Please select file",
-                module_choice: "Please select status",
-                quantity: "Please enter quantity"
+                inventory_file: "Please file is required",
+                camp_id: "Please Select camp"
             }
         });
-
     </script>
 @stop
+@section('main_navigation')
+    <div class="sidebar-category sidebar-category-visible">
+        <div class="category-content no-padding">
+            <ul class="navigation navigation-main navigation-accordion">
+                <li ><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
+                <!-- Main -->
+
+                <li>
+                    <a href="#"><i class="icon-users"></i> <span>Clients</span></a>
+                    <ul>
+                        <li ><a href="{{url('clients')}}">Clients Management</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
+                    <ul>
+                        <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
+                        <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
+                        <li><a href="{{url('assessments/paediatric')}}">Paediatric Assessment </a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-stack"></i> <span>Client Referrals</span></a>
+                    <ul>
+                        <li ><a href="{{url('referrals')}}">Referrals</a></li>
+                    </ul>
+                </li>
+                <!-- /main -->
+                <!-- Forms -->
+                @permission('inventory')
+
+                <li>
+                    <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
+                    <ul>
+                        <li><a href="{{url('items/distributions')}}">Item Distribution</a></li>
+                        <li><a href="{{url('inventory-received')}}">Received Items</a></li>
+                        <li><a href="{{url('inventory')}}">Items Inventory</a></li>
+                        <li><a href="{{url('inventory-categories')}}">Items Categories</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
+                    <ul>
+                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
+                        <li><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
+                        <li><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
+                    </ul>
+                </li>
+                @endpermission
+            <!-- /forms -->
+                <!-- Forms -->
+
+                <li>
+                    <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
+                    <ul>
+                        <li><a href="{{url('cases')}}">Case Management</a></li>
+                        <li><a href="{{url('progressive/notices')}}">Progressive Note</a></li>
+                    </ul>
+                </li>
+                @permission('backup')
+            <!-- Backup Restore-->
+                <li class="navigation-header"><span>Data Sharing/Backup</span> <i class="icon-menu" title="Data Sharing"></i></li>
+                <li class="active">
+                    <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
+                    <ul>
+                        <li class="active"><a href="{{url('backup/import/advanced')}}">Import data</a></li>
+                    </ul>
+                </li>
+                <li >
+                    <a href="#"><i class="fa fa-download"></i> <span>Data Export</span></a>
+                    <ul>
+                        <li ><a href="{{url('backup/export/advanced')}}">Export data</a></li>
+                    </ul>
+                </li>
+                <!-- End Backup Restore-->
+                @endpermission
+                @permission('reports')
+            <!-- Data visualization -->
+
+                <li>
+                    <a href="#"><i class="icon-graph"></i> <span> Reports</span></a>
+                    <ul>
+                        <li><a href="{{url('reports/clients')}}">Client Reports</a></li>
+                        <li ><a href="{{url('reports/assessments')}}">Assessments Reports</a></li>
+                        <li><a href="{{url('reports/referrals')}}">Referrals Reports</a></li>
+                        <li><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
+                    </ul>
+                </li>
+                <!-- /data visualization -->
+                @endpermission
+
+            <!-- Settings -->
+                @role('admin')
+
+                <li>
+                    <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
+                    <ul>
+                        <li><a href="{{url('countries')}}">Countries</a></li>
+                        <li><a href="{{url('regions')}}">Regions</a></li>
+                        <li><a href="{{url('districts')}}">Districts</a></li>
+                        <li><a href="{{url('camps')}}">Camps</a></li>
+                        <li><a href="{{url('origins')}}">Origins</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-puzzle4"></i> <span>Vulnerability Codes</span></a>
+                    <ul>
+                        <li><a href="{{url('psncodes')}}">Codes</a></li>
+                        <li><a href="{{url('psncodes-categories')}}">Categories</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{url('setting/client/needs')}}"><i class="icon-puzzle4"></i> <span>Client Needs Setting</span></a>
+                </li>
+
+                <!-- /appearance -->
+
+                <!-- Layout -->
+                <li class="navigation-header"><span>Users Managements</span> <i class="icon-menu" title="Users Managements"></i></li>
+                <li>
+                    <a href="#"><i class="icon-users"></i> <span>Users</span></a>
+                    <ul>
+                        <li><a href="{{url('users')}}">Manage Users</a></li>
+                        <li><a href="{{url('departments')}}">Departments</a></li>
+                        <li><a href="{{url('access/rights')}}">User Rights</a></li>
+                        <li><a href="{{url('audit/logs')}}">User Logs</a></li>
+                    </ul>
+                </li>
+                <li class="navigation-header"><span></span> <i class="icon-menu" title="Users Managements"></i></li>
+                <!-- /Settings -->
+                @endrole
+            </ul>
+        </div>
+    </div>
+@stop
+@section('page_title')
+    Data imports
+@stop
+@section('page_heading_title')
+    <h4><i class="fa fa-database"></i> <span class="text-semibold">System </span> Data Import</h4>
+    <a class="heading-elements-toggle"><i class="icon-more"></i></a>
+@stop
 @section('breadcrumb')
-    <ul class="page-breadcrumb ">
-        <li>
-            <a href="{{url('home')}}">Home</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="#">Inventory</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <span class="active">Items</span>
-        </li>
+    <ul class="breadcrumb">
+        <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
+        <li class="active">Backup And sharing</li>
     </ul>
 @stop
 @section('contents')
-    <div class="row">
-        <div class="col-md-12">
-            <!-- BEGIN EXAMPLE TABLE PORTLET-->
-            <div class="portlet light bordered">
-                <div class="portlet-title">
-                    <div class="caption font-dark">
-                        <i class="icon-settings font-dark"></i>
-                        <span class="caption-subject bold uppercase">SYSTEM BACKUP:DATA IMPORT</span>
+    <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-12 text-right">
+            <a  href="{{url('clients')}}" class="btn btn-primary "><i class="fa fa-home"></i> <span>Home</span></a>
+            <a  href="{{url('backup/export/advanced')}}" class="btn btn-primary"><i class="fa fa-share"></i> <span>Export Data</span></a>
+            <a  href="{{url('backup/import/advanced')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import Data</span></a>
+        </div>
+    </div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class=" text-center text-uppercase"> SYSTEM ADVANCED DATA IMPORT</h5>
+        </div>
+
+        <div class="panel-body">
+            {!! Form::open(array('url'=>'backup/import/advanced','role'=>'form','id'=>'formImportItems','files'=>true)) !!}
+            <div class="form-body">
+                @if(Session::has('error'))
+                    <div class="alert fade in alert-danger">
+                        <i class="icon-remove close" data-dismiss="alert"></i>
+                        {{Session::get('error')}}
                     </div>
-                </div>
-                <div class="portlet-body">
-                    <!-- BEGIN SAMPLE FORM PORTLET-->
-                    <div class="portlet light bordered">
-                        <div class="portlet-body form">
-                            {!! Form::open(array('url'=>'backup/imports','role'=>'form','id'=>'DepartmentFormUN','files'=>true)) !!}
-                            <div class="form-body">
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-8 col-xs-8 col-lg-8">
-                                            <label>Module</label>
-                                            <select name="module_choice" id="module_choice" class="form-control">
-                                                <option value="" >--Select--</option>
-                                                <option value="1" >Clients Only</option>
-                                                <option value="2" >Assessments</option>
-                                                <option value="3" >Disabilities</option>
-                                                <option value="4" >Referral</option>
-                                                <option value="5" >Physiotherapy treatment </option>
-                                                <option value="6" >Orthopedic register</option>
-                                                <option value="7" >Beneficiaries</option>
-                                                <option value="8" > Social needs/Support</option>
-                                                <option value="9" >Material Supports</option>
-                                                <option value="10" > Livelihoods Tracking </option>
-                                                <option value="11" >General Setting</option>
-                                                <option value="12" >Users</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-8 col-xs-8 col-lg-8">
-                                            <label>Import data file</label>
-                                            <input TYPE="file" class="form-control" name="uploaded_file" id="uploaded_file">
-                                            @if($errors->first('uploaded_file') !="")
-                                                <span class=" error">{{ $errors->first('uploaded_file') }}</span>
-                                            @endif
-                                             @if(Session::has('error'))
-                                                <span class=" error">{{ Session::has('error') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr/>
-                                <div class="row text-center">
-                                    <div class="col-md-4 col-sm-4">
-                                        <button type="submit" class="btn btn-primary btn-block"> Import Data </button>
-                                    </div>
+                @endif
 
-                                </div>
-
-                            </div>
-
-                            {!! Form::close() !!}
+                 @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                <div class="row">
+                    <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
+                        <div class="form-group">
+                            <label class="control-label text-bold"> System Module</label>
+                            <select class="select" name="module" id="module" data-placeholder="Choose an option...">
+                                <option value="1">Main Module</option>
+                            </select>
+                            @if($errors->first('module') !="")
+                                <label id="address-error" class="validation-error-label" for="module">{{ $errors->first('module') }}</label>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
+                        <div class="form-group">
+                            <label class="control-label text-bold"> Data File</label>
+                            <input type="file" class="form-control" name="system_data_file" id="system_data_file">
+                            @if($errors->first('system_data_file') !="")
+                                <label id="address-error" class="validation-error-label" for="module">{{ $errors->first('system_data_file') }}</label>
+                            @endif
                         </div>
                     </div>
                 </div>
+                <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
+                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cogs"></i> Import Data </button>
+                </div>
+
             </div>
-            <!-- END EXAMPLE TABLE PORTLET-->
+
+            {!! Form::close() !!}
         </div>
+
     </div>
 @stop

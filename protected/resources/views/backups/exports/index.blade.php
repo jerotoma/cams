@@ -121,16 +121,16 @@
                 @permission('backup')
             <!-- Backup Restore-->
                 <li class="navigation-header"><span>Data Sharing/Backup</span> <i class="icon-menu" title="Data Sharing"></i></li>
-                <li>
+                <li >
                     <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
-                        <li><a href="{{url('backup/import/advanced')}}">Import data</a></li>
+                        <li ><a href="{{url('backup/import/advanced')}}">Import data</a></li>
                     </ul>
                 </li>
-                <li class="active">
+                <li class="active" >
                     <a href="#"><i class="fa fa-download"></i> <span>Data Export</span></a>
                     <ul>
-                        <li class="active"><a href="{{url('backup/export/advanced')}}">Export data</a></li>
+                        <li class="active" ><a href="{{url('backup/export/advanced')}}">Export data</a></li>
                     </ul>
                 </li>
                 <!-- End Backup Restore-->
@@ -170,6 +170,9 @@
                         <li><a href="{{url('psncodes-categories')}}">Categories</a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="{{url('setting/client/needs')}}"><i class="icon-puzzle4"></i> <span>Client Needs Setting</span></a>
+                </li>
 
                 <!-- /appearance -->
 
@@ -192,66 +195,49 @@
     </div>
 @stop
 @section('page_title')
-    Clients
+    Data Exports
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Clients</span> - Import</h4>
+    <h4><i class="fa fa-share"></i> <span class="text-semibold">System </span> Data Exports</h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li><a href="{{url('inventory')}}">Clients</a></li>
-        <li class="active">Import Clients</li>
+        <li class="active">Backup And sharing</li>
     </ul>
 @stop
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="{{url('clients')}}" class="btn  "><i class="fa fa-list text-info"></i> <span>List All</span></a>
-            <a  href="{{url('clients')}}" class="btn "><i class="fa fa-search text-primary"></i> <span>Search</span></a>
-            <a  href="{{url('import/clients')}}" class="btn "><i class="fa fa-upload text-danger"></i> <span>Import</span></a>
+            <a  href="{{url('clients')}}" class="btn btn-primary "><i class="fa fa-home"></i> <span>Home</span></a>
+            <a  href="{{url('backup/export/advanced')}}" class="btn btn-primary"><i class="fa fa-share"></i> <span>Export Data</span></a>
+            <a  href="{{url('backup/import/advanced')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import Data</span></a>
         </div>
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-uppercase"> <i class="fa fa-upload"></i> Import Client Details</h5>
+            <h5 class=" text-center text-uppercase"> SYSTEM ADVANCED DATA EXPORT</h5>
         </div>
 
         <div class="panel-body">
-            {!! Form::open(array('url'=>'import/clients','role'=>'form','id'=>'formImportItems','files'=>true)) !!}
+            {!! Form::open(array('url'=>'backup/export/advanced','role'=>'form','id'=>'formImportItems','files'=>true)) !!}
             <div class="form-body">
-                @if(Session::has('error'))
-                    <div class="alert fade in alert-danger">
-                        <i class="icon-remove close" data-dismiss="alert"></i>
-                        {{Session::get('error')}}
+                <div class="row">
+                    <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
+                        <div class="form-group">
+                            <label class="control-label text-bold"> System Module</label>
+                            <select class="select" name="module" id="module" data-placeholder="Choose an option...">
+                                <option value="1">Main Module</option>
+                            </select>
+                            @if($errors->first('module') !="")
+                                <label id="address-error" class="validation-error-label" for="module">{{ $errors->first('module') }}</label>
+                            @endif
+                        </div>
                     </div>
-                @endif
-                <div class="form-group ">
-                    <label class="control-label">Camp</label>
-                    <select class="select" name="camp_id" id="camp_id" data-placeholder="Choose an option...">
-                        <option ></option>
-                        @foreach(\App\Camp::all() as $item)
-                            <option value="{{$item->id}}">{{$item->camp_name}}</option>
-                        @endforeach
-                    </select>
-                    @if($errors->first('camp_id') !="")
-                        <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
-                    @endif
                 </div>
-                <div class="form-group">
-                    <label>Import list of clients for registration, kindly use this template <a href={{asset("assets/templates/client_import_template.xls")}}>Download template here</a> </label>
-                    <input type="file" class="form-control" name="clients_import" id="clients_import">
-                    @if($errors->first('clients_import') !="")
-                        <div id="client_number-error" class="validation-error-label">{{ $errors->first('clients_import') }}</div>
-                    @endif
-                </div>
-                <hr/>
-                <div class="row text-center">
-                    <div class="col-md-4 col-sm-4">
-                        <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save"></i> Import </button>
-                    </div>
-
+                <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
+                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cogs"></i> Export Data </button>
                 </div>
 
             </div>
