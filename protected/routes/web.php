@@ -26,10 +26,12 @@ Route::resource('cash/monitoring/budget','CashBudgetController');
 Route::resource('cash/monitoring/provision','CashProvisionController');
 Route::resource('post/cash/monitoring','PostCashMonitoringController');
 Route::get('list-post-cash-monitoring','PostCashMonitoringController@getPostCashMonitoringList');
+Route::get('download/pdf/post/cash/monitoring/{id}','PostCashMonitoringController@downloadPdf');
+Route::get('print/post/cash/monitoring/{id}','PostCashMonitoringController@showPrint');
 
 //Authorize
-Route::post('authorize/cash/monitoring/provision','CashProvisionController@AuthorizeAll');
-Route::post('authorize/cash/monitoring/{id}/provision','CashProvisionController@AuthorizeCashProvisionById');
+Route::post('authorize/post/cash/monitoring','PostCashMonitoringController@AuthorizeAll');
+Route::post('authorize/post/cash/{id}/monitoring','PostCashMonitoringController@AuthorizePostCashAssessmentById');
 
 
 Route::get('print/cash/monitoring/provision/{id}','CashProvisionController@showPrint');

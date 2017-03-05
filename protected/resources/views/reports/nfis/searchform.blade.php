@@ -68,7 +68,7 @@
                                                 <option value="1">List of Clients Received Items</option>
                                                 <option value="2">List of Clients Received Cash</option>
                                                 <option value="3">Prepare list for Item distribution</option>
-                                                <option value="4">Prepare list for Cash Provision</option>
+                                                <option value="4">Prepare list for Cash Distribution</option>
                                                 <option value="5" >Item distribution per population</option>
                                                 <option value="6" >Cash grant or voucher provided per population</option>
                                                 <option value="7" >Out of stock Items</option>

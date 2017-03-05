@@ -47,7 +47,7 @@ class PostCashMonitoringController extends Controller
         }
 
     }
-    public function AuthorizeCashProvisionById($id)
+    public function AuthorizePostCashAssessmentById($id)
     {
         //
         if (Auth::user()->can('authorize')){
@@ -59,10 +59,28 @@ class PostCashMonitoringController extends Controller
                     'auth_date' => date('Y-m-d H:i')
                 ]);
             //Audit trail
-            AuditRegister("PostCashMonitoringController","AuthorizeCashProvisionById",$assessments);
+            AuditRegister("PostCashMonitoringController","AuthorizePostCashAssessmentById",$assessments);
         }else{
             return null;
         }
+    }
+
+    public function showPrint($id)
+    {
+        //
+        $assessment=PostCashAssessment::find($id);
+        return view('cash.monitoring.pdf',compact('assessment'));
+    }
+
+
+    public function downloadPdf($id)
+    {
+        //
+        $assessment=PostCashAssessment::find($id);
+        $pdf = \PDF::loadView('cash.monitoring.pdf',compact('assessment'))
+            ->setOption('footer-right', 'Page [page]')
+            ->setOption('page-offset', 0);
+        return $pdf->download('post_cash_distribution_monitoring.pdf');
     }
     /**
      * Show the form for creating a new resource.

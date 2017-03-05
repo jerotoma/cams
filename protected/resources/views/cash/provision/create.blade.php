@@ -34,7 +34,7 @@
         <div class="panel panel-flat">
             <div class="panel-body">
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold"> Cash Provision Details</legend>
+                    <legend class="text-bold"> Cash Distribution Details</legend>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">

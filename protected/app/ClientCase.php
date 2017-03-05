@@ -8,6 +8,7 @@ class ClientCase extends Model
 {
     //
     protected $fillable = ['auth_status', 'auth_by', 'auth_date'];
+
     public function client()
     {
         return $this::belongsTo('\App\Client','client_id');

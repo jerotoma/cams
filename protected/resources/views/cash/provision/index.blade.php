@@ -45,7 +45,7 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Cash Provision</span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Cash Distribution</span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -70,7 +70,7 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Cash Provision Details </span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Cash Distribution Details </span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
@@ -210,7 +210,7 @@
             modaldis+= '<div class="modal-content">';
             modaldis+= '<div class="modal-header bg-indigo">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="text-uppercase text-bold" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Cash Provision to Client </span>';
+            modaldis+= '<span id="myModalLabel" class="text-uppercase text-bold" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Cash Distribution to Client </span>';
             modaldis+= '</div>';
             modaldis+= '<div class="modal-body">';
             modaldis+= ' </div>';
@@ -294,7 +294,7 @@
                 <li class="active">
                     <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
                     <ul>
-                        <li class="active"><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
+                        <li class="active"><a href="{{url('cash/monitoring/provision')}}">Cash Distribution</a></li>
                         <li><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
                         <li><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
                     </ul>
@@ -384,16 +384,16 @@
     </div>
 @stop
 @section('page_title')
-   Cash Provision
+   Cash Distribution
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">   Cash Provision</span> </h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">   Cash Distribution</span> </h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li><a href="{{url('items/distributions')}}">  Cash Provision</a></li>
+        <li><a href="{{url('items/distributions')}}">  Cash Distribution</a></li>
     </ul>
 @stop
 @section('contents')
@@ -401,7 +401,7 @@
         <div class="col-md-12 text-right">
             @permission('create')
             <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-success"></i>Provide Cash</a>
-            <a href="{{url('bulk/cash/monitoring/provision')}}" class=" btn btn-primary " title="Item distributions for multiple clients"> <i class="fa fa-plus text-success"></i>Bulk Cash Provision</a>
+            <a href="{{url('bulk/cash/monitoring/provision')}}" class=" btn btn-primary " title="Item distributions for multiple clients"> <i class="fa fa-plus text-success"></i>Bulk Cash Distribution</a>
             @endpermission
             @permission('authorize')
             <a  href="#" class="authorizeAllRecords btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
@@ -414,7 +414,7 @@
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-uppercase text-bold text-center"> List of All Cash Provision Records</h5>
+            <h5 class="panel-title text-uppercase text-bold text-center"> List of All Cash Distribution Records</h5>
         </div>
 
         <div class="panel-body">

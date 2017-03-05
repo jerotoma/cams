@@ -353,7 +353,7 @@
                 <li>
                     <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
                     <ul>
-                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
+                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Distributions</a></li>
                         <li><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
                         <li><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
                     </ul>
@@ -477,7 +477,7 @@
     @include('reports.nfis.searchform')
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-bold text-center">Cash Provision Report as of {{$request->start_date}} - {{$request->end_date}} </h5>
+            <h5 class="panel-title text-bold text-center">Cash Distribution Report as of {{$request->start_date}} - {{$request->end_date}} </h5>
         </div>
 
         <div class="panel-body">

@@ -234,7 +234,7 @@
                 <li class="active">
                     <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
                     <ul>
-                        <li ><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
+                        <li ><a href="{{url('cash/monitoring/provision')}}">Cash Distribution</a></li>
                         <li class="active"><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
                         <li ><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
                     </ul>
@@ -342,7 +342,7 @@
                 <div class="col-md-12 text-right">
                     <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-danger"></i> Add New Activity</a>
                     <a href="{{url('cash/monitoring/budget')}}" class="btn btn-primary"><i class="fa fa-server text-danger"></i> List All Activities</a>
-                    <a href="{{url('cash/monitoring/provision')}}" class="btn btn-primary"><i class="fa fa-forward text-danger"></i> Cash Provision</a>
+                    <a href="{{url('cash/monitoring/provision')}}" class="btn btn-primary"><i class="fa fa-forward text-danger"></i> Cash Distribution</a>
                     <a href="{{url('post/cash/monitoring')}}" class="btn btn-primary"><i class="fa fa-list text-danger"></i> Post Cash monitoring</a>
                 </div>
             </div>

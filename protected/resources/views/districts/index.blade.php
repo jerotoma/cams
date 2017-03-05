@@ -123,7 +123,7 @@
                 <li>
                     <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
                     <ul>
-                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
+                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Distributions</a></li>
                         <li><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
                         <li><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
                     </ul>

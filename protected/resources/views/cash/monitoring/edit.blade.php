@@ -873,7 +873,7 @@
                 @if(is_object($assessment->cashUsage) && is_object($assessment->cashUsage->usages) && count($assessment->cashUsage->usages) >0)
                 @foreach($assessment->cashUsage->usages as $usage)
                     <tr>
-                        <td>{{$usage->category_name}}<input type="hidden" value="{{$usage->category_id}}" name="categories[]"></td>
+                        <td>@if(is_object($usage->category)){{$usage->category->category_name}} @endif<input type="hidden" value="{{$usage->category_id}}" name="categories[]"></td>
                         <td><input type="text" name="currencies[]" class="form-control" value="{{$usage->currency}}"></td>
                     </tr>
                     <?php $co++;?>

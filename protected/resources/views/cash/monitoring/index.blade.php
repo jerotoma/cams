@@ -68,7 +68,7 @@
                 "scrollX": false,
                 ajax: '{{url('list-post-cash-monitoring')}}',
                 "fnDrawCallback": function (oSettings) {
-                    $(".viewRecord").click(function(){
+                    $(".showRecord").click(function(){
                         var id1 = $(this).parent().attr('id');
                         var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
                         modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
@@ -290,7 +290,7 @@
                 <li class="active">
                     <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
                     <ul>
-                        <li ><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
+                        <li ><a href="{{url('cash/monitoring/provision')}}">Cash Distribution</a></li>
                         <li><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
                         <li class="active"><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
                     </ul>
@@ -404,7 +404,7 @@
                     @endpermission
                     <a href="{{url('post/cash/monitoring')}}" class="btn btn-primary"><i class="fa fa-server text-danger"></i> List All Assessments</a>
                     @permission('create')
-                    <a href="{{url('cash/monitoring/provision')}}" class="btn btn-primary"><i class="fa fa-forward text-danger"></i> Cash Provision</a>
+                    <a href="{{url('cash/monitoring/provision')}}" class="btn btn-primary"><i class="fa fa-forward text-danger"></i> Cash Distribution</a>
                     @endpermission
                 </div>
             </div>

@@ -406,7 +406,7 @@ class CashProvisionController extends Controller
          $pdf = \PDF::loadView('cash.provision.pdf',compact('provision'))
             ->setOption('footer-right', 'Page [page]')
             ->setOption('page-offset', 0);
-        return $pdf->download('client_material_support.pdf');
+        return $pdf->download('cash_distribution_monitoring.pdf');
     }
     /**
      * Store a newly created resource in storage.

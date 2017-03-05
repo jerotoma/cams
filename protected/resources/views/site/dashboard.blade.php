@@ -220,7 +220,7 @@
 
             series: [<?php echo getHighChatClientMonthlyCountByYear(date('Y'));?>]
         });
-        $('#nfidistribution').highcharts({
+        $('#ageGroup').highcharts({
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -228,7 +228,7 @@
                 type: 'pie'
             },
             title: {
-                text: 'Client Registration'
+                text: 'Client Distribution Age groups'
             },
             credits: {
                 enabled: false
@@ -300,6 +300,116 @@
             }]
 
 
+        });
+        $('#monthlyNfisDistributions').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Monthly NFIS distribution for year {{date("Y")}}'
+            },
+            subtitle: {
+                text: 'Item distribution as of year {{date('Y')}}',
+                x: -20
+            },
+            credits: {
+                enabled: false
+            },
+
+            xAxis: {
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Number of Items'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><th style="color:{series.color};padding:0">{series.name}: </th>' +
+                '<th style="padding:0"><b>{point.y:.0f} </b></th></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+
+            series: [<?php echo getHighItemsDistributionsMonthlyCountByYear(date('Y'));?>]
+        });
+        $('#monthlyCashProvisions').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Monthly Cash Distribution for year {{date("Y")}}'
+            },
+            subtitle: {
+                text: 'Cash Distribution as of year {{date('Y')}}',
+                x: -20
+            },
+            credits: {
+                enabled: false
+            },
+
+            xAxis: {
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Amounts in TZS'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><th style="color:{series.color};padding:0">{series.name}: </th>' +
+                '<th style="padding:0"><b>{point.y:.0f} </b></th></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+
+            series: [<?php echo getHighCashProvisionsMonthlyCountByYear(date('Y'));?>]
         });
     </script>
 @stop
@@ -387,17 +497,30 @@
         </div>
     </div>
     <div class="row" style="margin-top: 10px">
-        <div class="col-md-6">
-            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientsNeeds"></div>
-        </div>
-
-        <div class="col-md-6">
-            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="nfidistribution"></div>
-        </div>
-    </div>
-    <div class="row" style="margin-top: 10px">
         <div class="col-md-12">
             <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientRegistration"></div>
+        </div>
+
+    </div>
+    <div class="row" style="margin-top: 10px">
+        <div class="col-md-8">
+            <div style="min-width: 410px; height: 500px; margin: 0 auto" id="clientsNeeds"></div>
+        </div>
+
+        <div class="col-md-4">
+            <div style="min-width: 410px; height: 500px; margin: 0 auto" id="ageGroup"></div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 20px">
+        <div class="col-md-12">
+            <div style="min-width: 310px; height: 500px; margin: 0 auto" id="monthlyNfisDistributions"></div>
+        </div>
+
+    </div>
+    <div class="row" style="margin-top: 20px">
+        <div class="col-md-12">
+            <div style="min-width: 310px; height: 500px; margin: 0 auto" id="monthlyCashProvisions"></div>
         </div>
 
     </div>
@@ -411,11 +534,5 @@
         </div>
     </div>
 
-    <div class="row" style="margin-top: 20px">
-        <div class="col-md-12">
-            <div style="min-width: 310px; height: 400px; margin: 0 auto" id="MothNFIsdistribution"></div>
-        </div>
 
-
-    </div>
 @stop

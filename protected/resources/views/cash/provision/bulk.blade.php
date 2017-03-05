@@ -161,7 +161,7 @@
                 <li class="active">
                     <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
                     <ul>
-                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Provision</a></li>
+                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Distributions</a></li>
                         <li class="active"><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
                         <li><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
                     </ul>
@@ -251,23 +251,23 @@
     </div>
 @stop
 @section('page_title')
-    Cash Provision
+    Cash Distribution
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">   Cash Provision</span> </h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">   Cash Distribution</span> </h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li><a href="{{url('items/distributions')}}">  Cash Provision</a></li>
+        <li><a href="{{url('items/distributions')}}">  Cash Distribution</a></li>
     </ul>
 @stop
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
             <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-success"></i>Provide Cash</a>
-            <a href="{{url('bulk/cash/monitoring/provision')}}" class=" btn btn-primary " title="Item distributions for multiple clients"> <i class="fa fa-plus text-success"></i>Bulk Cash Provision</a>
+            <a href="{{url('bulk/cash/monitoring/provision')}}" class=" btn btn-primary " title="Item distributions for multiple clients"> <i class="fa fa-plus text-success"></i>Bulk Cash Distribution</a>
             <a href="{{url('cash/monitoring/provision')}}" class="btn btn-primary"><i class="fa fa-list text-info"></i> List All Records</a>
             <a href="{{url('post/cash/monitoring')}}" class="btn btn-primary"><i class="fa fa-list text-danger"></i> Post Cash monitoring</a>
         </div>
@@ -298,7 +298,7 @@
                     </div>
                 @endif
             <fieldset class="scheduler-border">
-                <legend class="text-bold"> Cash Provision Details</legend>
+                <legend class="text-bold"> Cash Distribution Details</legend>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
