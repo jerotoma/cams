@@ -144,12 +144,18 @@ Route::get('client/assessments/home/{id}','HomeAssessmentController@create');
 Route::resource('cases','ClientCaseController');
 Route::get('list-all-cases','ClientCaseController@getCasesList');
 Route::get('download/cases/form/{id}','ClientCaseController@downloadPDF');
-
+//Authorize
+Route::post('authorize/cases/clients/all','ClientCaseController@AuthorizeAll');
+Route::post('authorize/cases/{id}/clients','ClientCaseController@AuthorizeClientCaseById');
 
 //Progressive note
 Route::resource('progressive/notices','ProgressNoteController');
 Route::get('list-all-notices','ProgressNoteController@getNoticeList');
 Route::get('download/notice/pdf/{id}','ProgressNoteController@downloadPDF');
+
+//Authorize
+Route::post('authorize/progressive/notices','ProgressNoteController@AuthorizeAll');
+Route::post('authorize/progressive/{id}/notices','ProgressNoteController@AuthorizeProgressNoteById');
 
 //Import
 Route::get('inventory-import','ItemInventoryController@showImport');

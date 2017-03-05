@@ -28,6 +28,43 @@ class ProgressNoteController extends Controller
             ->setOption('page-offset', 0);
         return $pdf->download('progressive_notice.pdf');
     }
+    public function AuthorizeAll()
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $notices=ProgressNote::where('auth_status', '=', 'pending')
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+
+            //Audit trail
+            AuditRegister("ProgressNoteController","AuthorizeAll",$notices);
+
+        }else{
+            return null;
+        }
+
+    }
+    public function AuthorizeProgressNoteById($id)
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $notices=ProgressNote::find($id)
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+            //Audit trail
+            AuditRegister("ProgressNoteController","AuthorizeProgressNoteById",$notices);
+        }else{
+            return null;
+        }
+    }
     public function getNoticeList()
     {
         //
@@ -41,30 +78,119 @@ class ProgressNoteController extends Controller
 
         $count=1;
         foreach($notices as $note) {
-            $records["data"][] = array(
-                $count++,
-                $note->reference_number,
-                $note->client->full_name,
-                $note->client->age,
-                $note->client->sex,
-                $note->open_date,
-                $note->case_worker_name,
-                $note->status,
-                '<ul class="icons-list text-center">
+            if ($note->auth_status == "pending") {
+                if (Auth::user()->can('authorize')) {
+                    $records["data"][] = array(
+                        $count++,
+                        $note->reference_number,
+                        $note->client->full_name,
+                        $note->client->age,
+                        $note->client->sex,
+                        $note->open_date,
+                        $note->case_worker_name,
+                        $note->status,
+                        $note->auth_status,
+                        '<ul class="icons-list text-center">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="icon-menu9"></i>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
-                                <li id="'.$note->id.'"><a href="#" class="showRecord label"><i class="fa fa-eye "></i> View </a></li>
-                                <li id="'.$note->id.'"><a href="#" onclick="printPage(\''.url("progressive/notices").'/'.$note->id.'\');" class=" label"><i class="fa fa-print "></i> Print</a></li>
-                                <li id="'.$note->id.'"><a href="'.url('download/notice/pdf').'/'.$note->id.'" class="label"><i class="fa fa-file-pdf-o "></i> pdf</a></li>
-                                <li id="'.$note->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                                <li id="'.$note->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                                <li id="' . $note->id . '"><a href="#" class="showRecord label"><i class="fa fa-eye "></i> View </a></li>
+                                <li id="' . $note->id . '"><a href="#" onclick="printPage(\'' . url("progressive/notices") . '/' . $note->id . '\');" class=" label"><i class="fa fa-print "></i> Print</a></li>
+                                <li id="' . $note->id . '"><a href="' . url('download/notice/pdf') . '/' . $note->id . '" class="label"><i class="fa fa-file-pdf-o "></i> pdf</a></li>
+                                <li id="' . $note->id . '"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                                <li id="' . $note->id . '"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                                <li id="' . $note->id . '"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
                             </ul>
                         </li>
                     </ul>'
-            );
+                    );
+                }
+                elseif (Auth::user()->hasRole('inputer'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $note->reference_number,
+                        $note->client->full_name,
+                        $note->client->age,
+                        $note->client->sex,
+                        $note->open_date,
+                        $note->case_worker_name,
+                        $note->status,
+                        $note->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                                <li id="' . $note->id . '"><a href="#" class="showRecord label"><i class="fa fa-eye "></i> View </a></li>
+                                <li id="' . $note->id . '"><a href="#" onclick="printPage(\'' . url("progressive/notices") . '/' . $note->id . '\');" class=" label"><i class="fa fa-print "></i> Print</a></li>
+                                <li id="' . $note->id . '"><a href="' . url('download/notice/pdf') . '/' . $note->id . '" class="label"><i class="fa fa-file-pdf-o "></i> pdf</a></li>
+                                <li id="' . $note->id . '"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                                <li id="' . $note->id . '"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
+            else {
+                if (Auth::user()->hasRole('admin')) {
+                    $records["data"][] = array(
+                        $count++,
+                        $note->reference_number,
+                        $note->client->full_name,
+                        $note->client->age,
+                        $note->client->sex,
+                        $note->open_date,
+                        $note->case_worker_name,
+                        $note->status,
+                        $note->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                                <li id="' . $note->id . '"><a href="#" class="showRecord label"><i class="fa fa-eye "></i> View </a></li>
+                                <li id="' . $note->id . '"><a href="#" onclick="printPage(\'' . url("progressive/notices") . '/' . $note->id . '\');" class=" label"><i class="fa fa-print "></i> Print</a></li>
+                                <li id="' . $note->id . '"><a href="' . url('download/notice/pdf') . '/' . $note->id . '" class="label"><i class="fa fa-file-pdf-o "></i> pdf</a></li>
+                                <li id="' . $note->id . '"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                                <li id="' . $note->id . '"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                else
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $note->reference_number,
+                        $note->client->full_name,
+                        $note->client->age,
+                        $note->client->sex,
+                        $note->open_date,
+                        $note->case_worker_name,
+                        $note->status,
+                        $note->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                                <li id="' . $note->id . '"><a href="#" class="showRecord label"><i class="fa fa-eye "></i> View </a></li>
+                                <li id="' . $note->id . '"><a href="#" onclick="printPage(\'' . url("progressive/notices") . '/' . $note->id . '\');" class=" label"><i class="fa fa-print "></i> Print</a></li>
+                                <li id="' . $note->id . '"><a href="' . url('download/notice/pdf') . '/' . $note->id . '" class="label"><i class="fa fa-file-pdf-o "></i> pdf</a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
         }
 
 

@@ -87,6 +87,39 @@
 
                     });
                     // Confirmation dialog
+                    $('.authorizeAllRecords').on('click', function() {
+                        bootbox.confirm("Are You Sure to authorize All pending records?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/cases/clients/all') ?>",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    // Confirmation dialog
+                    $('.authorizeRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/cases') ?>/"+id1+"/clients",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
+
+                    // Confirmation dialog
                     $('.deleteRecord').on('click', function() {
                         var id1 = $(this).parent().attr('id');
                         var btn=$(this).parent().parent().parent().parent().parent().parent();
@@ -372,6 +405,7 @@
                 <th>Camp</th>
                 <th>Case Type</th>
                 <th>Status</th>
+                <th>Auth Status</th>
                 <th class="text-center">Actions</th>
             </tr>
             </thead>
@@ -386,6 +420,7 @@
                 <th>Camp</th>
                 <th>Case Type</th>
                 <th>Status</th>
+                <th>Auth Status</th>
                 <th class="text-center"></th>
             </tr>
             </tfoot>

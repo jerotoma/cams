@@ -27,10 +27,11 @@ class CreateProgressNotesTable extends Migration
             $table->integer('client_id')->unsigned();
             $table->integer('camp_id')->unsigned()->nullable();
 
-            $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('auth_status')->nullable()->default('pending');
             $table->string('auth_by')->nullable();
+            $table->dateTime('auth_date')->nullable();
 
             $table->foreign('client_id')->references('id')->on('clients')
                 ->onUpdate('cascade')->onDelete('cascade');

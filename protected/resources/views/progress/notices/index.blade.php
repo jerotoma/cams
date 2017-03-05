@@ -86,7 +86,41 @@
                         })
 
                     });
+                    // Confirmation dialog
+                    $('.authorizeAllRecords').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize All pending records?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/progressive/notices') ?>",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
 
+                    // Confirmation dialog
+                    $('.authorizeRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/progressive') ?>/"+id1+"/notices",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
                     // Confirmation dialog
                     $('.deleteRecord').on('click', function() {
                         var id1 = $(this).parent().attr('id');
@@ -372,6 +406,7 @@
                 <th>Open Date</th>
                 <th>Case Worker Name</th>
                 <th>Status</th>
+                <th>Auth Status</th>
                 <th class="text-center">Actions</th>
             </tr>
             </thead>
@@ -385,6 +420,7 @@
                 <th>Open Date</th>
                 <th>Case Worker Name</th>
                 <th>Status</th>
+                <th>Auth Status</th>
                 <th class="text-center">Actions</th>
             </tr>
             </tfoot>

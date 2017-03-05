@@ -26,6 +26,43 @@ class ClientCaseController extends Controller
         AuditRegister("ClientCaseController","View all cases","");
          return view('progress.cases.index');
     }
+    public function AuthorizeAll()
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $case=ClientCase::where('auth_status', '=', 'pending')
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+
+            //Audit trail
+            AuditRegister("ClientCaseController","AuthorizeAll",$case);
+
+        }else{
+            return null;
+        }
+
+    }
+    public function AuthorizeClientCaseById($id)
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $case=ClientCase::find($id)
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+            //Audit trail
+            AuditRegister("ClientCaseController","AuthorizeClientCaseById",$case);
+        }else{
+            return null;
+        }
+    }
     public function downloadPDF($id)
     {
         $case=ClientCase::find($id);
@@ -56,18 +93,50 @@ class ClientCaseController extends Controller
             }
             $vcolor="label-danger";
 
-
-            $records["data"][] = array(
-                $count++,
-                $case->reference_number,
-                $case->client->full_name,
-                $case->client->age,
-                $case->client->sex,
-                $case->open_date,
-                $camp,
-                $case->case_type,
-                $case->status,
-                '<ul class="icons-list text-center">
+            if ($case->auth_status == "pending") {
+                if (Auth::user()->can('authorize')) {
+                    $records["data"][] = array(
+                        $count++,
+                        $case->reference_number,
+                        $case->client->full_name,
+                        $case->client->age,
+                        $case->client->sex,
+                        $case->open_date,
+                        $camp,
+                        $case->case_type,
+                        $case->status,
+                        $case->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                                <li id="'.$case->id.'"><a href="#" class="showRecord label"><i class="fa fa-eye "></i> View </a></li>
+                                <li id="'.$case->id.'"><a href="#" onclick="printPage(\''.url("cases").'/'.$case->id.'\');" class=" label"><i class="fa fa-print "></i> Print</a></li>
+                                <li id="'.$case->id.'"><a href="'.url('download/cases/form').'/'.$case->id.'" class="label"><i class="fa fa-file-pdf-o "></i> pdf</a></li>
+                                <li id="' . $case->id . '"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                                <li id="'.$case->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                                <li id="'.$case->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                elseif (Auth::user()->hasRole('inputer'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $case->reference_number,
+                        $case->client->full_name,
+                        $case->client->age,
+                        $case->client->sex,
+                        $case->open_date,
+                        $camp,
+                        $case->case_type,
+                        $case->status,
+                        $case->auth_status,
+                        '<ul class="icons-list text-center">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="icon-menu9"></i>
@@ -81,7 +150,69 @@ class ClientCaseController extends Controller
                             </ul>
                         </li>
                     </ul>'
-            );
+                    );
+                }
+            }
+            else
+            {
+                if (Auth::user()->hasRole('admin'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $case->reference_number,
+                        $case->client->full_name,
+                        $case->client->age,
+                        $case->client->sex,
+                        $case->open_date,
+                        $camp,
+                        $case->case_type,
+                        $case->status,
+                        $case->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                                <li id="'.$case->id.'"><a href="#" class="showRecord label"><i class="fa fa-eye "></i> View </a></li>
+                                <li id="'.$case->id.'"><a href="#" onclick="printPage(\''.url("cases").'/'.$case->id.'\');" class=" label"><i class="fa fa-print "></i> Print</a></li>
+                                <li id="'.$case->id.'"><a href="'.url('download/cases/form').'/'.$case->id.'" class="label"><i class="fa fa-file-pdf-o "></i> pdf</a></li>
+                                <li id="'.$case->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                                <li id="'.$case->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                else
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $case->reference_number,
+                        $case->client->full_name,
+                        $case->client->age,
+                        $case->client->sex,
+                        $case->open_date,
+                        $camp,
+                        $case->case_type,
+                        $case->status,
+                        $case->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                                <li id="'.$case->id.'"><a href="#" class="showRecord label"><i class="fa fa-eye "></i> View </a></li>
+                                <li id="'.$case->id.'"><a href="#" onclick="printPage(\''.url("cases").'/'.$case->id.'\');" class=" label"><i class="fa fa-print "></i> Print</a></li>
+                                <li id="'.$case->id.'"><a href="'.url('download/cases/form').'/'.$case->id.'" class="label"><i class="fa fa-file-pdf-o "></i> pdf</a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
+
         }
 
 
