@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\HomeAssessment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,14 +23,51 @@ class HomeAssessmentController extends Controller
     public function index()
     {
         //
-        return view('assessments.needs.index');
+        return view('assessments.home.index');
+    }
+    public function AuthorizeAll()
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $assessments=HomeAssessment::where('auth_status', '=', 'pending')
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+
+            //Audit trail
+            AuditRegister("HomeAssessmentController","AuthorizeAllAssessments",$assessments);
+
+        }else{
+            return null;
+        }
+
+    }
+    public function AuthorizeAssessmentById($id)
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $assessments=HomeAssessment::find($id)
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+            //Audit trail
+            AuditRegister("HomeAssessmentController","AuthorizeAssessmentById",$assessments);
+        }else{
+            return null;
+        }
     }
     public function downloadPDF($id)
     {
 
         $assessment=HomeAssessment::findorfail($id);
 
-         $pdf = \PDF::loadView('assessments.needs.show',compact('assessment'))
+         $pdf = \PDF::loadView('assessments.home.show',compact('assessment'))
             ->setOption('footer-center', '[page]')
             ->setOption('page-offset', 0);
         return $pdf->download('PSN_Home_Assessments_form.pdf');
@@ -37,13 +75,13 @@ class HomeAssessmentController extends Controller
     public function getPSNProfile($id)
     {
         $client=Client::findorfail($id);
-        return view('assessments.needs.psnprofile',compact('client'));
+        return view('assessments.home.psnprofile',compact('client'));
 
     }
 
     public function showClients()
     {
-        return view('assessments.needs.listclients');
+        return view('assessments.home.listclients');
     }
     public function getJSonAssessmentList()
     {
@@ -62,23 +100,26 @@ class HomeAssessmentController extends Controller
            if (is_object($assessment->client) && is_object($assessment->client->camp)){
                $camp_name =$assessment->client->camp->camp_name;
            }
-            $records["data"][] = array(
-                $count++,
-                $assessment->assessment_date,
-                $assessment->case_code,
-                $assessment->client->hai_reg_number,
-                $assessment->client->client_number,
-                $assessment->client->full_name,
-                $assessment->client->sex,
-                $assessment->client->age,
-                $camp_name,
-                '<ul class="icons-list text-center">
+            if ($assessment->auth_status == "pending") {
+                if (Auth::user()->can('authorize')) {
+                    $records["data"][] = array(
+                        $count++,
+                        $assessment->assessment_date,
+                        $assessment->case_code,
+                        $assessment->client->hai_reg_number,
+                        $assessment->client->client_number,
+                        $assessment->client->full_name,
+                        $assessment->client->sex,
+                        $assessment->client->age,
+                        $camp_name,
+                        $assessment->auth_status,
+                        '<ul class="icons-list text-center">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="icon-menu9"></i>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
-                             <li id="'.$assessment->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
                              <li id="'.$assessment->id.'"><a href="#" class=" label " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
                              <li id="'.$assessment->id.'"><a href="'.url('download/assessments/home').'/'.$assessment->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
                              <li id="'.$assessment->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
@@ -87,7 +128,96 @@ class HomeAssessmentController extends Controller
                             </ul>
                         </li>
                     </ul>'
-            );
+                    );
+                }
+                elseif (Auth::user()->hasRole('inputer'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $assessment->assessment_date,
+                        $assessment->case_code,
+                        $assessment->client->hai_reg_number,
+                        $assessment->client->client_number,
+                        $assessment->client->full_name,
+                        $assessment->client->sex,
+                        $assessment->client->age,
+                        $camp_name,
+                        $assessment->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class=" label " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/assessments/home').'/'.$assessment->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
+            else{
+                if (Auth::user()->hasRole('admin'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $assessment->assessment_date,
+                        $assessment->case_code,
+                        $assessment->client->hai_reg_number,
+                        $assessment->client->client_number,
+                        $assessment->client->full_name,
+                        $assessment->client->sex,
+                        $assessment->client->age,
+                        $camp_name,
+                        $assessment->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class=" label " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/assessments/home').'/'.$assessment->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                else{
+                    $records["data"][] = array(
+                        $count++,
+                        $assessment->assessment_date,
+                        $assessment->case_code,
+                        $assessment->client->hai_reg_number,
+                        $assessment->client->client_number,
+                        $assessment->client->full_name,
+                        $assessment->client->sex,
+                        $assessment->client->age,
+                        $camp_name,
+                        $assessment->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class=" label " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/assessments/home').'/'.$assessment->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
+
         }
 
 
@@ -105,7 +235,7 @@ class HomeAssessmentController extends Controller
     public function create()
     {
         //
-        return view('assessments.needs.create');
+        return view('assessments.home.create');
     }
 
     /**
@@ -145,6 +275,7 @@ class HomeAssessmentController extends Controller
                 $assessment->case_worker_name = $request->case_worker_name;
                 $assessment->project_coordinator = $request->project_coordinator;
                 $assessment->organization = $request->organization;
+                $assessment->created_by = Auth::user()->username;
                 $assessment->save();
                 return response()->json([
                     'success' => true,
@@ -172,7 +303,7 @@ class HomeAssessmentController extends Controller
     {
         //
         $assessment=HomeAssessment::findorfail($id);
-        return view('assessments.needs.show',compact('assessment'));
+        return view('assessments.home.show',compact('assessment'));
     }
 
     /**
@@ -185,7 +316,7 @@ class HomeAssessmentController extends Controller
     {
         //
         $assessment=HomeAssessment::findorfail($id);
-        return view('assessments.needs.edit',compact('assessment'));
+        return view('assessments.home.edit',compact('assessment'));
     }
 
     /**
@@ -221,6 +352,7 @@ class HomeAssessmentController extends Controller
                 $assessment->case_worker_name = $request->case_worker_name;
                 $assessment->project_coordinator = $request->project_coordinator;
                 $assessment->organization = $request->organization;
+                $assessment->updated_by = Auth::user()->username;
                 $assessment->save();
                 return response()->json([
                     'success' => true,

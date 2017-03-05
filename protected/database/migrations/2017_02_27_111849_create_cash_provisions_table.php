@@ -21,9 +21,12 @@ class CreateCashProvisionsTable extends Migration
             $table->integer('camp_id')->nullable()->unsigned();
             $table->integer('activity_id')->unsigned();
 
-            $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+
+            $table->string('auth_status')->nullable()->default('pending');
+            $table->string('auth_by')->nullable();
+            $table->dateTime('auth_date')->nullable();
 
             $table->foreign('camp_id')->references('id')->on('camps')
                 ->onUpdate('cascade')->onDelete('cascade');

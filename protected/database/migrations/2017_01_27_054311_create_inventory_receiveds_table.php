@@ -22,11 +22,14 @@ class CreateInventoryReceivedsTable extends Migration
             $table->string('project')->nullable();
             $table->string('onward_delivery')->nullable();
             $table->string('comments')->nullable();
-            $table->string('checked_by')->nullable();
-            $table->string('auth_status')->nullable()->default('pending');
+
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+
+            $table->string('auth_status')->nullable()->default('pending');
             $table->string('auth_by')->nullable();
+            $table->dateTime('auth_date')->nullable();
+
             $table->timestamps();
         });
     }

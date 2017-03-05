@@ -60,7 +60,7 @@
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea class="form-control" placeholder="Descriptions" name="description" id="description">@if(old('description')){{old('description')}}@else{{$code->description}}@endif</textarea>
+                    <input type="text" class="form-control" placeholder="Descriptions" name="description" id="description" @if(old('description'))value="{{old('description')}}" @else value="{{$code->description}}"@endif>
                     @if($errors->first('description') !="")
                         <label id="description-error" class="validation-error-label" for="description">{{ $errors->first('description') }}</label>
                     @endif

@@ -66,7 +66,7 @@
 
             var table = $('.datatable-column-search-inputs').DataTable({
                 "scrollX": false,
-               // ajax: '{{url('getwaclientsjson')}}this url load JSON Client details to reduce loading time
+                ajax: '{{url('list-post-cash-monitoring')}}',
                 "fnDrawCallback": function (oSettings) {
                     $(".viewRecord").click(function(){
                         var id1 = $(this).parent().attr('id');
@@ -117,7 +117,40 @@
                         })
 
                     });
-
+                    // Confirmation dialog
+                    $('.authorizeAllRecords').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize All pending records?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/post/cash/monitoring') ?>",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    // Confirmation dialog
+                    $('.authorizeRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/post/cash') ?>/"+id1+"/monitoring",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
                     // Confirmation dialog
                     $('.deleteRecord').on('click', function() {
                         var id1 = $(this).parent().attr('id');
@@ -135,6 +168,7 @@
                             }
                         });
                     });
+
                 }
             });
             table.columns().every( function () {
@@ -231,7 +265,7 @@
                     <ul>
                         <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
-                        <li><a href="{{url('assessments/paediatric')}}">Paediatric Assessment </a></li>
+                        
                     </ul>
                 </li>
                 <li>
@@ -274,7 +308,7 @@
                 </li>
                 @permission('backup')
             <!-- Backup Restore-->
-                <li class="navigation-header"><span>Data Sharing/Backup</span> <i class="icon-menu" title="Data Sharing"></i></li>
+                
                 <li>
                     <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
@@ -362,9 +396,16 @@
 @section('contents')
                 <div class="row" style="margin-bottom: 5px">
                 <div class="col-md-12 text-right">
+                    @permission('create')
                     <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-danger"></i> Assess Client</a>
+                    @endpermission
+                    @permission('authorize')
+                    <a  href="#" class="authorizeAllRecords btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
+                    @endpermission
                     <a href="{{url('post/cash/monitoring')}}" class="btn btn-primary"><i class="fa fa-server text-danger"></i> List All Assessments</a>
+                    @permission('create')
                     <a href="{{url('cash/monitoring/provision')}}" class="btn btn-primary"><i class="fa fa-forward text-danger"></i> Cash Provision</a>
+                    @endpermission
                 </div>
             </div>
             <div class="panel panel-flat">
@@ -380,6 +421,15 @@
                                 #
                             </th>
                             <th class="text-center">
+                                Date of interview
+                            </th>
+                            <th class="text-center">
+                                Name of Enumerator
+                            </th>
+                            <th class="text-center">
+                                Organisation
+                            </th>
+                            <th class="text-center">
                                 HAI Reg No
                             </th>
                             <th class="text-center">
@@ -392,16 +442,10 @@
                                 Age
                             </th>
                             <th class="text-center">
-                                Date of interview
-                            </th>
-                            <th class="text-center">
-                                Name of Enumerator
-                            </th>
-                            <th class="text-center">
-                                Organisation
-                            </th>
-                            <th class="text-center">
                                 Camp
+                            </th>
+                            <th class="text-center">
+                                Auth Status
                             </th>
                             <th class="text-center">
                                 Action
@@ -409,71 +453,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <?php $count=1;?>
-                        @if(count($assessments)>0)
-                            @foreach($assessments as $assessment)
-                                <tr>
-                                    <td> {{$count++}} </td>
-                                    <td>
-                                        @if(is_object($assessment->client) && $assessment->client != null)
-                                            {{$assessment->client->hai_reg_number}}
-                                            @endif
-                                    </td>
-                                    <td>
-                                        @if(is_object($assessment->client) && $assessment->client != null)
-                                            {{$assessment->client->full_name}}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if(is_object($assessment->client) && $assessment->client != null)
-                                            {{$assessment->client->sex}}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if(is_object($assessment->client) && $assessment->client != null)
-                                            {{$assessment->client->age}}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        {{$assessment->interview_date}}
-                                    </td>
-                                    <td>
-                                        {{$assessment->enumerator_name}}
-                                    </td>
-                                    <td>
-                                        {{$assessment->organisation}}
-                                    </td>
-                                    <td>
-                                        @if(is_object($assessment->camp) && $assessment->camp != null)
-                                            {{$assessment->camp->camp_name}}
-                                        @endif
-                                    </td>
-                                    <td class="text-center">
-                                        <ul class="icons-list text-center">
-                                            <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="icon-menu9"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li id="{{$assessment->id}}"><a href="#" class="showRecord label label-success"> <i class="fa fa-eye"></i> View</a></li>
-                                                    <li id="{{$assessment->id}}"><a href="#" class=" label label-info" onclick="printPage('{{url('print/post/cash/monitoring')}}/{{$assessment->id}}');"> <i class="fa fa-print"></i> Print </a></li>
-                                                    <li id="{{$assessment->id}}"><a href="{{url('download/pdf/post/cash/monitoring')}}/{{$assessment->id}}" class="label label-primary"> <i class="fa fa-file-pdf-o"></i> Download </a></li>
-                                                    <li id="{{$assessment->id}}"><a href="#" class="editRecord label label-primary"><i class="fa fa-pencil "></i> Edit </a></li>
-                                                    <li id="{{$assessment->id}}"><a href="#" class="deleteRecord label label-danger"><i class="fa fa-trash  "></i> Delete </a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
-
-
                         </tbody>
                         <tfoot>
                         <tr >
                             <td class="text-center">
 
+                            </td>
+                            <td class="text-center">
+                                Date of interview
+                            </td>
+                            <td class="text-center">
+                                Name of Enumerator
+                            </td>
+                            <td class="text-center">
+                                Organisation
                             </td>
                             <td class="text-center">
                                 HAI Reg No
@@ -488,16 +481,10 @@
                                 Age
                             </td>
                             <td class="text-center">
-                                Date of interview
-                            </td>
-                            <td class="text-center">
-                                Name of Enumerator
-                            </td>
-                            <td class="text-center">
-                                Organisation
-                            </td>
-                            <td class="text-center">
                                 Camp
+                            </td>
+                            <td class="text-center">
+                                Auth Status
                             </td>
                             <td class="text-center">
 

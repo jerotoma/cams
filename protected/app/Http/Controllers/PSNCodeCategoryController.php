@@ -60,7 +60,7 @@ class PSNCodeCategoryController extends Controller
             } else {
                 $category = new PSNCodeCategory;
                 $category->code = strtoupper($request->code);
-                $category->description = $request->description;
+                $category->description = $code->description = ucfirst(strtolower(preg_replace('/\s+/S', "",$request->description)));
                 $category->definition = $request->definition;
                 $category->for_reporting = $request->for_reporting;
                 $category->created_by = Auth::user()->username;

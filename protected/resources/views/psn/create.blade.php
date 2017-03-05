@@ -58,7 +58,7 @@
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea class="form-control" placeholder="Descriptions" name="description" id="description">{{old('description')}}</textarea>
+                        <input type="text" class="form-control" placeholder="Descriptions" name="description" id="description">
                         @if($errors->first('description') !="")
                             <label id="description-error" class="validation-error-label" for="description">{{ $errors->first('description') }}</label>
                         @endif

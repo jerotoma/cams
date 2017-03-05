@@ -26,6 +26,205 @@ class PostCashMonitoringController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function AuthorizeAll()
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $assessments=PostCashAssessment::where('auth_status', '=', 'pending')
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+
+            //Audit trail
+            AuditRegister("PostCashMonitoringController","AuthorizeAll",$assessments);
+
+        }else{
+            return null;
+        }
+
+    }
+    public function AuthorizeCashProvisionById($id)
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $assessments=PostCashAssessment::find($id)
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+            //Audit trail
+            AuditRegister("PostCashMonitoringController","AuthorizeCashProvisionById",$assessments);
+        }else{
+            return null;
+        }
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function getPostCashMonitoringList()
+    {
+        //
+        $assessments=PostCashAssessment::all();
+        $iTotalRecords =count(PostCashAssessment::all());
+        $sEcho = intval(10);
+
+        $records = array();
+        $records["data"] = array();
+
+
+        $count=1;
+        foreach($assessments as $assessment) {
+
+            $hai_reg_number="";
+            $full_name="";
+            $sex="";
+            $age="";
+            $camp_name="";
+            if(is_object($assessment->client) && $assessment->client != null){
+                $hai_reg_number=$assessment->client->hai_reg_number;
+                $full_name=$assessment->client->full_name;
+                $sex=$assessment->client->sex;
+                $age=$assessment->client->age;
+
+            }
+            if(is_object($assessment->camp) && $assessment->camp != null){
+                $camp_name=$assessment->camp->camp_name;
+            }
+            if ($assessment->auth_status == "pending") {
+                if (Auth::user()->can('authorize')) {
+                    $records["data"][] = array(
+                        $count++,
+                        $assessment->interview_date,
+                        $assessment->enumerator_name,
+                        $assessment->organisation,
+                        $hai_reg_number,
+                        $full_name,
+                        $sex,
+                        $age,
+                        $camp_name,
+                        $assessment->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord  "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="  " onclick="printPage(\''.url('print/post/cash/monitoring').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/pdf/post/cash/monitoring').'/'.$assessment->id.'" class=" "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="authorizeRecord  "><i class="fa fa-check "></i> Authorize </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="editRecord  "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="deleteRecord  "><i class="fa fa-trash  "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                elseif (Auth::user()->hasRole('inputer'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $assessment->interview_date,
+                        $assessment->enumerator_name,
+                        $assessment->organisation,
+                        $hai_reg_number,
+                        $full_name,
+                        $sex,
+                        $age,
+                        $camp_name,
+                        $assessment->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord  "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="  " onclick="printPage(\''.url('print/post/cash/monitoring').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/pdf/post/cash/monitoring').'/'.$assessment->id.'" class=" "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="editRecord  "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="deleteRecord  "><i class="fa fa-trash  "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
+            else{
+                if (Auth::user()->hasRole('admin'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $assessment->interview_date,
+                        $assessment->enumerator_name,
+                        $assessment->organisation,
+                        $hai_reg_number,
+                        $full_name,
+                        $sex,
+                        $age,
+                        $camp_name,
+                        $assessment->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord  "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="  " onclick="printPage(\''.url('print/post/cash/monitoring').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/pdf/post/cash/monitoring').'/'.$assessment->id.'" class=" "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="editRecord  "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="deleteRecord  "><i class="fa fa-trash  "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                else{
+                    $records["data"][] = array(
+                        $count++,
+                        $assessment->interview_date,
+                        $assessment->enumerator_name,
+                        $assessment->organisation,
+                        $hai_reg_number,
+                        $full_name,
+                        $sex,
+                        $age,
+                        $camp_name,
+                        $assessment->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord  "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="  " onclick="printPage(\''.url('print/post/cash/monitoring').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/pdf/post/cash/monitoring').'/'.$assessment->id.'" class=" "><i class="fa  fa-download"></i> Download </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
+        }
+
+
+        $records["draw"] = $sEcho;
+        $records["recordsTotal"] = $iTotalRecords;
+        $records["recordsFiltered"] = $iTotalRecords;
+
+        echo json_encode($records);
+    }
     public function index()
     {
         //

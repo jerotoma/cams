@@ -47,7 +47,7 @@ class ClientsController extends Controller
             $client=Client::where('auth_status', '=', 'pending')
                 ->update([
                     'auth_status' => 'authorized',
-                    'auth_by' => 'Auth::user()->username',
+                    'auth_by' => Auth::user()->username,
                     'auth_date' => date('Y-m-d H:i')
                 ]);
 
@@ -67,7 +67,7 @@ class ClientsController extends Controller
             $client=Client::find($id)
                 ->update([
                     'auth_status' => 'authorized',
-                    'auth_by' => 'Auth::user()->username',
+                    'auth_by' => Auth::user()->username,
                     'auth_date' => date('Y-m-d H:i')
                 ]);
             //Audit trail
@@ -147,28 +147,25 @@ class ClientsController extends Controller
 
         $count=1;
         foreach($clients as $client) {
+            $origin = "";
+            $status = "";
+            $datearv = "";
+            $camp = "";
+            if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
+                $origin = $client->fromOrigin->origin_name;
+            }
+            if (is_object($client->camp) && $client->camp != null) {
+                $camp = $client->camp->camp_name;
+            }
+            if ($client->date_arrival != "" && $client->date_arrival != null) {
+                $datearv = date('d M Y', strtotime($client->date_arrival));
+            }
+
 
             if ($client->auth_status == "pending")
             {
-                if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('authorizer'))
+                if (Auth::user()->can('authorize'))
                 {
-                    $origin = "";
-                    $status = "";
-                    $datearv = "";
-                    $camp = "";
-                    if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
-                        $origin = $client->fromOrigin->origin_name;
-                    }
-                    if (is_object($client->camp) && $client->camp != null) {
-                        $camp = $client->camp->camp_name;
-                    }
-                    if (is_object($client->vulAssessment) && count($client->vulAssessment) > 0) {
-                        $vcolor = "label-success";
-                    }
-                    if ($client->date_arrival != "" && $client->date_arrival != null) {
-                        $datearv = date('d M Y', strtotime($client->date_arrival));
-                    }
-
                     $records["data"][] = array(
                         $count++,
                         $client->hai_reg_number,
@@ -185,7 +182,7 @@ class ClientsController extends Controller
                                 <i class="icon-menu9"></i>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
-                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
+                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
                              <li id="' . $client->id . '"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
                              <li id="' . $client->id . '"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
                              <li id="' . $client->id . '"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
@@ -195,24 +192,8 @@ class ClientsController extends Controller
 
                     );
                 }
-                else {
-                    $origin = "";
-                    $status = "";
-                    $datearv = "";
-                    $camp = "";
-                    if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
-                        $origin = $client->fromOrigin->origin_name;
-                    }
-                    if (is_object($client->camp) && $client->camp != null) {
-                        $camp = $client->camp->camp_name;
-                    }
-                    if (is_object($client->vulAssessment) && count($client->vulAssessment) > 0) {
-                        $vcolor = "label-success";
-                    }
-                    if ($client->date_arrival != "" && $client->date_arrival != null) {
-                        $datearv = date('d M Y', strtotime($client->date_arrival));
-                    }
-
+                elseif (Auth::user()->hasRole('inputer'))
+                {
                     $records["data"][] = array(
                         $count++,
                         $client->hai_reg_number,
@@ -229,7 +210,7 @@ class ClientsController extends Controller
                                 <i class="icon-menu9"></i>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
-                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
+                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
                              <li id="' . $client->id . '"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
                              <li id="' . $client->id . '"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
                             </ul>
@@ -242,23 +223,6 @@ class ClientsController extends Controller
             else{
                 if (Auth::user()->hasRole('admin'))
                 {
-                    $origin = "";
-                    $status = "";
-                    $datearv = "";
-                    $camp = "";
-                    if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
-                        $origin = $client->fromOrigin->origin_name;
-                    }
-                    if (is_object($client->camp) && $client->camp != null) {
-                        $camp = $client->camp->camp_name;
-                    }
-                    if (is_object($client->vulAssessment) && count($client->vulAssessment) > 0) {
-                        $vcolor = "label-success";
-                    }
-                    if ($client->date_arrival != "" && $client->date_arrival != null) {
-                        $datearv = date('d M Y', strtotime($client->date_arrival));
-                    }
-
                     $records["data"][] = array(
                         $count++,
                         $client->hai_reg_number,
@@ -275,7 +239,7 @@ class ClientsController extends Controller
                                 <i class="icon-menu9"></i>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
-                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
+                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
                              <li id="' . $client->id . '"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
                              <li id="' . $client->id . '"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
                             </ul>
@@ -285,23 +249,6 @@ class ClientsController extends Controller
                     );
                 }
                 else {
-                    $origin = "";
-                    $status = "";
-                    $datearv = "";
-                    $camp = "";
-                    if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
-                        $origin = $client->fromOrigin->origin_name;
-                    }
-                    if (is_object($client->camp) && $client->camp != null) {
-                        $camp = $client->camp->camp_name;
-                    }
-                    if (is_object($client->vulAssessment) && count($client->vulAssessment) > 0) {
-                        $vcolor = "label-success";
-                    }
-                    if ($client->date_arrival != "" && $client->date_arrival != null) {
-                        $datearv = date('d M Y', strtotime($client->date_arrival));
-                    }
-
                     $records["data"][] = array(
                         $count++,
                         $client->hai_reg_number,
@@ -318,7 +265,7 @@ class ClientsController extends Controller
                                 <i class="icon-menu9"></i>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
-                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> Show </a></li>
+                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
                             </ul>
                         </li>
                     </ul>'

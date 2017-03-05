@@ -48,18 +48,40 @@ class ReferralController extends Controller
         //
 
     }
-    public function authorizeAllReferrals()
+    public function AuthorizeAll()
     {
         //
-
         if (Auth::user()->can('authorize')){
-          $referrals=ClientReferral::where('auth_status','=','pending')->get();
-            foreach ($referrals as $referral){
-                $referral->auth_status = 'authorized';
-                $referral->auth_by = Auth::user()->username;
-                $referral->auth_date('Y-m-d H:i');
-                $referral->save();
-            }}else{
+
+            $assessments=ClientReferral::where('auth_status', '=', 'pending')
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+
+            //Audit trail
+            AuditRegister("ReferralController","ClientReferral",$assessments);
+
+        }else{
+            return null;
+        }
+
+    }
+    public function AuthorizeReferralsById($id)
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $assessments=ClientReferral::find($id)
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+            //Audit trail
+            AuditRegister("ReferralController","AuthorizeReferralsById",$assessments);
+        }else{
             return null;
         }
     }
@@ -92,29 +114,127 @@ class ReferralController extends Controller
 
             $vcolor="label-danger";
 
-
-            $records["data"][] = array(
-                $count++,
-                $referral->reference_no,
-                $referral->referral_date,
-                $referral->client->client_number,
-                $referral->client->full_name,
-                $referral->client->age,
-                $referral->client->sex,
-                $referral->client->camp->camp_name,
-                $referral->status,
-                '<span class="text-center" id="'.$referral->id.'">
-                                        <a href="#" class="showRecord btn " > <i class="fa fa-eye green "></i> </a>
-                                        <a href="#" class=" btn "> <i class="fa fa-print green " onclick="printPage(\''.url('referrals').'/'.$referral->id.'\');" ></i> </a>
-                                        <a href="'.url('download/referrals/form').'/'.$referral->id.'" class=" btn  "> <i class="fa fa-download text-danger "></i> </a>
-                </span>',
-                $referral->auth_status,
-                '<span id="'.$referral->id.'">
-                
-                    <a href="#" title="Edit" class="btn btn-icon-only editRecord"> <i class="fa fa-edit text-primary">  </i> </a>
-                    <a href="#" title="Delete" class="btn btn-icon-only  deleteRecord"> <i class="fa fa-trash text-danger"></i> </a>
-                 </span>',
-            );
+            if ($referral->auth_status == "pending")
+            {
+                if (Auth::user()->can('authorize'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $referral->reference_no,
+                        $referral->referral_date,
+                        $referral->client->client_number,
+                        $referral->client->full_name,
+                        $referral->client->age,
+                        $referral->client->sex,
+                        $referral->client->camp->camp_name,
+                        $referral->status,
+                        $referral->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$referral->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$referral->id.'"><a href="#" class=" label " onclick="printPage(\''.url('referrals').'/'.$referral->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$referral->id.'"><a href="'.url('download/referrals/form').'/'.$referral->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$referral->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                             <li id="'.$referral->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$referral->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                elseif (Auth::user()->hasRole('inputer'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $referral->reference_no,
+                        $referral->referral_date,
+                        $referral->client->client_number,
+                        $referral->client->full_name,
+                        $referral->client->age,
+                        $referral->client->sex,
+                        $referral->client->camp->camp_name,
+                        $referral->status,
+                        $referral->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$referral->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$referral->id.'"><a href="#" class=" label " onclick="printPage(\''.url('referrals').'/'.$referral->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$referral->id.'"><a href="'.url('download/referrals/form').'/'.$referral->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$referral->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$referral->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
+            else
+            {
+                if (Auth::user()->hasRole('admin'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $referral->reference_no,
+                        $referral->referral_date,
+                        $referral->client->client_number,
+                        $referral->client->full_name,
+                        $referral->client->age,
+                        $referral->client->sex,
+                        $referral->client->camp->camp_name,
+                        $referral->status,
+                        $referral->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$referral->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$referral->id.'"><a href="#" class=" label " onclick="printPage(\''.url('referrals').'/'.$referral->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$referral->id.'"><a href="'.url('download/referrals/form').'/'.$referral->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$referral->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$referral->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                else
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $referral->reference_no,
+                        $referral->referral_date,
+                        $referral->client->client_number,
+                        $referral->client->full_name,
+                        $referral->client->age,
+                        $referral->client->sex,
+                        $referral->client->camp->camp_name,
+                        $referral->status,
+                        $referral->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$referral->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$referral->id.'"><a href="#" class=" label " onclick="printPage(\''.url('referrals').'/'.$referral->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$referral->id.'"><a href="'.url('download/referrals/form').'/'.$referral->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
         }
 
 

@@ -36,6 +36,7 @@
             // Basic datatable
             $('.datatable-basic').DataTable({
                 "scrollX": false,
+                ajax: '{{url('list-items-distributions')}}',
                 "fnDrawCallback": function (oSettings) {
                     $(".showRecord").click(function(){
                         var id1 = $(this).parent().attr('id');
@@ -87,6 +88,40 @@
 
                     });
 
+                    // Confirmation dialog
+                    $('.authorizeAllRecords').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize All pending records?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/items/distributions') ?>",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    // Confirmation dialog
+                    $('.authorizeRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/items') ?>/"+id1+"/distributions",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
                     // Confirmation dialog
                     $('.deleteRecord').on('click', function() {
                         var id1 = $(this).parent().attr('id');
@@ -235,7 +270,7 @@
                     <ul>
                         <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
-                        <li><a href="{{url('assessments/paediatric')}}">Paediatric Assessment </a></li>
+                        
                     </ul>
                 </li>
                 <li>
@@ -278,7 +313,7 @@
                 </li>
                 @permission('backup')
             <!-- Backup Restore-->
-                <li class="navigation-header"><span>Data Sharing/Backup</span> <i class="icon-menu" title="Data Sharing"></i></li>
+                
                 <li>
                     <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
@@ -365,8 +400,13 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
+            @permission('create')
             <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-success"></i>Items Distributions</a>
+            @endpermission
             <a href="{{url('distributions/items/bulk')}}" class=" btn btn-primary " title="Item distributions for multiple clients"> <i class="fa fa-plus text-success"></i>Bulk Items Distributions</a>
+            @permission('authorize')
+            <a  href="#" class="authorizeAllRecords btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
+            @endpermission
             <a href="{{url('items/distributions')}}" class="btn btn-primary"><i class="fa fa-list text-info"></i> List All Records</a>
             <a href="{{url('inventory')}}" class="btn btn-primary " title="Go to Item inventory list"><i class="fa fa-reply text-danger"></i> Go to Inventory Items</a>
         </div>
@@ -385,57 +425,25 @@
                 <th> Date </th>
                 <th> Distributed By</th>
                 <th> Comments </th>
-                <th> Distribution Details </th>
+                <th> Camp </th>
+                <th class="text-center">
+                    Auth Status
+                </th>
                 <th class="text-center"> Action </th>
             </tr>
             </thead>
             <tbody>
-            <?php $count=1;?>
-            @if(count($disbursements)>0)
-                @foreach($disbursements as $disbursement)
-                    <tr class="odd gradeX">
-                        <td>
-                            {{$count++}}
-                        </td>
-                        <td>
-                            {{$disbursement->disbursements_date}}
-                        </td>
-                        <td>
-                            {{$disbursement->disbursements_by}}
-                        </td>
-                        <td>
-                            {{$disbursement->comments}}
-                        </td>
-                        <td id="{{$disbursement->id}}">
-                            <a href="#" class="showRecord label label-success"> <i class="fa fa-eye"></i> View </a>
-                            <a href="#" class=" label label-info" onclick="printPage('{{url('print/items/distributions')}}/{{$disbursement->id}}');"> <i class="fa fa-print"></i> Print </a>
-                            <a href="{{url('download/pdf/items/distributions')}}/{{$disbursement->id}}" class="label label-primary"> <i class="fa fa-file-pdf-o"></i> Download </a>
-                        </td>
-                        <td class="text-center" id="{{$disbursement->id}}">
-                            <ul class="icons-list text-center">
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        <i class="icon-menu9"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li id="{{$disbursement->id}}"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger"></i>Delete </a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                @endforeach
-            @endif
-
-
             </tbody>
             <tfoot>
             <tr>
-                <th> SNO </th>
-                <th> Date </th>
-                <th> Distributed By</th>
-                <th> Comments </th>
-                <th> Distribution Details </th>
+                <td> SNO </td>
+                <td> Date </td>
+                <td> Distributed By</td>
+                <td> Comments </td>
+                <td> Camp </td>
+                <td class="text-center">
+                    Auth Status
+                </td>
                 <th class="text-center"> Action </th>
             </tr>
             </tfoot>

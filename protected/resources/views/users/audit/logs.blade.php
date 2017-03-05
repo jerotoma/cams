@@ -6,6 +6,7 @@
     <tr>
         <th>No</th>
         <th>Date</th>
+        <th>Username</th>
         <th>Module</th>
         <th>Activity</th>
         <th>Related Page</th>
@@ -19,6 +20,7 @@
         <tr>
             <td>{{$count}}</td>
             <td>{{$log->activity_date}}</td>
+            <td>{{$log->username}}</td>
             <td>{{$log->module}}</td>
             <td>{{$log->activity}}</td>
             <td>{{$log->page}}</td>
@@ -31,6 +33,7 @@
     <tr>
         <td>No</td>
         <td>Date</td>
+        <th>Username</th>
         <td>Module</td>
         <td>Activity</td>
         <td>Related Page</td>

@@ -17,6 +17,7 @@ class CreateFormsTable extends Migration
             $table->increments('id');
             $table->string('form_name');
             $table->string('description');
+            $table->string('location');
             $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();

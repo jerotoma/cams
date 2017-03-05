@@ -25,12 +25,22 @@ Route::resource('setting/client/needs','ClientNeedsController');
 Route::resource('cash/monitoring/budget','CashBudgetController');
 Route::resource('cash/monitoring/provision','CashProvisionController');
 Route::resource('post/cash/monitoring','PostCashMonitoringController');
+Route::get('list-post-cash-monitoring','PostCashMonitoringController@getPostCashMonitoringList');
+
+//Authorize
+Route::post('authorize/cash/monitoring/provision','CashProvisionController@AuthorizeAll');
+Route::post('authorize/cash/monitoring/{id}/provision','CashProvisionController@AuthorizeCashProvisionById');
+
 
 Route::get('print/cash/monitoring/provision/{id}','CashProvisionController@showPrint');
 Route::get('download/pdf/cash/monitoring/provision/{id}','CashProvisionController@downloadPdf');
 Route::get('bulk/cash/monitoring/provision','CashProvisionController@showBulk');
 Route::post('bulk/cash/monitoring/provision','CashProvisionController@postBulk');
+Route::get('list-cash-provisions','CashProvisionController@getCashProvisionsList');
 
+//Authorize
+Route::post('authorize/cash/monitoring/provision','CashProvisionController@AuthorizeAll');
+Route::post('authorize/cash/monitoring/{id}/provision','CashProvisionController@AuthorizeCashProvisionById');
 
 //User rights
 Route::resource('access/rights','RolesController');
@@ -47,6 +57,8 @@ Route::resource('psncodes','PSNCodesController');
 Route::resource('psncodes-categories','PSNCodeCategoryController');
 
 Route::resource('clients','ClientsController');
+
+//Authorize
 Route::post('authorize/all/clients','ClientsController@AuthorizeAll');
 Route::post('authorize/{id}/clients','ClientsController@AuthorizeClientById');
 
@@ -62,10 +74,17 @@ Route::get('create-client','ClientsController@createClient');
 Route::resource('inventory-categories','ItemsCategoriesController');
 Route::post('onflycategory','ItemsCategoriesController@onFlyCategory');
 Route::resource('inventory','ItemInventoryController');
+
+//Item received
+Route::get('list-items-received','ItemsReceivingController@getListItemsReceived');
 Route::resource('inventory-received','ItemsReceivingController');
 Route::get('download/pdf/inventory-received/{id}','ItemsReceivingController@downloadPDF');
 Route::get('print/inventory-received/{id}','ItemsReceivingController@loadPrintForm');
 Route::get('fetchitemsbycategoryid/{id}','ItemsCategoriesController@getItemsList');
+
+//Authorize
+Route::post('authorize/inventory/received','ItemsReceivingController@AuthorizeAll');
+Route::post('authorize/inventory/{id}/received','ItemsReceivingController@AuthorizeInventoryReceivedById');
 
 
 //Referrals
@@ -77,6 +96,9 @@ Route::get('referrals-request/{id}','ReferralController@create');
 Route::get('download/referrals/form/{id}','ReferralController@downloadPDF');
 Route::get('getreferralpsnprofile/{id}','ReferralController@getClientProfile');
 
+//Authorize
+Route::post('authorize/referrals','ReferralController@AuthorizeAll');
+Route::post('authorize/{id}/referrals','ReferralController@AuthorizeReferralsById');
 
 //Functional Assessments
 Route::resource('assessments/functional','FunctionalAssessmentController');
@@ -85,10 +107,14 @@ Route::resource('assessments/functional','FunctionalAssessmentController');
 //Vulnerability Assessments
 Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
 Route::get('clients-va','VulnerabilityAssessmentController@showClients');
-Route::get('getvalist','VulnerabilityAssessmentController@getJSonDataSearch');
+Route::get('getvalist','VulnerabilityAssessmentController@assessmentListJsonType');
 Route::get('client/assessments/vulnerability/{id}','VulnerabilityAssessmentController@showClientVulnerability');
 Route::get('vulnerability-assessment/download/{id}','VulnerabilityAssessmentController@downloadForm');
 Route::get('getvulassessmentpsnprofile/{id}','VulnerabilityAssessmentController@getPSNProfile');
+
+//Authorize
+Route::post('authorize/assessments/vulnerability','VulnerabilityAssessmentController@AuthorizeAll');
+Route::post('authorize/assessments/{id}/vulnerability','VulnerabilityAssessmentController@AuthorizeAssessmentById');
 
 
 //Paediatric Assessments
@@ -104,6 +130,10 @@ Route::get('clients-hm','HomeAssessmentController@showClients');
 Route::get('download/assessments/home/{id}','HomeAssessmentController@downloadPDF');
 Route::get('list/assessments/home','HomeAssessmentController@getJSonAssessmentList');
 Route::get('gethomeassessmentpsnprofile/{id}','HomeAssessmentController@getPSNProfile');
+
+//Authorize
+Route::post('authorize/home/assessments','HomeAssessmentController@AuthorizeAll');
+Route::post('authorize/home/{id}/assessments','HomeAssessmentController@AuthorizeAssessmentById');
 
 Route::get('client/assessments/home/{id}','HomeAssessmentController@create');
 
@@ -146,6 +176,12 @@ Route::get('distributions/items/bulk','ItemsDisbursementController@showBulk');
 Route::get('distributions/items/import/errors','ItemsDisbursementController@showImportErrors');
 Route::get('download/pdf/items/distributions/{id}','ItemsDisbursementController@downloadPdf');
 Route::get('print/items/distributions/{id}','ItemsDisbursementController@showPrint');
+
+Route::get('list-items-distributions','ItemsDisbursementController@getDistributionListJson');
+
+//Authorize
+Route::post('authorize/items/distributions','ItemsDisbursementController@AuthorizeAll');
+Route::post('authorize/items/{id}/distributions','ItemsDisbursementController@AuthorizeItemsDisbursementById');
 
 
 

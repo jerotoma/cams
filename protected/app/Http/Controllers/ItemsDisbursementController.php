@@ -38,6 +38,167 @@ class ItemsDisbursementController extends Controller
         AuditRegister("ItemsDisbursementController","View All ","");
         return view('inventory.disbursement.index',compact('disbursements'));
     }
+    public function AuthorizeAll()
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $disbursements=ItemsDisbursement::where('auth_status', '=', 'pending')
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+
+            //Audit trail
+            AuditRegister("ItemsDisbursementController","AuthorizeAllAssessments",$disbursements);
+
+        }else{
+            return null;
+        }
+
+    }
+    public function AuthorizeItemsDisbursementById($id)
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $disbursements=ItemsDisbursement::find($id)
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+            //Audit trail
+            AuditRegister("ItemsDisbursementController","AuthorizeItemsDisbursementById",$disbursements);
+        }else{
+            return null;
+        }
+    }
+    public function getDistributionListJson()
+    {
+        //
+        $disbursements=ItemsDisbursement::all();
+        $iTotalRecords =count(ItemsDisbursement::all());
+        $sEcho = intval(10);
+
+        $records = array();
+        $records["data"] = array();
+
+
+        $count=1;
+        foreach($disbursements as $disbursement) {
+            $camp_name="";
+            if (is_object($disbursement->camp) && is_object($disbursement->camp)){
+                $camp_name =$disbursement->camp->camp_name;
+            }
+            if ($disbursement->auth_status == "pending") {
+                if (Auth::user()->can('authorize')) {
+                    $records["data"][] = array(
+                        $count++,
+                        $disbursement->disbursements_date,
+                        $disbursement->disbursements_by,
+                        $disbursement->comments,
+                        $camp_name,
+                        $disbursement->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$disbursement->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$disbursement->id.'"><a href="#" class=" label " onclick="printPage(\''.url('print/items/distributions').'/'.$disbursement->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$disbursement->id.'"><a href="'.url('download/pdf/items/distributions').'/'.$disbursement->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$disbursement->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                             <li id="'.$disbursement->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                elseif (Auth::user()->hasRole('inputer'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $disbursement->disbursements_date,
+                        $disbursement->disbursements_by,
+                        $disbursement->comments,
+                        $camp_name,
+                        $disbursement->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$disbursement->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$disbursement->id.'"><a href="#" class=" label " onclick="printPage(\''.url('print/items/distributions').'/'.$disbursement->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$disbursement->id.'"><a href="'.url('download/pdf/items/distributions').'/'.$disbursement->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$disbursement->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
+            else{
+                if (Auth::user()->hasRole('admin'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $disbursement->disbursements_date,
+                        $disbursement->disbursements_by,
+                        $disbursement->comments,
+                        $camp_name,
+                        $disbursement->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$disbursement->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$disbursement->id.'"><a href="#" class=" label " onclick="printPage(\''.url('print/items/distributions').'/'.$disbursement->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$disbursement->id.'"><a href="'.url('download/pdf/items/distributions').'/'.$disbursement->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$disbursement->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                else{
+                    $records["data"][] = array(
+                        $count++,
+                        $disbursement->disbursements_date,
+                        $disbursement->disbursements_by,
+                        $disbursement->comments,
+                        $camp_name,
+                        $disbursement->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$disbursement->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$disbursement->id.'"><a href="#" class=" label " onclick="printPage(\''.url('print/items/distributions').'/'.$disbursement->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$disbursement->id.'"><a href="'.url('download/pdf/items/distributions').'/'.$disbursement->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
+        }
+
+
+        $records["draw"] = $sEcho;
+        $records["recordsTotal"] = $iTotalRecords;
+        $records["recordsFiltered"] = $iTotalRecords;
+
+        echo json_encode($records);
+    }
     
     public function showImport()
     {
@@ -141,7 +302,7 @@ class ItemsDisbursementController extends Controller
 
                                      if ($client != null && count($client) > 0) {
 
-                                         if (isNotInDistributionLimit($request->item_id, $client->id)) {
+                                         if (isNotInDistributionLimit($request->item_id, $client->id,$distribution->disbursements_date)) {
 
                                              if (!isItemOutOfStock($request->item_id,$quantity)) {
 
@@ -186,7 +347,7 @@ class ItemsDisbursementController extends Controller
 
                                  $client = Client::where('hai_reg_number', '=', $row->hai_reg_number)->get()->first();
 
-                                 if (isNotInDistributionLimit($request->item_id, $client->id)) {
+                                 if (isNotInDistributionLimit($request->item_id, $client->id,$distribution->disbursements_date)) {
 
                                      if (!isItemOutOfStock($request->item_id,intval($row->quantity))) {
 
@@ -264,7 +425,8 @@ class ItemsDisbursementController extends Controller
 
                     $client=Client::where('hai_reg_number','=',$request->hai_reg_number)->get()->first();
 
-                    if (!isNotInDistributionLimit($request->item_id, $client->id)) {
+
+                    if (!isNotInDistributionLimit($request->item_id, $client->id,date('Y-m-d', strtotime($request->disbursements_date)))) {
 
                             if (!isItemOutOfStock($request->item_id,intval($request->quantity))) {
 
@@ -397,16 +559,110 @@ class ItemsDisbursementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
         //
-        $disbursement=ItemsDisbursement::find($request->id);
-        $disbursement->donor_type=$request->donor_type;
-        $disbursement->item_id=$request->item;
-        $disbursement->quantity=$request->quantity;
-        $disbursement->distributed_date=$request->distributed_date;
-        $disbursement->save();
-        return "<span class='text-success'><i class='fa fa-info'></i> Saved successfully</span>";
+        try {
+            $validator = Validator::make($request->all(), [
+                'disbursements_date' => 'required|before:tomorrow',
+                'camp_id' => 'required',
+                'item_id' => 'required',
+                'quantity' => 'required|numeric',
+                'hai_reg_number' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+
+                if(count(Client::where('hai_reg_number','=',$request->hai_reg_number)->where('camp_id','=',$request->camp_id)->get()) > 0) {
+
+
+                    $client=Client::where('hai_reg_number','=',$request->hai_reg_number)->get()->first();
+
+
+                    if (!isNotInDistributionLimit($request->item_id, $client->id,date('Y-m-d', strtotime($request->disbursements_date)))) {
+
+                        if (!isItemOutOfStock($request->item_id,intval($request->quantity))) {
+
+                            $distribution =  ItemsDisbursement::find($id);
+                            $distribution->disbursements_date = date('Y-m-d', strtotime($request->disbursements_date));
+                            $distribution->camp_id = $request->camp_id;
+                            $distribution->comments = $request->comments;
+                            $distribution->disbursements_by = ucwords(strtolower($request->disbursements_by));
+                            $distribution->save();
+                            if (!count(ItemsDisbursementItems::where('item_id', '=', $request->item_id)
+                                    ->where('distribution_id', '=', $distribution->id)
+                                    ->where('client_id', '=', $client->id)
+                                    ->where('quantity', '=', intval($request->quantity))->get()) > 0
+                            ) {
+                                $dist_items = new ItemsDisbursementItems;
+                                $dist_items->client_id = $client->id;
+                                $dist_items->item_id = $request->item_id;
+                                $dist_items->quantity = intval($request->quantity);
+                                $dist_items->distribution_id = $distribution->id;
+                                $dist_items->distribution_date = $distribution->disbursements_date;
+                                $dist_items->save();
+
+                                //Audit trail
+                                AuditRegister("ItemsDisbursementController","Imported Item Distribution ",$dist_items);
+
+                                if (!isItemOutOfStock($request->item_id,intval($request->quantity))) {
+                                    deductItems($request->item_id, intval($request->quantity));
+
+                                    return response()->json([
+                                        'success' => true,
+                                        'message' => " Saved Successful"
+                                    ], 200);
+                                } else {
+                                    return Response::json(array(
+                                        'success' => false,
+                                        'errors' => 1,
+                                        'message' => "Item is out of stock "
+                                    ), 400); // 400 being the HTTP code for an invalid request.
+                                }
+                            }
+                        }
+                        else
+                        {
+                            return Response::json(array(
+                                'success' => false,
+                                'errors' => 1,
+                                'message' => "Item is out of stock "
+                            ), 400); // 400 being the HTTP code for an invalid request.
+                        }
+
+                    }
+                    else
+                    {
+                        return Response::json(array(
+                            'success' => false,
+                            'errors' => 1,
+                            'message' => "Client is not eligible for receiving the item "
+                        ), 400); // 400 being the HTTP code for an invalid request.
+                    }
+                }
+                else{
+                    return Response::json(array(
+                        'success' => false,
+                        'errors' => 1,
+                        'message' => "Client is not registered in mentioned camp"
+                    ), 400); // 400 being the HTTP code for an invalid request.
+                }
+
+
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => 1,
+                'message' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
+        }
         
     }
 

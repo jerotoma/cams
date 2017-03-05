@@ -18,9 +18,15 @@ class CreateItemsDisbursementsTable extends Migration
             $table->string('disbursements_by')->nullable();
             $table->text('comments')->nullable();
             $table->integer('camp_id')->nullable()->unsigned();
-            $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+
+            $table->string('auth_status')->nullable()->default('pending');
+            $table->string('auth_by')->nullable();
+            $table->dateTime('auth_date')->nullable();
+
+            $table->foreign('camp_id')->references('id')->on('camps')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

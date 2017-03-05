@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ClientReferral extends Model
 {
     //
+    protected $fillable = ['auth_status', 'auth_by', 'auth_date'];
     public function client()
     {
         return $this::belongsTo('\App\Client','client_id','id');

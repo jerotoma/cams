@@ -214,7 +214,7 @@
                     <ul>
                         <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
-                        <li><a href="{{url('assessments/paediatric')}}">Paediatric Assessment </a></li>
+                        
                     </ul>
                 </li>
                 <li>
@@ -257,7 +257,7 @@
                 </li>
                 @permission('backup')
             <!-- Backup Restore-->
-                <li class="navigation-header"><span>Data Sharing/Backup</span> <i class="icon-menu" title="Data Sharing"></i></li>
+                
                 <li>
                     <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
@@ -344,7 +344,12 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
+            @permission('create')
             <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-plus text-success"></i> <span>Register new Note</span></a>
+            @endpermission
+            @permission('authorize')
+            <a  href="#" class="authorizeAllRecords btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
+            @endpermission
             <a  href="{{url('progressive/notices')}}" class="btn  btn-primary"><i class="fa fa-list text-info"></i> <span>List AllProgressive Note</span></a>
         </div>
     </div>

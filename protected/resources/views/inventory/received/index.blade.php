@@ -2,6 +2,7 @@
 @section('page_js')
     <script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
@@ -35,6 +36,7 @@
             // Basic datatable
             $('.datatable-basic').DataTable({
                 "scrollX": false,
+                ajax: '{{url('list-items-received')}}',
                 "fnDrawCallback": function (oSettings) {
                     $(".showRecord").click(function(){
                         var id1 = $(this).parent().attr('id');
@@ -85,26 +87,55 @@
                         })
 
                     });
-
-                    $(".deleteRecord").click(function(){
+                    // Confirmation dialog
+                    $('.authorizeAllRecords').on('click', function() {
                         var id1 = $(this).parent().attr('id');
-                        $(".deleteModule").show("slow").parent().parent().find("span").remove();
-                        var btn = $(this).parent().parent();
-                        $(this).hide("slow").parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
-                        $("#no").click(function(){
-                            $(this).parent().parent().find(".deleteRecord").show("slow");
-                            $(this).parent().parent().find("span").remove();
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize All pending records?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/inventory/received') ?>",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
                         });
-                        $("#yes").click(function(){
-                            $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
-                            $.ajax({
-                                url:"<?php echo url('inventory-received') ?>/"+id1,
-                                type: 'post',
-                                data: {_method: 'delete', _token :"{{csrf_token()}}"},
-                                success:function(msg){
-                                    btn.hide("slow").next("hr").hide("slow");
-                                }
-                            });
+                    });
+                    // Confirmation dialog
+                    $('.authorizeRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/inventory') ?>/"+id1+"/received",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    // Confirmation dialog
+                    $('.deleteRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to delete record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('inventory-received') ?>/"+id1,
+                                    type: 'post',
+                                    data: {_method: 'delete', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        btn.hide("slow").next("hr").hide("slow");
+                                    }
+                                });
+                            }
                         });
                     });
                 }
@@ -216,7 +247,7 @@
                     <ul>
                         <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
-                        <li><a href="{{url('assessments/paediatric')}}">Paediatric Assessment </a></li>
+                        
                     </ul>
                 </li>
                 <li>
@@ -259,7 +290,7 @@
                 </li>
                 @permission('backup')
             <!-- Backup Restore-->
-                <li class="navigation-header"><span>Data Sharing/Backup</span> <i class="icon-menu" title="Data Sharing"></i></li>
+                
                 <li>
                     <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
@@ -346,14 +377,19 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
+            @permission('create')
             <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-success"></i> Add Record</a>
+            @endpermission
             <a href="{{url('inventory-received')}}" class="btn btn-primary"><i class="fa fa-list text-info"></i> List All Records</a>
+            @permission('authorize')
+            <a  href="#" class="authorizeAllRecords btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
+            @endpermission
             <a href="{{url('inventory')}}" class="btn btn-primary " title="Go to Item inventory list"><i class="fa fa-reply text-danger"></i> Go to Inventory Items</a>
         </div>
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-uppercase text-bold text-center"> List of All NFIs Received Items</h5>
+            <h5 class="panel-title text-uppercase text-bold text-center"> List of All Goods Received Notes</h5>
         </div>
 
         <div class="panel-body">
@@ -367,48 +403,24 @@
                 <th> Donor Ref </th>
                 <th> Received From/Supplier </th>
                 <th> HAI Receiving Officer </th>
-                <th> Items Details </th>
+                <th> Auth Status </th>
                 <th class="text-center"> Action </th>
             </tr>
             </thead>
             <tbody>
-            <?php $count=1;?>
-            @if(count($items)>0)
-                @foreach($items as $item)
-                    <tr class="odd gradeX">
-                        <td>
-                            {{$count++}}
-                        </td>
-                        <td>
-                            {{$item->reference_number}}
-                        </td>
-                        <td>
-                            {{$item->date_received}}
-                        </td>
-                        <td>
-                            {{$item->donor_ref}}
-                        </td>
-                        <td>
-                            {{$item->received_from}}
-                        </td>
-                        <td>
-                            {{$item->receiving_officer}}
-                        </td>
-                        <td id="{{$item->id}}">
-                            <a href="#" class="showRecord label label-success"> <i class="fa fa-eye"></i> View </a>
-                            <a href="#" class=" label label-info" onclick="printPage('{{url('print/inventory-received')}}/{{$item->id}}');"> <i class="fa fa-print"></i> Print </a>
-                            <a href="{{url('download/pdf/inventory-received')}}/{{$item->id}}" class="label label-primary"> <i class="fa fa-file-pdf-o"></i> Download </a>
-                        </td>
-                        <td class="text-center" id="{{$item->id}}">
-                            <a href="#" title="Edit" class="label editRecord label-primary"> <i class="fa fa-edit "></i> Edit</a>
-                            <a href="#" title="Delete" class="label  deleteRecord label-danger"> <i class="fa fa-trash"></i> Delete </a>
-                        </td>
-                    </tr>
-                @endforeach
-            @endif
-
-
             </tbody>
+            <tfoot>
+            <tr>
+                <th> SNO </th>
+                <th> Ref No# </th>
+                <th> Date Received </th>
+                <th> Donor Ref </th>
+                <th> Received From/Supplier </th>
+                <th> HAI Receiving Officer </th>
+                <th> Auth Status </th>
+                <th class="text-center"> Action </th>
+            </tr>
+            </tfoot>
         </table>
         <!-- END EXAMPLE TABLE PORTLET-->
     </div>

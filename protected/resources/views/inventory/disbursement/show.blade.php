@@ -33,7 +33,7 @@
                         <thead>
                         <tr>
                             <th >SNO</th>
-                            <th >Client Number</th>
+                            <th >HAI Reg#</th>
                             <th >Full Name</th>
                             <th >Sex</th>
                             <th >Age</th>
@@ -50,7 +50,7 @@
                             @foreach($disbursement->distributions as $itm)
                                 <tr>
                                     <td>{{$c++}}</td>
-                                    <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->client_number}}@endif</td>
+                                    <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->hai_reg_number}}@endif</td>
                                     <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->full_name}}@endif</td>
                                     <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->sex}}@endif</td>
                                     <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->age}}@endif</td>

@@ -426,6 +426,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'CreateItemsDisbursementItemsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_26_232741_create_items_disbursement_items_table.php',
         'CreateItemsDisbursementsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_26_232740_create_items_disbursements_table.php',
         'CreateItemsInventoriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_26_232705_create_items_inventories_table.php',
+        'CreateModulesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_04_132521_create_modules_table.php',
         'CreateMpcContextsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_13_051245_create_mpc_contexts_table.php',
         'CreateMpcLongRehabsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_13_051349_create_mpc_long_rehabs_table.php',
         'CreateMpcPartAMovingPatternsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_13_051456_create_mpc_part_a_moving_patterns_table.php',

@@ -8,11 +8,11 @@
 
                     <div class="panel-body">
                         <fieldset class="scheduler-border">
-                            <legend class="text-bold">Client Registration Reports</legend>
+                            <legend class="text-bold">Client Advance Search</legend>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group ">
-                                        <label class="control-label">Arrival Date: Start Date</label>
+                                        <label class="control-label">Arrival: Start Date</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="icon-calendar22"></i></span>
                                             <input type="text" class="form-control pickadate"  value="{{old('start_date')}}" name="start_date" id="start_date">
@@ -21,7 +21,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group ">
-                                        <label class="control-label">End Date</label>
+                                        <label class="control-label">Arrival: End Date</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="icon-calendar22"></i></span>
                                             <input type="text" class="form-control pickadate" value="{{old('end_date')}}" name="end_date" id="end_date">

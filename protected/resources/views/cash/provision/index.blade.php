@@ -36,6 +36,7 @@
             // Basic datatable
             $('.datatable-basic').DataTable({
                 "scrollX": false,
+                ajax: '{{url('list-cash-provisions')}}',
                 "fnDrawCallback": function (oSettings) {
                     $(".showRecord").click(function(){
                         var id1 = $(this).parent().attr('id');
@@ -86,7 +87,40 @@
                         })
 
                     });
-
+                    // Confirmation dialog
+                    $('.authorizeAllRecords').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize All pending records?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/cash/monitoring/provision') ?>",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    // Confirmation dialog
+                    $('.authorizeRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/cash/monitoring') ?>/"+id1+"/provision",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
                     // Confirmation dialog
                     $('.deleteRecord').on('click', function() {
                         var id1 = $(this).parent().attr('id');
@@ -235,7 +269,7 @@
                     <ul>
                         <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
-                        <li><a href="{{url('assessments/paediatric')}}">Paediatric Assessment </a></li>
+                        
                     </ul>
                 </li>
                 <li>
@@ -278,7 +312,7 @@
                 </li>
                 @permission('backup')
             <!-- Backup Restore-->
-                <li class="navigation-header"><span>Data Sharing/Backup</span> <i class="icon-menu" title="Data Sharing"></i></li>
+                
                 <li>
                     <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
@@ -365,9 +399,16 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
+            @permission('create')
             <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-success"></i>Provide Cash</a>
             <a href="{{url('bulk/cash/monitoring/provision')}}" class=" btn btn-primary " title="Item distributions for multiple clients"> <i class="fa fa-plus text-success"></i>Bulk Cash Provision</a>
+            @endpermission
+            @permission('authorize')
+            <a  href="#" class="authorizeAllRecords btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
+            @endpermission
+            @permission('create')
             <a href="{{url('cash/monitoring/provision')}}" class="btn btn-primary"><i class="fa fa-list text-info"></i> List All Records</a>
+            @endpermission
             <a href="{{url('post/cash/monitoring')}}" class="btn btn-primary"><i class="fa fa-list text-danger"></i> Post Cash monitoring</a>
         </div>
     </div>
@@ -385,58 +426,22 @@
                 <th> Date </th>
                 <th> Provided By</th>
                 <th> Comments </th>
-                <th> Provision Details </th>
+                <th> Camp </th>
+                <th> Auth Status </th>
                 <th class="text-center"> Action </th>
             </tr>
             </thead>
             <tbody>
-            <?php $count=1;?>
-            @if(count($provisions)>0)
-                @foreach($provisions as $provision)
-                    <tr class="odd gradeX">
-                        <td>
-                            {{$count++}}
-                        </td>
-                        <td>
-                            {{$provision->provision_date}}
-                        </td>
-                        <td>
-                            {{$provision->provided_by}}
-                        </td>
-                        <td>
-                            {{$provision->comments}}
-                        </td>
-                        <td id="{{$provision->id}}">
-                            <a href="#" class="showRecord label label-success"> <i class="fa fa-eye"></i> View </a>
-                            <a href="#" class=" label label-info" onclick="printPage('{{url('print/cash/monitoring/provision')}}/{{$provision->id}}');"> <i class="fa fa-print"></i> Print </a>
-                            <a href="{{url('download/pdf/cash/monitoring/provision')}}/{{$provision->id}}" class="label label-primary"> <i class="fa fa-file-pdf-o"></i> Download </a>
-                        </td>
-                        <td class="text-center" id="{{$provision->id}}">
-                            <ul class="icons-list text-center">
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        <i class="icon-menu9"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li id="{{$provision->id}}"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger"></i>Delete </a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                @endforeach
-            @endif
-
-
             </tbody>
             <tfoot>
             <tr>
-                <td> SNO </td>
-                <td> Date </td>
-                <td> Provided By</td>
-                <td> Comments </td>
-                <td> Provision Details </td>
-                <td class="text-center"> Action </td>
+                <th> SNO </th>
+                <th> Date </th>
+                <th> Provided By</th>
+                <th> Comments </th>
+                <th> Camp </th>
+                <th> Auth Status </th>
+                <th class="text-center"> Action </th>
             </tr>
             </tfoot>
         </table>
