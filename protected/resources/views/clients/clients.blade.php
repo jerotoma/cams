@@ -184,7 +184,7 @@
                         bootbox.confirm("Are You Sure to athorize record?", function(result) {
                             if(result){
                                 $.ajax({
-                                    url:"<?php echo url('authorize/clients') ?>",
+                                    url:"<?php echo url('authorize/all/clients') ?>",
                                     type: 'post',
                                     data: {_method: 'post', _token :"{{csrf_token()}}"},
                                     success:function(msg){
