@@ -312,16 +312,12 @@
 @stop
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
-        <div class="col-md-4 pull-right" >
-        @permission('create')
-        <a  href="#" class="addRecord btn btn-primary"><i class="fa fa-plus text-success"></i> Client Referral</a>
-        @endpermission
-        @permission('authorize')
-        <a  href="#" class="authorizeAllRecord btn btn-danger"><i class="fa fa- "></i> <span>Authorize All</span></a>
-        @endpermission
-        <a  href="{{url('referrals')}}" class="btn  btn-primary"><i class="fa fa-list text-info"></i> List All Referrals</a>
+        <div class="col-md-12 text-right">
+            <a  href="{{url('reports/referrals')}}" class="btn btn-primary "><i class="fa fa-list "></i> <span>Reports</span></a>
+            <a  href="{{url('referrals')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Go to Referral Page</span></a>
         </div>
     </div>
+    @include('reports.referrals.searchform')
     <div class="row" style="margin-top: 20px">
         <div class="col-md-12">
             <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientRegistration"></div>

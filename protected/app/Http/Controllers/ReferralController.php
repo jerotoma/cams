@@ -351,7 +351,8 @@ class ReferralController extends Controller
                         $servicereq->save();
                     }
                 }
-
+                //Audit trail
+                AuditRegister("ReferralController","Created new Referral",$referral);
                 return response()->json([
                     'success' => true,
                     'message' => "Record saved"
@@ -507,7 +508,8 @@ class ReferralController extends Controller
                     }
                 }
 
-
+               //Audit trail
+                AuditRegister("ReferralController","Created new Referral",$referral);
                     return response()->json([
                     'success' => true,
                     'message' => "Record saved"
@@ -526,6 +528,6 @@ class ReferralController extends Controller
     public function destroy($id)
     {
         //
-
+        $referral =  ClientReferral::find($id)->delete();
     }
 }

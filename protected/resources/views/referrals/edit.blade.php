@@ -509,8 +509,8 @@
                 <div class="form-group ">
                     <label class="control-label">Referral Status</label>
                     <select class="select" name="status" id="status" data-placeholder="Choose an option...">
-                        @if($client->status)
-                            <option value="{{$client->status}}" selected>{{$client->status}}</option>
+                        @if($referral->status)
+                            <option value="{{$referral->status}}" selected>{{$referral->status}}</option>
                         @endif
                         <option></option>
                         <option value="Open">Open</option>

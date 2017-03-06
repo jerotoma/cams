@@ -232,7 +232,7 @@ Route::get('reports/clients',[
       'as'   => 'reports/clients'
 ]);
 
-Route::get('reports/referrals','ReferralReportsController@index');
+
 Route::get('generate/reports/clients','ClientReportsController@index');
 Route::post('generate/reports/clients','ClientReportsController@postGenerate');
 
@@ -241,6 +241,9 @@ Route::post('reports/nfis','AssessmentReportsController@generateReport');
 
 Route::get('reports/assessments','AssessmentReportsController@index');
 Route::post('reports/assessments','AssessmentReportsController@generateReport');
+
+Route::get('reports/referrals','ReferralReportsController@index');
+Route::post('reports/referrals','ReferralReportsController@generateReport');
 
 
 //Inclusion Assessments
