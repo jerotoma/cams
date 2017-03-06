@@ -65,7 +65,6 @@
                 <div class="form-group">
                     <label>Used in reporting</label>
                     <select class="select" name="for_reporting" id="for_reporting">
-                        <option></option>
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
                     </select>

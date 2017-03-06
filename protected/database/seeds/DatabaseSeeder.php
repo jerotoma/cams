@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
          $this->call(UserRightsSeeder::class);
          $this->call(PCCategorySeeder::class);
          $this->call(NeedsSeeder::class);
+        $this->call(LocationSeeder::class);
 
     }
 }

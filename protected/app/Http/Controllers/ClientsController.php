@@ -448,10 +448,15 @@ class ClientsController extends Controller
     public function postImport(Request $request)
     {
         try {
-            $this->validate($request, [
+            $validator = Validator::make($request->all(), [
                 'clients_import' => 'required|mimes:xls,xlsx',
                 'camp_id' => 'required',
+
             ]);
+            if ($validator->fails()) {
+
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
             $file= $request->file('clients_import');
             $destinationPath = public_path() .'/uploads/temp/';

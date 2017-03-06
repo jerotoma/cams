@@ -22,7 +22,7 @@ class CreateCampsTable extends Migration
             $table->string('tel')->nullable();
             $table->integer('region_id')->unsigned()->nullable();
             $table->integer('district_id')->unsigned()->nullable();
-            $table->string('status')->default('opened');
+            $table->string('status')->default('working');
             $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
