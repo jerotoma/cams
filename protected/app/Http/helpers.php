@@ -62,7 +62,7 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
         $seriesdata1="";
 
         $series1 .= "{ ";
-        $series1 .= " name: '0 - 17',";
+        $series1 .= " name: 'Male (0 - 17)',";
 
         $MonthCount = "";
         $monthData = "";
@@ -71,6 +71,7 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
             $MonthCount .=\DB::table('cash_provision_clients')
                     ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','A')
+                    ->where('clients.sex','=','Male')
                     ->where(\DB::raw('Month(provision_date)'), '=', $i)
                     ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
         }
@@ -79,7 +80,25 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
         $series1 .= "  },";
 
         $series1 .= "{ ";
-        $series1 .= " name: '17 - 50',";
+        $series1 .= " name: 'Female (0 - 17)',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+
+            $MonthCount .=\DB::table('cash_provision_clients')
+                    ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','A')
+                    ->where('clients.sex','=','Female')
+                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
+                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: 'Male (17 - 50)',";
 
         $MonthCount = "";
         $monthData = "";
@@ -87,6 +106,7 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
             $MonthCount .=\DB::table('cash_provision_clients')
                     ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','B')
+                    ->where('clients.sex','=','Male')
                     ->where(\DB::raw('Month(provision_date)'), '=', $i)
                     ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
         }
@@ -95,7 +115,24 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
         $series1 .= "  },";
 
         $series1 .= "{ ";
-        $series1 .= " name: '50 - 60',";
+        $series1 .= " name: 'Female (17 - 50)',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .=\DB::table('cash_provision_clients')
+                    ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','B')
+                    ->where('clients.sex','=','Female')
+                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
+                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: 'Male (50 - 60)',";
 
         $MonthCount = "";
         $monthData = "";
@@ -103,6 +140,23 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
             $MonthCount .=\DB::table('cash_provision_clients')
                     ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','C')
+                    ->where('clients.sex','=','Male')
+                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
+                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+        $series1 .= "{ ";
+        $series1 .= " name: 'Female (50 - 60)',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .=\DB::table('cash_provision_clients')
+                    ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','C')
+                    ->where('clients.sex','=','Female')
                     ->where(\DB::raw('Month(provision_date)'), '=', $i)
                     ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
         }
@@ -111,7 +165,7 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
         $series1 .= "  },";
 
         $series1 .= "{ ";
-        $series1 .= " name: '60 >',";
+        $series1 .= " name: 'Male (60 >)',";
 
         $MonthCount = "";
         $monthData = "";
@@ -119,6 +173,24 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
             $MonthCount .=\DB::table('cash_provision_clients')
                     ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','D')
+                    ->where('clients.sex','=','Male')
+                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
+                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: 'Female (60 >)',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .=\DB::table('cash_provision_clients')
+                    ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','D')
+                    ->where('clients.sex','=','Female')
                     ->where(\DB::raw('Month(provision_date)'), '=', $i)
                     ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
         }
@@ -138,7 +210,7 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
         $seriesdata1="";
 
         $series1 .= "{ ";
-        $series1 .= " name: '0 - 17',";
+        $series1 .= " name: 'Male (0 - 17)',";
 
         $MonthCount = "";
         $monthData = "";
@@ -147,6 +219,7 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
             $MonthCount .= count(\DB::table('items_disbursement_items')
                                 ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
                                 ->where('clients.age_score','=','A')
+                                ->where('clients.sex','=','Male')
                                 ->where(\DB::raw('Month(distribution_date)'), '=', $i)
                                 ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
         }
@@ -155,7 +228,25 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
         $series1 .= "  },";
 
         $series1 .= "{ ";
-        $series1 .= " name: '17 - 50',";
+        $series1 .= " name: 'Female (0 - 17)',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+
+            $MonthCount .= count(\DB::table('items_disbursement_items')
+                    ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','A')
+                    ->where('clients.sex','=','Female')
+                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
+                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: 'Male (17 - 50)',";
 
         $MonthCount = "";
         $monthData = "";
@@ -163,6 +254,23 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
             $MonthCount .= count(\DB::table('items_disbursement_items')
                     ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','B')
+                    ->where('clients.sex','=','Male')
+                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
+                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+        $series1 .= "{ ";
+        $series1 .= " name: 'Female (17 - 50)',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\DB::table('items_disbursement_items')
+                    ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','B')
+                    ->where('clients.sex','=','Female')
                     ->where(\DB::raw('Month(distribution_date)'), '=', $i)
                     ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
         }
@@ -171,7 +279,7 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
         $series1 .= "  },";
 
         $series1 .= "{ ";
-        $series1 .= " name: '50 - 60',";
+        $series1 .= " name: 'Male (50 - 60)',";
 
         $MonthCount = "";
         $monthData = "";
@@ -179,6 +287,7 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
             $MonthCount .=count(\DB::table('items_disbursement_items')
                     ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','C')
+                    ->where('clients.sex','=','Male')
                     ->where(\DB::raw('Month(distribution_date)'), '=', $i)
                     ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
         }
@@ -187,7 +296,24 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
         $series1 .= "  },";
 
         $series1 .= "{ ";
-        $series1 .= " name: '60 >',";
+        $series1 .= " name: 'Female (50 - 60)',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .=count(\DB::table('items_disbursement_items')
+                    ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','C')
+                    ->where('clients.sex','=','Female')
+                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
+                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: 'Male (60 >)',";
 
         $MonthCount = "";
         $monthData = "";
@@ -195,6 +321,23 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
             $MonthCount .= count(\DB::table('items_disbursement_items')
                     ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','D')
+                    ->where('clients.sex','=','Male')
+                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
+                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+        $series1 .= "{ ";
+        $series1 .= " name: 'Male (60 >)',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\DB::table('items_disbursement_items')
+                    ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
+                    ->where('clients.age_score','=','D')
+                    ->where('clients.sex','=','Female')
                     ->where(\DB::raw('Month(distribution_date)'), '=', $i)
                     ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
         }
@@ -214,48 +357,120 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
         $seriesdata1="";
 
             $series1 .= "{ ";
-            $series1 .= " name: '0 - 17',";
+            $series1 .= " name: 'Male (0 - 17)',";
 
             $MonthCount = "";
             $monthData = "";
             for ($i = 1; $i <= 12; $i++) {
-                $MonthCount .= count(\App\Client::where('age_score','=','A')->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+                $MonthCount .= count(\App\Client::where('age_score','=','A')
+                        ->where('sex','=','Male')
+                        ->where(\DB::raw('Month(date_arrival)'), '=', $i)
+                        ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
             }
             $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
             $series1 .= " data:[" . $monthData . "]";
             $series1 .= "  },";
 
         $series1 .= "{ ";
-        $series1 .= " name: '17 - 50',";
+        $series1 .= " name: 'Female (0 - 17)',";
 
         $MonthCount = "";
         $monthData = "";
         for ($i = 1; $i <= 12; $i++) {
-            $MonthCount .= count(\App\Client::where('age_score','=','B')->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+            $MonthCount .= count(\App\Client::where('age_score','=','A')
+                    ->where('sex','=','Female')
+                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
+                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
         $series1 .= "  },";
 
         $series1 .= "{ ";
-        $series1 .= " name: '50 - 60',";
+        $series1 .= " name: 'Male (17 - 50)',";
 
         $MonthCount = "";
         $monthData = "";
         for ($i = 1; $i <= 12; $i++) {
-            $MonthCount .= count(\App\Client::where('age_score','=','C')->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+            $MonthCount .= count(\App\Client::where('age_score','=','B')
+                    ->where('sex','=','Male')
+                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
+                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
         $series1 .= "  },";
 
         $series1 .= "{ ";
-        $series1 .= " name: '60 >',";
+        $series1 .= " name: 'Female (17 - 50)',";
 
         $MonthCount = "";
         $monthData = "";
         for ($i = 1; $i <= 12; $i++) {
-            $MonthCount .= count(\App\Client::where('age_score','=','D')->where(\DB::raw('Month(date_arrival)'), '=', $i)->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+            $MonthCount .= count(\App\Client::where('age_score','=','B')
+                    ->where('sex','=','Female')
+                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
+                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: 'Male (50 - 60)',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\Client::where('age_score','=','C')
+                    ->where('sex','=','Male')
+                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
+                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: 'Female (50 - 60)',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\Client::where('age_score','=','C')
+                    ->where('sex','=','Female')
+                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
+                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: 'Male (60 >)',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\Client::where('age_score','=','D')
+                    ->where('sex','=','Male')
+                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
+                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+        }
+        $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
+        $series1 .= " data:[" . $monthData . "]";
+        $series1 .= "  },";
+
+        $series1 .= "{ ";
+        $series1 .= " name: 'Female (60 >)',";
+
+        $MonthCount = "";
+        $monthData = "";
+        for ($i = 1; $i <= 12; $i++) {
+            $MonthCount .= count(\App\Client::where('age_score','=','D')
+                    ->where('sex','=','Female')
+                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
+                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";

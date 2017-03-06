@@ -158,16 +158,16 @@
     </div>
 @stop
 @section('page_title')
-    Clients Reports!
+    Assessments Reports!
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Reports</span> - Clients</h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Reports</span> - Assessments</h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
-        <li class="active">Clients Reports</li>
+        <li class="active">Assessments Reports</li>
     </ul>
 @stop
 @section('scripts')
@@ -284,7 +284,7 @@
                 }
             },
 
-            series: [<?php echo getHighChatClientMonthlyCountByYear(date('Y'));?>]
+            series: [<?php echo getHighAssessmentsMonthlyCountByYear(date('Y'));?>]
         });
 
         $("#formClientReport").validate({
@@ -351,6 +351,7 @@
             <a  href="{{url('clients')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Search</span></a>
         </div>
     </div>
+    @include('reports.assessments.searchform')
     <div class="row" style="margin-top: 20px">
         <div class="col-md-12">
             <div style="min-width: 310px; height: 400px; margin: 0 auto" id="clientRegistration"></div>

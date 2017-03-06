@@ -20,4 +20,5 @@ return array(
     '09a46661d67c8d9b8f71dd46914ca190' => $baseDir . '/app/Http/cashReportHelper.php',
     '7ccccd6f5c7439f34442a3fa50b9f0d9' => $baseDir . '/app/Http/inventoryReportHelper.php',
     'dc0a5f8d42024bf101a64e1ff6bd2d40' => $baseDir . '/app/Http/SystemAuditHelper.php',
+    '2764aef4f66c19510a6d641a163c7d31' => $baseDir . '/app/Http/AssessmentsHelper.php',
 );

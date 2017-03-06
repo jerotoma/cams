@@ -21,6 +21,7 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         '09a46661d67c8d9b8f71dd46914ca190' => __DIR__ . '/../..' . '/app/Http/cashReportHelper.php',
         '7ccccd6f5c7439f34442a3fa50b9f0d9' => __DIR__ . '/../..' . '/app/Http/inventoryReportHelper.php',
         'dc0a5f8d42024bf101a64e1ff6bd2d40' => __DIR__ . '/../..' . '/app/Http/SystemAuditHelper.php',
+        '2764aef4f66c19510a6d641a163c7d31' => __DIR__ . '/../..' . '/app/Http/AssessmentsHelper.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -426,7 +427,6 @@ class ComposerStaticInit02af3179621f9c597482989ea00f0894
         'CreateItemsDisbursementItemsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_26_232741_create_items_disbursement_items_table.php',
         'CreateItemsDisbursementsTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_26_232740_create_items_disbursements_table.php',
         'CreateItemsInventoriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_26_232705_create_items_inventories_table.php',
-        'CreateModulesTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_04_132521_create_modules_table.php',
         'CreateMpcContextsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_13_051245_create_mpc_contexts_table.php',
         'CreateMpcLongRehabsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_13_051349_create_mpc_long_rehabs_table.php',
         'CreateMpcPartAMovingPatternsTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_13_051456_create_mpc_part_a_moving_patterns_table.php',

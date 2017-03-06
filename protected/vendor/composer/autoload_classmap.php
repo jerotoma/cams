@@ -51,7 +51,6 @@ return array(
     'CreateItemsDisbursementItemsTable' => $baseDir . '/database/migrations/2017_01_26_232741_create_items_disbursement_items_table.php',
     'CreateItemsDisbursementsTable' => $baseDir . '/database/migrations/2017_01_26_232740_create_items_disbursements_table.php',
     'CreateItemsInventoriesTable' => $baseDir . '/database/migrations/2017_01_26_232705_create_items_inventories_table.php',
-    'CreateModulesTable' => $baseDir . '/database/migrations/2017_03_04_132521_create_modules_table.php',
     'CreateMpcContextsTable' => $baseDir . '/database/migrations/2017_02_13_051245_create_mpc_contexts_table.php',
     'CreateMpcLongRehabsTable' => $baseDir . '/database/migrations/2017_02_13_051349_create_mpc_long_rehabs_table.php',
     'CreateMpcPartAMovingPatternsTable' => $baseDir . '/database/migrations/2017_02_13_051456_create_mpc_part_a_moving_patterns_table.php',
