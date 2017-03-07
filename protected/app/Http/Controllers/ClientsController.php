@@ -508,8 +508,22 @@ class ClientsController extends Controller
                     $females_total=intval($row->f);
                     $males_total=intval($row->m);
 
-                    if(count(Client::where('client_number','=',$client_number)
-                            ->where('full_name','=',$full_name)
+                    $origin_id="";
+                    if($row->origin !="") {
+                        if (count(Origin::where('origin_name', '=', $origin_name)->get()) > 0) {
+                            $origin = Origin::where('origin_name', '=', $origin_name)->get()->first();
+                            $origin_id=$origin->id;
+                        } else {
+                            $co = new Origin;
+                            $co->origin_name = $origin_name;
+                            $co->save();
+                            $origin = $co;
+                            $origin_id=$origin->id;
+                        }
+                    }
+
+                    if(!count(Client::where('full_name','=',$full_name)
+                            //where('client_number','=',$client_number)
                             ->where('age','=',$age)
                             ->where('sex','=',$sex)
                             ->where('marital_status','=',$marital_status)
@@ -519,20 +533,11 @@ class ClientsController extends Controller
                             ->where('household_number','=',$household_number)
                             ->where('females_total','=',$females_total)
                             ->where('males_total','=',$males_total)
-                            ->where('present_address','=',$present_address)
-                            ->where('ration_card_number','=',$ration_card_number)->get()) <= 0)
+                            //->where('present_address','=',$present_address)
+                            ->where('origin_id','=',$origin_id)
+                            ->where('ration_card_number','=',$ration_card_number)->get()) > 0)
                     {
 
-                        if($row->origin !="") {
-                            if (count(Origin::where('origin_name', '=', $origin_name)->get()) > 0) {
-                                $origin = Origin::where('origin_name', '=', $origin_name)->get()->first();
-                            } else {
-                                $co = new Origin;
-                                $co->origin_name = $origin_name;
-                                $co->save();
-                                $origin = $co;
-                            }
-                        }
 
 
                         $client=new Client;
@@ -551,6 +556,9 @@ class ClientsController extends Controller
                         $client->care_giver = $care_giver;
 
                         $client->date_arrival =$date_arrival;
+                        if($origin_id != ""){
+                            $client->origin_id = $origin_id;
+                        }
                         $client->present_address =$present_address;
                         $client->household_number = $row->t;
                         $client->ration_card_number =$ration_card_number;
@@ -558,9 +566,6 @@ class ClientsController extends Controller
                         $client->females_total = $females_total;
                         $client->males_total = $males_total;
                         $client->created_by = Auth::user()->username;
-                        if($row->origin !="") {
-                            $client->origin_id = $origin->id;
-                        }
                         $client->age_score= $this->getAgeScore($row->age);
                         $client->save();
 
