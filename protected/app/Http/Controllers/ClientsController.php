@@ -475,7 +475,8 @@ class ClientsController extends Controller
                 $results= $reader->get();
                 $results->each(function($row) use($request) {
 
-            if($row->names != "" && $row->names != null && $row->sex != "" && $row->sex != null){
+            if($row->names != "" && $row->sex != "" && $row->age != "" && $row->marital_status != "" &&
+                $row->m != "" &&  $row->f != "" &&  $row->t != "" && $row->origin !="" && $row->date_of_arrival != "" && $row->vul_1 != "" ){
                     $sex ="";
                     if(strtolower($row->sex) =="k" || strtolower($row->sex) =="mk" || strtolower($row->sex) =="f")
                     {
@@ -523,19 +524,15 @@ class ClientsController extends Controller
                     }
 
                     if(!count(Client::where('full_name','=',$full_name)
-                            //where('client_number','=',$client_number)
                             ->where('age','=',$age)
                             ->where('sex','=',$sex)
                             ->where('marital_status','=',$marital_status)
-                            ->where('spouse_name','=',$spouse_name)
-                            ->where('care_giver','=',$care_giver)
                             ->where('date_arrival','=',$date_arrival)
                             ->where('household_number','=',$household_number)
                             ->where('females_total','=',$females_total)
                             ->where('males_total','=',$males_total)
-                            //->where('present_address','=',$present_address)
                             ->where('origin_id','=',$origin_id)
-                            ->where('ration_card_number','=',$ration_card_number)->get()) > 0)
+                            ->get()) > 0)
                     {
 
 
