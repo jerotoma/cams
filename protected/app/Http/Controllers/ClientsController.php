@@ -449,13 +449,19 @@ class ClientsController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'clients_import' => 'required|mimes:xls,xlsx',
+                'clients_import' => 'required',
                 'camp_id' => 'required',
 
             ]);
             if ($validator->fails()) {
 
                 return redirect()->back()->withErrors($validator)->withInput();
+
+            }
+            $extension= strtolower($request->file('clients_import')->getClientOriginalExtension());
+            if($extension !="xlsx" && $extension !="xls")
+            {
+                return redirect()->back()->with('message', 'Invalid file type! allowed only xls, xlsx')->withInput();
             }
 
             $file= $request->file('clients_import');

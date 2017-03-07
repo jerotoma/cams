@@ -225,16 +225,24 @@ class ItemsReceivingController extends Controller
                 'receiving_officer' => 'required',
                 'date_received' => 'required',
                 'project' => 'required',
-                'items_file' => 'required|mimes:xls,xlsx',
+                'items_file' => 'required',
             ]);
-
+        $extension= strtolower($request->file('items_file')->getClientOriginalExtension());
         if($validator->fails()) {
 
             return Response::json(array(
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
             ), 400); // 400 being the HTTP code for an invalid request.
-        }
+        }elseif($extension !="xlsx" && $extension !="xls")
+            {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => 1,
+                    'message' => 'Invalid file type! allowed only xls, xlsx'
+                ), 400); // 400 being the HTTP code for an invalid request.
+
+            }
         else{
 
             if(! count(InventoryReceived::where('reference_number','=',$request->reference_number)
@@ -386,10 +394,19 @@ class ItemsReceivingController extends Controller
         //
         try {
 
-            $this->validate($request, [
-                'inventory_file' => 'required|mimes:xls,xlsx',
+            $validator = Validator::make($request->all(), [
+                'inventory_file' => 'required',
             ]);
+            if ($validator->fails()) {
 
+                return redirect()->back()->withErrors($validator)->withInput();
+
+            }
+            $extension= strtolower($request->file('inventory_file')->getClientOriginalExtension());
+            if($extension !="xlsx" && $extension !="xls")
+            {
+                return redirect()->back()->with('message', 'Invalid file type! allowed only xls, xlsx')->withInput();
+            }
 
             $file= $request->file('inventory_file');
             $destinationPath = public_path() .'/uploads/temp/';
@@ -513,15 +530,24 @@ class ItemsReceivingController extends Controller
                 'receiving_officer' => 'required',
                 'date_received' => 'required',
                 'project' => 'required',
-                'items_file' => 'required|mimes:xls,xlsx',
+                'items_file' => 'required',
             ]);
-
+            $extension= strtolower($request->file('items_file')->getClientOriginalExtension());
             if($validator->fails()) {
 
                 return Response::json(array(
                     'success' => false,
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
+            }
+            elseif($extension !="xlsx" && $extension !="xls")
+            {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => 1,
+                    'message' => 'Invalid file type! allowed only xls, xlsx'
+                ), 400); // 400 being the HTTP code for an invalid request.
+
             }
             else{
 

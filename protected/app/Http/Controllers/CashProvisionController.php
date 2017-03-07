@@ -224,14 +224,24 @@ class CashProvisionController extends Controller
     {
         //
         try {
-            $this->validate($request, [
+            $validator = Validator::make($request->all(), [
                 'provision_date' => 'required|before:tomorrow',
                 'camp_id' => 'required',
                 'activity_id' => 'required',
                 'import_type' => 'required',
-                'cash_distribution_file' => 'required|mimes:xls,xlsx',
+                'cash_distribution_file' => 'required',
             ]);
+            if ($validator->fails()) {
 
+                return redirect()->back()->withErrors($validator)->withInput();
+
+            }
+
+            $extension= strtolower($request->file('cash_distribution_file')->getClientOriginalExtension());
+            if($extension !="xlsx" && $extension !="xls")
+            {
+                return redirect()->back()->with('message', 'Invalid file type! allowed only xls, xlsx')->withInput();
+            }
 
             if (!isActivityOutOfFundsbyID($request->activity_id)) {
 

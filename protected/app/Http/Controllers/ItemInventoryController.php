@@ -43,9 +43,21 @@ class ItemInventoryController extends Controller
     {
         //
         try {
-            $this->validate($request, [
-                'inventory_file' => 'required|mimes:xls,xlsx',
+            $validator = Validator::make($request->all(), [
+                'inventory_file' => 'required',
             ]);
+            if ($validator->fails()) {
+
+                return redirect()->back()->withErrors($validator)->withInput();
+
+            }
+
+            $extension= strtolower($request->file('inventory_file')->getClientOriginalExtension());
+            if($extension !="xlsx" && $extension !="xls")
+            {
+                return redirect()->back()->with('message', 'Invalid file type! allowed only xls, xlsx')->withInput();
+            }
+
             $file= $request->file('inventory_file');
             $destinationPath = public_path() .'/uploads/temp/';
             $filename   = str_replace(' ', '_', $file->getClientOriginalName());

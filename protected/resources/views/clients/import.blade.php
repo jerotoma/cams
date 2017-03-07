@@ -231,12 +231,17 @@
         <div class="panel-body">
             {!! Form::open(array('url'=>'import/clients','role'=>'form','id'=>'formImportItems','files'=>true)) !!}
             <div class="form-body">
-                @if(Session::has('error'))
+                @if(session('error'))
                     <div class="alert fade in alert-danger">
                         <i class="icon-remove close" data-dismiss="alert"></i>
-                        {{Session::get('error')}}
+                        {{session('error')}}
                     </div>
                 @endif
+                    @if (session('message'))
+                        <div class="alert alert-danger">
+                            {{ session('message') }}
+                        </div>
+                    @endif
                     <div class="form-group ">
                         <label class="control-label">Camp</label>
                         <select class="select" name="camp_id" id="camp_id" data-placeholder="Choose an option...">

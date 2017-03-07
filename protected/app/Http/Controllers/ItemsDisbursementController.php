@@ -230,16 +230,25 @@ class ItemsDisbursementController extends Controller
     {
         //
         try {
-            $this->validate($request, [
+            $validator = Validator::make($request->all(), [
                 'disbursements_date' => 'required|before:tomorrow',
                 'camp_id' => 'required',
                 'category_id' => 'required',
                 'item_id' => 'required',
                 'import_type' => 'required',
-                'items_distribution_file' => 'required|mimes:xls,xlsx',
+                'items_distribution_file' => 'required',
             ]);
+            if ($validator->fails()) {
 
+                return redirect()->back()->withErrors($validator)->withInput();
 
+            }
+
+            $extension= strtolower($request->file('items_distribution_file')->getClientOriginalExtension());
+            if($extension !="xlsx" && $extension !="xls")
+            {
+                return redirect()->back()->with('message', 'Invalid file type! allowed only xls, xlsx')->withInput();
+            }
 
          if (!isItemOutOfStockNoQ($request->item_id)) {
 

@@ -290,7 +290,11 @@
                         </ul>
                     </div>
                 @endif
-
+                    @if (session('message'))
+                        <div class="alert alert-danger">
+                            {{ session('message') }}
+                        </div>
+                    @endif
                 @if(Session::has('error'))
                     <div class="alert fade in alert-danger">
                         <i class="icon-remove close" data-dismiss="alert"></i>
