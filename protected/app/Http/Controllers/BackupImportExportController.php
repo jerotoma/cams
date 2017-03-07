@@ -973,7 +973,7 @@ class BackupImportExportController extends Controller
             $xml .= "</BudgetActivities>";
             $xml .= "</ApplicationData>";
 
-            File::put(storage_path() . '/SystemData.xml', $xml);
+            File::put(storage_path() . '/SystemCashDistributionsData.xml', $xml);
             return Response::download(storage_path() . '/SystemData.xml');
         }
         else {
