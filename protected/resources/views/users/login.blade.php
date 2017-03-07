@@ -135,7 +135,7 @@
             <fieldset class="scheduler-border">
                 <legend class="text-bold"><h6>Sponsored By</h6></legend>
                 <div class="row">
-                    <div class="col-md-6 text-center"><img src="{{asset('assets/images/bprn_logo.png')}}"  style="width: 100px; height: 100px; border-radius: 10px"/><p class="text-center ">BPRN</p></div>
+                    <div class="col-md-6 text-center"><img src="{{asset('assets/images/bprn_logo.png')}}"  style="width: 100px; height: 100px; border-radius: 10px"/><p class="text-center ">BPRM</p></div>
                     <div class="col-md-6 text-center"><img src="{{asset('assets/images/unhcr.png')}}" style="width: 100px; height: 100px; border-radius: 10px"/><p class="text-center ">UNHCR</p></div>
                 </div>
             </fieldset>
