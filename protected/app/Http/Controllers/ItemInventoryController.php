@@ -43,9 +43,21 @@ class ItemInventoryController extends Controller
     {
         //
         try {
-            $this->validate($request, [
-                'inventory_file' => 'required|mimes:xls,xlsx',
+            $validator = Validator::make($request->all(), [
+                'inventory_file' => 'required',
             ]);
+            if ($validator->fails()) {
+
+                return redirect()->back()->withErrors($validator)->withInput();
+
+            }
+
+            $extension= strtolower($request->file('inventory_file')->getClientOriginalExtension());
+            if($extension !="xlsx" && $extension !="xls")
+            {
+                return redirect()->back()->with('message', 'Invalid file type! allowed only xls, xlsx')->withInput();
+            }
+
             $file= $request->file('inventory_file');
             $destinationPath = public_path() .'/uploads/temp/';
             $filename   = str_replace(' ', '_', $file->getClientOriginalName());
@@ -85,6 +97,7 @@ class ItemInventoryController extends Controller
                         $item->description=$row->description;
                         $item->category_id= $cate_id;
                         $item->quantity=$row->quantity;
+                        $item->unit=$row->unit;
                         $item->remarks=$row->remarks;
                         $item->status="Available";
                         $item->save(); 
@@ -136,6 +149,8 @@ class ItemInventoryController extends Controller
                 'item_name' => 'required|unique:items_inventories',
                 'quantity' => 'required|numeric',
                 'status' => 'required',
+                'unit' => 'required',
+                'redistribution_limit' => 'required',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -144,12 +159,14 @@ class ItemInventoryController extends Controller
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
                 $item = new ItemsInventory;
-                $item->item_name = $request->item_name;
+                $item->item_name = strtoupper(strtolower($request->item_name));
                 $item->description = $request->description;
                 $item->category_id = $request->category_id;
                 $item->quantity = $request->quantity;
+                $item->unit = strtoupper(strtolower($request->unit));
                 $item->remarks = $request->remarks;
                 $item->status = $request->status;
+                $item->redistribution_limit=$request->redistribution_limit;
                 $item->save();
                 return response()->json([
                     'success' => true,
@@ -207,6 +224,8 @@ class ItemInventoryController extends Controller
                 'item_name' => 'required|unique:items_inventories,item_name,'.$id,
                 'quantity' => 'required|numeric',
                 'status' => 'required',
+                'unit' => 'required',
+                'redistribution_limit' => 'required',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -215,12 +234,14 @@ class ItemInventoryController extends Controller
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
                 $item = ItemsInventory::find($id);
-                $item->item_name = $request->item_name;
+                $item->item_name = strtoupper(strtolower($request->item_name));
                 $item->description = $request->description;
                 $item->category_id = $request->category_id;
                 $item->quantity = $request->quantity;
+                $item->unit = strtoupper(strtolower($request->unit));
                 $item->remarks = $request->remarks;
                 $item->status = $request->status;
+                $item->redistribution_limit=$request->redistribution_limit;
                 $item->save();
                 return response()->json([
                     'success' => true,

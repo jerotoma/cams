@@ -27,6 +27,14 @@
         "classmap": [
             "database"
         ],
+        "files": [
+            "app/Http/helpers.php",
+            "app/Http/cashReportHelper.php",
+            "app/Http/inventoryReportHelper.php",
+            "app/Http/SystemAuditHelper.php",
+            "app/Http/AssessmentsHelper.php",
+            "app/Http/ReferralsHelper.php"
+        ],
         "psr-4": {
             "App\\": "app/"
         }

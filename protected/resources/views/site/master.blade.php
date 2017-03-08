@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Case management Database for Person with special needs| @yield('page_title')</title>
+    <title>Case management Database for Person with specific needs| @yield('page_title')</title>
 
     <!-- Global stylesheets -->
     <link href="{{asset("assets/css/googlefonts.css")}}" rel="stylesheet" type="text/css">
@@ -23,14 +23,18 @@
     <script type="text/javascript" src="{{asset("assets/js/plugins/loaders/blockui.min.js")}}"></script>
     <!-- /core JS files -->
 
-    <!-- Theme JS files -->
+    <!-- Theme css files -->
+    @yield('page_css')
+
+    <!-- /theme css files -->
+<!-- Theme JS files -->
     @yield('page_js')
 
     <!-- /theme JS files -->
 
 </head>
 
-<body class="navbar-top">
+<body class="navbar-top" style="overflow:auto;">
 
    @include('inc.header')
 
@@ -41,7 +45,7 @@
     <div class="page-content">
 
         <!-- Main sidebar -->
-        <div class="sidebar sidebar-main sidebar-default ">
+        <div class="sidebar sidebar-main sidebar-fixed ">
             <div class="sidebar-content">
 
                 <!-- User menu -->
@@ -69,9 +73,12 @@
                         @yield("page_heading_title")
 
                     </div>
-
                     <div class="heading-elements">
-
+                        <div class="heading-btn-group">
+                            <a href="{{url('search/clients')}}" class="btn btn-link btn-float has-text"><i class="icon-users4 text-primary"></i><span>Registration</span></a>
+                            <a href="{{url('assessments/vulnerability')}}" class="btn btn-link btn-float has-text"><i class="icon-lab text-primary"></i> <span>Assessments</span></a>
+                            <a href="{{url('cases')}}" class="btn btn-link btn-float has-text"><i class="fa fa-file text-primary"></i> <span>Open Case</span></a>
+                        </div>
                     </div>
                 </div>
                 <div class="breadcrumb-line">

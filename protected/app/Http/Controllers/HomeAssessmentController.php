@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\HomeAssessment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class HomeAssessmentController extends Controller
 {
@@ -20,11 +23,65 @@ class HomeAssessmentController extends Controller
     public function index()
     {
         //
-        return view('assessments.needs.index');
+        return view('assessments.home.index');
     }
+    public function AuthorizeAll()
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $assessments=HomeAssessment::where('auth_status', '=', 'pending')
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+
+            //Audit trail
+            AuditRegister("HomeAssessmentController","AuthorizeAllAssessments",$assessments);
+
+        }else{
+            return null;
+        }
+
+    }
+    public function AuthorizeAssessmentById($id)
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $assessments=HomeAssessment::find($id)
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+            //Audit trail
+            AuditRegister("HomeAssessmentController","AuthorizeAssessmentById",$assessments);
+        }else{
+            return null;
+        }
+    }
+    public function downloadPDF($id)
+    {
+
+        $assessment=HomeAssessment::findorfail($id);
+
+         $pdf = \PDF::loadView('assessments.home.show',compact('assessment'))
+            ->setOption('footer-center', '[page]')
+            ->setOption('page-offset', 0);
+        return $pdf->download('PSN_Home_Assessments_form.pdf');
+    }
+    public function getPSNProfile($id)
+    {
+        $client=Client::findorfail($id);
+        return view('assessments.home.psnprofile',compact('client'));
+
+    }
+
     public function showClients()
     {
-        return view('assessments.needs.listclients');
+        return view('assessments.home.listclients');
     }
     public function getJSonAssessmentList()
     {
@@ -39,29 +96,128 @@ class HomeAssessmentController extends Controller
 
         $count=1;
         foreach($assessments as $assessment) {
-            $origin="";
-            $status="";
+           $camp_name="";
+           if (is_object($assessment->client) && is_object($assessment->client->camp)){
+               $camp_name =$assessment->client->camp->camp_name;
+           }
+            if ($assessment->auth_status == "pending") {
+                if (Auth::user()->can('authorize')) {
+                    $records["data"][] = array(
+                        $count++,
+                        $assessment->assessment_date,
+                        $assessment->case_code,
+                        $assessment->client->hai_reg_number,
+                        $assessment->client->client_number,
+                        $assessment->client->full_name,
+                        $assessment->client->sex,
+                        $assessment->client->age,
+                        $camp_name,
+                        $assessment->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class=" label " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/assessments/home').'/'.$assessment->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                elseif (Auth::user()->hasRole('inputer'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $assessment->assessment_date,
+                        $assessment->case_code,
+                        $assessment->client->hai_reg_number,
+                        $assessment->client->client_number,
+                        $assessment->client->full_name,
+                        $assessment->client->sex,
+                        $assessment->client->age,
+                        $camp_name,
+                        $assessment->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class=" label " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/assessments/home').'/'.$assessment->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
+            else{
+                if (Auth::user()->hasRole('admin'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $assessment->assessment_date,
+                        $assessment->case_code,
+                        $assessment->client->hai_reg_number,
+                        $assessment->client->client_number,
+                        $assessment->client->full_name,
+                        $assessment->client->sex,
+                        $assessment->client->age,
+                        $camp_name,
+                        $assessment->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class=" label " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/assessments/home').'/'.$assessment->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                else{
+                    $records["data"][] = array(
+                        $count++,
+                        $assessment->assessment_date,
+                        $assessment->case_code,
+                        $assessment->client->hai_reg_number,
+                        $assessment->client->client_number,
+                        $assessment->client->full_name,
+                        $assessment->client->sex,
+                        $assessment->client->age,
+                        $camp_name,
+                        $assessment->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$assessment->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$assessment->id.'"><a href="#" class=" label " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$assessment->id.'"><a href="'.url('download/assessments/home').'/'.$assessment->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
 
-            $vcolor="label-danger";
-
-
-            $records["data"][] = array(
-                $count++,
-                $assessment->client->client_number,
-                $assessment->client->full_name,
-                $assessment->client->sex,
-                $assessment->client->age,
-                '<span class="text-center" id="'.$assessment->id.'">
-                                        <a href="#" class="showRecord btn " > <i class="fa fa-eye green "></i> </a>
-                                        <a href="#" class=" btn "> <i class="fa fa-print green " onclick="printPage(\''.url('assessments/home').'/'.$assessment->id.'\');" ></i> </a>
-                                        <a href="'.url('download/assessments/home').'/'.$assessment->id.'" class=" btn  "> <i class="fa fa-download text-danger "></i> </a>
-                </span>',
-                '<span id="'.$assessment->id.'">
-                
-                    <a href="#" title="Edit" class="btn btn-icon-only editRecord"> <i class="fa fa-edit text-primary">  </i> </a>
-                    <a href="#" title="Delete" class="btn btn-icon-only  deleteRecord"> <i class="fa fa-trash text-danger"></i> </a>
-                 </span>',
-            );
         }
 
 
@@ -76,11 +232,10 @@ class HomeAssessmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
         //
-        $client=Client::findorfail($id);
-        return view('assessments.needs.create',compact('client'));
+        return view('assessments.home.create');
     }
 
     /**
@@ -93,25 +248,47 @@ class HomeAssessmentController extends Controller
     {
         //
         try {
+            $validator = Validator::make($request->all(), [
+                'client_id' => 'required',
+                'assessment_date' => 'required|before:tomorrow',
+                'case_code' => 'required'
 
-            $assessment = new HomeAssessment;
-            $assessment->client_id = $request->client_id;
-            $assessment->case_code = $request->case_code;
-            $assessment->linked_case_code = $request->Linked_case_code;
-            $assessment->assessment_date = $request->assessment_date;
-            $assessment->needs_description = $request->needs_description;
-            $assessment->findings = $request->findings;
-            $assessment->diagnosis = $request->diagnosis;
-            $assessment->recommendations = $request->recommendations;
-            $assessment->final_decision = $request->final_decision;
-            $assessment->case_worker_name = $request->case_worker_name;
-            $assessment->project_coordinator = $request->project_coordinator;
-            $assessment->organization = $request->organization;
-            $assessment->save();
-            return "<h3><span class='text-success'><i class='fa fa-info'></i> Saved successful</span><h3>";
+
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $assessment = new HomeAssessment;
+                $assessment->client_id = $request->client_id;
+                $assessment->case_code = $request->case_code;
+                $assessment->linked_case_code = $request->Linked_case_code;
+                $assessment->assessment_date = $request->assessment_date;
+                $assessment->needs_description = $request->needs_description;
+                $assessment->findings = $request->findings;
+                $assessment->diagnosis = $request->diagnosis;
+                $assessment->recommendations = $request->recommendations;
+                $assessment->final_decision = $request->final_decision;
+                $assessment->case_worker_name = $request->case_worker_name;
+                $assessment->project_coordinator = $request->project_coordinator;
+                $assessment->organization = $request->organization;
+                $assessment->created_by = Auth::user()->username;
+                $assessment->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => "Saved Successful"
+                ], 200);
+            }
         }
-        catch (\Exception $e){
-            return "<h3><span class='text-danger'><i class='fa fa-info'></i>".$e->getMessage()."</span><h3>";
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
         }
 
     }
@@ -126,7 +303,7 @@ class HomeAssessmentController extends Controller
     {
         //
         $assessment=HomeAssessment::findorfail($id);
-        return view('assessments.needs.show',compact('assessment'));
+        return view('assessments.home.show',compact('assessment'));
     }
 
     /**
@@ -139,7 +316,7 @@ class HomeAssessmentController extends Controller
     {
         //
         $assessment=HomeAssessment::findorfail($id);
-        return view('assessments.needs.edit',compact('assessment'));
+        return view('assessments.home.edit',compact('assessment'));
     }
 
     /**
@@ -153,24 +330,42 @@ class HomeAssessmentController extends Controller
     {
         //
         try {
-
-            $assessment =  HomeAssessment::find($id);
-            $assessment->case_code = $request->case_code;
-            $assessment->linked_case_code = $request->Linked_case_code;
-            $assessment->assessment_date = $request->assessment_date;
-            $assessment->needs_description = $request->needs_description;
-            $assessment->findings = $request->findings;
-            $assessment->diagnosis = $request->diagnosis;
-            $assessment->recommendations = $request->recommendations;
-            $assessment->final_decision = $request->final_decision;
-            $assessment->case_worker_name = $request->case_worker_name;
-            $assessment->project_coordinator = $request->project_coordinator;
-            $assessment->organization = $request->organization;
-            $assessment->save();
-            return "<h3><span class='text-success'><i class='fa fa-info'></i> Saved successful</span><h3>";
+            $validator = Validator::make($request->all(), [
+                'assessment_date' => 'required|before:tomorrow',
+                'case_code' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                $assessment =  HomeAssessment::find($id);
+                $assessment->case_code = $request->case_code;
+                $assessment->linked_case_code = $request->Linked_case_code;
+                $assessment->assessment_date = $request->assessment_date;
+                $assessment->needs_description = $request->needs_description;
+                $assessment->findings = $request->findings;
+                $assessment->diagnosis = $request->diagnosis;
+                $assessment->recommendations = $request->recommendations;
+                $assessment->final_decision = $request->final_decision;
+                $assessment->case_worker_name = $request->case_worker_name;
+                $assessment->project_coordinator = $request->project_coordinator;
+                $assessment->organization = $request->organization;
+                $assessment->updated_by = Auth::user()->username;
+                $assessment->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => "Saved Successful"
+                ], 200);
+            }
         }
-        catch (\Exception $e){
-            return "<h3><span class='text-danger'><i class='fa fa-info'></i>".$e->getMessage()."</span><h3>";
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 402); // 400 being the HTTP code for an invalid request.
         }
     }
 
@@ -183,7 +378,6 @@ class HomeAssessmentController extends Controller
     public function destroy($id)
     {
         //
-        $assessment =  HomeAssessment::find($id);
-        $assessment->delete();
+        $assessment =  HomeAssessment::find($id)->delete();
     }
 }

@@ -6,17 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class ItemsDisbursement extends Model
 {
+    protected $fillable = ['auth_status', 'auth_by', 'auth_date'];
     //
-    public function inventoryItem()
+    public function distributions()
     {
-        return $this::belongsTo('\App\ItemsInventory','item_id','id');
+        return $this::hasMany('\App\ItemsDisbursementItems','distribution_id','id');
     }
-    public function client()
+    public function camp()
     {
-        return $this::belongsTo('\App\Client','client_id');
-    }
-    public function beneficiary()
-    {
-        return $this::belongsTo('\App\Beneficiary','client_id');
+        return $this::belongsTo('\App\Camp','camp_id');
     }
 }

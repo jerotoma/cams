@@ -51,8 +51,6 @@ class CreateHandSimulationsTable extends Migration
      */
     public function down()
     {
-        Schema::table('handsimulations', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('hand_simulations');
     }
 }

@@ -7,6 +7,7 @@ use App\ItemReceived;
 use App\ItemsInventory;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
@@ -30,12 +31,178 @@ class ItemsReceivingController extends Controller
         $items=InventoryReceived::all();
         return view('inventory.received.index',compact('items'));
     }
+    public function AuthorizeAll()
+    {
+        //
+        if (Auth::user()->can('authorize')){
 
+            $items=InventoryReceived::where('auth_status', '=', 'pending')
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+
+            //Audit trail
+            AuditRegister("ItemsReceivingController","AuthorizeAll",$items);
+
+        }else{
+            return null;
+        }
+
+    }
+    public function AuthorizeInventoryReceivedById($id)
+    {
+        //
+        if (Auth::user()->can('authorize')){
+
+            $items=InventoryReceived::find($id)
+                ->update([
+                    'auth_status' => 'authorized',
+                    'auth_by' => Auth::user()->username,
+                    'auth_date' => date('Y-m-d H:i')
+                ]);
+            //Audit trail
+            AuditRegister("ItemsReceivingController","AuthorizeInventoryReceivedById",$items);
+        }else{
+            return null;
+        }
+    }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function getListItemsReceived()
+    {
+        //
+        $items=InventoryReceived::all();
+        $iTotalRecords =count(InventoryReceived::all());
+        $sEcho = intval(10);
+
+        $records = array();
+        $records["data"] = array();
+
+
+        $count=1;
+        foreach($items as $item) {
+
+            if ($item->auth_status == "pending") {
+                if (Auth::user()->can('authorize')) {
+                    $records["data"][] = array(
+                        $count++,
+                        $item->reference_number,
+                        $item->date_received,
+                        $item->donor_ref,
+                        $item->received_from,
+                        $item->receiving_officer,
+                        $item->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$item->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$item->id.'"><a href="#" class=" label " onclick="printPage(\''.url('print/inventory-received').'/'.$item->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$item->id.'"><a href="'.url('download/pdf/inventory-received').'/'.$item->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$item->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                             <li id="'.$item->id.'"><a href="#" title="Edit" class="label editRecord "> <i class="fa fa-edit "></i> Edit</a></li>
+                             <li id="'.$item->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                elseif (Auth::user()->hasRole('inputer'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $item->reference_number,
+                        $item->date_received,
+                        $item->donor_ref,
+                        $item->received_from,
+                        $item->receiving_officer,
+                        $item->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$item->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$item->id.'"><a href="#" class=" label " onclick="printPage(\''.url('print/inventory-received').'/'.$item->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$item->id.'"><a href="'.url('download/pdf/inventory-received').'/'.$item->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$item->id.'"><a href="#" title="Edit" class="label editRecord "> <i class="fa fa-edit "></i> Edit</a></li>
+                             <li id="'.$item->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
+            else{
+                if (Auth::user()->hasRole('admin'))
+                {
+                    $records["data"][] = array(
+                        $count++,
+                        $item->reference_number,
+                        $item->date_received,
+                        $item->donor_ref,
+                        $item->received_from,
+                        $item->receiving_officer,
+                        $item->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$item->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$item->id.'"><a href="#" class=" label " onclick="printPage(\''.url('print/inventory-received').'/'.$item->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$item->id.'"><a href="'.url('download/pdf/inventory-received').'/'.$item->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                             <li id="'.$item->id.'"><a href="#" title="Edit" class="label editRecord "> <i class="fa fa-edit "></i> Edit</a></li>
+                             <li id="'.$item->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+                else{
+                    $records["data"][] = array(
+                        $count++,
+                        $item->reference_number,
+                        $item->date_received,
+                        $item->donor_ref,
+                        $item->received_from,
+                        $item->receiving_officer,
+                        $item->auth_status,
+                        '<ul class="icons-list text-center">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
+                             <ul class="dropdown-menu dropdown-menu-right">
+                             <li id="'.$item->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                             <li id="'.$item->id.'"><a href="#" class=" label " onclick="printPage(\''.url('print/inventory-received').'/'.$item->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
+                             <li id="'.$item->id.'"><a href="'.url('download/pdf/inventory-received').'/'.$item->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
+                            </ul>
+                        </li>
+                    </ul>'
+                    );
+                }
+            }
+        }
+
+
+        $records["draw"] = $sEcho;
+        $records["recordsTotal"] = $iTotalRecords;
+        $records["recordsFiltered"] = $iTotalRecords;
+
+        echo json_encode($records);
+    }
+
     public function create()
     {
         //
@@ -58,16 +225,24 @@ class ItemsReceivingController extends Controller
                 'receiving_officer' => 'required',
                 'date_received' => 'required',
                 'project' => 'required',
-                'items_file' => 'required|mimes:xls,xlsx',
+                'items_file' => 'required',
             ]);
-
+        $extension= strtolower($request->file('items_file')->getClientOriginalExtension());
         if($validator->fails()) {
 
             return Response::json(array(
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
             ), 400); // 400 being the HTTP code for an invalid request.
-        }
+        }elseif($extension !="xlsx" && $extension !="xls")
+            {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => 1,
+                    'message' => 'Invalid file type! allowed only xls, xlsx'
+                ), 400); // 400 being the HTTP code for an invalid request.
+
+            }
         else{
 
             if(! count(InventoryReceived::where('reference_number','=',$request->reference_number)
@@ -86,8 +261,11 @@ class ItemsReceivingController extends Controller
                 $items->project = $request->project;
                 $items->onward_delivery = $request->onward_delivery;
                 $items->comments = $request->comments;
-                $items->checked_by = $request->checked_by;
+                $items->created_by =Auth::user()->username;
                 $items->save();
+
+                //Audit trail
+                AuditRegister("ItemsReceivingController","InventoryReceived",$items);
 
                 $file= $request->file('items_file');
                 $destinationPath = public_path() .'/uploads/temp/';
@@ -117,7 +295,6 @@ class ItemsReceivingController extends Controller
                                 $invItem=new ItemsInventory;
                                 $invItem->item_name=$row->item_name;
                                 $invItem->description=$row->description;
-                                $invItem->quantity=$row->quantity;
                                 $invItem->remarks=$row->description;
                                 $invItem->status="Available";
                                 $invItem->save();
@@ -132,10 +309,18 @@ class ItemsReceivingController extends Controller
                             {
                                 $tmreceived=new ItemReceived;
                                 $tmreceived->received_id=$items->id;
-                                $tmreceived->item_id=$itm_id;
-                                $tmreceived->quantity=$row->quantity;
+                                $tmreceived->item_id=$invItem->id;
+                                $tmreceived->quantity=intval($row->quantity);
                                 $tmreceived->description=$row->description;
                                 $tmreceived->save();
+
+                                //Increase inventory
+                                $invItem->quantity =intval($invItem->quantity) + intval($row->quantity);
+                                $invItem->status="Available";
+                                $invItem->save();
+
+                                //Audit trail
+                                AuditRegister("ItemsReceivingController","Received items",$tmreceived);
                             }
 
 
@@ -181,7 +366,7 @@ class ItemsReceivingController extends Controller
     {
         //
         $item=InventoryReceived::find($id);
-        return view('inventory.received.pdf',compact('item'));
+        return view('inventory.received.show',compact('item'));
     }
     public function loadPrintForm($id)
     {
@@ -209,10 +394,19 @@ class ItemsReceivingController extends Controller
         //
         try {
 
-            $this->validate($request, [
-                'inventory_file' => 'required|mimes:xls,xlsx',
+            $validator = Validator::make($request->all(), [
+                'inventory_file' => 'required',
             ]);
+            if ($validator->fails()) {
 
+                return redirect()->back()->withErrors($validator)->withInput();
+
+            }
+            $extension= strtolower($request->file('inventory_file')->getClientOriginalExtension());
+            if($extension !="xlsx" && $extension !="xls")
+            {
+                return redirect()->back()->with('message', 'Invalid file type! allowed only xls, xlsx')->withInput();
+            }
 
             $file= $request->file('inventory_file');
             $destinationPath = public_path() .'/uploads/temp/';
@@ -251,7 +445,41 @@ class ItemsReceivingController extends Controller
                             $items->receiver=$row->received_by;
                             $items->quantity=$row->quantity;
                             $items->received_date=date("Y-m-d",strtotime($row->received_date));
+                            $items->created_by =Auth::user()->username;
                             $items->save();
+                        }
+                        if(count(ItemsInventory::where('item_name','=',ucwords($row->item_name))->get()) >0)
+                        {
+                            $invItem =ItemsInventory::where('item_name','=',ucwords($row->item_name))->get()->first();
+                            $itm_id=$invItem->id;
+                        }
+                        else
+                        {
+                            $invItem=new ItemsInventory;
+                            $invItem->item_name=$row->item_name;
+                            $invItem->description=$row->description;
+                            $invItem->remarks=$row->description;
+                            $invItem->status="Available";
+                            $invItem->save();
+
+                            $itm_id=$invItem->id;
+                        }
+
+                        if (!count(ItemReceived::where('received_id','=',$items->id)
+                                ->where('item_id','=',$itm_id)
+                                ->where('quantity','=',$items->quantity)
+                                ->where('description','=',$items->description)->get())>0)
+                        {
+                            $tmreceived=new ItemReceived;
+                            $tmreceived->received_id=$items->id;
+                            $tmreceived->item_id=$invItem->id;
+                            $tmreceived->quantity=intval($row->quantity);
+                            $tmreceived->description=$row->description;
+                            $tmreceived->save();
+
+                            $invItem->quantity =intval($invItem->quantity) + intval($row->quantity);
+                            $invItem->status="Available";
+                            $invItem->save();
                         }
 
                     }
@@ -302,15 +530,24 @@ class ItemsReceivingController extends Controller
                 'receiving_officer' => 'required',
                 'date_received' => 'required',
                 'project' => 'required',
-                'items_file' => 'required|mimes:xls,xlsx',
+                'items_file' => 'required',
             ]);
-
+            $extension= strtolower($request->file('items_file')->getClientOriginalExtension());
             if($validator->fails()) {
 
                 return Response::json(array(
                     'success' => false,
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
+            }
+            elseif($extension !="xlsx" && $extension !="xls")
+            {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => 1,
+                    'message' => 'Invalid file type! allowed only xls, xlsx'
+                ), 400); // 400 being the HTTP code for an invalid request.
+
             }
             else{
 
@@ -331,8 +568,11 @@ class ItemsReceivingController extends Controller
                     $items->project = $request->project;
                     $items->onward_delivery = $request->onward_delivery;
                     $items->comments = $request->comments;
-                    $items->checked_by = $request->checked_by;
+                    $items->updated_by =Auth::user()->username;
                     $items->save();
+
+                    //Audit trail
+                    AuditRegister("ItemsReceivingController","Updates InventoryReceived",$items);
 
                     foreach (ItemReceived::where('received_id','=',$items->id)->get() as $item)
                     {
@@ -352,7 +592,7 @@ class ItemsReceivingController extends Controller
                             //Categories
 
                             //Items
-                            if($row->item_name != null & $row->quantity !="")
+                            if($row->item_name != null & $row->quantity !="" && $row->quantity > 0)
                             {
                                 //Get Item
                                 $itm_id="";
@@ -367,7 +607,6 @@ class ItemsReceivingController extends Controller
                                     $invItem=new ItemsInventory;
                                     $invItem->item_name=$row->item_name;
                                     $invItem->description=$row->description;
-                                    $invItem->quantity=$row->quantity;
                                     $invItem->remarks=$row->description;
                                     $invItem->status="Available";
                                     $invItem->save();
@@ -382,10 +621,17 @@ class ItemsReceivingController extends Controller
                                 {
                                     $tmreceived=new ItemReceived;
                                     $tmreceived->received_id=$items->id;
-                                    $tmreceived->item_id=$itm_id;
-                                    $tmreceived->quantity=$row->quantity;
+                                    $tmreceived->item_id=$invItem->id;
+                                    $tmreceived->quantity=intval($row->quantity);
                                     $tmreceived->description=$row->description;
                                     $tmreceived->save();
+
+                                    $invItem->quantity =intval($invItem->quantity) + intval($row->quantity);
+                                    $invItem->status="Available";
+                                    $invItem->save();
+
+                                    //Audit trail
+                                    AuditRegister("ItemsReceivingController","Updates ItemReceived",$tmreceived);
                                 }
 
 
@@ -440,6 +686,9 @@ class ItemsReceivingController extends Controller
                 $itm->delete();
             }
         }
+
+        //Audit trail
+        AuditRegister("ItemsReceivingController","Deleted ItemReceived",$item);
         $item->delete();
     }
 }

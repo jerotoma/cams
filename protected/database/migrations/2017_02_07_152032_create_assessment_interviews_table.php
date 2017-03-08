@@ -23,6 +23,7 @@ class CreateAssessmentInterviewsTable extends Migration
 			   $table->text('assess_interview_physical_issues_qn_3' )->nullable();
 			   $table->text('assess_interview_physical_issues_qn_3_describe')->nullable();
 			   $table->text('assess_interview_physical_issues_qn_4')->nullable();
+			   $table->text('assess_interview_physical_issues_qn_4_describe')->nullable();
 			   $table->text('assess_interview_physical_issues_qn_5')->nullable();
 			   $table->string('assess_interview_physical_issues_qn_6', 100 )->nullable();
 			   $table->text('assess_interview_lifestyle_env_qn_1_describe')->nullable();
@@ -53,8 +54,6 @@ class CreateAssessmentInterviewsTable extends Migration
      */
     public function down()
     {
-        Schema::table('assessmentinterviews', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('assessment_interviews');
     }
 }

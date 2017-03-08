@@ -2,119 +2,104 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title></title>
 <head>
-    <link rel="stylesheet" type="text/css" href="{{asset("assets/global/plugins/bootstrap/css/bootstrap.min.css")}}"  media='all'>
+    <link rel="stylesheet" type="text/css" href="{{asset("assets/css/bootstrap_print.css")}}"  media='all'>
 </head>
-<body>
-<div class="portlet-body form">
-    <div class="row">
-        <div class="col-md-12 col-xs-12 text-center">
-            <img src="{{asset('assets/logo.png')}}" width="100px" height="100px"/>
+<body style="border-color: #fff">
+<div class="portlet light bordered">
+    <div class="portlet-body form">
+        <div class="form-body">
+            <div class="row">
+                <div class="col-md-12 col-xs-12 text-center">
+                    <img src="{{asset('assets/images/helpage.png')}}" width="100px" height="100px"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 col-xs-12 text-center text-uppercase">
+                    <h3><strong>HelpAge International</strong></h3>
+                    <h4 class="text-uppercase"><strong>
+                            NFIs Items Distribution
+                        </strong></h4>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px">
+                <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th> Distribution Date:</th>
+                            <td colspan="3" class="text-left">{{$disbursement->disbursements_date}}</td>
+                            <th>  Items Distributed By:</th>
+                            <td class="text-left">{{$disbursement->disbursements_by}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px">
+                <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th >SNO</th>
+                            <th >Client Number</th>
+                            <th >Full Name</th>
+                            <th >Sex</th>
+                            <th >Age</th>
+                            <th >Item Name</th>
+                            <th >Item Category</th>
+                            <th >Quantity</th>
+                            <th >Remarks</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if(is_object($disbursement->distributions) && $disbursement->distributions != null)
+                            <?php $c=1;?>
+                            @foreach($disbursement->distributions as $itm)
+                                <tr>
+                                    <td>{{$c++}}</td>
+                                    <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->client_number}}@endif</td>
+                                    <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->full_name}}@endif</td>
+                                    <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->sex}}@endif</td>
+                                    <td>@if(is_object($itm->client) && $itm->client != null){{$itm->client->age}}@endif</td>
+                                    <td>@if(is_object($itm->item) && $itm->item != null){{$itm->item->item_name}}@endif</td>
+                                    <td>@if(is_object($itm->item) && is_object($itm->item->category) && $itm->item != null){{$itm->item->category->category_name}}@endif</td>
+                                    <td>{{$itm->quantity}}</td>
+                                    <td>{{$itm->description}}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 30px">
+                <div class="col-md-12 col-xs-12">
+                    <h6><strong>Comments</strong></h6>
+                    <p class="text-justify"><?php echo $disbursement->comments;?></p>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 30px">
+                <div class="col-md-12 col-xs-12">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th class="col-md-3 col-xs-3">Signature of Recipient:</th>
+                            <th class="col-md-3 col-xs-3"></th>
+                            <th class="col-md-3 col-xs-3">Checked by:</th>
+                            <th class="col-md-3 col-xs-3"></th>
+                        </tr>
+                        <tr>
+                            <th>Date:</th>
+                            <th></th>
+                            <th>Date:</th>
+                            <th></th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
+
     </div>
-    <div class="row">
-        <div class="col-md-12 col-xs-12 text-center">
-            <h3><strong>INTERNATIONAL RESCUE COMMITTEE</strong></h3> <br/>
-            Box 259, Kasulu Field Office<br/>
-            Tel : 028 2810705 ;  Fax : 028 2810706<br/>
-            Email : irc.kasulu@tanzania.theirc.org
-        </div>
-    </div>
-    <hr style="background-color: #e7ecf1 ; border-color: #e7ecf1 ;margin-bottom: 20px"/>
-    <div class="row">
-        <div class="col-md-12 col-xs-12 text-center">
-            <h4><strong>
-                    COMMUNITY BASED REHABILITATION PROGRAMME (CBR)<br/>
-                    PROGRAMME DE REHABILITATION SUR BASE COMMUNAUTAIRE (PRBC)<br/>
-                    <br/>
-                    Material Supports Form
-                </strong></h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12 col-xs-12 col-lg-12">
-            <table class="table table-bordered">
-
-                <tbody>
-                <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">Date</th>
-                    <td class="col-md-10 col-sm-10 col-xs-10">
-                        {{$disbursement->distributed_date}}
-                    </td>
-                </tr>
-                <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">Progress Number</th>
-                    <td class="col-md-10 col-sm-10 col-xs-10">
-                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null)
-                            {{$disbursement->beneficiary->progress_number}}
-                        @endif
-                    </td>
-                </tr>
-                <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">Name:</th>
-                    <td class="col-md-10 col-sm-10 col-xs-10">
-                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null)
-                            {{$disbursement->beneficiary->full_name}}
-                        @endif
-                    </td>
-                </tr>
-                <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">Sex</th>
-                    <td class="col-md-10 col-sm-10 col-xs-10">
-                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null)
-                            {{$disbursement->beneficiary->sex}}
-                        @endif
-
-                    </td>
-                </tr>
-                <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">Age</th>
-                    <td class="col-md-10 col-sm-10 col-xs-10">
-                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null)
-                            {{$disbursement->beneficiary->age}}
-                        @endif
-
-                    </td>
-                </tr>
-                <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">Location/Address: </th>
-                    <td class="col-md-10 col-sm-10 col-xs-10">
-                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null)
-                            {{$disbursement->beneficiary->address}}
-                        @endif
-                    </td>
-                </tr>
-
-
-                </tbody>
-            </table>
-
-            <table class="table table-bordered">
-
-                <tbody>
-                <tr>
-                    <th colspan="4" class="col-md-12 col-sm-12 col-xs-12 text-center">Material Supported</th>
-                </tr>
-                <tr>
-                    <th class="col-md-2 col-sm-2 col-xs-2">SNO </th>
-                    <th >Item/materials distributed</th>
-                    <th >Quantity</th>
-                    <th >Donor type</th>
-                </tr>
-                <tr>
-                    <td class="col-md-2 col-sm-2 col-xs-2">1. </td>
-                    <td >@if(is_object($disbursement->item) && $disbursement->item != null )
-                            {{$disbursement->item->item_name}}
-                        @endif</td>
-                    <td >{{ $disbursement->quantity}}</td>
-                    <td >{{ $disbursement->donor_type}}</td>
-                </tr>
-
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-
 </div>
 </body>
 </html>

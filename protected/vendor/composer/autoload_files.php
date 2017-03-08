@@ -16,4 +16,10 @@ return array(
     'f0906e6318348a765ffb6eb24e0d0938' => $vendorDir . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
     '58571171fd5812e6e447dce228f52f4d' => $vendorDir . '/laravel/framework/src/Illuminate/Support/helpers.php',
     'f18cc91337d49233e5754e93f3ed9ec3' => $vendorDir . '/laravelcollective/html/src/helpers.php',
+    '6d394c3a532652dafb4dd296ba6a3f0b' => $baseDir . '/app/Http/helpers.php',
+    '09a46661d67c8d9b8f71dd46914ca190' => $baseDir . '/app/Http/cashReportHelper.php',
+    '7ccccd6f5c7439f34442a3fa50b9f0d9' => $baseDir . '/app/Http/inventoryReportHelper.php',
+    'dc0a5f8d42024bf101a64e1ff6bd2d40' => $baseDir . '/app/Http/SystemAuditHelper.php',
+    '2764aef4f66c19510a6d641a163c7d31' => $baseDir . '/app/Http/AssessmentsHelper.php',
+    '896a1b03d4e0c67312e25ac556303409' => $baseDir . '/app/Http/ReferralsHelper.php',
 );

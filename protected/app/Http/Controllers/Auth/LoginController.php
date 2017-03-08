@@ -65,6 +65,8 @@ class LoginController extends Controller
             {
 
                 Auth::logout();
+
+
                 return redirect()->back()->with('message', 'Login Failed you don\'t have Access to login please  Contact support team');
             }
             else
@@ -74,7 +76,8 @@ class LoginController extends Controller
                 $user->last_success_login=date("Y-m-d h:i:s");
                 $user->save();
 
-                // //Audit log
+                //Audit trail
+                AuditRegister("LoginController","Success Loged in to the system",$username);
                 return redirect()->intended('home');
 
             }
@@ -95,6 +98,9 @@ class LoginController extends Controller
             $user->save();
 
         }
+
+        //Audit trail
+        AuditRegister("LoginController","Success Loged out of system","");
         Auth::logout();
         return redirect('login');
     }

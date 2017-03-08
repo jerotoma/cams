@@ -19,21 +19,98 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    //This middleware protects unauthenticated users 
+    //This middleware protects unauthenticated users
     public function __construct()
     {
-        $this->middleware('auth',['except' => ['login','postLogin']]);
+
+         $this->middleware('auth',['except' => ['login','postLogin']]);
 
     }
-    
+
     public function index()
     {
-        $users =  User::all();
-       
-       return view('users.index', ['users' =>  $users  ] );
+        if (\Auth::user()->hasRole('admin')) {
+            $users = User::all();
+            //Audit trail
+            AuditRegister("UserController","View",$users);
+            return view('users.index', ['users' => $users]);
+        }
+        else
+        {
+            //Audit trail
+            AuditRegister("UserController","Access but no rights","");
+            return redirect('home');
+        }
+
     }
-   
-   
+
+    //Get profile
+    public function getProfile()
+    {
+        $user =  User::findorfail(Auth::user()->id);
+        return view('users.profile', compact('user') );
+    }
+    public function getSettings()
+    {
+        $user =  User::findorfail(Auth::user()->id);
+        return view('users.settings.profile',compact('user'));
+    }
+    public function showChangePassword()
+    {
+        $user =  User::findorfail(Auth::user()->id);
+        return view('users.settings.password',compact('user'));
+    }
+    public function postChangePassword(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'userpass' => 'required|min:8',
+                'old_userpass' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+                if(count(User::where('id','=',Auth::user()->id)->where('password','=',bcrypt($request->old_userpass))->get()) > 0) {
+                    $user = User::find(Auth::user()->id);
+                    $user->password = bcrypt($request->userpass);
+                    $user->save();
+                    //Audit log
+                    $auditMsg = "Changed password for " . $user->username . " with status " . $user->status;
+
+                    //Audit trail
+                    AuditRegister("postChangePassword","Update",$user);
+                    return response()->json([
+                        'success' => true,
+                        'errors' =>0,
+                        'message' => "Your have changed your password"
+                    ], 200);
+                }
+                else
+                {
+                    return Response::json(array(
+                        'success' => false,
+                        'errors' =>1,
+                        'message' =>'<div class="alert alert-danger">Password change failed! Invalid old password</div>'
+                    ), 200); // 400 being the HTTP code for an invalid request.
+                }
+            }
+        }
+        catch (\Exception $ex)
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' =>"Password change failed"
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+
+    }
+
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -42,9 +119,32 @@ class UserController extends Controller
     public function create()
     {
         //
-       return view('users.create');
+        if (\Auth::user()->hasRole('admin')) {
+            return view('users.create');
+        }
+        else
+        {
+            return redirect('home');
+        }
     }
-     
+     public function createUser(Request $request)
+	 {
+		        $user = new User;
+                $user->full_name = 'Otoman Godfrey';
+                $user->phone = 2897751667;
+                $user->email = 'otomang@hotmail.com';
+                $user->password = bcrypt('cams');
+                $user->department_id = 24;
+                $user->designation = 'Kigoma';
+                $user->username = 'otuman';
+                $user->status = "Active";
+                $user->save();
+
+         //Audit trail
+         AuditRegister("UserController","createUser",$user);
+
+		 return 'User Created';
+	 }
     /**
      * Store a newly created resource in storage.
      *
@@ -56,13 +156,12 @@ class UserController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'full_name' => 'required',
-                'username' => 'required|unique:users',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:8',
                 'role_id' => 'required',
                 'phone' => 'required',
             ]);
-            
+
             if ($validator->fails()) {
                 return Response::json(array(
                     'success' => false,
@@ -73,15 +172,18 @@ class UserController extends Controller
                 $user->full_name = $request->full_name;
                 $user->phone = $request->phone;
                 $user->email = $request->email;
-                $user->password = bcrypt($request->pass);
+                $user->password = bcrypt($request->password);
                 $user->department_id = $request->department_id;
                 $user->designation = $request->designation;
                 $user->status = $request->status;
-                $user->username = $request->username;
+                $user->username = $request->email;
                 $user->status = "Active";
                 $user->save();
-                $user->roles()->attach($request->role_id);
+                $user->attachRole($request->role_id);
                 $user->save();
+
+                //Audit trail
+                AuditRegister("UserController","createUser",$user);
             }
             return response()->json([
                 'success' => true,
@@ -95,9 +197,9 @@ class UserController extends Controller
                 'errors' => $ex->getMessage()
             ), 400); // 400 being the HTTP code for an invalid request.
         }
-       
+
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -106,8 +208,18 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findorfail($id);
-        return view('users.show',compact('user'));
+
+        if (\Auth::user()->hasRole('admin')) {
+            $user = User::findorfail($id);
+
+            //Audit trail
+            AuditRegister("UserController","View User",$user);
+            return view('users.show',compact('user'));
+        }
+        else
+        {
+            return redirect('home');
+        }
     }
 
     /**
@@ -118,8 +230,14 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findorfail($id);
-        return view('users.edit',compact('user'));
+        if (\Auth::user()->hasRole('admin')) {
+            $user = User::findorfail($id);
+            return view('users.edit',compact('user'));
+        }
+        else
+        {
+            return redirect('home');
+        }
     }
 
     /**
@@ -160,7 +278,12 @@ class UserController extends Controller
                 $user->status = $request->status;
                 $user->locked = $request->locked;
                 $user->save();
+                $user->detachAllRoles();
+                $user->attachRole($request->role_id);
+                $user->save();
 
+                //Audit trail
+                AuditRegister("UserController","Update",$user);
 
                 return response()->json([
                     'success' => true,
@@ -186,6 +309,9 @@ class UserController extends Controller
     public function destroy($id)
 	{
            $user = User::find($id);
+          //Audit trail
+          AuditRegister("UserController","Delete User",$user);
            $user ->delete();
+
     }
 }

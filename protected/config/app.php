@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Africa/Dar_Es_Salaam',
 
     /*
     |--------------------------------------------------------------------------
@@ -164,6 +164,11 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
 
+        /*
+         * Package Service Providers by Otoman
+         */
+        App\Providers\HelperServiceProvider::class,
+       
         /*
          * Package Service Providers...
          */

@@ -1,0 +1,37 @@
+Please excecute the below statements in order from 1 to 
+
+1. Add current user to apache group www-data
+
+sudo adduser $USER www-data
+
+2. Change owner of webiles to current user and apache group
+
+sudo chown $USER:www-data -R /var/www/html/
+
+3.Give write permission to web files
+
+sudo chmod -R g+s /var/www/html/
+
+4.Enable mod rewrite for routes to work 
+
+sudo a2enmod rewrite
+
+5.Restart apache server
+
+service apache2 restart
+
+6.Copy all contents of attached file appache_settings.txt, then Run this command,once open replaace all contents of apache2.conf wth the coppied contents. 
+
+sudo gedit /etc/apache2/apache2.conf
+
+7.Restart apache server
+
+service apache2 restart
+
+8. Install php 7 zipper 
+
+sudo apt-get install php7.0-zip
+
+service apache2 restart
+
+

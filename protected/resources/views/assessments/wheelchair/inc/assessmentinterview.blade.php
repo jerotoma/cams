@@ -32,9 +32,9 @@
                                    </div> 
                                    <div class="col-md-4 col-md-pull-3">
                                        <div class="checkbox">
-                                           <label class="checkbox text-left "><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" value="">Stroke</label>
-                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="">Unknown</label>
-                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="">Other</label> 
+                                           <label class="checkbox text-left "><input type="checkbox" name="assess_interview_diagnosis_qn_1[]" value="Stroke">Stroke</label>
+                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="Unknown">Unknown</label>
+                                           <label class="checkbox text-left"><input type="checkbox"  name="assess_interview_diagnosis_qn_1[]" value="Other">Other</label> 
                                        </div>
                                    </div>
                                </div>
@@ -92,7 +92,7 @@
                                    </div>
                                    <div class="col-md-4 col-md-pull-2">
                                        <div class="checkbox">
-                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="">Epilepsy</label>
+                                       <label class="checkbox"><input type="checkbox" name ="assess_interview_physical_issues_qn_2[]" value="Epilepsy">Epilepsy</label>
                                        </div>
                                    </div>
                                </div>
@@ -342,8 +342,8 @@
                                           <label class="radio-inline"><input type="radio" name ="assess_interview_existing_wheelchair_qn_5" value="No">No</label>
                                         </div>
                                     </div>
-                               </div>
-                              <div class="row">
+                             </div>
+                             <div class="row">
                                    <div class="col-md-12 col-md-pull-0">
                                        <div clas="form-group"> 
                                         <label for="describe1">Comments:</label>
@@ -351,12 +351,11 @@
                                         </div>
                                    </div>
                              </div>
-                               <div class="row">
+                             <div class="row">
                                    <div class="col-md-12 col-md-pull-0">
                                        <div clas="form-group"> 
                                          <p>If yes to all questions, the user may not need a new wheelchair. If no to any of these questions, the user needs a different wheelchair or cushion; or the existing wheelchair or cushion needs repairs or modifications. </p>
-                                                                       
-                                    </div>
+                                       </div>
                                    </div>
                              </div>
                           </div>
@@ -367,11 +366,12 @@
                 <div class="form-group" id="inform_assessor"> 
                  
                </div>
-				<div class="form-group"> 
-                 <button id="activate-step-3" class="btn btn-primary btn-md">Submit Assessment Interview</button>
-               </div>
-            
-            </div>
+			   <div class="form-group text-center">
+				  			 <button id="go-back-step-1" class="btn btn-default btn-md legitRipple">Back</button>
+					         <button id="activate-step-3" class="btn btn-info btn-md legitRipple">Continue to Physical Assessment</button>
+				</div>
+			   
+			</div>
         </div>
     </div>    
 

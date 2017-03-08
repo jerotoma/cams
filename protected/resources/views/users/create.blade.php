@@ -1,21 +1,31 @@
-<script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
-<script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form.min.js")}}"></script>
-<script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form_wizard.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_multiselect.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_select.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/selectboxit.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/typeahead/typeahead.bundle.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/tags/tagsinput.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/tags/tokenfield.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/touchspin.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/maxlength.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/formatter.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/ui/moment/moment.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
-<script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
-<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
-
-<script type="text/javascript" src="{{asset("assets/js/pages/wizard_form.js")}}"></script>
-
-
+<script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
-    $('.pickadate').pickadate();
+    $('.pickadate').pickadate({
+
+        // Escape any “rule” characters with an exclamation mark (!).
+        format: 'yyyy-mm-dd',
+    });
 </script>
 
 <div class="portlet light bordered">
@@ -29,12 +39,12 @@
                     <legend class="text-bold">User Details</legend>
                     <div class="form-group ">
                         <label class="control-label">Full Name</label>
-                        <input type="text" class="form-control" placeholder="Username" name="full_name" id="full_name"
+                        <input type="text" class="form-control" placeholder="Full Name" name="full_name" id="full_name"
                                value="">
                     </div>
                     <div class="form-group ">
                         <label class="control-label">Designation</label>
-                        <input type="text" class="form-control" placeholder="Designation" name="designation" id="designation"
+                        <input type="text" class="form-control" placeholder="Designation/Job title" name="designation" id="designation"
                                value="">
                     </div>
                     <div class="row">
@@ -56,9 +66,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Username</label>
-                                <input type="text" class="form-control" placeholder="Username" name="username" id="username"
-                                       value="">
+                                <label class="control-label">Department</label>
+                                <select class="select" name="department_id" id="department_id" data-placeholder="Choose an option...">
+                                    <option></option>
+                                    @foreach(\App\Department::all() as $department)
+                                        <option value="{{$department->id}}">{{$department->department_name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -72,15 +86,6 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Department</label>
-                        <select class="select" name="department_id" id="department_id" data-placeholder="Choose an option...">
-                            <option></option>
-                            @foreach(\App\Department::all() as $department)
-                            <option value="{{$department->id}}">{{$department->department_name}}</option>
-                                @endforeach
-                        </select>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -106,7 +111,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4 pull-right text-right">
                         <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Add  User </button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i> Add  User </button>
                     </div>
 
                 </div>
@@ -133,7 +138,6 @@
         rules: {
             full_name: "required",
             phone: "required",
-            username: "required",
             status: "required",
             role_id: "required",
             email: {
@@ -153,7 +157,6 @@
         messages: {
             full_name: "Please this field is required",
             phone: "Please field is required",
-            username: "Please this field is required",
             role_id: "Please this field is required",
             status: "Please this field is required",
             email:{

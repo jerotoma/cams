@@ -445,9 +445,9 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
             throw new PHPExcel_Exception('Invalid character found in sheet code name');
         }
  
-        // Maximum 31 characters allowed for sheet title
+         //Maximum 31 characters allowed for sheet title
         if ($CharCount > 31) {
-            throw new PHPExcel_Exception('Maximum 31 characters allowed in sheet code name.');
+           throw new PHPExcel_Exception('Maximum 31 characters allowed in sheet code name.');
         }
  
         return $pValue;
@@ -830,8 +830,10 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      *          references to this worksheet
      * @return PHPExcel_Worksheet
      */
+
     public function setTitle($pValue = 'Worksheet', $updateFormulaCellReferences = true)
     {
+        //$pValue = substr($pValue, 0, 31);
         // Is this a 'rename' or not?
         if ($this->getTitle() == $pValue) {
             return $this;

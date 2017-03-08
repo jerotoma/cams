@@ -18,8 +18,14 @@ class CreatePSNCodesTable extends Migration
             $table->string('code');
             $table->string('description')->nullable();
             $table->text('definition')->nullable();
+            $table->integer('category_id')->nullable()->unsigned();
+            $table->string('for_reporting')->nullable()->default('No');
+            $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
+            $table->foreign('category_id')->references('id')->on('p_s_n_code_categories')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -20,7 +20,7 @@
             modaldis+= ' </div>';
             modaldis+= '</div>';
             modaldis+= '</div>';
-            $('body').css('overflow','hidden');
+             $('body').css('overflow-y','scroll');
 
             $("body").append(modaldis);
             $("#myModal").modal("show");
@@ -45,7 +45,7 @@
             modaldis+= ' </div>';
             modaldis+= '</div>';
             modaldis+= '</div>';
-            $('body').css('overflow','hidden');
+             $('body').css('overflow-y','scroll');
 
             $("body").append(modaldis);
             $("#myModal").modal("show");
@@ -84,148 +84,139 @@
     <div class="sidebar-category sidebar-category-visible">
         <div class="category-content no-padding">
             <ul class="navigation navigation-main navigation-accordion">
-                <li class="active"><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
+                <li ><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
                 <!-- Main -->
-                <li class="navigation-header">Registration desk<span></span> <i class="icon-menu" title="Main pages"></i></li>
+
                 <li>
-                    <a href="#"><i class="icon-users"></i>Clients <span></span></a>
+                    <a href="#"><i class="icon-users"></i> <span>Clients</span></a>
                     <ul>
-                        <li ><a href="{{url('clients/create')}}">Register New Client</a></li>
-                        <li><a href="{{url('clients')}}">Search Client</a></li>
+                        <li ><a href="{{url('clients')}}">Clients Management</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
                     <ul>
-                        <li ><a href="{{url('assessments/create')}}">Vulnerability assessment</a></li>
-                        <li><a href="{{url('import/assessments')}}">Inclusion assessment</a></li>
-                        <li><a href="{{url('export/assessments')}}">Wheelchair Assessment</a></li>
-                        <li><a href="{{url('reports/assessments')}}">Assessments Report</a></li>
+                        <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
+                        <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
+                        
                     </ul>
                 </li>
                 <li>
                     <a href="#"><i class="icon-stack"></i> <span>Client Referrals</span></a>
                     <ul>
-                        <li ><a href="{{url('referrals/create')}}">Open Referral</a></li>
-                        <li><a href="{{url('import/referrals')}}">Import Referral</a></li>
-                        <li><a href="{{url('export/referrals')}}">Export Referral</a></li>
-                        <li><a href="{{url('search/referrals')}}">Search Referral</a></li>
-                        <li><a href="{{url('reports/referrals')}}">Referral Report</a></li>
+                        <li ><a href="{{url('referrals')}}">Referrals</a></li>
                     </ul>
                 </li>
                 <!-- /main -->
-
                 <!-- Forms -->
-                <li class="navigation-header"><span>Rehabilitation</span> <i class="icon-menu" title="Forms"></i></li>
-                <li>
-                    <a href="#"><i class="icon-grid"></i> <span>Rehabilitation Service</span></a>
+                @permission('inventory')
+
+                <li class="active">
+                    <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
                     <ul>
-                        <li><a href="{{url('rehabilitation/register')}}">Open Register</a></li>
-                        <li><a href="{{url('rehabilitation/progress')}}">Progress</a></li>
-                        <li><a href="{{url('rehabilitation/register')}}">Search</a></li>
-                        <li><a href="{{url('rehabilitation/Import')}}">Import</a></li>
-                        <li><a href="{{url('rehabilitation/export')}}">Export</a></li>
+                        <li ><a href="{{url('items/distributions')}}">Item Distribution</a></li>
+                        <li><a href="{{url('inventory-received')}}">Received Items</a></li>
+                        <li><a href="{{url('inventory')}}">Items Inventory</a></li>
+                        <li class="active"><a href="{{url('inventory-categories')}}">Items Categories</a></li>
                     </ul>
                 </li>
-                <!-- /forms -->
-                <!-- Data visualization -->
-                <li class="navigation-header"><span>Data visualization</span> <i class="icon-menu" title="Data visualization"></i></li>
                 <li>
-                    <a href="#"><i class="icon-graph"></i> <span>Clients Reports</span></a>
+                    <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
                     <ul>
-                        <li><a href="{{url('reports/clients')}}">Registration</a></li>
-                        <li><a href="{{url('reports/clients')}}">Assessments</a></li>
-                        <li><a href="{{url('reports/clients')}}">Refferal</a></li>
+                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Distributions</a></li>
+                        <li><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
+                        <li><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
+                    </ul>
+                </li>
+                @endpermission
+            <!-- /forms -->
+                <!-- Forms -->
+
+                <li>
+                    <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
+                    <ul>
+                        <li><a href="{{url('cases')}}">Case Management</a></li>
+                        <li><a href="{{url('progressive/notices')}}">Progressive Note</a></li>
+                    </ul>
+                </li>
+                @permission('backup')
+            <!-- Backup Restore-->
+                
+                <li>
+                    <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
+                    <ul>
+                        <li><a href="{{url('backup/import/advanced')}}">Import data</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-download"></i> <span>Data Export</span></a>
+                    <ul>
+                        <li><a href="{{url('backup/export/advanced')}}">Export data</a></li>
+                    </ul>
+                </li>
+                <!-- End Backup Restore-->
+                @endpermission
+                @permission('reports')
+            <!-- Data visualization -->
+
+                <li>
+                    <a href="#"><i class="icon-graph"></i> <span> Reports</span></a>
+                    <ul>
+                        <li><a href="{{url('reports/clients')}}">Client Reports</a></li>
+                        <li ><a href="{{url('reports/assessments')}}">Assessments Reports</a></li>
+                        <li><a href="{{url('reports/referrals')}}">Referrals Reports</a></li>
+                        <li><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
                     </ul>
                 </li>
                 <!-- /data visualization -->
-                <!-- Appearance -->
-                <li class="navigation-header"><span>Settings</span> <i class="icon-menu" title="Settings"></i></li>
+                @endpermission
+
+            <!-- Settings -->
+                @role('admin')
+
                 <li>
-                    <a href="#"><i class="icon-list"></i> <span>Countries</span></a>
+                    <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
                     <ul>
-                        <li><a href="{{url('countries/create')}}">Add New Country</a></li>
-                        <li><a href="{{url('countries')}}">List All Countries</a></li>
+                        <li><a href="{{url('countries')}}">Countries</a></li>
+                        <li><a href="{{url('regions')}}">Regions</a></li>
+                        <li><a href="{{url('districts')}}">Districts</a></li>
+                        <li><a href="{{url('camps')}}">Camps</a></li>
+                        <li><a href="{{url('origins')}}">Origins</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#"><i class="icon-list"></i> <span>Regions</span></a>
+                    <a href="#"><i class="icon-puzzle4"></i> <span>Vulnerability Codes</span></a>
                     <ul>
-                        <li><a href="{{url('regions/create')}}">Add New Region</a></li>
-                        <li><a href="{{url('regions')}}">List All Regions</a></li>
+                        <li><a href="{{url('psncodes')}}">Codes</a></li>
+                        <li><a href="{{url('psncodes-categories')}}">Categories</a></li>
                     </ul>
                 </li>
 
-                <li>
-                    <a href="#"><i class="icon-grid"></i> <span>Camps</span></a>
-                    <ul>
-                        <li><a href="{{url('camps/create')}}">Add New Camp</a></li>
-                        <li><a href="{{url('camps')}}">List All camps</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-puzzle4"></i> <span>PSN Codes</span></a>
-                    <ul>
-                        <li><a href="{{url('psncodes/create')}}">Add New Code</a></li>
-                        <li><a href="{{url('psncodes')}}">List All Codes</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-list"></i> <span>Departments</span></a>
-                    <ul>
-                        <li><a href="{{url('departments/create')}}">Add New Code</a></li>
-                        <li><a href="{{url('departments')}}">List All Departments</a></li>
-                    </ul>
-                </li>
                 <!-- /appearance -->
 
                 <!-- Layout -->
                 <li class="navigation-header"><span>Users Managements</span> <i class="icon-menu" title="Users Managements"></i></li>
-
                 <li>
                     <a href="#"><i class="icon-users"></i> <span>Users</span></a>
                     <ul>
-                        <li><a href="{{url('users')}}">Add New User</a></li>
-                        <li><a href="{{url('users')}}">List All Users</a></li>
-                        <li><a href="{{url('reports/users')}}">User Reports</a></li>
+                        <li><a href="{{url('users')}}">Manage Users</a></li>
+                        <li><a href="{{url('departments')}}">Departments</a></li>
+                        <li><a href="{{url('access/rights')}}">User Rights</a></li>
+                        <li><a href="{{url('audit/logs')}}">User Logs</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#"><i class="icon-popout"></i> <span>Users Rights</span></a>
-                    <ul>
-                        <li><a href="{{url('access/rights/create')}}">Add New</a></li>
-                        <li><a href="{{url('access/rights')}}">List All</a></li>
-                    </ul>
-                </li>
-                <!-- /layout -->
-
-
-
-                <!-- Extensions -->
-                <li class="navigation-header"><span>Data Sharing</span> <i class="icon-menu" title="Data Sharing"></i></li>
-                <li>
-                    <a href="#"><i class="icon-puzzle4"></i> <span>Data import</span></a>
-                    <ul>
-                        <li><a href="{{url('backup/import')}}">Import</a></li>
-                        <li><a href="{{url('backup/export')}}">Export</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-popout"></i> <span>Data Approval</span></a>
-                    <ul>
-                        <li><a href="{{url('approval/pending')}}">Pending</a></li>
-                    </ul>
-                </li>
-                <!-- /extensions -->
+                <li class="navigation-header"><span></span> <i class="icon-menu" title="Users Managements"></i></li>
+                <!-- /Settings -->
+                @endrole
             </ul>
         </div>
     </div>
 @stop
 @section('page_title')
-    Inventory Categories
+    NFIs Items Categories
 @stop
 @section('page_heading_title')
-    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Material Inventory Categories</span> </h4>
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">NFIs Items Categories</span> </h4>
     <a class="heading-elements-toggle"><i class="icon-more"></i></a>
 @stop
 @section('breadcrumb')
@@ -246,7 +237,7 @@
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-uppercase">Manage Inventory Categories</h5>
+            <h5 class="panel-title text-uppercase text-bold text-center">List of All NFIs Items Categories</h5>
         </div>
 
         <div class="panel-body">
@@ -277,15 +268,22 @@
                                         {{$cate->status}}
                                     </td>
                                     <td class="text-center" id="{{$cate->id}}">
-                                        <a href="#"  class="btn btn-icon-only text-primary editRecord"> <i class="fa fa-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-icon-only text-danger deleteRecord"> <i class="fa fa-trash"></i> Remove</a>
+                                        <a href="#"  class="btn btn-icon-only text-primary editRecord"> <i class="fa fa-edit text-success"></i> Edit </a>
+                                        <a href="#" class="btn btn-icon-only text-danger  deleteRecord"> <i class="fa fa-trash text-danger"></i> Remove</a>
                                     </td>
                                 </tr>
                             @endforeach
                         @endif
-
-
                         </tbody>
+                    <tfoot>
+                    <tr>
+                        <th> SNO </th>
+                        <th> Category Name </th>
+                        <th> Descriptions </th>
+                        <th> Status </th>
+                        <th class="text-center"> Action </th>
+                    </tr>
+                    </tfoot>
                     </table>
     </div>
 @stop

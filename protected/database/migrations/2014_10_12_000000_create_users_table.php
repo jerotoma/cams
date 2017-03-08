@@ -31,6 +31,10 @@ class CreateUsersTable extends Migration
             $table->dateTime('last_logout')->nullable();
             $table->dateTime('last_success_login')->nullable();
             $table->string('profile_image')->nullable();
+            $table->string('auth_status')->nullable()->default('pending');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

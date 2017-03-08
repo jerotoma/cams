@@ -18,8 +18,10 @@ class CreateDepartmentsTable extends Migration
             $table->string('department_name');
             $table->string('description')->nullable();
             $table->integer('parent_id')->default(0);
+            $table->string('auth_status')->nullable()->default('pending');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('auth_by')->nullable();
             $table->timestamps();
         });
     }

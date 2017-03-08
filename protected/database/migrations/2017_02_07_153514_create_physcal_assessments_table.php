@@ -44,8 +44,6 @@ class CreatePhyscalAssessmentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('physical_assessments', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('physical_assessments');
     }
 }

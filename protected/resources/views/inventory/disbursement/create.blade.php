@@ -1,183 +1,239 @@
-<!-- BEGIN SAMPLE FORM PORTLET-->
-{!! Html::style("assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css") !!}
-{!! Html::style("assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" ) !!}
-{!! Html::style("assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" ) !!}
-{!! Html::style("assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" ) !!}
-{!! Html::style("assets/global/plugins/clockface/css/clockface.css" ) !!}
+
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_multiselect.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/bootstrap_select.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/selectboxit.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/typeahead/typeahead.bundle.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/tags/tagsinput.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/tags/tokenfield.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/touchspin.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/maxlength.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/inputs/formatter.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/ui/moment/moment.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
+
+<script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
+<script>
+    $('.pickadate').pickadate({
+
+        // Escape any “rule” characters with an exclamation mark (!).
+        format: 'yyyy-mm-dd',
+    });
+</script>
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'inventory/disbursement/create','role'=>'form','id'=>'DepartmentFormUN')) !!}
-
-        <div class="form-body">
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
-                        <label>Date</label>
-                        <input type="text" class="form-control input-medium date-picker" readonly name="distributed_date" id="distributed_date" data-date-format="yyyy-mm-dd" data-date-viewmode="years" data-date-end-date="+0d">
+        {!! Form::open(array('url'=>'items/distributions','role'=>'form','id'=>'formItemsReceived')) !!}
+        <div class="panel panel-flat">
+            <div class="panel-body">
+                <fieldset class="scheduler-border">
+                    <legend class="text-bold"> NFIs Items Distribution</legend>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Distribution Date:</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                                    <input type="text" class="form-control pickadate"  value="{{old('disbursements_date')}}" name="disbursements_date" id="disbursements_date">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">PSN HAI ID</label>
+                                <input type="text" class="form-control" name="hai_reg_number"  id="hai_reg_number" value="" >
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Items Distributed By</label>
+                                <input type="text" class="form-control" name="disbursements_by"  id="disbursements_by" value="" >
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
-                        <label>Progress Number</label>
-                        <input type="text" name="progress_number" id="progress_number" placeholder="Enter Progress number" class="form-control" readonly value="{{$beneficiary->progress_number}}">
+                    <div class="form-group ">
+                        <label class="control-label">Camp</label>
+                        <select class="select" name="camp_id" id="camp_id" data-placeholder="Choose an option...">
+                            <option ></option>
+                            @foreach(\App\Camp::all() as $item)
+                                <option value="{{$item->id}}">{{$item->camp_name}}</option>
+                            @endforeach
+                        </select>
+                        @if($errors->first('camp_id') !="")
+                            <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
+                        @endif
                     </div>
 
-                </div>
+                </fieldset>
+                <fieldset class="scheduler-border">
+                    <legend class="text-bold">PSN CLIENTS ITEMS DISTRIBUTION LIST</legend>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Item</label>
+                                <select class="select" name="item_id" id="item_id" data-placeholder="Choose an option..." data-live-search="true" data-width="100%">
+                                    <option ></option>
+                                    @foreach(\App\ItemsCategories::all() as $category)
+                                        <optgroup label="{{$category->category_name}}">
+                                            @foreach($category->items as $item)
+                                                <option  value="{{$item->id}}"> {{$item->item_name}}</option>
+                                                @endforeach
+                                        </optgroup>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Quantity</label>
+                                <input type="text" class="form-control" name="quantity"  id="quantity" value="" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label"> Comments: </label>
+                        <textarea class="form-control"  name="comments" id="comments">{{old('comments')}}</textarea>
+                    </div>
+                </fieldset>
             </div>
-            <div class="form-group" id="itemsdispatch">
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
-
-                    </div>
-                    <div class="col-md-5 col-sm-5 col-xs-5 col-lg-5">
-
-                    </div>
-                    <div class="col-md-1 col-sm-1 col-xs-1 col-lg-1">
-                        <a href="#" class="addRow"><i class="fa fa-plus"></i> Add </a>
-                    </div>
-                </div>
-                <div class="row">
-                 <div class="col-md-8 col-sm-8 col-xs-8 col-lg-8">
-                    <label> Item/materials distributed</label>
-                     <select name="item[]" id="item" class="form-control" >
-                         <option value="">--Select--</option>
-                         @foreach(\App\ItemsInventory::orderBy('item_name','ASC')->get() as $itm)
-                             <option value="{{$itm->id}}">{{$itm->item_name}}</option>
-                             @endforeach
-                     </select>
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                        <label>Quantity</label>
-                        <input type="text" class="form-control" name="quantity[]" id="quantity">
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Donor type</label>
-                <input type="text" class="form-control" name="donor_type" id="donor_type">
-            </div>
-
-            <hr/>
+        </div>
+        <div class="form-actions">
             <div class="row">
                 <div class="col-md-8 col-sm-8 pull-left" id="output">
 
                 </div>
                 <div class="col-md-4 col-sm-4 pull-right text-right">
                     <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                    <input type="hidden" name="beneficiary_id" id="beneficiary_id" value="{{$beneficiary->id}}">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit Form </button>
                 </div>
 
             </div>
-
-            </div>
+        </div>
 
         {!! Form::close() !!}
+
     </div>
 </div>
-<!-- END SAMPLE FORM PORTLET-->
-{!! Html::script("assets/pages/scripts/jquery.validate.min.js") !!}
-{!! Html::script("assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" ) !!}
-{!! Html::script("assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" ) !!}
-{!! Html::script("assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" ) !!}
-{!! Html::script("assets/global/plugins/clockface/js/clockface.js" ) !!}
-{!! Html::script("assets/pages/scripts/components-date-time-pickers.min.js" ) !!}
-
-
+<script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script>
+    $("#formItemsReceived").validate({
+        ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
+        errorClass: 'validation-error-label',
+        successClass: 'validation-valid-label',
+        highlight: function(element, errorClass) {
+            $(element).removeClass(errorClass);
+        },
+        unhighlight: function(element, errorClass) {
+            $(element).removeClass(errorClass);
+        },
+        errorPlacement: function(error, element) {
 
-    $("#region_id").change(function () {
-        var id1 = this.value;
-        if(id1 != "")
-        {
-            $.get("<?php echo url('fetch/districts') ?>/"+id1,function(data){
-                $("#district_id").html(data);
-            });
+            // Styled checkboxes, radios, bootstrap switch
+            if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container') ) {
+                if(element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                    error.appendTo( element.parent().parent().parent().parent() );
+                }
+                else {
+                    error.appendTo( element.parent().parent().parent().parent().parent() );
+                }
+            }
 
-        }else{$("#district_id").html("<option value=''>----</option>");}
-    });
-    $("#DepartmentFormUN").validate({
+            // Unstyled checkboxes, radios
+            else if (element.parents('div').hasClass('checkbox') || element.parents('div').hasClass('radio')) {
+                error.appendTo( element.parent().parent().parent() );
+            }
+
+            // Input with icons and Select2
+            else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
+                error.appendTo( element.parent() );
+            }
+
+            // Inline checkboxes, radios
+            else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                error.appendTo( element.parent().parent() );
+            }
+
+            // Input group, styled file input
+            else if (element.parent().hasClass('uploader') || element.parents().hasClass('input-group')) {
+                error.appendTo( element.parent().parent() );
+            }
+
+            else {
+                error.insertAfter(element);
+            }
+        },
+        errorElement:'div',
         rules: {
-            progress_number: "required",
-            donor_type: "required",
-            item: "required",
-            quantity: "required",
-            distributed_date: "required"
+            disbursements_date: "required",
+            disbursements_by: "required",
+            quantity:"required",
+            camp_id:"required",
+            category_id:"required",
+            hai_reg_number:"required",
+            item_id:"required",
         },
         messages: {
-            progress_number: "Please field is required",
-            donor_type: "Please field is required",
-            item: "Please field is required",
-            distributed_date: "Please field is required",
-            quantity: "Please enter quantity"
+            disbursements_date: "Please field is required",
+            disbursements_by: "Please field is required",
+            hai_reg_number: "Please enter Registration",
+            quantity:"Please please enter quantity",
+            camp_id:"Please please select camp",
+            item_id:"Please Please select Items",
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-            var postData = $('#DepartmentFormUN').serializeArray();
-            var formURL = $('#DepartmentFormUN').attr("action");
+            var postData = $('#formItemsReceived').serializeArray();
+            var formURL = $('#formItemsReceived').attr("action");
             $.ajax(
+                {
+                    url : formURL,
+                    type: "POST",
+                    data : postData,
+                    dataType: 'json',
+                    success:function(data)
                     {
-                        url : formURL,
-                        type: "POST",
-                        data : postData,
-                        success:function(data)
-                        {
-                            console.log(data);
-                            if(data =="<span class='text-success'><i class='fa fa-info'></i> Saved successfully</span>")
-                            {
-                                //data: return data from server
-                                $("#output").html(data);
-                                setTimeout(function() {
-                                    location.replace("{{url('inventory/disbursement')}}");
-                                    $("#output").html("");
-                                }, 2000);
-                            }
-                            else
-                            {
-                                $("#output").html(data);
+                        $("#output").html(data.message);
+                        setTimeout(function() {
+                            location.replace('{{url('items/distributions')}}');
+                            $("#output").html("");
+                        }, 2000);
 
-                            }
-
-                        },
-                        error: function(data)
-                        {
-                            console.log(data.responseJSON);
-                            //in the responseJSON you get the form validation back.
-                            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
-
-                            setTimeout(function() {
-                                $("#output").html("");
-                            }, 2000);
+                    },
+                    error: function(jqXhr,status, response) {
+                        if( jqXhr.status === 401 ) {
+                            location.replace('{{url('login')}}');
                         }
-                    });
+                        if( jqXhr.status === 400 ) {
+                            if(jqXhr.responseJSON.errors ==1){
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p>';
+                                errorsHtml +='<p>'+ jqXhr.responseJSON.message +'</p></div>';
+
+                                $('#output').html(errorsHtml);
+                            }
+                            else {
+                                var errors = jqXhr.responseJSON.errors;
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                                $.each(errors, function (key, value) {
+                                    errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                });
+                                errorsHtml += '</ul></di>';
+                                $('#output').html(errorsHtml);
+                            }
+                        }
+                        else
+                        {
+                            $('#output').html("");
+                        }
+
+                    }
+                });
         }
-    });
-    $(".addRow").click(function(){
-
-        var div = document.createElement('div');
-
-        div.className = 'row';
-
-        div.innerHTML = '<div class="col-md-8 col-sm-8 col-xs-8 col-lg-8">\
-               <label> Item/materials distributed</label>\
-               <select name="item[]" id="item" class="form-control" >\
-                <option value="">--Select--</option>\
-                @foreach(\App\ItemsInventory::orderBy('item_name','ASC')->get() as $itm)\
-                <option value="{{$itm->id}}">{{$itm->item_name}}</option>\
-                @endforeach\
-                </select>\
-                </div>\
-                <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">\
-                <label>Quantity</label>\
-                <input type="text" class="form-control" name="quantity[]" id="quantity">\
-                </div>';
-
-        document.getElementById('itemsdispatch').appendChild(div);
-    });
-    $(".removeRow").click(function(){
-
-        alert('hhh');
-       // document.getElementById('itemsdispatch').removeChild( this.parent().parent() );
     });
 </script>

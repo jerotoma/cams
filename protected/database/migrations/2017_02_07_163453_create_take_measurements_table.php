@@ -29,8 +29,6 @@ class CreateTakeMeasurementsTable extends Migration
      */
     public function down()
     {
-        Schema::table('take_measurements', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('take_measurements');
     }
 }

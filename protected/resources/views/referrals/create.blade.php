@@ -1,4 +1,5 @@
 <script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery_ui/core.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/tinymce/js/tinymce/tinymce.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/wizards/form_wizard/form_wizard.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
@@ -14,256 +15,505 @@
 
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
-    $('.pickadate').pickadate();
+    $(function() {
+
+
+        // Table setup
+        // ------------------------------
+
+        // Setting datatable defaults
+        $.extend( $.fn.dataTable.defaults, {
+            autoWidth: false,
+            columnDefs: [{
+                orderable: false,
+                width: '100px',
+                targets: [ 5 ]
+            }],
+            dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
+            language: {
+                search: '<span>Filter:</span> _INPUT_',
+                lengthMenu: '<span>Show:</span> _MENU_',
+                paginate: { 'first': 'First', 'last': 'Last', 'next': '&rarr;', 'previous': '&larr;' }
+            },
+            drawCallback: function () {
+                $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').addClass('dropup');
+            },
+            preDrawCallback: function() {
+                $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').removeClass('dropup');
+            }
+        });
+
+
+        // Single row selection
+        var singleSelect = $('.datatable-selection-single').DataTable();
+        $('.datatable-selection-single tbody').on('click', 'tr', function() {
+            if ($(this).hasClass('success')) {
+                $(this).removeClass('success');
+            }
+            else {
+                singleSelect.$('tr.success').removeClass('success');
+                $(this).addClass('success');
+            }
+        });
+
+
+        // Multiple rows selection
+        $('.datatable-selection-multiple').DataTable();
+        $('.datatable-selection-multiple tbody').on('click', 'tr', function() {
+            $(this).toggleClass('success');
+        });
+
+
+        // Individual column searching with text inputs
+        $('.datatable-column-search-inputs-select-client tfoot td').not(':last-child').each(function () {
+            var title = $('.datatable-column-search-inputs-select-client thead th').eq($(this).index()).text();
+            $(this).html('<input type="text" class="form-control input-sm" placeholder="Search '+title+'" />');
+        });
+
+        var table = $('.datatable-column-search-inputs-select-client').DataTable({
+            "scrollX": false,
+        });
+        table.columns().every( function () {
+            var that = this;
+            $('input', this.footer()).on('keyup change', function () {
+                that.search(this.value).draw();
+            });
+        });
+
+
+        // External table additions
+        // ------------------------------
+
+        // Add placeholder to the datatable filter option
+        $('.dataTables_filter input[type=search]').attr('placeholder','Type to filter...');
+
+
+        // Enable Select2 select for the length option
+        $('.dataTables_length select').select2({
+            minimumResultsForSearch: Infinity,
+            width: 'auto'
+        });
+
+
+        // Enable Select2 select for individual column searching
+        $('.filter-select').select2();
+
+    });
+
+</script>
+<script>
+    $('.pickadate').pickadate({
+
+        // Escape any “rule” characters with an exclamation mark (!).
+        format: 'yyyy-mm-dd',
+    });
+    tinymce.init({ selector:'textEditor' });
 </script>
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
+        @include('clients.findclient')
         {!! Form::open(array('url'=>'referrals','role'=>'form','id'=>'formClients')) !!}
         <div class="panel panel-flat">
 
-
             <div class="panel-body">
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold">Client Details</legend>
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th>Client No</th>
-                            <th>Full Name</th>
-                            <th>Sex</th>
-                            <th>Age</th>
-                            <th>Origin</th>
-                            <th>Arrival Date</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>{{$client->client_number}}</td>
-                            <td>{{$client->full_name}}</td>
-                            <td>{{$client->sex}}</td>
-                            <td>{{$client->age}}</td>
-                            <td>@if(is_object($client->nationality) && $client->nationality != null )
-                                    {{$client->nationality->country_name}}
-                                @endif</td>
-                            <td>{{date('d M Y',strtotime($client->date_arrival))}}</td>
+                    <legend class="text-bold"><h3 class="text-center text-bold">Select client requesting referral</h3></legend>
+                    <div class="form-group">
+                        <div class="row clearfix">
+                            <div class="col-md-12 column">
+                                <table class="table datatable-column-search-inputs-select-client table-bordered table-hover" id="tab_logic">
+                                    <thead>
+                                    <tr >
+                                        <th class="text-center">
+                                            #
+                                        </th>
+                                        <th class="text-center">
+                                            HAI REG NO
+                                        </th>
+                                        <th class="text-center">
+                                            Unique ID
+                                        </th>
+                                        <th class="text-center">
+                                            Full Name
+                                        </th>
+                                        <th class="text-center">
+                                            Sex
+                                        </th>
+                                        <th class="text-center">
+                                            Age
+                                        </th>
+                                        <th class="text-center">
+                                            Ration Card No
+                                        </th>
+                                        <th class="text-center">
+                                            Camp
+                                        </th>
+                                        <th class="text-center">
+                                            Check client
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr >
+                                        <td class="text-center">
 
-                        </tr>
-                        </tbody>
-                    </table>
-                </fieldset>
-                <fieldset class="scheduler-border">
-                    <legend class="text-bold">Referral Details</legend>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Progress Number</label>
-                                <input type="text" class="form-control" placeholder="Progress Number" name="progress_number" id="progress_number"
-                                       value="{{old('progress_number')}}">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Case name</label>
-                                <input type="text" class="form-control" placeholder="(Use a unique code for case name. Example LASTNAME Initials+date of birth e.g. LA08291976>)" id="case_name" name="case_name" value="{{old('case_name')}}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Date</label>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                    <input type="text" class="form-control pickadate" placeholder="Date" value="{{old('referral_date')}}" name="referral_date" id="referral_date">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Completed by</label>
-                                <input type="text" class="form-control" name="completed_by" id="completed_by" placeholder="Completed by" value="{{old('completed_by')}}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Name of Client Concerned</label>
-                        <input type="text" class="form-control"  placeholder="Name of Client Concerned" value="{{$client->full_name}}" readonly>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Location the referral originated</label>
-                        <input type="text" class="form-control"  placeholder="Location the referral originated" value="" name="location" id="location">
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Age</label>
-                                <input type="number" class="form-control" placeholder="Age" name="age" id="age" value="{{old('age')}}">
-                                <span class="label label-block label-danger">(At the time of incident)</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Birth date</label>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                    <input type="text" class="form-control pickadate" placeholder="Date" value="{{old('birth_date')}}" name="birth_date" id="birth_date">
-                                </div>
-                                <span class="label label-block label-danger">(At the time of incident)</span>
-                            </div>
-                        </div>
+                                        </td>
+                                        <td class="text-center">
+                                            HAI REG NO
+                                        </td>
+                                        <td class="text-center">
+                                            Unique ID
+                                        </td>
+                                        <td class="text-center">
+                                            Full Name
+                                        </td>
+                                        <td class="text-center">
+                                            Sex
+                                        </td>
+                                        <td class="text-center">
+                                            Age
+                                        </td>
+                                        <td class="text-center">
+                                            Ration Card No
+                                        </td>
+                                        <td class="text-center">
+                                            Camp
+                                        </td>
+                                        <td class="text-center">
 
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Disabilities</label>
-                        <input type="text" class="form-control" placeholder="Disabilities" name="disabilities" id="disabilities" value="{{old('disabilities')}}">
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Ethnic Background</label>
-                        <input type="text" class="form-control" placeholder="Ethnic Background" name="ethnic_background" id="ethnic_background" value="{{old('ethnic_background')}}">
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Contact</label>
-                                <input type="text" class="form-control" placeholder="Contact" name="contact" id="contact" value="{{old('contact')}}">
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Telephone number</label>
-                                <input type="text" class="form-control" placeholder="Telephone number" name="phone" id="phone" value="{{old('phone')}}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group ">
-                                <label class="control-label">Name of Person Who Originated concern and contact details</label>
-                                <input type="text" class="form-control" placeholder="Leave this empty if same as above" name="person_name_contact" id="person_name_contact" value="{{old('person_name_contact')}}">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group ">
-                                <label class="control-label">Relationship to client</label>
-                                <input type="text" class="form-control" placeholder="" name="relationship" id="relationship" value="{{old('relationship')}}">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group ">
-                                <label class="control-label">Approached for assistance with plot/address</label>
-                                <input type="text" class="form-control" placeholder="(Ex. F11/A01/001)" name="person_name_address" id="person_name_address" value="{{old('person_name_address')}}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group ">
-                                <label class="control-label">Consent Obtained to Share Information</label>
-                                <select name="consent" data-placeholder="Choose an option..." class="select withOthers">
-                                    <option></option>
-                                    <option value="Verbal">Verbal</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group ">
-                                <label class="control-label">Parental Consent provided </label>
-                                <select name="parental_consent" data-placeholder="Choose an option..." class="select">
-                                    <option></option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
-                                <span class="label label-block label-danger">if Client is Under 18 years of Age</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group ">
-                                <label class="control-label">Any Attachment included</label>
-                                <select name="attachment" data-placeholder="Choose an option..." class="select">
-                                    <option></option>
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Initial Action Recommended or Taken</label>
-                        <textarea  class="form-control" name="initial_action" id="initial_action"></textarea>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Timeframes agreed/proposed</label>
-                        <input type="text"  class="form-control" name="time_frames" id="time_frames">
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Additional Comments Regarding Concern [any information volunteered by client</label>
-                        <textarea  class="form-control" name="additional_comments" id="additional_comments"></textarea>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Primary Concern</label>
-                        <select name="primary_concern" data-placeholder="Choose an option..." class="select withOthers">
-                            <option></option>
-                            <option value="Health">Health</option>
-                            <option value="Nutrition">Nutrition</option>
-                            <option value="Psychosocial">Psychosocial</option>
-                            <option value="Neglect">Neglect</option>
-                            <option value="Physical Violence">Physical Violence</option>
-                            <option value="SGBV">SGBV</option>
-                            <option value="Basic Needs">Basic Needs</option>
-                            <option value="Education">Education</option>
-                            <option value="Other">Other</option>
-                        </select>
                     </div>
                 </fieldset>
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold">Referred details</legend>
+                    <legend class="text-bold">Referral Details </legend>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group ">
-                                <label class="control-label">Referred to</label>
-                                <input type="text"  class="form-control" name="referred_to" id="referred_to" placeholder="(Complete name)">
+                                <label class="control-label">Date of Referral</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                                    <input type="text" class="form-control pickadate" placeholder="Date of Referral" value="{{old('referral_date')}}" name="referral_date" id="referral_date">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Position</label>
-                                <input type="text"  class="form-control" name="referred_to_position" id="referred_to_position">
-                            </div>
+
+                        <div class="col-md-4">
+                            <label class="control-label">Referral Type</label>
+                            <select name="referral_type" data-placeholder="Choose an option..." class="select">
+                                <option></option>
+                                <option value="Routine">Routine</option>
+                                <option value="Urgent">Urgent</option>
+                            </select>
                         </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Organization/ Institution</label>
-                        <input type="text"  class="form-control" name="organization" id="organization">
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Telephone number</label>
-                                <input type="text"  class="form-control" name="org_phone" id="org_phone">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                <label class="control-label">Email address</label>
-                                <input type="text"  class="form-control" name="org_email" id="org_email">
-                            </div>
-                        </div>
+
                     </div>
 
                 </fieldset>
-                <div class="row">
+                <fieldset class="scheduler-border">
+                    <legend class="text-bold">Referring agency </legend>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label class="control-label">Agency / Org: </label>
+                                <input type="text" class="form-control" placeholder="Agency / Org: " name="ref_organisation" id="ref_organisation"
+                                       value="{{old('ref_organisation')}}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label class="control-label">Contact (if known): </label>
+                                <input type="text" class="form-control" placeholder="contact" id="ref_contact" name="ref_contact" value="{{old('ref_contact')}}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label class="control-label">Phone</label>
+                                <input type="text" class="form-control" placeholder="Phone" id="ref_phone" name="ref_phone" value="{{old('ref_phone')}}">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Email: </label>
+                                <input type="text" class="form-control" placeholder="Email " name="ref_email" id="ref_email"
+                                       value="{{old('rec_email')}}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">Location: </label>
+                                <input type="text" class="form-control" placeholder="Location" id="ref_location" name="ref_location" value="{{old('ref_location')}}">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="scheduler-border">
+                        <legend class="text-bold">Receiving Agency</legend>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group ">
+                                    <label class="control-label">Agency / Org: </label>
+                                    <input type="text" class="form-control" placeholder="Agency / Org: " name="rec_organisation" id="rec_organisation"
+                                           value="{{old('rec_organisation')}}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group ">
+                                    <label class="control-label">Contact (if known): </label>
+                                    <input type="text" class="form-control" placeholder="contact" id="rec_contact" name="rec_contact" value="{{old('rec_contact')}}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group ">
+                                    <label class="control-label">Phone</label>
+                                    <input type="text" class="form-control" placeholder="Phone" id="rec_phone" name="rec_phone" value="{{old('rec_phone')}}">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label class="control-label">Email: </label>
+                                    <input type="text" class="form-control" placeholder="Email " name="rec_email" id="rec_email"
+                                           value="{{old('rec_email')}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label class="control-label">Location: </label>
+                                    <input type="text" class="form-control" placeholder="Location" id="rec_location" name="rec_location" value="{{old('rec_location')}}">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                    <div id="psnprofile"></div>
+
+                   <fieldset class="scheduler-border">
+                            <legend class="text-bold">If Client Is a Minor (under 18 years)</legend>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Name of primary caregiver:: </label>
+                                        <input type="text" class="form-control" placeholder="Name of primary caregiver:: " name="cl_care_giver" id="cl_care_giver"
+                                               value="{{old('cl_care_giver')}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Relationship to child: </label>
+                                        <input type="text" class="form-control" placeholder="Relationship to child:" id="cl_care_giver_relationship" name="cl_care_giver_relationship" value="{{old('cl_care_giver_relationship')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Contact information for caregiver:</label>
+                                        <input type="text" class="form-control" placeholder="Contact information" id="cl_care_giver_contact" name="cl_care_giver_contact" value="{{old('cl_care_giver_contact')}}">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Caregiver is informed of referral?: </label>
+                                        <select name="cl_care_giver_informed" data-placeholder="Choose an option..." class="select">
+                                            <option></option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Is child separated or unaccompanied? </label>
+                                        <select name="cl_child_separated" data-placeholder="Choose an option..." class="select">
+                                            <option></option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                      </div>
+
+                   </fieldset>
+
+                    <fieldset class="scheduler-border">
+                        <legend class="text-bold">Background Information/Reason for Referral:
+                                (problem description, duration, frequency, etc.) and Services Already Provided
+                            </legend>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label class="control-label">Has the client been informed of the referral?? </label>
+                                    <select name="client_referral_info" data-placeholder="Choose an option..." class="select">
+                                        <option></option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label class="control-label">Has the client been referred to any other organisazation ? </label>
+                                    <select name="client_referral_status" data-placeholder="Choose an option..." class="select">
+                                        <option></option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label class="control-label"> If yes Explain here?   </label>
+                                    <textarea  class="form-control" name="client_referral_info_text" id="client_referral_info_text"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label class="control-label">If yes Explain here?   </label>
+                                    <textarea  class="form-control" name="client_referral_status_text" id="client_referral_status_text"></textarea>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset class="scheduler-border">
+                        <legend class="text-bold">Services Requested </legend>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Mental Health Services">
+                                    Mental Health Services
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Protection Support/ Services" >
+                                    Protection Support/ Services
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Shelter" >
+                                    Shelter
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Psychological Interventions">
+                                    Psychological Interventions
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Community Centre/ Social Services" >
+                                    Community Centre/ Social Services
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="aterial Assistance">
+                                    Material Assistance
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Physical Health Care" >
+                                    Physical Health Care
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Family Tracing Services">
+                                    Family Tracing Services
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Nutrition">
+                                    Nutrition
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Physical Rehabilitation">
+                                    Physical Rehabilitation
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Legal Assistance">
+                                    Legal Assistance
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Financial Assistance">
+                                    Financial Assistance
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]" value="Education">
+                                    Education
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities">
+                                    Psychosocial Activities
+                                </label>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    <fieldset class="scheduler-border">
+                        <legend class="text-bold">Explain any request Service  </legend>
+                        <textarea  class="form-control" name="comments" id="comments"></textarea>
+                    </fieldset>
+
+                <div class="row" style="margin-top: 10px">
                     <div class="col-md-8 col-sm-8 pull-left" id="output">
 
                     </div>
                     <div class="col-md-4 col-sm-4 pull-right text-right">
                         <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                        <input type="hidden" name="client_id" value="{{$client->id}}">
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit Form </button>
                     </div>
 
                 </div>
+
+
             </div>
         </div>
         {!! Form::close() !!}
@@ -293,76 +543,110 @@
         ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
         errorClass: 'validation-error-label',
         successClass: 'validation-valid-label',
-        highlight: function(element, errorClass) {
+        highlight: function (element, errorClass) {
             $(element).removeClass(errorClass);
         },
-        unhighlight: function(element, errorClass) {
+        unhighlight: function (element, errorClass) {
             $(element).removeClass(errorClass);
         },
-        errorElement:'div',
+        errorPlacement: function (error, element) {
+
+            // Styled checkboxes, radios, bootstrap switch
+            if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container')) {
+                if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                    error.appendTo(element.parent().parent().parent().parent());
+                }
+                else {
+                    error.appendTo(element.parent().parent().parent().parent().parent());
+                }
+            }
+
+            // Unstyled checkboxes, radios
+            else if (element.parents('div').hasClass('checkbox') || element.parents('div').hasClass('radio')) {
+                error.appendTo(element.parent().parent().parent());
+            }
+
+            // Input with icons and Select2
+            else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
+                error.appendTo(element.parent());
+            }
+
+            // Inline checkboxes, radios
+            else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                error.appendTo(element.parent().parent());
+            }
+
+            // Input group, styled file input
+            else if (element.parent().hasClass('uploader') || element.parents().hasClass('input-group')) {
+                error.appendTo(element.parent().parent());
+            }
+
+            else {
+                error.insertAfter(element);
+            }
+        },
+        errorElement: 'div',
         rules: {
-            organization: "required",
+            client_id: "required",
+            referral_type: "required",
+
             referral_date: "required",
-            completed_by: "required",
-            age: {
-                required: true,
-                number: true
-            },
-            case_name: "required",
-            referred_to: "required",
-            referred_to_position: "required",
-            org_phone: "required",
-            org_email:{
-                email:true,
-            },
-            location: "required"
+            rec_organisation: "required",
+
+            ref_organisation: "required",
         },
         messages: {
-            organization: "Please this field is required",
+            client_id: "Please this field is required",
+            referral_type: "Please this field is required",
             referral_date: "Please field is required",
-            completed_by: "Please this field is required",
-            age:{
-                required:"Please this field is required",
-                number:"Please enter valid data",
-            } ,
-            case_name: "Please this field is required",
-            referred_to: "Please this field is required",
-            referred_to_position: "Please this field is required",
-            org_phone: "Please this field is required",
-            org_email:{
-                email:"Please enter valid data",
-            },
-            location: "Please this field is required"
-        },
-        submitHandler: function(form) {
+            rec_organisation: "Please this field is required",
+            client_referral_info: "Please field is required"
+
+        }, submitHandler: function (form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
             var postData = $('#formClients').serializeArray();
             var formURL = $('#formClients').attr("action");
             $.ajax(
                 {
-                    url : formURL,
+                    url: formURL,
                     type: "POST",
-                    data : postData,
-                    success:function(data)
-                    {
-                        console.log(data);
-                        //data: return data from server
-                        $("#output").html(data);
-                        setTimeout(function() {
-                            location.replace('{{url('referrals')}}');
+                    data: postData,
+                    success: function (data) {
+                        swal({
+                            title: "Form Submitted successful!",
+                            text: data.message,
+                            type: "success",
+                            timer: 2000,
+                            confirmButtonColor: "#43ABDB"
+                        })
+                        setTimeout(function () {
+                            location.replace("{{url('referrals')}}");
                             $("#output").html("");
                         }, 2000);
                     },
-                    error: function(data)
-                    {
-                        console.log(data.responseJSON);
-                        //in the responseJSON you get the form validation back.
-                        $("#output").html("<h3><span class='text-danger'><i class='fa fa-spinner fa-spin'></i> Error in processing data try again...</span><h3>");
+                    error: function (jqXhr, status, response) {
+                        console.log(jqXhr);
+                        if (jqXhr.status === 401) {
+                            location.replace('{{url('login')}}');
+                        }
+                        if (jqXhr.status === 400) {
+                            var errors = jqXhr.responseJSON.errors;
+                            errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                            $.each(errors, function (key, value) {
+                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                            });
+                            errorsHtml += '</ul></di>';
+                            $('#output').html(errorsHtml);
+                        }
+                        else {
+                            $('#output').html(jqXhr.message);
+                        }
 
                     }
                 });
         }
     });
+
     $("#civil_status").change(function () {
         var id1 = this.value;
         if(id1 != "Married")
@@ -383,4 +667,12 @@
             });
         }else{$("#district_id").html("<option value=''>----</option>");}
     });
+    function getPSNProfile(id1){
+        if(id1 != "")
+        {
+            $.get("<?php echo url('getreferralpsnprofile') ?>/"+id1,function(data){
+                $("#psnprofile").html(data);
+            });
+        }else{$("#psnprofile").html("");}
+    }
 </script>

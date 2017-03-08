@@ -2,6 +2,7 @@
 @section('page_js')
     <script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
@@ -35,6 +36,7 @@
             // Basic datatable
             $('.datatable-basic').DataTable({
                 "scrollX": false,
+                ajax: '{{url('list-items-received')}}',
                 "fnDrawCallback": function (oSettings) {
                     $(".showRecord").click(function(){
                         var id1 = $(this).parent().attr('id');
@@ -43,13 +45,13 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Record Details</span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> GOODS RECEIVED NOTE</span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
                         modaldis+= '</div>';
                         modaldis+= '</div>';
-                        $('body').css('overflow','hidden');
+                         $('body').css('overflow-y','scroll');
 
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
@@ -68,13 +70,13 @@
                         modaldis+= '<div class="modal-content">';
                         modaldis+= '<div class="modal-header bg-indigo">';
                         modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Item Details </span>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> GOODS RECEIVED NOTE </span>';
                         modaldis+= '</div>';
                         modaldis+= '<div class="modal-body">';
                         modaldis+= ' </div>';
                         modaldis+= '</div>';
                         modaldis+= '</div>';
-                        $('body').css('overflow','hidden');
+                         $('body').css('overflow-y','scroll');
 
                         $("body").append(modaldis);
                         $("#myModal").modal("show");
@@ -85,26 +87,55 @@
                         })
 
                     });
-
-                    $(".deleteRecord").click(function(){
+                    // Confirmation dialog
+                    $('.authorizeAllRecords').on('click', function() {
                         var id1 = $(this).parent().attr('id');
-                        $(".deleteModule").show("slow").parent().parent().find("span").remove();
-                        var btn = $(this).parent().parent();
-                        $(this).hide("slow").parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
-                        $("#no").click(function(){
-                            $(this).parent().parent().find(".deleteRecord").show("slow");
-                            $(this).parent().parent().find("span").remove();
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize All pending records?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/inventory/received') ?>",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
                         });
-                        $("#yes").click(function(){
-                            $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
-                            $.ajax({
-                                url:"<?php echo url('inventory-received') ?>/"+id1,
-                                type: 'post',
-                                data: {_method: 'delete', _token :"{{csrf_token()}}"},
-                                success:function(msg){
-                                    btn.hide("slow").next("hr").hide("slow");
-                                }
-                            });
+                    });
+                    // Confirmation dialog
+                    $('.authorizeRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/inventory') ?>/"+id1+"/received",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    // Confirmation dialog
+                    $('.deleteRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to delete record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('inventory-received') ?>/"+id1,
+                                    type: 'post',
+                                    data: {_method: 'delete', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        btn.hide("slow").next("hr").hide("slow");
+                                    }
+                                });
+                            }
                         });
                     });
                 }
@@ -157,13 +188,13 @@
             modaldis+= '<div class="modal-content">';
             modaldis+= '<div class="modal-header bg-indigo">';
             modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i>Add new Item</span>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i>GOODS RECEIVED NOTE</span>';
             modaldis+= '</div>';
             modaldis+= '<div class="modal-body">';
             modaldis+= ' </div>';
             modaldis+= '</div>';
             modaldis+= '</div>';
-            $('body').css('overflow','hidden');
+             $('body').css('overflow-y','scroll');
 
             $("body").append(modaldis);
             $("#myModal").modal("show");
@@ -202,139 +233,130 @@
     <div class="sidebar-category sidebar-category-visible">
         <div class="category-content no-padding">
             <ul class="navigation navigation-main navigation-accordion">
-                <li class="active"><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
+                <li ><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
                 <!-- Main -->
-                <li class="navigation-header">Registration desk<span></span> <i class="icon-menu" title="Main pages"></i></li>
+
                 <li>
-                    <a href="#"><i class="icon-users"></i>Clients <span></span></a>
+                    <a href="#"><i class="icon-users"></i> <span>Clients</span></a>
                     <ul>
-                        <li ><a href="{{url('clients/create')}}">Register New Client</a></li>
-                        <li><a href="{{url('clients')}}">Search Client</a></li>
+                        <li ><a href="{{url('clients')}}">Clients Management</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
                     <ul>
-                        <li ><a href="{{url('assessments/create')}}">Vulnerability assessment</a></li>
-                        <li><a href="{{url('import/assessments')}}">Inclusion assessment</a></li>
-                        <li><a href="{{url('export/assessments')}}">Wheelchair Assessment</a></li>
-                        <li><a href="{{url('reports/assessments')}}">Assessments Report</a></li>
+                        <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
+                        <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
+                        
                     </ul>
                 </li>
                 <li>
                     <a href="#"><i class="icon-stack"></i> <span>Client Referrals</span></a>
                     <ul>
-                        <li ><a href="{{url('referrals/create')}}">Open Referral</a></li>
-                        <li><a href="{{url('import/referrals')}}">Import Referral</a></li>
-                        <li><a href="{{url('export/referrals')}}">Export Referral</a></li>
-                        <li><a href="{{url('search/referrals')}}">Search Referral</a></li>
-                        <li><a href="{{url('reports/referrals')}}">Referral Report</a></li>
+                        <li ><a href="{{url('referrals')}}">Referrals</a></li>
                     </ul>
                 </li>
                 <!-- /main -->
-
                 <!-- Forms -->
-                <li class="navigation-header"><span>Rehabilitation</span> <i class="icon-menu" title="Forms"></i></li>
-                <li>
-                    <a href="#"><i class="icon-grid"></i> <span>Rehabilitation Service</span></a>
+                @permission('inventory')
+
+                <li class="active">
+                    <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
                     <ul>
-                        <li><a href="{{url('rehabilitation/register')}}">Open Register</a></li>
-                        <li><a href="{{url('rehabilitation/progress')}}">Progress</a></li>
-                        <li><a href="{{url('rehabilitation/register')}}">Search</a></li>
-                        <li><a href="{{url('rehabilitation/Import')}}">Import</a></li>
-                        <li><a href="{{url('rehabilitation/export')}}">Export</a></li>
+                        <li ><a href="{{url('items/distributions')}}">Item Distribution</a></li>
+                        <li class="active"><a href="{{url('inventory-received')}}">Received Items</a></li>
+                        <li ><a href="{{url('inventory')}}">Items Inventory</a></li>
+                        <li ><a href="{{url('inventory-categories')}}">Items Categories</a></li>
                     </ul>
                 </li>
-                <!-- /forms -->
-                <!-- Data visualization -->
-                <li class="navigation-header"><span>Data visualization</span> <i class="icon-menu" title="Data visualization"></i></li>
                 <li>
-                    <a href="#"><i class="icon-graph"></i> <span>Clients Reports</span></a>
+                    <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
                     <ul>
-                        <li><a href="{{url('reports/clients')}}">Registration</a></li>
-                        <li><a href="{{url('reports/clients')}}">Assessments</a></li>
-                        <li><a href="{{url('reports/clients')}}">Refferal</a></li>
+                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Distributions</a></li>
+                        <li><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
+                        <li><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
+                    </ul>
+                </li>
+                @endpermission
+            <!-- /forms -->
+                <!-- Forms -->
+
+                <li>
+                    <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
+                    <ul>
+                        <li><a href="{{url('cases')}}">Case Management</a></li>
+                        <li><a href="{{url('progressive/notices')}}">Progressive Note</a></li>
+                    </ul>
+                </li>
+                @permission('backup')
+            <!-- Backup Restore-->
+                
+                <li>
+                    <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
+                    <ul>
+                        <li><a href="{{url('backup/import/advanced')}}">Import data</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-download"></i> <span>Data Export</span></a>
+                    <ul>
+                        <li><a href="{{url('backup/export/advanced')}}">Export data</a></li>
+                    </ul>
+                </li>
+                <!-- End Backup Restore-->
+                @endpermission
+                @permission('reports')
+            <!-- Data visualization -->
+
+                <li>
+                    <a href="#"><i class="icon-graph"></i> <span> Reports</span></a>
+                    <ul>
+                        <li><a href="{{url('reports/clients')}}">Client Reports</a></li>
+                        <li ><a href="{{url('reports/assessments')}}">Assessments Reports</a></li>
+                        <li><a href="{{url('reports/referrals')}}">Referrals Reports</a></li>
+                        <li><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
                     </ul>
                 </li>
                 <!-- /data visualization -->
-                <!-- Appearance -->
-                <li class="navigation-header"><span>Settings</span> <i class="icon-menu" title="Settings"></i></li>
+                @endpermission
+
+            <!-- Settings -->
+                @role('admin')
+
                 <li>
-                    <a href="#"><i class="icon-list"></i> <span>Countries</span></a>
+                    <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
                     <ul>
-                        <li><a href="{{url('countries/create')}}">Add New Country</a></li>
-                        <li><a href="{{url('countries')}}">List All Countries</a></li>
+                        <li><a href="{{url('countries')}}">Countries</a></li>
+                        <li><a href="{{url('regions')}}">Regions</a></li>
+                        <li><a href="{{url('districts')}}">Districts</a></li>
+                        <li><a href="{{url('camps')}}">Camps</a></li>
+                        <li><a href="{{url('origins')}}">Origins</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#"><i class="icon-list"></i> <span>Regions</span></a>
+                    <a href="#"><i class="icon-puzzle4"></i> <span>Vulnerability Codes</span></a>
                     <ul>
-                        <li><a href="{{url('regions/create')}}">Add New Region</a></li>
-                        <li><a href="{{url('regions')}}">List All Regions</a></li>
+                        <li><a href="{{url('psncodes')}}">Codes</a></li>
+                        <li><a href="{{url('psncodes-categories')}}">Categories</a></li>
                     </ul>
                 </li>
 
-                <li>
-                    <a href="#"><i class="icon-grid"></i> <span>Camps</span></a>
-                    <ul>
-                        <li><a href="{{url('camps/create')}}">Add New Camp</a></li>
-                        <li><a href="{{url('camps')}}">List All camps</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-puzzle4"></i> <span>PSN Codes</span></a>
-                    <ul>
-                        <li><a href="{{url('psncodes/create')}}">Add New Code</a></li>
-                        <li><a href="{{url('psncodes')}}">List All Codes</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-list"></i> <span>Departments</span></a>
-                    <ul>
-                        <li><a href="{{url('departments/create')}}">Add New Code</a></li>
-                        <li><a href="{{url('departments')}}">List All Departments</a></li>
-                    </ul>
-                </li>
                 <!-- /appearance -->
 
                 <!-- Layout -->
                 <li class="navigation-header"><span>Users Managements</span> <i class="icon-menu" title="Users Managements"></i></li>
-
                 <li>
                     <a href="#"><i class="icon-users"></i> <span>Users</span></a>
                     <ul>
-                        <li><a href="{{url('users')}}">Add New User</a></li>
-                        <li><a href="{{url('users')}}">List All Users</a></li>
-                        <li><a href="{{url('reports/users')}}">User Reports</a></li>
+                        <li><a href="{{url('users')}}">Manage Users</a></li>
+                        <li><a href="{{url('departments')}}">Departments</a></li>
+                        <li><a href="{{url('access/rights')}}">User Rights</a></li>
+                        <li><a href="{{url('audit/logs')}}">User Logs</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#"><i class="icon-popout"></i> <span>Users Rights</span></a>
-                    <ul>
-                        <li><a href="{{url('access/rights/create')}}">Add New</a></li>
-                        <li><a href="{{url('access/rights')}}">List All</a></li>
-                    </ul>
-                </li>
-                <!-- /layout -->
-
-
-
-                <!-- Extensions -->
-                <li class="navigation-header"><span>Data Sharing</span> <i class="icon-menu" title="Data Sharing"></i></li>
-                <li>
-                    <a href="#"><i class="icon-puzzle4"></i> <span>Data import</span></a>
-                    <ul>
-                        <li><a href="{{url('backup/import')}}">Import</a></li>
-                        <li><a href="{{url('backup/export')}}">Export</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="icon-popout"></i> <span>Data Approval</span></a>
-                    <ul>
-                        <li><a href="{{url('approval/pending')}}">Pending</a></li>
-                    </ul>
-                </li>
-                <!-- /extensions -->
+                <li class="navigation-header"><span></span> <i class="icon-menu" title="Users Managements"></i></li>
+                <!-- /Settings -->
+                @endrole
             </ul>
         </div>
     </div>
@@ -355,14 +377,19 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
+            @permission('create')
             <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-success"></i> Add Record</a>
+            @endpermission
             <a href="{{url('inventory-received')}}" class="btn btn-primary"><i class="fa fa-list text-info"></i> List All Records</a>
+            @permission('authorize')
+            <a  href="#" class="authorizeAllRecords btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
+            @endpermission
             <a href="{{url('inventory')}}" class="btn btn-primary " title="Go to Item inventory list"><i class="fa fa-reply text-danger"></i> Go to Inventory Items</a>
         </div>
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-uppercase text-bold"> NFIs Received Items</h5>
+            <h5 class="panel-title text-uppercase text-bold text-center"> List of All Goods Received Notes</h5>
         </div>
 
         <div class="panel-body">
@@ -376,48 +403,24 @@
                 <th> Donor Ref </th>
                 <th> Received From/Supplier </th>
                 <th> HAI Receiving Officer </th>
-                <th> Items Details </th>
+                <th> Auth Status </th>
                 <th class="text-center"> Action </th>
             </tr>
             </thead>
             <tbody>
-            <?php $count=1;?>
-            @if(count($items)>0)
-                @foreach($items as $item)
-                    <tr class="odd gradeX">
-                        <td>
-                            {{$count++}}
-                        </td>
-                        <td>
-                            {{$item->reference_number}}
-                        </td>
-                        <td>
-                            {{$item->date_received}}
-                        </td>
-                        <td>
-                            {{$item->donor_ref}}
-                        </td>
-                        <td>
-                            {{$item->received_from}}
-                        </td>
-                        <td>
-                            {{$item->receiving_officer}}
-                        </td>
-                        <td id="{{$item->id}}">
-                            <a href="#" class="showRecord label label-success"> <i class="fa fa-eye"></i> View </a>
-                            <a href="#" class=" label label-info"> <i class="fa fa-print" onclick="printPage('{{url('print/inventory-received')}}/{{$item->id}}');"></i> Print </a>
-                            <a href="{{url('download/pdf/inventory-received')}}/{{$item->id}}" class="label label-primary"> <i class="fa fa-file-pdf-o"></i> Download </a>
-                        </td>
-                        <td class="text-center" id="{{$item->id}}">
-                            <a href="#" title="Edit" class="label editRecord label-primary"> <i class="fa fa-edit "></i> Edit</a>
-                            <a href="#" title="Delete" class="label  deleteRecord label-danger"> <i class="fa fa-trash"></i> Delete </a>
-                        </td>
-                    </tr>
-                @endforeach
-            @endif
-
-
             </tbody>
+            <tfoot>
+            <tr>
+                <th> SNO </th>
+                <th> Ref No# </th>
+                <th> Date Received </th>
+                <th> Donor Ref </th>
+                <th> Received From/Supplier </th>
+                <th> HAI Receiving Officer </th>
+                <th> Auth Status </th>
+                <th class="text-center"> Action </th>
+            </tr>
+            </tfoot>
         </table>
         <!-- END EXAMPLE TABLE PORTLET-->
     </div>

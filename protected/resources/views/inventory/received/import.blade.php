@@ -63,7 +63,7 @@
             <ul class="navigation navigation-main navigation-accordion">
                 <li class="active"><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
                 <!-- Main -->
-                <li class="navigation-header">Registration desk<span></span> <i class="icon-menu" title="Main pages"></i></li>
+                
                 <li>
                     <a href="#"><i class="icon-users"></i>Clients <span></span></a>
                     <ul>
@@ -106,7 +106,7 @@
                 </li>
                 <!-- /forms -->
                 <!-- Data visualization -->
-                <li class="navigation-header"><span>Data visualization</span> <i class="icon-menu" title="Data visualization"></i></li>
+                
                 <li>
                     <a href="#"><i class="icon-graph"></i> <span>Clients Reports</span></a>
                     <ul>
@@ -117,7 +117,7 @@
                 </li>
                 <!-- /data visualization -->
                 <!-- Appearance -->
-                <li class="navigation-header"><span>Settings</span> <i class="icon-menu" title="Settings"></i></li>
+                
                 <li>
                     <a href="#"><i class="icon-list"></i> <span>Countries</span></a>
                     <ul>
@@ -230,6 +230,11 @@
         <div class="panel-body">
             {!! Form::open(array('url'=>'excel/import/received/items','role'=>'form','id'=>'formImportItems','files'=>true)) !!}
             <div class="form-body">
+                @if (session('message'))
+                    <div class="alert alert-danger">
+                        {{ session('message') }}
+                    </div>
+                @endif
                 <div class="form-group">
                     <label>Import from MS Excel <a href={{asset("assets/templates/item_received_import_template.xls")}}>Download template here</a> </label>
                     <input type="file" class="form-control" name="inventory_file" id="inventory_file">

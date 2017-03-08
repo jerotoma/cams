@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
                 'full_name' => "System Administrator",
                 'username' => 'admin',
                 'level' => 'Super',
-                'email' => 'chriss.innocent@gmail.com',
+                'email' => 'info@helpage.org',
                 'password' => bcrypt('admin'),
                 'status' => 'Active',
             ]);

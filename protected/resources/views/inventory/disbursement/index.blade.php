@@ -1,292 +1,233 @@
-@extends('layout.main')
-@section('page-title')
-   Item inventories 
+@extends('site.master')
+@section('page_js')
+    <script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
-@section('page-style')
-    {!! Html::style("assets/global/plugins/datatables/datatables.min.css" ) !!}
-    {!! Html::style("assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" ) !!}
-@stop
-@section('menu-sidebar')
-    <ul class="page-sidebar-menu   " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-        <li class="nav-item ">
-            <a href="{{url('home')}}" class="nav-link nav-toggle">
-                <i class="icon-home"></i>
-                <span class="title">Home</span>
-                <span class="selected"></span>
-            </a>
 
-        </li>
-        <li class="nav-item  ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="fa fa-users fa-2x"></i>
-                <span class="title">Clients</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-
-                <li class="nav-item active ">
-                    <a href="{{url('clients')}}" class="nav-link ">
-                        <span class="title">Clients</span>
-                    </a>
-                </li> <li class="nav-item  ">
-                    <a href="{{url('assessment/roam')}}" class="nav-link ">
-                        <span class="title">Assessment</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('disabilities')}}" class="nav-link ">
-                        <span class="title">Disabilities</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('referrals')}}" class="nav-link ">
-                        <span class="title">Client Referral</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item ">
-            <a href="{{url('rehabilitation/services')}}" class="nav-link nav-toggle">
-                <i class="fa fa-cogs fa-2x"></i>
-                <span class="title">Rehabilitation services</span>
-            </a>
-
-        </li>
-        <li class="nav-item ">
-            <a href="{{url('orthopedic/services')}}" class="nav-link nav-toggle">
-                <i class="fa fa-cogs fa-2x"></i>
-                <span class="title">Orthopedic services</span>
-
-            </a>
-
-        </li>
-        <li class="nav-item ">
-            <a href="{{url('beneficiaries')}}" class="nav-link nav-toggle">
-                <i class="fa fa-users fa-2x"></i>
-                <span class="title">Beneficiaries</span>
-
-            </a>
-
-        </li>
-        <li class="nav-item ">
-            <a href="{{url('social/needs')}}" class="nav-link nav-toggle">
-                <i class="fa fa-users fa-2x"></i>
-                <span class="title">Social needs/Support</span>
-
-            </a>
-
-        </li>
-        <li class="nav-item start active open">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="icon-list"></i>
-                <span class="title">Material support</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-                <li class="nav-item  active">
-                    <a href="{{url('inventory')}}" class="nav-link ">
-                        <span class="title">Inventory</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('inventory/received')}}" class="nav-link ">
-                        <span class="title">Received Items</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('inventory/disbursement')}}" class="nav-link ">
-                        <span class="title">Distribute Items</span>
-                    </a>
-                </li>
-
-            </ul>
-        </li>
-        <li class="nav-item  ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="icon-users"></i>
-                <span class="title"> LiveliHoods Tracking</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-                <li class="nav-item  ">
-                    <a href="{{url('livelihood/clients')}}" class="nav-link ">
-                        <span class="title">Clients</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('livelihood/groups')}}" class="nav-link ">
-                        <span class="title">Groups</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('livelihood/materials')}}" class="nav-link ">
-                        <span class="title">Material Support</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('livelihood/reports')}}" class="nav-link ">
-                        <span class="title">Reports</span>
-                    </a>
-                </li>
-
-            </ul>
-        </li>
-        <li class="nav-item  ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="fa fa-line-chart fa-2x"></i>
-                <span class="title"> Reports</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-                <li class="nav-item  ">
-                    <a href="{{url('reports/assessment/roam')}}" class="nav-link ">
-                        <span class="title">Assessment roam</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('reports/rehabilitation/services')}}" class="nav-link ">
-                        <span class="title">Rehabilitation services</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('reports/orthopedic/services')}}" class="nav-link ">
-                        <span class="title">Orthopedic services</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('reports/material/support')}}" class="nav-link ">
-                        <span class="title">Material support</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('reports/beneficiaries')}}" class="nav-link ">
-                        <span class="title">Beneficiaries  Identification/Registration</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('reports/social/needs')}}" class="nav-link ">
-                        <span class="title">Social needs/Support</span>
-                    </a>
-                </li><li class="nav-item  ">
-                    <a href="{{url('reports/livelihood')}}" class="nav-link ">
-                        <span class="title">Livelihood Tracking</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="heading">
-            <h3 class="uppercase">SYSTEM SETTINGS</h3>
-        </li>
-        <li class="nav-item ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="icon-settings"></i>
-                <span class="title"> General Settings</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-                <li class="nav-item  ">
-                    <a href="{{url('setting/organization')}}" class="nav-link ">
-                        <span class="title">Organization</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('disabilities')}}" class="nav-link ">
-                        <span class="title">Disabilities</span>
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a href="{{url('camps')}}" class="nav-link ">
-                        <span class="title">Camps</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('centres')}}" class="nav-link ">
-                        <span class="title">Centres</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('departments')}}" class="nav-link ">
-                        <span class="title">Departments</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('countries')}}" class="nav-link ">
-                        <span class="title">Countries</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('regions')}}" class="nav-link ">
-                        <span class="title">Regions</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('districts')}}" class="nav-link ">
-                        <span class="title">Districts</span>
-                    </a>
-                </li>
-
-            </ul>
-        </li><li class="heading">
-            <h3 class="uppercase">SYSTEM BACKUPS</h3>
-        </li>
-        <li class="nav-item  ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="fa fa-database fa-2x"></i>
-                <span class="title"> Data Import/Export</span>
-                <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-                <li class="nav-item  ">
-                    <a href="{{url('backup/imports')}}" class="nav-link ">
-                        <span class="title">Data Import</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('backup/exports')}}" class="nav-link ">
-                        <span class="title">Data Export</span>
-                    </a>
-                </li>
-              </ul>
-        </li>
-        <li class="heading">
-            <h3 class="uppercase"> ADMINISTRATION</h3>
-        </li>
-        <li class="nav-item  ">
-            <a href="javascript:;" class="nav-link nav-toggle">
-                <i class="icon-users"></i>
-                <span class="title"> Users</span>
-                <span class="arrow"></span>
-            </a>
-             <ul class="sub-menu">
-                <li class="nav-item  ">
-                    <a href="{{url('users')}}" class="nav-link ">
-                        <span class="title">List All Users</span>
-                    </a>
-                </li>
-                <li class="nav-item  ">
-                    <a href="{{url('access/roles')}}" class="nav-link ">
-                        <span class="title">User Roles</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-    </ul>
-@stop
-@section('page-scripts-level1')
-    {!! Html::script("assets/global/scripts/datatable.js" ) !!}
-    {!! Html::script("assets/global/plugins/datatables/datatables.min.js" ) !!}
-    {!! Html::script("assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js") !!}
-    {!! Html::script("assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js" ) !!}
-@stop
-@section('page-scripts-level2')
-    {!! Html::script("assets/pages/scripts/table-datatables-managed.min.js" ) !!}
-    {!! Html::script("assets/pages/scripts/ui-confirmations.min.js" ) !!}
-
-
-@stop
-@section('custom-scripts')
+@section('scripts')
     <script>
+        $(function() {
+
+
+            // Table setup
+            // ------------------------------
+
+            // Setting datatable defaults
+            $.extend( $.fn.dataTable.defaults, {
+                autoWidth: false,
+                dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
+                language: {
+                    search: '<span>Filter:</span> _INPUT_',
+                    lengthMenu: '<span>Show:</span> _MENU_',
+                    paginate: { 'first': 'First', 'last': 'Last', 'next': '&rarr;', 'previous': '&larr;' }
+                },
+                drawCallback: function () {
+                    $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').addClass('dropup');
+                },
+                preDrawCallback: function() {
+                    $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').removeClass('dropup');
+                }
+            });
+
+
+            // Basic datatable
+            $('.datatable-basic').DataTable({
+                "scrollX": false,
+                ajax: '{{url('list-items-distributions')}}',
+                "fnDrawCallback": function (oSettings) {
+                    $(".showRecord").click(function(){
+                        var id1 = $(this).parent().attr('id');
+                        var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+                        modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+                        modaldis+= '<div class="modal-content">';
+                        modaldis+= '<div class="modal-header bg-indigo">';
+                        modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Items Distribution</span>';
+                        modaldis+= '</div>';
+                        modaldis+= '<div class="modal-body">';
+                        modaldis+= ' </div>';
+                        modaldis+= '</div>';
+                        modaldis+= '</div>';
+                         $('body').css('overflow-y','scroll');
+
+                        $("body").append(modaldis);
+                        $("#myModal").modal("show");
+                        $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+                        $(".modal-body").load("<?php echo url("items/distributions") ?>/"+id1);
+                        $("#myModal").on('hidden.bs.modal',function(){
+                            $("#myModal").remove();
+                        })
+
+                    });
+
+                    $(".editRecord").click(function(){
+                        var id1 = $(this).parent().attr('id');
+                        var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+                        modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+                        modaldis+= '<div class="modal-content">';
+                        modaldis+= '<div class="modal-header bg-indigo">';
+                        modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Item Details </span>';
+                        modaldis+= '</div>';
+                        modaldis+= '<div class="modal-body">';
+                        modaldis+= ' </div>';
+                        modaldis+= '</div>';
+                        modaldis+= '</div>';
+                         $('body').css('overflow-y','scroll');
+
+                        $("body").append(modaldis);
+                        $("#myModal").modal("show");
+                        $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+                        $(".modal-body").load("<?php echo url("items/distributions") ?>/"+id1+"/edit");
+                        $("#myModal").on('hidden.bs.modal',function(){
+                            $("#myModal").remove();
+                        })
+
+                    });
+
+                    // Confirmation dialog
+                    $('.authorizeAllRecords').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize All pending records?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/items/distributions') ?>",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    // Confirmation dialog
+                    $('.authorizeRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to authorize record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('authorize/items') ?>/"+id1+"/distributions",
+                                    type: 'post',
+                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    // Confirmation dialog
+                    $('.deleteRecord').on('click', function() {
+                        var id1 = $(this).parent().attr('id');
+                        var btn=$(this).parent().parent().parent().parent().parent().parent();
+                        bootbox.confirm("Are You Sure to delete record?", function(result) {
+                            if(result){
+                                $.ajax({
+                                    url:"<?php echo url('items/distributions') ?>/"+id1,
+                                    type: 'post',
+                                    data: {_method: 'delete', _token :"{{csrf_token()}}"},
+                                    success:function(msg){
+                                        btn.hide("slow").next("hr").hide("slow");
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+
+
+            // Alternative pagination
+            $('.datatable-pagination').DataTable({
+                pagingType: "simple",
+                language: {
+                    paginate: {'next': 'Next &rarr;', 'previous': '&larr; Prev'}
+                }
+            });
+
+
+            // Datatable with saving state
+            $('.datatable-save-state').DataTable({
+                stateSave: true
+            });
+
+
+            // Scrollable datatable
+            $('.datatable-scroll-y').DataTable({
+                autoWidth: true,
+                scrollY: 300
+            });
+
+
+
+            // External table additions
+            // ------------------------------
+
+            // Add placeholder to the datatable filter option
+            $('.dataTables_filter input[type=search]').attr('placeholder','Type to filter...');
+
+
+            // Enable Select2 select for the length option
+            $('.dataTables_length select').select2({
+                minimumResultsForSearch: Infinity,
+                width: 'auto'
+            });
+
+        });
+        // AJAX sourced data
+        $(".addBulkRecord").click(function(){
+            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+            modaldis+= '<div class="modal-content">';
+            modaldis+= '<div class="modal-header bg-indigo">';
+            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i>Bulk Items Distributions</span>';
+            modaldis+= '</div>';
+            modaldis+= '<div class="modal-body">';
+            modaldis+= ' </div>';
+            modaldis+= '</div>';
+            modaldis+= '</div>';
+             $('body').css('overflow-y','scroll');
+
+            $("body").append(modaldis);
+            $("#myModal").modal("show");
+            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+            $(".modal-body").load("<?php echo url("distributions/items/bulk") ?>");
+            $("#myModal").on('hidden.bs.modal',function(){
+                $("#myModal").remove();
+            })
+
+        });
+
+        $(".addRecord").click(function(){
+            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+            modaldis+= '<div class="modal-content">';
+            modaldis+= '<div class="modal-header bg-indigo">';
+            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+            modaldis+= '<span id="myModalLabel" class="text-uppercase text-bold" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i>Single Client Items Distributions</span>';
+            modaldis+= '</div>';
+            modaldis+= '<div class="modal-body">';
+            modaldis+= ' </div>';
+            modaldis+= '</div>';
+            modaldis+= '</div>';
+             $('body').css('overflow-y','scroll');
+
+            $("body").append(modaldis);
+            $("#myModal").modal("show");
+            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+            $(".modal-body").load("<?php echo url("items/distributions/create") ?>");
+            $("#myModal").on('hidden.bs.modal',function(){
+                $("#myModal").remove();
+            })
+
+        });
         function closePrint () {
             document.body.removeChild(this.__container__);
         }
@@ -309,206 +250,204 @@
             oHiddFrame.src = sURL;
             document.body.appendChild(oHiddFrame);
         }
-        $(".addRegion").click(function(){
-            var modaldis = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
-            modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header">';
-            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i>Distribute Item</span>';
-            modaldis+= '</div>';
-            modaldis+= '<div class="modal-body">';
-            modaldis+= ' </div>';
-            modaldis+= '</div>';
-            modaldis+= '</div>';
-            $('body').css('overflow','hidden');
-
-            $("body").append(modaldis);
-            $("#myModal").modal("show");
-            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("inventory/disbursement/create") ?>");
-            $("#myModal").on('hidden.bs.modal',function(){
-                $("#myModal").remove();
-            })
-
-        });
-
-        $(".editRecord").click(function(){
-            var id1 = $(this).parent().attr('id');
-            var modaldis = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-            modaldis+= '<div class="modal-dialog" style="width:60%;margin-right: 20% ;margin-left: 20%">';
-            modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header">';
-            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update item distribution</span>';
-            modaldis+= '</div>';
-            modaldis+= '<div class="modal-body">';
-            modaldis+= ' </div>';
-            modaldis+= '</div>';
-            modaldis+= '</div>';
-            $('body').css('overflow','hidden');
-
-            $("body").append(modaldis);
-            $("#myModal").modal("show");
-            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("inventory/disbursement/edit") ?>/"+id1);
-            $("#myModal").on('hidden.bs.modal',function(){
-                $("#myModal").remove();
-            })
-
-        });
-        $(".showRecord").click(function(){
-            var id1 = $(this).parent().attr('id');
-            var modaldis = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-            modaldis+= '<div class="modal-dialog" style="width:60%;margin-right: 20% ;margin-left: 20%">';
-            modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header">';
-            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update item distribution</span>';
-            modaldis+= '</div>';
-            modaldis+= '<div class="modal-body">';
-            modaldis+= ' </div>';
-            modaldis+= '</div>';
-            modaldis+= '</div>';
-            $('body').css('overflow','hidden');
-
-            $("body").append(modaldis);
-            $("#myModal").modal("show");
-            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("inventory/disbursement/show") ?>/"+id1);
-            $("#myModal").on('hidden.bs.modal',function(){
-                $("#myModal").remove();
-            })
-
-        });
-
-        $(".deleteRecord").click(function(){
-            var id1 = $(this).parent().attr('id');
-            $(".deleteModule").show("slow").parent().parent().find("span").remove();
-            var btn = $(this).parent().parent();
-            $(this).hide("slow").parent().append("<span><br>Are You Sure <br /> <a href='#s' id='yes' class='btn btn-success btn-xs'><i class='fa fa-check'></i> Yes</a> <a href='#s' id='no' class='btn btn-danger btn-xs'> <i class='fa fa-times'></i> No</a></span>");
-            $("#no").click(function(){
-                $(this).parent().parent().find(".deleteRecord").show("slow");
-                $(this).parent().parent().find("span").remove();
-            });
-            $("#yes").click(function(){
-                $(this).parent().html("<br><i class='fa fa-spinner fa-spin'></i>deleting...");
-                $.get("<?php echo url('inventory/disbursement/remove') ?>/"+id1,function(data){
-                    btn.hide("slow").next("hr").hide("slow");
-                });
-            });
-        });
     </script>
 @stop
+@section('main_navigation')
+    <div class="sidebar-category sidebar-category-visible">
+        <div class="category-content no-padding">
+            <ul class="navigation navigation-main navigation-accordion">
+                <li ><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
+                <!-- Main -->
+
+                <li>
+                    <a href="#"><i class="icon-users"></i> <span>Clients</span></a>
+                    <ul>
+                        <li ><a href="{{url('clients')}}">Clients Management</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
+                    <ul>
+                        <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
+                        <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
+                        
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-stack"></i> <span>Client Referrals</span></a>
+                    <ul>
+                        <li ><a href="{{url('referrals')}}">Referrals</a></li>
+                    </ul>
+                </li>
+                <!-- /main -->
+                <!-- Forms -->
+                @permission('inventory')
+
+                <li class="active">
+                    <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
+                    <ul>
+                        <li class="active"><a href="{{url('items/distributions')}}">Item Distribution</a></li>
+                        <li><a href="{{url('inventory-received')}}">Received Items</a></li>
+                        <li><a href="{{url('inventory')}}">Items Inventory</a></li>
+                        <li ><a href="{{url('inventory-categories')}}">Items Categories</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
+                    <ul>
+                        <li><a href="{{url('cash/monitoring/provision')}}">Cash Distributions</a></li>
+                        <li><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
+                        <li><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
+                    </ul>
+                </li>
+                @endpermission
+            <!-- /forms -->
+                <!-- Forms -->
+
+                <li>
+                    <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
+                    <ul>
+                        <li><a href="{{url('cases')}}">Case Management</a></li>
+                        <li><a href="{{url('progressive/notices')}}">Progressive Note</a></li>
+                    </ul>
+                </li>
+                @permission('backup')
+            <!-- Backup Restore-->
+                
+                <li>
+                    <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
+                    <ul>
+                        <li><a href="{{url('backup/import/advanced')}}">Import data</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-download"></i> <span>Data Export</span></a>
+                    <ul>
+                        <li><a href="{{url('backup/export/advanced')}}">Export data</a></li>
+                    </ul>
+                </li>
+                <!-- End Backup Restore-->
+                @endpermission
+                @permission('reports')
+            <!-- Data visualization -->
+
+                <li>
+                    <a href="#"><i class="icon-graph"></i> <span> Reports</span></a>
+                    <ul>
+                        <li><a href="{{url('reports/clients')}}">Client Reports</a></li>
+                        <li ><a href="{{url('reports/assessments')}}">Assessments Reports</a></li>
+                        <li><a href="{{url('reports/referrals')}}">Referrals Reports</a></li>
+                        <li><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
+                    </ul>
+                </li>
+                <!-- /data visualization -->
+                @endpermission
+
+            <!-- Settings -->
+                @role('admin')
+
+                <li>
+                    <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
+                    <ul>
+                        <li><a href="{{url('countries')}}">Countries</a></li>
+                        <li><a href="{{url('regions')}}">Regions</a></li>
+                        <li><a href="{{url('districts')}}">Districts</a></li>
+                        <li><a href="{{url('camps')}}">Camps</a></li>
+                        <li><a href="{{url('origins')}}">Origins</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="icon-puzzle4"></i> <span>Vulnerability Codes</span></a>
+                    <ul>
+                        <li><a href="{{url('psncodes')}}">Codes</a></li>
+                        <li><a href="{{url('psncodes-categories')}}">Categories</a></li>
+                    </ul>
+                </li>
+
+                <!-- /appearance -->
+
+                <!-- Layout -->
+                <li class="navigation-header"><span>Users Managements</span> <i class="icon-menu" title="Users Managements"></i></li>
+                <li>
+                    <a href="#"><i class="icon-users"></i> <span>Users</span></a>
+                    <ul>
+                        <li><a href="{{url('users')}}">Manage Users</a></li>
+                        <li><a href="{{url('departments')}}">Departments</a></li>
+                        <li><a href="{{url('access/rights')}}">User Rights</a></li>
+                        <li><a href="{{url('audit/logs')}}">User Logs</a></li>
+                    </ul>
+                </li>
+                <li class="navigation-header"><span></span> <i class="icon-menu" title="Users Managements"></i></li>
+                <!-- /Settings -->
+                @endrole
+            </ul>
+        </div>
+    </div>
+@stop
+@section('page_title')
+   NFIs Items Distribution
+@stop
+@section('page_heading_title')
+    <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">  NFIs Items Distribution </span> </h4>
+    <a class="heading-elements-toggle"><i class="icon-more"></i></a>
+@stop
 @section('breadcrumb')
-    <ul class="page-breadcrumb ">
-        <li>
-            <a href="{{url('home')}}">Home</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="#">Inventory</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <span class="active">Items</span>
-        </li>
+    <ul class="breadcrumb">
+        <li><a href="{{url('home')}}"><i class="icon-home2 position-left"></i> Home</a></li>
+        <li><a href="{{url('items/distributions')}}"> NFIs Items Distribution</a></li>
     </ul>
 @stop
 @section('contents')
-    <div class="row">
-        <div class="col-md-12">
-            <!-- BEGIN EXAMPLE TABLE PORTLET-->
-            <div class="portlet light bordered">
-                <div class="portlet-title">
-                    <div class="caption font-dark">
-                        <i class="icon-settings font-dark"></i>
-                        <span class="caption-subject bold uppercase">Material support disbursements</span>
-                    </div>
-                    <div class="table-toolbar">
-                        <div class="row">
-                            <div class="col-md-8 pull-right">
-                                <div class="btn-group pull-right">
-                                    <a href="{{url('inventory/disbursement/beneficiaries')}}" class=" btn blue-madison"> <i class="fa fa-search"></i> Search Beneficiaries</a>
-                                    <a href="{{url('inventory/disbursement')}}" class="btn blue-madison"><i class="fa fa-server"></i> List All Records</a>
-                                    <a href="{{url('inventory/disbursement/import')}}" class="btn blue-madison"><i class="fa fa-download"></i> Import data</a>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="portlet-body">
-
-                    <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1">
-                        <thead>
-                        <tr>
-                            <th> SNO </th>
-                            <th> Progress number </th>
-                            <th> Full Name </th>
-                            <th> Address</th>
-                            <th> Item/materials </th>
-                            <th> Quantity  </th>
-                            <th> Donor type </th>
-                            <th> Date</th>
-                            <th> </th>
-                            <th class="text-center"> Action </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php $count=1;?>
-                        @if(count($disbursements)>0)
-                            @foreach($disbursements as $disbursement)
-                                <tr class="odd gradeX">
-                                    <td> {{$count++}} </td>
-                                    <td>
-                                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null )
-                                        {{$disbursement->beneficiary->progress_number}}
-                                            @endif
-                                    </td>
-                                    <td>
-                                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null )
-                                            {{$disbursement->beneficiary->full_name}}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if(is_object($disbursement->beneficiary) && $disbursement->beneficiary != null )
-                                            {{$disbursement->beneficiary->address}}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if(is_object($disbursement->item) && $disbursement->item != null )
-                                            {{$disbursement->item->item_name}}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        {{$disbursement->quantity}}
-                                    </td>
-                                    <td>
-                                        {{$disbursement->donor_type}}
-                                    </td>
-                                    <td>
-                                        {{$disbursement->distributed_date}}
-                                    </td>
-                                    <td class="text-center" id="{{$disbursement->id}}">
-                                        <a href="#" class="showRecord "> <i class="fa fa-eye"></i> </a>
-                                        <a href="#" class="  "> <i class="fa fa-print green " onclick="printPage('{{url('inventory/disbursement/print')}}/{{$disbursement->id}}');" ></i> </a>
-                                        <a href="{{url('inventory/disbursement/pdf')}}/{{$disbursement->id}}" class=" " title="Download"> <i class="fa fa-download text-danger "></i> </a>
-                                    </td>
-                                    <td class="text-center" id="{{$disbursement->id}}">
-                                        <a href="#"  class="editRecord btn"> <i class="fa fa-edit"></i> </a>
-                                        <a href="#" class="deleteRecord btn"> <i class="fa fa-trash text-danger"></i> </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
-
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <!-- END EXAMPLE TABLE PORTLET-->
+    <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-12 text-right">
+            @permission('create')
+            <a href="#" class="addRecord btn btn-primary "> <i class="fa fa-plus text-success"></i>Items Distributions</a>
+            @endpermission
+            <a href="{{url('distributions/items/bulk')}}" class=" btn btn-primary " title="Item distributions for multiple clients"> <i class="fa fa-plus text-success"></i>Bulk Items Distributions</a>
+            @permission('authorize')
+            <a  href="#" class="authorizeAllRecords btn btn-danger"><i class="fa fa-check "></i> <span>Authorize All</span></a>
+            @endpermission
+            <a href="{{url('items/distributions')}}" class="btn btn-primary"><i class="fa fa-list text-info"></i> List All Records</a>
+            <a href="{{url('inventory')}}" class="btn btn-primary " title="Go to Item inventory list"><i class="fa fa-reply text-danger"></i> Go to Inventory Items</a>
         </div>
+    </div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title text-uppercase text-bold text-center"> List of All  NFIs Items Distribution</h5>
+        </div>
+
+        <div class="panel-body">
+        </div>
+        <table class="table datatable-basic table-hover">
+            <thead>
+            <tr>
+                <th> SNO </th>
+                <th> Date </th>
+                <th> Distributed By</th>
+                <th> Comments </th>
+                <th> Camp </th>
+                <th class="text-center">
+                    Auth Status
+                </th>
+                <th class="text-center"> Action </th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td> SNO </td>
+                <td> Date </td>
+                <td> Distributed By</td>
+                <td> Comments </td>
+                <td> Camp </td>
+                <td class="text-center">
+                    Auth Status
+                </td>
+                <th class="text-center"> Action </th>
+            </tr>
+            </tfoot>
+        </table>
+        <!-- END EXAMPLE TABLE PORTLET-->
     </div>
 @stop

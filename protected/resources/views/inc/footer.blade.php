@@ -6,14 +6,14 @@
 
             <div class="navbar-collapse collapse" id="navbar-second">
                 <div class="navbar-text text-white">
-                    Copyright &copy; {{date("Y")}}. <a href="#" class="text-white">HelpAge International- Case Management Database for Person with Special needs</a>
+                    Copyright &copy; {{date("Y")}}. <a href="#" class="text-white">HelpAge International- Case Management Database for Person with Specific Needs</a>
                 </div>
 
                 <div class="navbar-right text-white">
                     <ul class="nav navbar-nav text-white">
                         <li><a href="#" class="text-white">Help center</a></li>
                         <li><a href="#" class="text-white">Policy</a></li>
-                        <li><a href="#" class="text-semibold text-white">User manual</a></li>
+                        <li><a href="{{asset('assets/templates/system_manual.pdf')}}" target="_blank" class="text-semibold text-white">User manual</a></li>
 
                     </ul>
                 </div>

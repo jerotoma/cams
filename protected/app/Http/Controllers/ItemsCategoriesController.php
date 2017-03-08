@@ -26,6 +26,20 @@ class ItemsCategoriesController extends Controller
         $categories=ItemsCategories::all();
         return view('inventory.categories.index',compact('categories'));
     }
+    public function getItemsList($id)
+    {
+        //
+        $sel= "<option></option>";
+        $categories=ItemsCategories::find($id);
+        if (count($categories->items) >0) {
+            foreach ($categories->items as $item) {
+                $sel .="<option value='" . $item->id . "'>" . $item->item_name . "</option>";
+            }
+        }
+        return $sel;
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -50,7 +64,7 @@ class ItemsCategoriesController extends Controller
             if (!count(ItemsCategories::where('category_name', '=', ucwords(strtolower($request->category_name)))->get()) > 0
                 && $request->category_name !="") {
                 $category = new ItemsCategories;
-                $category->category_name = $request->category_name;
+                $category->category_name = ucwords(strtolower($request->category_name));
                 $category->status = $request->status;
                 $category->description = $request->description;
                 $category->save();
@@ -93,7 +107,7 @@ class ItemsCategoriesController extends Controller
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
                 $category = new ItemsCategories;
-                $category->category_name = $request->category_name;
+                $category->category_name = ucwords(strtolower($request->category_name));
                 $category->status = $request->status;
                 $category->description = $request->description;
                 $category->save();

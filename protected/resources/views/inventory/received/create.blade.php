@@ -21,7 +21,11 @@
 <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
-    $('.pickadate').pickadate();
+    $('.pickadate').pickadate({
+
+        // Escape any “rule” characters with an exclamation mark (!).
+        format: 'yyyy-mm-dd',
+    });
 </script>
 
 <div class="portlet light bordered">
@@ -123,7 +127,7 @@
                 </div>
                 <div class="col-md-4 col-sm-4 pull-right text-right">
                     <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit Form </button>
                 </div>
 
             </div>
@@ -145,6 +149,42 @@
         },
         unhighlight: function(element, errorClass) {
             $(element).removeClass(errorClass);
+        },
+        errorPlacement: function(error, element) {
+
+            // Styled checkboxes, radios, bootstrap switch
+            if (element.parents('div').hasClass("checker") || element.parents('div').hasClass("choice") || element.parent().hasClass('bootstrap-switch-container') ) {
+                if(element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                    error.appendTo( element.parent().parent().parent().parent() );
+                }
+                else {
+                    error.appendTo( element.parent().parent().parent().parent().parent() );
+                }
+            }
+
+            // Unstyled checkboxes, radios
+            else if (element.parents('div').hasClass('checkbox') || element.parents('div').hasClass('radio')) {
+                error.appendTo( element.parent().parent().parent() );
+            }
+
+            // Input with icons and Select2
+            else if (element.parents('div').hasClass('has-feedback') || element.hasClass('select2-hidden-accessible')) {
+                error.appendTo( element.parent() );
+            }
+
+            // Inline checkboxes, radios
+            else if (element.parents('label').hasClass('checkbox-inline') || element.parents('label').hasClass('radio-inline')) {
+                error.appendTo( element.parent().parent() );
+            }
+
+            // Input group, styled file input
+            else if (element.parent().hasClass('uploader') || element.parents().hasClass('input-group')) {
+                error.appendTo( element.parent().parent() );
+            }
+
+            else {
+                error.insertAfter(element);
+            }
         },
         errorElement:'div',
         rules: {
