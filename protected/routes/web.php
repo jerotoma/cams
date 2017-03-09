@@ -246,8 +246,8 @@ Route::get('reports/clients',[
 Route::get('generate/reports/clients','ClientReportsController@index');
 Route::post('generate/reports/clients','ClientReportsController@postGenerate');
 
-Route::get('reports/nfis','AssessmentReportsController@index');
-Route::post('reports/nfis','AssessmentReportsController@generateReport');
+Route::get('reports/nfis','InventoryReportsController@index');
+Route::post('reports/nfis','InventoryReportsController@generateReport');
 
 Route::get('reports/assessments','AssessmentReportsController@index');
 Route::post('reports/assessments','AssessmentReportsController@generateReport');

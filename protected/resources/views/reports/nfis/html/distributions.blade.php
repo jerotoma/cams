@@ -30,7 +30,8 @@
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
 @section('scripts')
-
+    {!! Html::script("assets/highcharts/js/highcharts.js") !!}
+    {!! Html::script("assets/highcharts/js/modules/exporting.js") !!}
     <script>
         $('.pickadate').pickadate({
 
@@ -306,6 +307,96 @@
                 export_type: "Please this field is required",
                 report_type: "Please this field is required"
             }
+        });
+
+        $('#ageGroup').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Items Distributions Age groups'
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            @if($request->camp_id =="All")
+            series: [{
+                name: 'Clients',
+                colorByPoint: true,
+                data: [<?php echo getHighChatItemsDistributionByAgeGroup($range);?>]
+            }]
+            @else
+            series: [{
+                name: 'Clients',
+                colorByPoint: true,
+                data: [<?php echo getHighChatItemsDistributionByAgeGroupByCamp($range,$request->camp_id);?>]
+            }]
+            @endif
+
+        });
+        $('#clientsNeeds').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Items distribution vs vulnerabilities'
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            @if($request->camp_id =="All")
+            series: [{
+                name: 'Clients',
+                colorByPoint: true,
+                data: [<?php echo getHighChatItemsDistributionByVulnerability($range);?>]
+            }]
+            @else
+            series: [{
+                name: 'Clients',
+                colorByPoint: true,
+                data: [<?php echo getHighChatItemsDistributionByVulnerabilityByCamp($range,$request->camp_id);?>]
+            }]
+            @endif
         });
     </script>
 
@@ -780,6 +871,13 @@
             </div>
         </div>
 
-
+        <div class="row">
+            <div class="col-md-6">
+                <div style="min-width: 410px; height: 500px; margin: 0 auto" id="ageGroup"></div>
+            </div>
+            <div class="col-md-6">
+                <div style="min-width: 410px; height: 500px; margin: 0 auto" id="clientsNeeds"></div>
+            </div>
+        </div>
     </div>
 @stop

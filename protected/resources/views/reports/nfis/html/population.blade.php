@@ -30,7 +30,8 @@
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
 @section('scripts')
-
+    {!! Html::script("assets/highcharts/js/highcharts.js") !!}
+    {!! Html::script("assets/highcharts/js/modules/exporting.js") !!}
     <script>
         $('.pickadate').pickadate({
 
@@ -307,6 +308,96 @@
                 report_type: "Please this field is required"
             }
         });
+
+        $('#ageGroup').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Cash Distributions Age groups'
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+           @if($request->camp_id =="All")
+            series: [{
+                name: 'Clients',
+                colorByPoint: true,
+                data: [<?php echo getHighChatCashDistributionByAgeGroup($range);?>]
+            }]
+            @else
+            series: [{
+                name: 'Clients',
+                colorByPoint: true,
+                data: [<?php echo getHighChatCashDistributionByAgeGroupByCamp($range,$request->camp_id);?>]
+            }]
+            @endif
+
+        });
+        $('#clientsNeeds').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Cash distribution vs vulnerabilities'
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            @if($request->camp_id =="All")
+            series: [{
+                name: 'Clients',
+                colorByPoint: true,
+                data: [<?php echo getHighChatCashDistributionByVulnerability($range);?>]
+            }]
+            @else
+            series: [{
+                name: 'Clients',
+                colorByPoint: true,
+                data: [<?php echo getHighChatCashDistributionByVulnerabilityByCamp($range,$request->camp_id);?>]
+            }]
+            @endif
+        });
     </script>
 
 @stop
@@ -508,7 +599,7 @@
                                 <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumber('A','Male',$range)}}</td>
                                 <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInPercentage('A','Male',$range)}}</td>
                                 <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumber('A','Female',$range)}}</td>
-                                <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentage('A','Female',$range)}} </td>
+                                <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInPercentage('A','Female',$range)}} </td>
                                 <td  valign="bottom">{{getClientCountCashProvisionByCriteriaInNumberTotal('A',$range)}} </td>
                                 <td  valign="top">{{getClientCountCashProvisionByCriteriaInPercentageTotal('A',$range)}}</td>
                             </tr>
@@ -632,4 +723,13 @@
 
 
     </div>
+   <div class="row">
+        <div class="col-md-6">
+            <div style="min-width: 410px; height: 500px; margin: 0 auto" id="ageGroup"></div>
+        </div>
+        <div class="col-md-6">
+            <div style="min-width: 410px; height: 500px; margin: 0 auto" id="clientsNeeds"></div>
+        </div>
+    </div>
+
 @stop

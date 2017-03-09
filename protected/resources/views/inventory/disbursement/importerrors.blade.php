@@ -421,7 +421,6 @@
                         <thead>
                         <tr>
                             <th>No</th>
-                            <th>Unique id</th>
                             <th>Names</th>
                             <th>Sex</th>
                             <th>Age</th>
@@ -443,7 +442,6 @@
                                 <td class="text-center">
                                     {{$co++}}
                                 </td>
-                                <th>{{$client->unique_id}}</th>
                                 <th @if($client->names =="") bgcolor="red" @endif>{{$client->names}}</th>
                                 <th @if($client->sex =="") bgcolor="red" @endif>{{$client->sex}}</th>
                                 <th @if($client->age =="") bgcolor="red" @endif>{{$client->age}}</th>
@@ -462,7 +460,6 @@
                         <tfoot>
                         <tr>
                             <th>No</th>
-                            <th>Unique id</th>
                             <th>Names</th>
                             <th>Sex</th>
                             <th>Age</th>

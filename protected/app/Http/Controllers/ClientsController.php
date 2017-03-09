@@ -8,6 +8,7 @@ use App\Country;
 use App\DumpClient;
 use App\Origin;
 use App\PSNCode;
+use App\PSNCodeCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -603,32 +604,67 @@ class ClientsController extends Controller
                         foreach ($psnCodes as $data )
                         {
                            if($data != "" && $data != null) {
-                               $hai_psn_code .= $data . "-";
+                               $hai_psn_code .= preg_replace('/\s+/S', "",$data) . "-";
                            }
                         }
                         $hai_psn_code=substr($hai_psn_code,0,strlen($hai_psn_code)-1);
                         $client->hai_reg_number="HAI-".str_pad($client->id,4,'0',STR_PAD_LEFT).$hai_psn_code;
                         $client->save();
 
-                        $vn="";
-                        foreach ($psnCodes as $data ){
-                            $vn .= $data."-,";
-                            $vn=substr($vn,0,strlen($vn)-1);
-                        }
                         //Save validation codes
-
-                        foreach ($psnCodes as $data )
+                        foreach ($psnCodes as $codeData )
                         {
 
+                            $code =preg_replace('/\s+/S', "",$codeData);
                             $pcode="";
-                            if($data != "" && $data != null) {
-                                if (count(PSNCode::where('code', '=', strtoupper(strtolower($data)))->get()) > 0) {
-                                    $pcode = PSNCode::where('code', '=', strtoupper(strtolower($data)))->get()->first();
-                                } else {
-                                    $psc = new PSNCode;
-                                    $psc->code = strtoupper(strtolower($data));
-                                    $psc->save();
-                                    $pcode = $psc;
+                            if($code != "")
+                            {
+
+                              if (count(PSNCode::where('code', '=',$code)->get()) > 0)
+                                {
+                                    $pcode = PSNCode::where('code', '=',$code)->get()->first();
+
+                                }
+                                else
+                                    {
+
+                                        $categorycode="";
+                                        $arr=explode('-',$code);
+                                        if (isset($arr[0])) {
+                                            $categorycode = $arr[0];
+
+                                        }
+                                        $psncategory="";
+
+                                        if (count(PSNCodeCategory::where('code','=',$categorycode)->get()) > 0)
+                                        {
+                                            $psncategory=PSNCodeCategory::where('code','=',$categorycode)
+                                                         ->get()->first();
+
+
+                                        }
+                                        else{
+                                            $psncate = new PSNCodeCategory;
+                                            $psncate->code = $categorycode;
+                                            $psncate->description = $categorycode;
+                                            $psncate->definition = $categorycode;
+                                            $psncate->for_reporting = "Yes";
+                                            $psncate->created_by = Auth::user()->username;
+                                            $psncate->save();
+                                            $psncategory=$psncate;
+                                        }
+                                        if ($psncategory != "" && $code != "") {
+
+                                            $psc = new PSNCode;
+                                            $psc->code = strtoupper(strtolower($code));
+                                            $psc->category_id = $psncategory->id;
+                                            $psc->description = $code;
+                                            $psc->definition = $code;
+                                            $psc->for_reporting = "Yes";
+                                            $psc->definition = Auth::user()->username;
+                                            $psc->save();
+                                            $pcode = $psc;
+                                        }
                                 }
                                 if ($pcode != "") {
                                     $codes = new ClientVulnerabilityCode;
@@ -636,6 +672,7 @@ class ClientsController extends Controller
                                     $codes->code_id = $pcode->id;
                                     $codes->save();
                                 }
+
                             }
                         }
 
@@ -721,7 +758,6 @@ class ClientsController extends Controller
         }
         catch (\Exception $e)
         {
-            //echo $e->getMessage();
             return  redirect()->back()->with('error',$e->getMessage());
         }
     }
