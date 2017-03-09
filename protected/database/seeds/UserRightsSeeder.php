@@ -38,7 +38,7 @@ class UserRightsSeeder extends Seeder
 
         $inventory= new \App\Role();
         $inventory->name         = 'inventory';
-        $inventory->display_name = 'inventory'; // optional
+        $inventory->display_name = 'NFIs and Cash Distribution'; // optional
         $inventory->description  = 'Access to inventory'; // optional
         $inventory->save();
 
@@ -93,10 +93,10 @@ class UserRightsSeeder extends Seeder
         $backup->save();
 
         $admin->attachPermissions(array($create, $edit,$view,$delete,$authorze,$reports,$nfis,$backup));
-        $inputer->attachPermissions(array($create, $edit,$view,$delete,$backup));
-        $authorizer->attachPermissions(array($authorze,$edit,$view,$delete));
+        $inputer->attachPermissions(array($create, $edit,$view,$delete,$nfis,$backup));
+        $authorizer->attachPermissions(array($authorze,$edit,$view,$delete,$nfis));
         $viewer->attachPermissions(array($view,$reports));
-        $inventory->attachPermissions(array($create, $edit,$view,$delete,$backup));
+        $inventory->attachPermissions(array($create, $edit,$view,$delete,$nfis,$backup));
 
         $user = \App\User::where('username', '=', 'admin')->first();
         $user->attachRole($admin);

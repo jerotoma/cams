@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 
 use App\Camp;
 use App\Client;
+use App\DumpItemsDisbursement;
 use App\ItemsCategories;
 use App\ItemsDisbursement;
 use App\ItemsDisbursementItems;
 use App\ItemsInventory;
+use App\Origin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -205,6 +207,29 @@ class ItemsDisbursementController extends Controller
         //
         return view('inventory.disbursement.import');
     }
+    public function showImportErrors()
+    {
+
+        if (Auth::user()->can('edit')) {
+            $clients=DumpItemsDisbursement::all();
+            return view('inventory.disbursement.importerrors',compact('clients'));
+        }
+        else
+        {
+            return redirect('home');
+        }
+    }
+    public function downloadImportErrors()
+    { ob_clean();
+        $clients = DumpItemsDisbursement::all();
+        \Excel::create("list_of_clients_failed_import", function($excel) use($clients)  {
+            $excel->sheet('sheet', function($sheet) use($clients){
+                $sheet->loadView('inventory.disbursement.excel',compact('clients'));
+            });
+        })->download('xlsx');
+    }
+
+
     
     public function postImport(Request $request)
     {
@@ -253,6 +278,8 @@ class ItemsDisbursementController extends Controller
          if (!isItemOutOfStockNoQ($request->item_id)) {
 
 
+             \DB::table('dump_items_disbursements')->truncate();
+
              $file = $request->file('items_distribution_file');
              $destinationPath = public_path() . '/uploads/temp/';
              $filename = str_replace(' ', '_', $file->getClientOriginalName());
@@ -277,41 +304,76 @@ class ItemsDisbursementController extends Controller
 
                          $results->each(function ($row) use ($request,$distribution) {
 
-                             if ($row->names != "" && $row->names != null && $row->sex != "" && $row->sex != null) {
-                                 $sex = "";
-                                 if (strtolower($row->sex) == "k" || strtolower($row->sex) == "mk" || strtolower($row->sex) == "f") {
-                                     $sex = "Female";
-                                 } else {
-                                     $sex = "Male";
-                                 }
-                                 $client_number = strtoupper(strtolower(preg_replace('/\s+/S', "", $row->unique_id)));
-                                 $full_name = ucwords(strtolower(preg_replace('/\s+/S', " ", $row->names)));
-                                 $age = intval($row->age);
-                                 $present_address = ucwords(strtolower(preg_replace('/\s+/S', " ", $row->present_address)));
-                                 $ration_card_number = strtoupper(strtolower(preg_replace('/\s+/S', "", $row->ration_card_number)));
+                              if($row->names != "" && $row->sex !="" && is_numeric($row->age) && $row->marital_status !="" &&
+                                 is_numeric($row->m) &&  is_numeric($row->f) &&  is_numeric($row->t) &&
+								 $row->origin != "" && $row->date_of_arrival !="" && $row->vul_1 !="" && is_numeric($row->quantity) )
+                              {
+                                $sex ="";
+								if(strtolower($row->sex) =="k" || strtolower($row->sex) =="mk" || strtolower($row->sex) =="f")
+								{
+									$sex = "Female";
+								}
+								else
+								{
+									$sex = "Male";
+								}
+								$full_name=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->names)));
+								$age=intval($row->age);
+								$marital_status=ucwords(strtolower(preg_replace('/\s+/S', "",$row->marital_status)));
+								$date_arrival=null;
+								if($row->date_of_arrival != "") {
+									$date_arrival = date("Y-m-d", strtotime(preg_replace('/\s+/S', "",$row->date_of_arrival)));
+								}
+
+								$origin="";
+								$origin_name=ucwords(strtolower(preg_replace('/\s+/S', "", $row->origin)));
+								if($origin_name =="Nyarugusu" || $origin_name =="Nyrugusu" || $origin_name =="Nyarugusi"|| $origin_name =="Nyaruguu"){
+
+									$origin_name="Nyarugusu";
+								}
+
+								$females_total=intval($row->f);
+								$males_total=intval($row->m);
+								$household_number=$females_total+$males_total;
+
+								$origin_id="";
+								if($row->origin !="") {
+									if (count(Origin::where('origin_name', '=', $origin_name)->get()) > 0) {
+										$origin = Origin::where('origin_name', '=', $origin_name)->get()->first();
+										$origin_id=$origin->id;
+									}
+								}
                                  $quantity = intval($row->quantity);
 
-                                 if (count(Client::where('client_number', '=', $client_number)
-                                         ->where('full_name', '=', $full_name)
-                                         ->where('age', '=', $age)
-                                         ->where('sex', '=', $sex)
-                                         ->where('camp_id', '=', $request->camp_id)
-                                         ->where('present_address', '=', $present_address)
-                                         ->where('ration_card_number', '=', $ration_card_number)->get()) > 0
-                                 ) {
+                                 if(count(Client::where('full_name','=',$full_name)
+											->where('age','=',$age)
+											->where('sex','=',$sex)
+											->where('marital_status','=',$marital_status)
+											->where('date_arrival','=',$date_arrival)
+											->where('household_number','=',$household_number)
+											->where('females_total','=',$females_total)
+											->where('males_total','=',$males_total)
+											->where('origin_id','=',$origin_id)
+											->where('camp_id','=',$request->camp_id)
+											->get()) > 0)
+                                 {
 
-                                     $client = Client::where('client_number', '=', $client_number)
-                                         ->where('full_name', '=', $full_name)
-                                         ->where('age', '=', $age)
-                                         ->where('sex', '=', $sex)
-                                         ->where('camp_id', '=', $request->camp_id)
-                                         ->where('present_address', '=', $present_address)
-                                         ->where('ration_card_number', '=', $ration_card_number)->get()->first();
+                                     $client = Client::where('full_name','=',$full_name)
+											->where('age','=',$age)
+											->where('sex','=',$sex)
+											->where('marital_status','=',$marital_status)
+											->where('date_arrival','=',$date_arrival)
+											->where('household_number','=',$household_number)
+											->where('females_total','=',$females_total)
+											->where('males_total','=',$males_total)
+											->where('origin_id','=',$origin_id)
+											->where('camp_id','=',$request->camp_id)
+											->get()->first();
 
 
                                      if ($client != null && count($client) > 0) {
 
-                                         if (isNotInDistributionLimit($request->item_id, $client->id,$distribution->disbursements_date)) {
+                                         if (!isInDistributionLimit($request->item_id, $client->id,$distribution->disbursements_date)) {
 
                                              if (!isItemOutOfStock($request->item_id,$quantity)) {
 
@@ -332,14 +394,125 @@ class ItemsDisbursementController extends Controller
                                                      }
                                                  }
                                              }
+											 else
+											 {
+												$client =new DumpItemsDisbursement;
+												$client->names=$row->names;
+												$client->sex=$row->sex;
+												$client->age = $row->age;
+												$client->marital_status=$row->marital_status;
+												$client->m=$row->m;
+												$client->f=$row->f;
+												$client->t=$row->t;
+												$client->origin=$row->origin;
+												$client->date_of_arrival=$row->date_of_arrival;
+												$client->vul_1=$row->vul_1;
+												$client->quantity=intval($row->quantity);
+												$client->error_descriptions="Item is out of stock ";
+												$client->save();
+												$this->import_errors="Missing filed is marked with red";
+											 }
 
 
                                          }
+										 else
+										 {
+											   $client =new DumpItemsDisbursement;
+												$client->names=$row->names;
+												$client->sex=$row->sex;
+												$client->age = $row->age;
+												$client->marital_status=$row->marital_status;
+												$client->m=$row->m;
+												$client->f=$row->f;
+												$client->t=$row->t;
+												$client->origin=$row->origin;
+												$client->date_of_arrival=$row->date_of_arrival;
+												$client->vul_1=$row->vul_1;
+												$client->quantity=intval($row->quantity);
+												$client->error_descriptions="Client is not eligible to receive the item, is in distribution limit ";
+												$client->save();
+												$this->import_errors="Missing filed is marked with red";
+										 }
                                      }
 
                                  }
+								 else
+								 {
+									 $client =new DumpItemsDisbursement;
+									$client->names=$row->names;
+									$client->sex=$row->sex;
+									$client->age = $row->age;
+									$client->marital_status=$row->marital_status;
+									$client->m=$row->m;
+									$client->f=$row->f;
+									$client->t=$row->t;
+									$client->origin=$row->origin;
+									$client->date_of_arrival=$row->date_of_arrival;
+									$client->vul_1=$row->vul_1;
+									$client->quantity=intval($row->quantity);
+									$client->error_descriptions="Client is not registered";
+									$client->save();
+									$this->import_errors="Missing filed is marked with red";
+								 }
 
                              }
+							 else
+							 {
+								 $filed_error="";
+
+								if($row->names == "" ){
+									$filed_error .="Names is  Missing-";
+								}
+								if( $row->sex == "" ){
+									$filed_error .="Sex is Missing-";
+								}
+								if(  !is_numeric($row->age)){
+									$filed_error .="Age is Missing-";
+								}
+								if( $row->marital_status == "" ){
+									$filed_error .="Marital Status is Missing-";
+								}
+								if( !is_numeric($row->m) ){
+									$filed_error .="Number of males is Missing-";
+								}
+								if( !is_numeric($row->f)){
+									$filed_error .="Number of females is Missing-";
+								}
+								if( !is_numeric($row->t) ){
+									$filed_error .="HouseHold Number is Missing-";
+								}
+								if( $row->origin ==""){
+									$filed_error .="Origin is Missing-";
+								}
+								if( $row->date_of_arrival == "" ){
+									$filed_error .="date of arrival is Missing-";
+								}
+								if( !is_numeric($row->quantity)){
+									$filed_error .="Quantity is Missing-";
+								}
+							
+								if( $row->vul_1 == "" ){
+									$filed_error .="Vulnerability code(s) is Missing-";
+								}
+								$filed_error=substr($filed_error,0,strlen($filed_error)-1);
+
+								$client =new DumpItemsDisbursement;
+								$client->names=$row->names;
+								$client->sex=$row->sex;
+								$client->age = $row->age;
+								$client->marital_status=$row->marital_status;
+								$client->m=$row->m;
+								$client->f=$row->f;
+								$client->t=$row->t;
+								$client->origin=$row->origin;
+								$client->date_of_arrival=$row->date_of_arrival;
+								$client->vul_1=$row->vul_1;
+								$client->quantity=intval($row->quantity);
+								$client->error_descriptions=$filed_error;
+								$client->save();
+                                $this->import_errors="Missing filed is marked with red";
+                                }
+
 
                          });
                      } else {
@@ -356,7 +529,7 @@ class ItemsDisbursementController extends Controller
 
                                  $client = Client::where('hai_reg_number', '=', $row->hai_reg_number)->get()->first();
 
-                                 if (isNotInDistributionLimit($request->item_id, $client->id,$distribution->disbursements_date)) {
+                                 if (!isInDistributionLimit($request->item_id, $client->id,$distribution->disbursements_date)) {
 
                                      if (!isItemOutOfStock($request->item_id,intval($row->quantity))) {
 
@@ -377,27 +550,86 @@ class ItemsDisbursementController extends Controller
                                              }
                                          }
                                      }
+									 else
+									 {
+										 $client =new DumpItemsDisbursement;
+										$client->names=$row->names;
+										$client->sex=$row->sex;
+										$client->age = $row->age;
+										$client->marital_status=$row->marital_status;
+										$client->m=$row->m;
+										$client->f=$row->f;
+										$client->t=$row->t;
+										$client->origin=$row->origin;
+										$client->date_of_arrival=$row->date_of_arrival;
+										$client->vul_1=$row->vul_1;
+										$client->quantity=intval($row->quantity);
+										$client->error_descriptions="Item is out of stock";
+										$client->save();
+										$this->import_errors="Missing filed is marked with red";
+									 }
 
 
                                  }
+								 else{
+									 $client =new DumpItemsDisbursement;
+									$client->names=$row->names;
+									$client->sex=$row->sex;
+									$client->age = $row->age;
+									$client->marital_status=$row->marital_status;
+									$client->m=$row->m;
+									$client->f=$row->f;
+									$client->t=$row->t;
+									$client->origin=$row->origin;
+									$client->date_of_arrival=$row->date_of_arrival;
+									$client->vul_1=$row->vul_1;
+									$client->quantity=intval($row->quantity);
+									$client->error_descriptions="Client is not eligible to receive item, is in distribution limit";
+									$client->save();
+									$this->import_errors="Missing filed is marked with red";
+								 }
 
                              }
+							 else
+							 {
+								$client =new DumpItemsDisbursement();
+								$client->names=$row->names;
+								$client->sex=$row->sex;
+								$client->age = $row->age;
+								$client->marital_status=$row->marital_status;
+								$client->m=$row->m;
+								$client->f=$row->f;
+								$client->t=$row->t;
+								$client->origin=$row->origin;
+								$client->date_of_arrival=$row->date_of_arrival;
+								$client->vul_1=$row->vul_1;
+								$client->quantity=intval($row->quantity);
+								$client->error_descriptions="Client is not registered in selected camp";
+								$client->save();
+                                $this->import_errors="Missing filed is marked with red";
+							 }
                          });
                      }
 
 
              });
 
-             File::delete($orfile);
+                 File::delete($orfile);
 
-             //Audit trail
-             AuditRegister("ItemsDisbursementController","Imported Item Distribution ",$orfile);
+                 //Audit trail
+                 if ($this->import_errors =="") {
+                     AuditRegister("ItemsDisbursementController", "Imported Item Distribution ", $orfile);
 
-            return redirect('items/distributions');
+                     return redirect('items/distributions');
+                 }
+                 else
+                 {
+                     return redirect('import/items/distributions/error');
+                 }
 
-         }else{
-             return redirect()->back()->with('error','Item is out of stock');
-         }
+             }else{
+                 return redirect()->back()->with('error','Item is out of stock');
+             }
 
         }
         catch (\Exception $ex)
@@ -435,7 +667,7 @@ class ItemsDisbursementController extends Controller
                     $client=Client::where('hai_reg_number','=',$request->hai_reg_number)->get()->first();
 
 
-                    if (!isNotInDistributionLimit($request->item_id, $client->id,date('Y-m-d', strtotime($request->disbursements_date)))) {
+                    if (!!isInDistributionLimit($request->item_id, $client->id,date('Y-m-d', strtotime($request->disbursements_date)))) {
 
                             if (!isItemOutOfStock($request->item_id,intval($request->quantity))) {
 
@@ -592,7 +824,7 @@ class ItemsDisbursementController extends Controller
                     $client=Client::where('hai_reg_number','=',$request->hai_reg_number)->get()->first();
 
 
-                    if (!isNotInDistributionLimit($request->item_id, $client->id,date('Y-m-d', strtotime($request->disbursements_date)))) {
+                    if (!!isInDistributionLimit($request->item_id, $client->id,date('Y-m-d', strtotime($request->disbursements_date)))) {
 
                         if (!isItemOutOfStock($request->item_id,intval($request->quantity))) {
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\ClientVulnerabilityCode;
 use App\Country;
+use App\DumpClient;
 use App\Origin;
 use App\PSNCode;
 use Illuminate\Http\Request;
@@ -17,9 +18,11 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ClientsController extends Controller
 {
+    protected $import_errors;
     public function __construct()
     {
         $this->middleware('auth');
+        $this->import_errors="";
     }
     /**
      * Display a listing of the resource.
@@ -39,6 +42,28 @@ class ClientsController extends Controller
         }
 
     }
+    public function showImportErrors()
+    {
+
+        if (Auth::user()->can('edit')) {
+            $clients = DumpClient::all();
+            return view('clients.importerrors', compact('clients'));
+        }
+        else
+        {
+            return redirect('home');
+        }
+    }
+    public function downloadImportErrors()
+    { ob_clean();
+        $clients = DumpClient::all();
+        \Excel::create("list_of_clients_failed_import", function($excel) use($clients)  {
+            $excel->sheet('sheet', function($sheet) use($clients){
+                $sheet->loadView('clients.excel', compact('clients'));
+            });
+        })->download('xlsx');
+    }
+
     public function AuthorizeAll()
     {
         //
@@ -286,6 +311,7 @@ class ClientsController extends Controller
     {
         return view('clients.search');
     }
+	
     public function advancedSearchClient(Request $request)
     {
       try {
@@ -458,6 +484,9 @@ class ClientsController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
 
             }
+            
+            \DB::table('dump_clients')->truncate();
+
             $extension= strtolower($request->file('clients_import')->getClientOriginalExtension());
             if($extension !="xlsx" && $extension !="xls")
             {
@@ -474,9 +503,9 @@ class ClientsController extends Controller
                 $reader->formatDates(false, 'Y-m-d');
                 $results= $reader->get();
                 $results->each(function($row) use($request) {
-
-            if($row->names != "" && $row->sex != "" && $row->age != "" && $row->marital_status != "" &&
-                $row->m != "" &&  $row->f != "" &&  $row->t != "" && $row->origin !="" && $row->date_of_arrival != "" && $row->vul_1 != "" ){
+                   
+            if($row->names != "" && $row->sex !="" && is_numeric($row->age) && $row->marital_status !="" &&
+                is_numeric($row->m) &&  is_numeric($row->f) &&  is_numeric($row->t) && $row->origin != "" && $row->date_of_arrival !="" && $row->vul_1 !="" ){
                     $sex ="";
                     if(strtolower($row->sex) =="k" || strtolower($row->sex) =="mk" || strtolower($row->sex) =="f")
                     {
@@ -505,9 +534,10 @@ class ClientsController extends Controller
 
                         $origin_name="Nyarugusu";
                     }
-                    $household_number=intval($row->t);
+
                     $females_total=intval($row->f);
                     $males_total=intval($row->m);
+                    $household_number=$females_total+$males_total;
 
                     $origin_id="";
                     if($row->origin !="") {
@@ -611,13 +641,83 @@ class ClientsController extends Controller
 
                     }
                 }
+                else{
+                   $filed_error="";
+
+                    if($row->names == "" ){
+                        $filed_error .="Names is  Missing-";
+                    }
+                    if( $row->sex == "" ){
+                        $filed_error .="Sex is Missing-";
+                    }
+                    if(  !is_numeric($row->age)){
+                        $filed_error .="Age is Missing-";
+                    }
+                    if( $row->marital_status == "" ){
+                        $filed_error .="Marital Status is Missing-";
+                    }
+                    if( !is_numeric($row->m) ){
+                        $filed_error .="Number of males is Missing-";
+                    }
+                    if( !is_numeric($row->f)){
+                        $filed_error .="Number of females is Missing-";
+                    }
+                    if( !is_numeric($row->t) ){
+                        $filed_error .="HouseHold Number is Missing-";
+                    }
+                    if( $row->origin ==""){
+                        $filed_error .="Origin is Missing-";
+                    }
+                    if( $row->date_of_arrival == "" ){
+                        $filed_error .="date of arrival is Missing-";
+                    }
+                    if( $row->vul_1 == "" ){
+                        $filed_error .="Vulnerability code(s) is Missing-";
+                    }
+                    $filed_error=substr($filed_error,0,strlen($filed_error)-1);
+
+                    $client =new DumpClient;
+                    $client->unique_id=$row->unique_id;
+                    $client->names=$row->names;
+                    $client->sex=$row->sex;
+					$client->age = $row->age;
+                    $client->marital_status=$row->marital_status;
+                    $client->name_of_parents=$row->name_of_parents;
+                    $client->name_of_spouse=$row->name_of_spouse;
+                    $client->m=$row->m;
+                    $client->f=$row->f;
+                    $client->t=$row->t;
+                    $client->origin=$row->origin;
+                    $client->date_of_arrival=$row->date_of_arrival;
+                    $client->present_address=$row->present_address;
+                    $client->ration_card_number=$row->ration_card_number;
+                    $client->vul_1=$row->vul_1;
+                    $client->vul_2=$row->vul_2;
+                    $client->vul_3=$row->vul_3;
+                    $client->vul_4=$row->vul_4;
+                    $client->vul_5=$row->vul_5;
+                    $client->error_descriptions=$filed_error;
+                    $client->save();
+                    $this->import_errors="Missing filed is marked with red";
+                }
+				
             });
 
             });
             File::delete($orfile);
             //Audit trail
-            AuditRegister("ClientsController","Import Clients",$orfile);
-           return redirect('clients');
+            
+			
+			AuditRegister("ClientsController","Import Clients",$orfile);
+            if ($this->import_errors ==""){
+                return redirect('clients');
+            }
+            else
+            {
+                return redirect('import/clients/errors');
+            }
+			
+
         }
         catch (\Exception $e)
         {
