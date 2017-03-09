@@ -66,7 +66,7 @@
                                             <optgroup label="Report Type">
                                                 <option></option>
                                                 <option value="1">List of Clients with needs (Population Age Sex Group)</option>
-                                                <option value="2">List of Clients without Assessment</option>
+                                                <option value="2">List of Clients without Assessment Forms</option>
                                                 <option value="3">List of Assessed Clients</option>
                                             </optgroup>
                                         </select>
