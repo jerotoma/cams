@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Role;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
@@ -65,6 +66,7 @@ class UserController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'userpass' => 'required|min:8',
+                'passconfirmation' => 'required|same:userpass',
                 'old_userpass' => 'required',
             ]);
 
@@ -74,12 +76,22 @@ class UserController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
-                if(count(User::where('id','=',Auth::user()->id)->where('password','=',bcrypt($request->old_userpass))->get()) > 0) {
-                    $user = User::find(Auth::user()->id);
+
+                $user = User::find(Auth::user()->id);
+                if(!Hash::check($request->old_userpass, $user->password)){
+
+                    return Response::json(array(
+                        'success' => false,
+                        'errors' =>1,
+                        'message' =>'<div class="alert alert-danger">Password change failed! Invalid old password</div>'
+                    ), 200); // 400 being the HTTP code for an invalid request.
+                }
+                else
+                {
                     $user->password = bcrypt($request->userpass);
                     $user->save();
                     //Audit log
-                    $auditMsg = "Changed password for " . $user->username . " with status " . $user->status;
+                    //$auditMsg = "Changed password for " . $user->username . " with status " . $user->status;
 
                     //Audit trail
                     AuditRegister("postChangePassword","Update",$user);
@@ -88,14 +100,6 @@ class UserController extends Controller
                         'errors' =>0,
                         'message' => "Your have changed your password"
                     ], 200);
-                }
-                else
-                {
-                    return Response::json(array(
-                        'success' => false,
-                        'errors' =>1,
-                        'message' =>'<div class="alert alert-danger">Password change failed! Invalid old password</div>'
-                    ), 200); // 400 being the HTTP code for an invalid request.
                 }
             }
         }
@@ -158,6 +162,7 @@ class UserController extends Controller
                 'full_name' => 'required',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:8',
+                'confirm' => 'required|same:password',
                 'role_id' => 'required',
                 'phone' => 'required',
             ]);

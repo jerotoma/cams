@@ -477,7 +477,7 @@
     @include('reports.nfis.searchform')
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class="panel-title text-bold text-center">Items Distribution Report as of {{$request->start_date}} - {{$request->end_date}} </h5>
+            <h5 class="panel-title text-bold text-center">Cash Distribution Report as of {{$request->start_date}} - {{$request->end_date}} </h5>
         </div>
 
         <div class="panel-body">

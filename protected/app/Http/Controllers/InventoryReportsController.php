@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ItemsInventory;
 use App\MateriaSupport;
 use Illuminate\Http\Request;
 
@@ -59,10 +60,10 @@ class InventoryReportsController extends Controller
                 }
                 if($start_time == "" && $end_time !=""){
 
-                    $query->where('distribution_date', $end_time);
+                    $query->where('items_disbursement_items.distribution_date', $end_time);
                 }
                 if($start_time != "" && $end_time ==""){
-                    $query->where('distribution_date', $start_time);
+                    $query->where('items_disbursement_items.distribution_date', $start_time);
                 }
                 if ($request->items !="All"){
                     $query->where('items_disbursement_items.item_id', $request->items);
@@ -73,7 +74,7 @@ class InventoryReportsController extends Controller
                 }
 
                 $query->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
-                    ->select('clients.*','item_id','quantity','distribution_date');
+                    ->select('clients.*','items_disbursement_items.item_id','quantity','items_disbursement_items.distribution_date');
                 $clients= $query->get();
 
                 if($start_time == "" && $end_time =="") {
@@ -92,24 +93,27 @@ class InventoryReportsController extends Controller
                 break;
             case 2:
                 $query=\DB::table('cash_provision_clients');
+
+                if($request->camp_id != "All"){
+                    $query->join('cash_provisions', 'cash_provision_clients.provision_id', '=', 'cash_provisions.id')
+                        ->where('cash_provisions.camp_id', $request->camp_id)
+                        ->select('cash_provision_clients.*');
+                }
                 if($start_time != "" && $end_time !=""){
                     $range = [$start_time, $end_time];
-                    $query->whereBetween('provision_date', $range);
+                    $query->whereBetween('cash_provision_clients.provision_date', $range);
                 }
                 if($start_time == "" && $end_time !=""){
 
-                    $query->where('provision_date', $end_time);
+                    $query->where('cash_provision_clients.provision_date', $end_time);
                 }
                 if($start_time != "" && $end_time ==""){
-                    $query->where('provision_date', $start_time);
-                }
-                if($request->camp_id != "All"){
-                    $query->join('cash_provisions', 'cash_provision_clients.provision_id', '=', 'cash_provisions.id')
-                        ->where('cash_provisions.camp_id', $request->camp_id);
+                    $query->where('cash_provision_clients.provision_date', $start_time);
                 }
 
+
                 $query->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
-                    ->select('clients.*','activity_id','amount','provision_date');
+                    ->select('clients.*','cash_provision_clients.activity_id','amount','cash_provision_clients.provision_date');
                 $clients= $query->get();
 
                 if($start_time == "" && $end_time =="") {
@@ -134,10 +138,10 @@ class InventoryReportsController extends Controller
                 }
                 if($start_time == "" && $end_time !=""){
 
-                    $query->where('distribution_date', $end_time);
+                    $query->where('items_disbursement_items.distribution_date', $end_time);
                 }
                 if($start_time != "" && $end_time ==""){
-                    $query->where('distribution_date', $start_time);
+                    $query->where('items_disbursement_items.distribution_date', $start_time);
                 }
                 if ($request->items !="All"){
                     $query->where('items_disbursement_items.item_id', $request->items);
@@ -148,7 +152,7 @@ class InventoryReportsController extends Controller
                 }
 
                 $query->join('clients', 'items_disbursement_items.client_id', '<>', 'clients.id')
-                    ->select('clients.*','item_id','quantity','distribution_date');
+                    ->select('clients.*','items_disbursement_items.item_id','quantity','items_disbursement_items.distribution_date');
                 $clients= $query->get();
 
                 if($start_time == "" && $end_time =="") {
@@ -173,10 +177,10 @@ class InventoryReportsController extends Controller
                 }
                 if($start_time == "" && $end_time !=""){
 
-                    $query->where('provision_date', $end_time);
+                    $query->where('cash_provision_clients.provision_date', $end_time);
                 }
                 if($start_time != "" && $end_time ==""){
-                    $query->where('provision_date', $start_time);
+                    $query->where('cash_provision_clients.provision_date', $start_time);
                 }
                 if($request->camp_id != "All"){
                     $query->join('cash_provisions', 'cash_provision_clients.provision_id', '=', 'cash_provisions.id')
@@ -184,7 +188,7 @@ class InventoryReportsController extends Controller
                 }
 
                 $query->join('clients', 'cash_provision_clients.client_id', '<>', 'clients.id')
-                    ->select('clients.*','activity_id','amount','provision_date');
+                    ->select('clients.*','activity_id','amount','cash_provision_clients.provision_date');
                 $clients= $query->get();
 
                 if($start_time == "" && $end_time =="") {
@@ -209,7 +213,7 @@ class InventoryReportsController extends Controller
                     if ($request->export_type == 1) {
                         return view('reports.nfis.html.distributions', compact('request','range'));
                     } else {
-                        \Excel::create("Item_istribution_per_population_report", function ($excel) use ($request,$range) {
+                        \Excel::create("Item_distribution_per_population_report", function ($excel) use ($request,$range) {
                             $excel->sheet('sheet', function ($sheet) use ($request,$range) {
                                 $sheet->loadView('reports.nfis.excel.distributions', compact('request','range'));
                             });
@@ -234,8 +238,28 @@ class InventoryReportsController extends Controller
                 }
                 break;
             case 7:
+                $items=ItemsInventory::where('quantity','<=',0)->get();
+                if ($request->export_type == 1) {
+                    return view('reports.nfis.html.items', compact('request', 'items'));
+                } else {
+                    \Excel::create("List_of_out_of_Stock", function ($excel) use ($request, $items) {
+                        $excel->sheet('sheet', function ($sheet) use ($request, $items) {
+                            $sheet->loadView('reports.nfis.excel.items', compact('request', 'items'));
+                        });
+                    })->download('xlsx');
+                }
                 break;
             case 8:
+                $items=ItemsInventory::all();
+                if ($request->export_type == 1) {
+                    return view('reports.nfis.html.items', compact('request', 'items'));
+                } else {
+                    \Excel::create("List_of_All_Items", function ($excel) use ($request, $items) {
+                        $excel->sheet('sheet', function ($sheet) use ($request, $items) {
+                            $sheet->loadView('reports.nfis.excel.items', compact('request', 'items'));
+                        });
+                    })->download('xlsx');
+                }
                 break;
             default:
                 return redirect()->back();

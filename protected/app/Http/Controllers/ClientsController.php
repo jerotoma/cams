@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\ClientVulnerabilityCode;
 use App\Country;
+use App\DumpClient;
 use App\Origin;
 use App\PSNCode;
+use App\PSNCodeCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -17,9 +19,11 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ClientsController extends Controller
 {
+    protected $import_errors;
     public function __construct()
     {
         $this->middleware('auth');
+        $this->import_errors="";
     }
     /**
      * Display a listing of the resource.
@@ -39,6 +43,28 @@ class ClientsController extends Controller
         }
 
     }
+    public function showImportErrors()
+    {
+
+        if (Auth::user()->can('edit')) {
+            $clients = DumpClient::all();
+            return view('clients.importerrors', compact('clients'));
+        }
+        else
+        {
+            return redirect('home');
+        }
+    }
+    public function downloadImportErrors()
+    { ob_clean();
+        $clients = DumpClient::all();
+        \Excel::create("list_of_clients_failed_import", function($excel) use($clients)  {
+            $excel->sheet('sheet', function($sheet) use($clients){
+                $sheet->loadView('clients.excel', compact('clients'));
+            });
+        })->download('xlsx');
+    }
+
     public function AuthorizeAll()
     {
         //
@@ -286,6 +312,7 @@ class ClientsController extends Controller
     {
         return view('clients.search');
     }
+	
     public function advancedSearchClient(Request $request)
     {
       try {
@@ -448,10 +475,24 @@ class ClientsController extends Controller
     public function postImport(Request $request)
     {
         try {
-            $this->validate($request, [
-                'clients_import' => 'required|mimes:xls,xlsx',
+            $validator = Validator::make($request->all(), [
+                'clients_import' => 'required',
                 'camp_id' => 'required',
+
             ]);
+            if ($validator->fails()) {
+
+                return redirect()->back()->withErrors($validator)->withInput();
+
+            }
+            
+            \DB::table('dump_clients')->truncate();
+
+            $extension= strtolower($request->file('clients_import')->getClientOriginalExtension());
+            if($extension !="xlsx" && $extension !="xls")
+            {
+                return redirect()->back()->with('message', 'Invalid file type! allowed only xls, xlsx')->withInput();
+            }
 
             $file= $request->file('clients_import');
             $destinationPath = public_path() .'/uploads/temp/';
@@ -463,8 +504,9 @@ class ClientsController extends Controller
                 $reader->formatDates(false, 'Y-m-d');
                 $results= $reader->get();
                 $results->each(function($row) use($request) {
-
-            if($row->names != "" && $row->names != null && $row->sex != "" && $row->sex != null){
+                   
+            if($row->names != "" && $row->sex !="" && is_numeric($row->age) && $row->marital_status !="" &&
+                is_numeric($row->m) &&  is_numeric($row->f) &&  is_numeric($row->t) && $row->origin != "" && $row->date_of_arrival !="" && $row->vul_1 !="" ){
                     $sex ="";
                     if(strtolower($row->sex) =="k" || strtolower($row->sex) =="mk" || strtolower($row->sex) =="f")
                     {
@@ -493,35 +535,37 @@ class ClientsController extends Controller
 
                         $origin_name="Nyarugusu";
                     }
-                    $household_number=intval($row->t);
+
                     $females_total=intval($row->f);
                     $males_total=intval($row->m);
+                    $household_number=$females_total+$males_total;
 
-                    if(count(Client::where('client_number','=',$client_number)
-                            ->where('full_name','=',$full_name)
+                    $origin_id="";
+                    if($row->origin !="") {
+                        if (count(Origin::where('origin_name', '=', $origin_name)->get()) > 0) {
+                            $origin = Origin::where('origin_name', '=', $origin_name)->get()->first();
+                            $origin_id=$origin->id;
+                        } else {
+                            $co = new Origin;
+                            $co->origin_name = $origin_name;
+                            $co->save();
+                            $origin = $co;
+                            $origin_id=$origin->id;
+                        }
+                    }
+
+                    if(!count(Client::where('full_name','=',$full_name)
                             ->where('age','=',$age)
                             ->where('sex','=',$sex)
                             ->where('marital_status','=',$marital_status)
-                            ->where('spouse_name','=',$spouse_name)
-                            ->where('care_giver','=',$care_giver)
                             ->where('date_arrival','=',$date_arrival)
                             ->where('household_number','=',$household_number)
                             ->where('females_total','=',$females_total)
                             ->where('males_total','=',$males_total)
-                            ->where('present_address','=',$present_address)
-                            ->where('ration_card_number','=',$ration_card_number)->get()) <= 0)
+                            ->where('origin_id','=',$origin_id)
+                            ->get()) > 0)
                     {
 
-                        if($row->origin !="") {
-                            if (count(Origin::where('origin_name', '=', $origin_name)->get()) > 0) {
-                                $origin = Origin::where('origin_name', '=', $origin_name)->get()->first();
-                            } else {
-                                $co = new Origin;
-                                $co->origin_name = $origin_name;
-                                $co->save();
-                                $origin = $co;
-                            }
-                        }
 
 
                         $client=new Client;
@@ -540,6 +584,9 @@ class ClientsController extends Controller
                         $client->care_giver = $care_giver;
 
                         $client->date_arrival =$date_arrival;
+                        if($origin_id != ""){
+                            $client->origin_id = $origin_id;
+                        }
                         $client->present_address =$present_address;
                         $client->household_number = $row->t;
                         $client->ration_card_number =$ration_card_number;
@@ -547,9 +594,6 @@ class ClientsController extends Controller
                         $client->females_total = $females_total;
                         $client->males_total = $males_total;
                         $client->created_by = Auth::user()->username;
-                        if($row->origin !="") {
-                            $client->origin_id = $origin->id;
-                        }
                         $client->age_score= $this->getAgeScore($row->age);
                         $client->save();
 
@@ -560,32 +604,67 @@ class ClientsController extends Controller
                         foreach ($psnCodes as $data )
                         {
                            if($data != "" && $data != null) {
-                               $hai_psn_code .= $data . "-";
+                               $hai_psn_code .= preg_replace('/\s+/S', "",$data) . "-";
                            }
                         }
                         $hai_psn_code=substr($hai_psn_code,0,strlen($hai_psn_code)-1);
                         $client->hai_reg_number="HAI-".str_pad($client->id,4,'0',STR_PAD_LEFT).$hai_psn_code;
                         $client->save();
 
-                        $vn="";
-                        foreach ($psnCodes as $data ){
-                            $vn .= $data."-,";
-                            $vn=substr($vn,0,strlen($vn)-1);
-                        }
                         //Save validation codes
-
-                        foreach ($psnCodes as $data )
+                        foreach ($psnCodes as $codeData )
                         {
 
+                            $code =preg_replace('/\s+/S', "",$codeData);
                             $pcode="";
-                            if($data != "" && $data != null) {
-                                if (count(PSNCode::where('code', '=', strtoupper(strtolower($data)))->get()) > 0) {
-                                    $pcode = PSNCode::where('code', '=', strtoupper(strtolower($data)))->get()->first();
-                                } else {
-                                    $psc = new PSNCode;
-                                    $psc->code = strtoupper(strtolower($data));
-                                    $psc->save();
-                                    $pcode = $psc;
+                            if($code != "")
+                            {
+
+                              if (count(PSNCode::where('code', '=',$code)->get()) > 0)
+                                {
+                                    $pcode = PSNCode::where('code', '=',$code)->get()->first();
+
+                                }
+                                else
+                                    {
+
+                                        $categorycode="";
+                                        $arr=explode('-',$code);
+                                        if (isset($arr[0])) {
+                                            $categorycode = $arr[0];
+
+                                        }
+                                        $psncategory="";
+
+                                        if (count(PSNCodeCategory::where('code','=',$categorycode)->get()) > 0)
+                                        {
+                                            $psncategory=PSNCodeCategory::where('code','=',$categorycode)
+                                                         ->get()->first();
+
+
+                                        }
+                                        else{
+                                            $psncate = new PSNCodeCategory;
+                                            $psncate->code = $categorycode;
+                                            $psncate->description = $categorycode;
+                                            $psncate->definition = $categorycode;
+                                            $psncate->for_reporting = "Yes";
+                                            $psncate->created_by = Auth::user()->username;
+                                            $psncate->save();
+                                            $psncategory=$psncate;
+                                        }
+                                        if ($psncategory != "" && $code != "") {
+
+                                            $psc = new PSNCode;
+                                            $psc->code = strtoupper(strtolower($code));
+                                            $psc->category_id = $psncategory->id;
+                                            $psc->description = $code;
+                                            $psc->definition = $code;
+                                            $psc->for_reporting = "Yes";
+                                            $psc->definition = Auth::user()->username;
+                                            $psc->save();
+                                            $pcode = $psc;
+                                        }
                                 }
                                 if ($pcode != "") {
                                     $codes = new ClientVulnerabilityCode;
@@ -593,22 +672,92 @@ class ClientsController extends Controller
                                     $codes->code_id = $pcode->id;
                                     $codes->save();
                                 }
+
                             }
                         }
 
                     }
                 }
+                else{
+                   $filed_error="";
+
+                    if($row->names == "" ){
+                        $filed_error .="Names is  Missing-";
+                    }
+                    if( $row->sex == "" ){
+                        $filed_error .="Sex is Missing-";
+                    }
+                    if(  !is_numeric($row->age)){
+                        $filed_error .="Age is Missing-";
+                    }
+                    if( $row->marital_status == "" ){
+                        $filed_error .="Marital Status is Missing-";
+                    }
+                    if( !is_numeric($row->m) ){
+                        $filed_error .="Number of males is Missing-";
+                    }
+                    if( !is_numeric($row->f)){
+                        $filed_error .="Number of females is Missing-";
+                    }
+                    if( !is_numeric($row->t) ){
+                        $filed_error .="HouseHold Number is Missing-";
+                    }
+                    if( $row->origin ==""){
+                        $filed_error .="Origin is Missing-";
+                    }
+                    if( $row->date_of_arrival == "" ){
+                        $filed_error .="date of arrival is Missing-";
+                    }
+                    if( $row->vul_1 == "" ){
+                        $filed_error .="Vulnerability code(s) is Missing-";
+                    }
+                    $filed_error=substr($filed_error,0,strlen($filed_error)-1);
+
+                    $client =new DumpClient;
+                    $client->unique_id=$row->unique_id;
+                    $client->names=$row->names;
+                    $client->sex=$row->sex;
+					$client->age = $row->age;
+                    $client->marital_status=$row->marital_status;
+                    $client->name_of_parents=$row->name_of_parents;
+                    $client->name_of_spouse=$row->name_of_spouse;
+                    $client->m=$row->m;
+                    $client->f=$row->f;
+                    $client->t=$row->t;
+                    $client->origin=$row->origin;
+                    $client->date_of_arrival=$row->date_of_arrival;
+                    $client->present_address=$row->present_address;
+                    $client->ration_card_number=$row->ration_card_number;
+                    $client->vul_1=$row->vul_1;
+                    $client->vul_2=$row->vul_2;
+                    $client->vul_3=$row->vul_3;
+                    $client->vul_4=$row->vul_4;
+                    $client->vul_5=$row->vul_5;
+                    $client->error_descriptions=$filed_error;
+                    $client->save();
+                    $this->import_errors="Missing filed is marked with red";
+                }
+				
             });
 
             });
             File::delete($orfile);
             //Audit trail
-            AuditRegister("ClientsController","Import Clients",$orfile);
-           return redirect('clients');
+            
+			
+			AuditRegister("ClientsController","Import Clients",$orfile);
+            if ($this->import_errors ==""){
+                return redirect('clients');
+            }
+            else
+            {
+                return redirect('import/clients/errors');
+            }
+			
+
         }
         catch (\Exception $e)
         {
-            //echo $e->getMessage();
             return  redirect()->back()->with('error',$e->getMessage());
         }
     }

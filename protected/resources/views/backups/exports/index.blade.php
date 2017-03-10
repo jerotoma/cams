@@ -226,9 +226,16 @@
                 <div class="row">
                     <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
                         <div class="form-group">
-                            <label class="control-label text-bold"> System Module</label>
+                            <label class="control-label text-bold"> Select Module to export</label>
                             <select class="select" name="module" id="module" data-placeholder="Choose an option...">
-                                <option value="1">Main Module</option>
+                                <option></option>
+                                <option value="1">Clients</option>
+                                <option value="2">Clients Assessments</option>
+                                <option value="3">Clients Referrals</option>
+                                <option value="4">NFIs Inventory</option>
+                                <option value="5">Cash Distributions</option>
+                                <option value="6">Progress Monitoring</option>
+                                <option value="7">All Modules</option>
                             </select>
                             @if($errors->first('module') !="")
                                 <label id="address-error" class="validation-error-label" for="module">{{ $errors->first('module') }}</label>

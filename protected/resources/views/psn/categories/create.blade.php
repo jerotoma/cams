@@ -47,6 +47,13 @@
                         @endif
                     </div>
                     <div class="form-group">
+                        <label>Used in reporting</label>
+                        <select class="select" name="for_reporting" id="for_reporting">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>Definition</label>
                         <textarea class="form-control" placeholder="definition" name="definition" id="definition">{{old('definition')}}</textarea>
                         @if($errors->first('description') !="")

@@ -40,6 +40,10 @@ Route::get('bulk/cash/monitoring/provision','CashProvisionController@showBulk');
 Route::post('bulk/cash/monitoring/provision','CashProvisionController@postBulk');
 Route::get('list-cash-provisions','CashProvisionController@getCashProvisionsList');
 
+//Imports errors
+Route::get('import/cash/monitoring/provision/errors','CashProvisionController@showImportErrors');
+Route::get('download/import/cash/monitoring/provision/errors','CashProvisionController@downloadImportErrors');
+
 //Authorize
 Route::post('authorize/cash/monitoring/provision','CashProvisionController@AuthorizeAll');
 Route::post('authorize/cash/monitoring/{id}/provision','CashProvisionController@AuthorizeCashProvisionById');
@@ -167,6 +171,8 @@ Route::post('import/referrals','ReferralController@postImport');
 //Clients
 Route::get('import/clients','ClientsController@showImport');
 Route::post('import/clients','ClientsController@postImport');
+Route::get('import/clients/errors','ClientsController@showImportErrors');
+Route::get('download/import/clients/errors','ClientsController@downloadImportErrors');
 //Just for me
 //Route::get('create-client','ClientsController@createClient');
 
@@ -184,6 +190,10 @@ Route::get('distributions/items/bulk','ItemsDisbursementController@showBulk');
 Route::get('distributions/items/import/errors','ItemsDisbursementController@showImportErrors');
 Route::get('download/pdf/items/distributions/{id}','ItemsDisbursementController@downloadPdf');
 Route::get('print/items/distributions/{id}','ItemsDisbursementController@showPrint');
+
+
+Route::get('import/items/distributions/error','ItemsDisbursementController@showImportErrors');
+Route::get('download/import/items/distributions/error','ItemsDisbursementController@downloadImportErrors');
 
 Route::get('list-items-distributions','ItemsDisbursementController@getDistributionListJson');
 
@@ -236,8 +246,8 @@ Route::get('reports/clients',[
 Route::get('generate/reports/clients','ClientReportsController@index');
 Route::post('generate/reports/clients','ClientReportsController@postGenerate');
 
-Route::get('reports/nfis','AssessmentReportsController@index');
-Route::post('reports/nfis','AssessmentReportsController@generateReport');
+Route::get('reports/nfis','InventoryReportsController@index');
+Route::post('reports/nfis','InventoryReportsController@generateReport');
 
 Route::get('reports/assessments','AssessmentReportsController@index');
 Route::post('reports/assessments','AssessmentReportsController@generateReport');

@@ -268,7 +268,6 @@ class ClientCaseController extends Controller
                 $case->case_worker_name= $request->case_worker_name;
                 $case->status= $request->status;
                 $case->created_by= Auth::user()->id;
-                $case->status= $request->status;
                 $case->camp_id= $request->camp_id;
                 $case->client_id= $request->client_id;
                 $case->save();

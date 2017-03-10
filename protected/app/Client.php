@@ -41,9 +41,29 @@ class Client extends Model
     {
         return $this::hasOne('\App\HomeAssessment','client_id');
     }
+    public function homeAssessment()
+    {
+        return $this::hasOne('\App\HomeAssessment','client_id');
+    }
     public function referrals()
     {
-        return $this::hasMany('\App\Referral','client_id');
+        return $this::hasMany('\App\ClientReferral','client_id');
+    }
+    public function cases()
+    {
+        return $this::hasMany('\App\ClientCase','client_id');
+    }
+    public function notes()
+    {
+        return $this::hasMany('\App\ProgressNote','client_id');
+    }
+    public function cashProvisions()
+    {
+        return $this::hasMany('\App\CashProvisionClient','client_id');
+    }
+    public function itemsDistributions()
+    {
+        return $this::hasMany('\App\ItemsDisbursementItems','client_id');
     }
     public function wheelChairAssessment()
     {

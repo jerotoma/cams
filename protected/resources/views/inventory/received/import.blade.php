@@ -230,6 +230,11 @@
         <div class="panel-body">
             {!! Form::open(array('url'=>'excel/import/received/items','role'=>'form','id'=>'formImportItems','files'=>true)) !!}
             <div class="form-body">
+                @if (session('message'))
+                    <div class="alert alert-danger">
+                        {{ session('message') }}
+                    </div>
+                @endif
                 <div class="form-group">
                     <label>Import from MS Excel <a href={{asset("assets/templates/item_received_import_template.xls")}}>Download template here</a> </label>
                     <input type="file" class="form-control" name="inventory_file" id="inventory_file">

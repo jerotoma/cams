@@ -39,7 +39,7 @@
 <!-- Main navbar -->
 <div class="navbar navbar-inverse bg-indigo text-center" style="padding-top: 10px">
 
-        <a  href="#" style="color: #FFFFFF; font-size: 20px;font-weight: bold; text-transform: uppercase; margin-top: 10px;">Case Management Database for Person with Specific Needs</a> <span class="pull-right"><img src="{{asset('assets/images/helpage.png')}}" width="40px" height="40px"/> <img src="{{asset('assets/images/unhcr.png')}}" width="40px" height="40px"/></span>
+        <a  href="#" style="color: #FFFFFF; font-size: 20px;font-weight: bold; text-transform: uppercase; margin-top: 10px;">Case Management Database for Person with Specific Needs</a>
 
 </div>
 <!-- /main navbar -->
@@ -128,6 +128,32 @@
 
 </div>
 <!-- /page container -->
+<!-- Footer -->
+<div class=" navbar-fixed-bottom">
+    <div class="row" style="margin-bottom: 10px; margin-left: 10px">
+        <div class="col-md-2 pull-right" style="padding-right: 10px">
+            <fieldset class="scheduler-border">
+                <legend class="text-bold"><h6>Sponsored By</h6></legend>
+                <div class="row">
+                    <div class="col-md-6 text-center"><img src="{{asset('assets/images/bprn_logo.png')}}"  style="width: 100px; height: 100px; border-radius: 10px"/><p class="text-center ">BPRM</p></div>
+                    <div class="col-md-6 text-center"><img src="{{asset('assets/images/unhcr.png')}}" style="width: 100px; height: 100px; border-radius: 10px"/><p class="text-center ">UNHCR</p></div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-1 pull-left">
+            <fieldset class="scheduler-border">
+                <legend class="text-bold"><h6 class="text-left">Developed For</h6></legend>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <img src="{{asset('assets/images/helpage.png')}}" style="width: 100px; height: 100px; border-radius: 10px"/>
+                        <p class="text-center">HELPAGE International</p>
+                   </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
 
+</div>
+<!-- /footer -->
 </body>
 </html>
