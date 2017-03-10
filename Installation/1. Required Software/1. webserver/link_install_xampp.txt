@@ -1,0 +1,2 @@
+open 
+https://downloadsapachefriends.global.ssl.fastly.net/xampp-files/7.0.15/xampp-win32-7.0.15-0-VC14-installer.exe?from_af=true
