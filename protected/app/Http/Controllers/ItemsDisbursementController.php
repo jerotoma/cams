@@ -667,7 +667,7 @@ class ItemsDisbursementController extends Controller
                     $client=Client::where('hai_reg_number','=',$request->hai_reg_number)->get()->first();
 
 
-                    if (!!isInDistributionLimit($request->item_id, $client->id,date('Y-m-d', strtotime($request->disbursements_date)))) {
+                    if (!isInDistributionLimit($request->item_id, $client->id,date('Y-m-d', strtotime($request->disbursements_date)))) {
 
                             if (!isItemOutOfStock($request->item_id,intval($request->quantity))) {
 
@@ -824,7 +824,7 @@ class ItemsDisbursementController extends Controller
                     $client=Client::where('hai_reg_number','=',$request->hai_reg_number)->get()->first();
 
 
-                    if (!!isInDistributionLimit($request->item_id, $client->id,date('Y-m-d', strtotime($request->disbursements_date)))) {
+                    if (!isInDistributionLimit($request->item_id, $client->id,date('Y-m-d', strtotime($request->disbursements_date)))) {
 
                         if (!isItemOutOfStock($request->item_id,intval($request->quantity))) {
 

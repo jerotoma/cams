@@ -150,7 +150,7 @@ class ItemInventoryController extends Controller
                 'quantity' => 'required|numeric',
                 'status' => 'required',
                 'unit' => 'required',
-                'redistribution_limit' => 'required',
+                'redistribution_limit' => 'required|numeric',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -225,7 +225,7 @@ class ItemInventoryController extends Controller
                 'quantity' => 'required|numeric',
                 'status' => 'required',
                 'unit' => 'required',
-                'redistribution_limit' => 'required',
+                'redistribution_limit' => 'required|numeric',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
