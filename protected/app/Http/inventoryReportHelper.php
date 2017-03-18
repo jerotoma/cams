@@ -541,3 +541,79 @@ if (!function_exists('getHighChatItemsDistributionByVulnerabilityByCamp')) {
         return $seriesdata1;
     }
 }
+
+//Check for limit
+if (!function_exists('isClientInDistributionLimit')) {
+    function isClientInDistributionLimit($item_id,$client_id) {
+
+        if(count(\App\ItemsDisbursementItems::where('item_id','=',$item_id)
+                ->where('client_id','=',$client_id)->orderBy('distribution_date','desc')->get()) >0)
+        {
+
+            $itemsds=\App\ItemsDisbursementItems::where('item_id','=',$item_id)
+                ->where('client_id','=',$client_id)->orderBy('distribution_date','desc')->get()->first();
+
+            $inventoryItem= \App\ItemsInventory::find($item_id);
+            $limit =$inventoryItem->redistribution_limit;
+
+            $ts1 = strtotime($itemsds->distribution_date);
+            $ts2 = strtotime(date("Y-m-d"));
+            $datediff =$ts2-$ts1;
+
+            $dayspass= floor($datediff / (60 * 60 * 24));
+            if( $dayspass < 0 ) {
+                $dayspass = -1 * $dayspass;
+            }
+            if($dayspass <= $limit ){
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+}
+if (!function_exists('isClientInProvisionLimitReport')) {
+    function isClientInProvisionLimitReport($activity_id,$client_id) {
+
+
+        if(count(\App\CashProvisionClient::where('activity_id','=',$activity_id)
+                ->where('client_id','=',$client_id)->orderBy('provision_date','desc')->get()) >0)
+        {
+
+            $activity_Provision=\App\CashProvisionClient::where('activity_id','=',$activity_id)
+                ->where('client_id','=',$client_id)->orderBy('provision_date','desc')->get()->first();
+
+            $activity= \App\BudgetActivity::find($activity_id);
+            $limit =$activity->provision_limit;
+
+            $ts1 = strtotime($activity_Provision->provision_date);
+            $ts2 = strtotime(date("Y-m-d"));
+            $datediff =$ts2-$ts1;
+            $dayspass= floor($datediff / (60 * 60 * 24));
+            if( $dayspass < 0 ) {
+                $dayspass = -1 * $dayspass;
+            }
+            if($dayspass <= $limit ){
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+}

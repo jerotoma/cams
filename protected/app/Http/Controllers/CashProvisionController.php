@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Camp;
 use App\CashProvision;
 use App\CashProvisionClient;
 use App\Client;
+use App\ClientVulnerabilityCode;
 use App\DumpCashDistribution;
 use App\Origin;
 use Illuminate\Http\Request;
@@ -18,10 +20,12 @@ use Maatwebsite\Excel\Facades\Excel;
 class CashProvisionController extends Controller
 {
      protected  $error_found;
+     protected   $import_errors;
     public function __construct()
     {
         $this->middleware('auth');
         $this->error_found="";
+        $this->import_errors="";
     }
 
     /**
@@ -372,9 +376,9 @@ class CashProvisionController extends Controller
                                             if (!isClientInProvisionLimit($request->activity_id, $client->id,$provision->provision_date)) {
 
 
-                                                if (!isActivityOutOfFunds($request->activity_id, $request->amount)) {
+                                                if (!isActivityOutOfFunds($request->activity_id, $row->amount)) {
 
-                                                    if (!isActivityOutOfFunds($request->activity_id, $request->amount)) {
+                                                    if (!isActivityOutOfFunds($request->activity_id, $row->amount)) {
                                                         $provision_client = new CashProvisionClient;
                                                         $provision_client->client_id = $client->id;
                                                         $provision_client->activity_id = $request->activity_id;
@@ -402,7 +406,7 @@ class CashProvisionController extends Controller
 														$client->origin=$row->origin;
 														$client->date_of_arrival=$row->date_of_arrival;
 														$client->vul_1=$row->vul_1;
-														$client->amount=intval($row->quantity);
+														$client->amount=intval($row->amount);
 														$client->error_descriptions="Insufficient Funds";
 														$client->save();
 														$this->import_errors="Missing filed is marked with red";
@@ -424,7 +428,7 @@ class CashProvisionController extends Controller
 												$client->origin=$row->origin;
 												$client->date_of_arrival=$row->date_of_arrival;
 												$client->vul_1=$row->vul_1;
-												$client->amount=intval($row->quantity);
+												$client->amount=intval($row->amount);
 												$client->error_descriptions="Client is in cash provision limit";
 												$client->save();
 												$this->import_errors="Missing filed is marked with red";
@@ -443,7 +447,7 @@ class CashProvisionController extends Controller
 											$client->origin=$row->origin;
 											$client->date_of_arrival=$row->date_of_arrival;
 											$client->vul_1=$row->vul_1;
-											$client->amount=intval($row->quantity);
+											$client->amount=intval($row->amount);
 											$client->error_descriptions="Client not found in registration list";
 											$client->save();
 											$this->import_errors="Missing filed is marked with red";
@@ -463,7 +467,7 @@ class CashProvisionController extends Controller
 											$client->origin=$row->origin;
 											$client->date_of_arrival=$row->date_of_arrival;
 											$client->vul_1=$row->vul_1;
-											$client->amount=intval($row->quantity);
+											$client->amount=intval($row->amount);
 											$client->error_descriptions="Client not found in registration list";
 											$client->save();
 											$this->import_errors="Missing filed is marked with red";
@@ -501,7 +505,7 @@ class CashProvisionController extends Controller
                                     if( $row->date_of_arrival == "" ){
                                         $filed_error .="date of arrival is Missing-";
                                     }
-                                    if( is_numeric($row->amount)){
+                                    if( !is_numeric($row->amount)){
                                         $filed_error .="amount is Missing-";
                                     }
 
@@ -521,7 +525,7 @@ class CashProvisionController extends Controller
                                     $client->origin=$row->origin;
                                     $client->date_of_arrival=$row->date_of_arrival;
                                     $client->vul_1=$row->vul_1;
-                                    $client->amount=intval($row->quantity);
+                                    $client->amount=intval($row->amount);
                                     $client->error_descriptions=$filed_error;
                                     $client->save();
                                     $this->import_errors="Missing filed is marked with red";
@@ -542,14 +546,15 @@ class CashProvisionController extends Controller
                             $results->each(function ($row) use ($provision,$request) {
                                 $amount = intval($row->amount);
 
-                                if (count(Client::where('hai_reg_number', '=', $row->hai_reg_number)->where('camp_id', '=', $request->camp_id)->get()) > 0) {
+                                if (count(Client::where('hai_reg_number', '=', $row->hai_reg_number)->where('camp_id', '=', $request->camp_id)->get()) > 0 && is_numeric($row->amount) && intval($row->amount) > 0) {
+
 
 
                                     $client = Client::where('hai_reg_number', '=', $row->hai_reg_number)->get()->first();
                                     if ($client != null && count($client) > 0) {
                                         if (!isClientInProvisionLimit($request->activity_id, $client->id,$provision->provision_date)) {
 
-                                            if (!isActivityOutOfFunds($request->activity_id, $request->amount)) {
+                                            if (!isActivityOutOfFunds($request->activity_id, intval($row->amount))) {
 
                                                
                                                     $provision_client = new CashProvisionClient;
@@ -568,44 +573,115 @@ class CashProvisionController extends Controller
                                             }
 											else
 											{
-												        $client =new DumpCashDistribution;
-														$client->names=$row->names;
-														$client->sex=$row->sex;
-														$client->age = $row->age;
-														$client->marital_status=$row->marital_status;
-														$client->m=$row->m;
-														$client->f=$row->f;
-														$client->t=$row->t;
-														$client->origin=$row->origin;
-														$client->date_of_arrival=$row->date_of_arrival;
-														$client->vul_1=$row->vul_1;
-														$client->amount=intval($row->quantity);
-														$client->error_descriptions="Insufficient Funds";
-														$client->save();
-														$this->import_errors="Missing filed is marked with red";
+                                                $clientdt=Client::where('hai_reg_number', '=', $row->hai_reg_number)->get()->first();
+                                                $client =new DumpCashDistribution;
+                                                $client->names=$row->names;
+                                                $client->sex=$row->sex;
+                                                $client->age = $row->age;
+                                                $client->marital_status=$clientdt->marital_status;
+                                                $client->m=$clientdt->males_total;
+                                                $client->f=$clientdt->females_total;
+                                                $client->t=$clientdt->females_total + $clientdt->males_total;
+                                                if (is_object($clientdt->fromOrigin) && $clientdt->fromOrigin != null) {
+                                                    $client->origin = $clientdt->fromOrigin->origin_name;
+                                                }
+                                                $client->date_of_arrival=$clientdt->date_of_arrival;
+                                                $vul="";
+                                                if (count(ClientVulnerabilityCode::where('client_id','=',$clientdt->id)->get()) >0)
+                                                {
+                                                    $vlc=ClientVulnerabilityCode::where('client_id','=',$clientdt->id)->get()->first();
+                                                    if (is_object($vlc->code))
+                                                    {
+                                                        $vul= $vlc->code->code;
+                                                    }
+                                                }
+                                                $client->vul_1= $vul;
+                                                $client->amount=intval($row->amount);
+                                                $client->date_of_arrival=$clientdt->date_arrival;
+                                                $client->error_descriptions="Insufficient Funds";
+                                                $client->save();
+                                                $this->import_errors="Missing filed is marked with red";
 											}
 
+                                        }
+                                        else
+                                        {
+                                            $clientdt=Client::where('hai_reg_number', '=', $row->hai_reg_number)->get()->first();
+                                            $client =new DumpCashDistribution;
+                                            $client->names=$row->names;
+                                            $client->sex=$row->sex;
+                                            $client->age = $row->age;
+                                            $client->marital_status=$clientdt->marital_status;
+                                            $client->m=$clientdt->males_total;
+                                            $client->f=$clientdt->females_total;
+                                            $client->t=$clientdt->females_total + $clientdt->males_total;
+                                            if (is_object($clientdt->fromOrigin) && $clientdt->fromOrigin != null) {
+                                                $client->origin = $clientdt->fromOrigin->origin_name;
+                                            }
+                                            $client->date_of_arrival=$clientdt->date_of_arrival;
+                                            $vul="";
+                                            if (count(ClientVulnerabilityCode::where('client_id','=',$clientdt->id)->get()) >0)
+                                            {
+                                                $vlc=ClientVulnerabilityCode::where('client_id','=',$clientdt->id)->get()->first();
+                                                if (is_object($vlc->code))
+                                                {
+                                                    $vul= $vlc->code->code;
+                                                }
+                                            }
+                                            $client->vul_1= $vul;
+                                            $client->amount=intval($row->amount);
+                                            $client->date_of_arrival=$clientdt->date_arrival;
+                                            $client->error_descriptions="Client is not eligible to receive the cash, number of days is less than  the limit";
+                                            $client->save();
+                                            $this->import_errors="Missing filed is marked with red";
                                         }
                                     }
 
                                 }
 								else
 								{
-									                   $client =new DumpCashDistribution;
-														$client->names=$row->names;
-														$client->sex=$row->sex;
-														$client->age = $row->age;
-														$client->marital_status=$row->marital_status;
-														$client->m=$row->m;
-														$client->f=$row->f;
-														$client->t=$row->t;
-														$client->origin=$row->origin;
-														$client->date_of_arrival=$row->date_of_arrival;
-														$client->vul_1=$row->vul_1;
-														$client->amount=intval($row->quantity);
-														$client->error_descriptions="Client not found in registration list for selected camp";
-														$client->save();
-														$this->import_errors="Missing filed is marked with red";
+                                                        $filed_error="";
+                                    if($row->amount ==""){
+                                        $filed_error .="amount is Missing-";
+                                    }
+                                    if( intval($row->amount) < 0){
+                                        $filed_error .="amount can not be less than zero";
+                                    }
+                                    if (!count(Client::where('hai_reg_number', '=', $row->hai_reg_number)->where('camp_id', '=', $request->camp_id)->get()) > 0)
+                                    {
+                                        $camp =Camp::find($request->camp_id);
+                                        $filed_error .="Client not found in registration list for $camp->camp_name camp";
+                                    }
+
+
+                                                        $clientdt=Client::where('hai_reg_number', '=', $row->hai_reg_number)->get()->first();
+                                                        $client =new DumpCashDistribution;
+                                                        $client->names=$row->names;
+                                                        $client->sex=$row->sex;
+                                                        $client->age = $row->age;
+                                                        $client->marital_status=$clientdt->marital_status;
+                                                        $client->m=$clientdt->males_total;
+                                                        $client->f=$clientdt->females_total;
+                                                        $client->t=$clientdt->females_total + $clientdt->males_total;
+                                                        if (is_object($clientdt->fromOrigin) && $clientdt->fromOrigin != null) {
+                                                            $client->origin = $clientdt->fromOrigin->origin_name;
+                                                        }
+                                                        $client->date_of_arrival=$clientdt->date_of_arrival;
+                                                        $vul="";
+                                                        if (count(ClientVulnerabilityCode::where('client_id','=',$clientdt->id)->get()) >0)
+                                                        {
+                                                            $vlc=ClientVulnerabilityCode::where('client_id','=',$clientdt->id)->get()->first();
+                                                            if (is_object($vlc->code))
+                                                            {
+                                                                $vul= $vlc->code->code;
+                                                            }
+                                                        }
+                                                        $client->vul_1= $vul;
+                                                        $client->amount=intval($row->amount);
+                                                        $client->date_of_arrival=$clientdt->date_arrival;
+                                                        $client->error_descriptions=$filed_error;
+                                                        $client->save();
+                                                        $this->import_errors="Missing filed is marked with red";
 								}
                             });
                         }

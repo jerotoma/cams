@@ -357,9 +357,9 @@
 @section('contents')
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
-            <a  href="{{url('clients')}}" class="btn btn-primary "><i class="fa fa-list "></i> <span>List All</span></a>
-            <a  href="{{url('clients')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Search</span></a>
-            <a  href="{{url('import/clients')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import</span></a>
+            <a  href="{{url('clients')}}" class="btn btn-primary"><i class="fa fa-search "></i> <span>Go to Clients</span></a>
+            <a  href="{{url('reports/nfis')}}" class="btn btn-primary "><i class="fa fa-list "></i> <span>NFIs and Cash Distribution Reports</span></a>
+
         </div>
     </div>
     @include('reports.nfis.searchform')

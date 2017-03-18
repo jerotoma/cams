@@ -9,6 +9,11 @@
                     <div class="panel-body">
                         <fieldset class="scheduler-border">
                             <legend class="text-bold">NFIs Distribution Report</legend>
+                            @if (session('message'))
+                                <div class="alert alert-danger">
+                                    {{ session('message') }}
+                                </div>
+                            @endif
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group ">
@@ -31,7 +36,7 @@
 
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group ">
                                         <label>Camp</label>
                                         <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="camp_id" id="camp_id">
@@ -44,7 +49,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group ">
                                         <label>NFIs Item?</label>
                                         <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="items" id="items" data-placeholder="Choose an option...">
@@ -52,6 +57,19 @@
                                                 <option value="All">All</option>
                                                 @foreach(\App\ItemsInventory::all() as $item)
                                                     <option value="{{$item->id}}">{{$item->item_name}}</option>
+                                                @endforeach
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label>Cash Activity/Project?</label>
+                                        <select  class="bootstrap-select" data-live-search="true" data-width="100%" name="activity" id="activity" data-placeholder="Choose an option...">
+                                            <optgroup label="NFIS Items">
+                                                <option value="All">All</option>
+                                                @foreach(\App\BudgetActivity::all() as $item)
+                                                    <option value="{{$item->id}}">{{$item->activity_name}}</option>
                                                 @endforeach
                                             </optgroup>
                                         </select>

@@ -131,73 +131,70 @@ class InventoryReportsController extends Controller
                 }
                 break;
             case 3:
-                $query=\DB::table('items_disbursement_items');
-                if($start_time != "" && $end_time !=""){
-                    $range = [$start_time, $end_time];
-                    $query->whereBetween('items_disbursement_items.distribution_date', $range);
-                }
-                if($start_time == "" && $end_time !=""){
 
-                    $query->where('items_disbursement_items.distribution_date', $end_time);
-                }
-                if($start_time != "" && $end_time ==""){
-                    $query->where('items_disbursement_items.distribution_date', $start_time);
-                }
-                if ($request->items !="All"){
-                    $query->where('items_disbursement_items.item_id', $request->items);
-                }
-                if($request->camp_id != "All"){
-                    $query->join('items_disbursements', 'items_disbursement_items.distribution_id', '=', 'items_disbursements.id')
-                        ->where('items_disbursements.camp_id', $request->camp_id);
-                }
-
-                $query->join('clients', 'items_disbursement_items.client_id', '<>', 'clients.id')
-                    ->select('clients.*','items_disbursement_items.item_id','quantity','items_disbursement_items.distribution_date');
-                $clients= $query->get();
-
-                if($start_time == "" && $end_time =="") {
-                    return redirect()->back();
-                }else{
-                    if ($request->export_type == 1) {
-                        return view('reports.nfis.html.registration', compact('request', 'clients'));
+                    if ($start_time == "" && $end_time == "" || $request->items =="All") {
+                        return redirect()->back()->with('message',"Please select Client arrival date range and NFIs Item in order to generate the list of clients");
                     } else {
-                        \Excel::create("List_of_Clients_report", function ($excel) use ($request, $clients) {
-                            $excel->sheet('sheet', function ($sheet) use ($request, $clients) {
-                                $sheet->loadView('reports.nfis.excel.registration', compact('request', 'clients'));
-                            });
-                        })->download('xlsx');
+
+                        $query = \DB::table('clients');
+                        if ($request->camp_id != "" && $request->camp_id != "All") {
+                            $query->where('camp_id', '=', "$request->camp_id");
+                        }
+                        if($start_time != "" && $end_time !=""){
+                            $range = [$start_time, $end_time];
+                            $query->whereBetween('date_arrival', $range);
+                        }
+                        elseif($start_time != "" && $end_time ==""){
+                            $query->where('date_arrival', $start_time);
+                        }
+                        elseif($start_time == "" && $end_time !=""){
+                            $query->where('date_arrival', $end_time);
+                        }
+                        else{
+                            $query->where('date_arrival', null);
+                        }
+                        $clients = $query->get();
+
+                        if ($request->export_type == 1) {
+                            return view('reports.nfis.html.itemsclients', compact('request', 'clients'));
+                        } else {
+                            \Excel::create("List_of_clients_for_items_distributions", function ($excel) use ($request, $clients) {
+                                $excel->sheet('sheet', function ($sheet) use ($request, $clients) {
+                                    $sheet->loadView('reports.nfis.excel.itemsclients', compact('request', 'clients'));
+                                });
+                            })->download('xlsx');
+                        }
                     }
-                }
+
                 break;
             case 4:
-                $query=\DB::table('cash_provision_clients');
-                if($start_time != "" && $end_time !=""){
-                    $range = [$start_time, $end_time];
-                    $query->whereBetween('provision_date', $range);
-                }
-                if($start_time == "" && $end_time !=""){
-
-                    $query->where('cash_provision_clients.provision_date', $end_time);
-                }
-                if($start_time != "" && $end_time ==""){
-                    $query->where('cash_provision_clients.provision_date', $start_time);
-                }
-                if($request->camp_id != "All"){
-                    $query->join('cash_provisions', 'cash_provision_clients.provision_id', '=', 'cash_provisions.id')
-                        ->where('cash_provisions.camp_id', $request->camp_id);
-                }
-
-                $query->join('clients', 'cash_provision_clients.client_id', '<>', 'clients.id')
-                    ->select('clients.*','activity_id','amount','cash_provision_clients.provision_date');
-                $clients= $query->get();
-
-                if($start_time == "" && $end_time =="") {
-                    return redirect()->back();
+                if($start_time == "" && $end_time =="" || $request->activity =="All") {
+                    return redirect()->back()->with('message',"Please select Client arrival date range and Cash Activity/Project");
                 }else{
+                    $query=\DB::table('clients');
+                    $range = [$start_time, $end_time];
+                    if($request->camp_id != "" && $request->camp_id !="All"){
+                        $query->where('camp_id','=',"$request->camp_id");
+                    }
+                    if($start_time != "" && $end_time !=""){
+                        $range = [$start_time, $end_time];
+                        $query->whereBetween('date_arrival', $range);
+                    }
+                    elseif($start_time != "" && $end_time ==""){
+                        $query->where('date_arrival', $start_time);
+                    }
+                    elseif($start_time == "" && $end_time !=""){
+                        $query->where('date_arrival', $end_time);
+                    }
+                    else{
+                        $query->where('date_arrival', null);
+                    }
+
+                    $clients= $query->get();
                     if ($request->export_type == 1) {
                         return view('reports.nfis.html.cashclients', compact('request', 'clients'));
                     } else {
-                        \Excel::create("List_of_Clients_To_Received", function ($excel) use ($request, $clients) {
+                        \Excel::create("List_of_clients_for_cash_distributions", function ($excel) use ($request, $clients) {
                             $excel->sheet('sheet', function ($sheet) use ($request, $clients) {
                                 $sheet->loadView('reports.nfis.excel.cashclients', compact('request', 'clients'));
                             });

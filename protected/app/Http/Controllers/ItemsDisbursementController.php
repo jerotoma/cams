@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Camp;
 use App\Client;
+use App\ClientVulnerabilityCode;
 use App\DumpItemsDisbursement;
 use App\ItemsCategories;
 use App\ItemsDisbursement;
@@ -21,10 +22,12 @@ use Maatwebsite\Excel\Facades\Excel;
 class ItemsDisbursementController extends Controller
 {
     protected  $error_found;
+    protected $import_errors;
     public function __construct()
     {
         $this->middleware('auth');
         $this->error_found="";
+        $this->import_errors="";
     }
     /**
      * Display a listing of the resource.
@@ -290,9 +293,6 @@ class ItemsDisbursementController extends Controller
                  $results = $reader->get();
 
 
-
-
-
                      if ($request->import_type == 2) {
 
                          $distribution = new ItemsDisbursement;
@@ -524,7 +524,7 @@ class ItemsDisbursementController extends Controller
                          $distribution->save();
 
                          $results->each(function ($row) use ($request,$distribution) {
-                             if (count(Client::where('hai_reg_number', '=', $row->hai_reg_number)->where('camp_id', '=', $request->camp_id)->get()) > 0) {
+                             if (count(Client::where('hai_reg_number', '=', $row->hai_reg_number)->where('camp_id', '=', $request->camp_id)->get()) > 0 && is_numeric($row->quantity) && intval($row->quantity) >0) {
 
 
                                  $client = Client::where('hai_reg_number', '=', $row->hai_reg_number)->get()->first();
@@ -541,7 +541,7 @@ class ItemsDisbursementController extends Controller
                                              $dist_items = new ItemsDisbursementItems;
                                              $dist_items->client_id = $client->id;
                                              $dist_items->item_id = $request->item_id;
-                                             $dist_items->quantity = 1;
+                                             $dist_items->quantity = intval($row->quantity);
                                              $dist_items->distribution_id = $distribution->id;
                                              $dist_items->distribution_date = $distribution->disbursements_date;
                                              $dist_items->save();
@@ -552,38 +552,65 @@ class ItemsDisbursementController extends Controller
                                      }
 									 else
 									 {
-										 $client =new DumpItemsDisbursement;
-										$client->names=$row->names;
-										$client->sex=$row->sex;
-										$client->age = $row->age;
-										$client->marital_status=$row->marital_status;
-										$client->m=$row->m;
-										$client->f=$row->f;
-										$client->t=$row->t;
-										$client->origin=$row->origin;
-										$client->date_of_arrival=$row->date_of_arrival;
-										$client->vul_1=$row->vul_1;
-										$client->quantity=intval($row->quantity);
-										$client->error_descriptions="Item is out of stock";
-										$client->save();
-										$this->import_errors="Missing filed is marked with red";
+
+                                         $clientdt=Client::where('hai_reg_number', '=', $row->hai_reg_number)->get()->first();
+                                         $client =new DumpItemsDisbursement;
+                                         $client->names=$row->names;
+                                         $client->sex=$row->sex;
+                                         $client->age = $row->age;
+                                         $client->marital_status=$clientdt->marital_status;
+                                         $client->m=$clientdt->males_total;
+                                         $client->f=$clientdt->females_total;
+                                         $client->t=$clientdt->females_total + $clientdt->males_total;
+                                         if (is_object($clientdt->fromOrigin) && $clientdt->fromOrigin != null) {
+                                             $client->origin = $clientdt->fromOrigin->origin_name;
+                                         }
+                                         $client->date_of_arrival=$clientdt->date_of_arrival;
+                                         $vul="";
+                                         if (count(ClientVulnerabilityCode::where('client_id','=',$clientdt->id)->get()) >0)
+                                         {
+                                             $vlc=ClientVulnerabilityCode::where('client_id','=',$clientdt->id)->get()->first();
+                                             if (is_object($vlc->code))
+                                             {
+                                                 $vul= $vlc->code->code;
+                                             }
+                                         }
+                                         $client->vul_1= $vul;
+                                         $client->quantity=intval($row->quantity);
+                                         $client->date_of_arrival=$clientdt->date_arrival;
+                                         $client->error_descriptions="Item is out of stock";
+                                         $client->save();
+                                         $this->import_errors="Missing filed is marked with red";
 									 }
 
 
                                  }
 								 else{
-									 $client =new DumpItemsDisbursement;
-									$client->names=$row->names;
-									$client->sex=$row->sex;
-									$client->age = $row->age;
-									$client->marital_status=$row->marital_status;
-									$client->m=$row->m;
-									$client->f=$row->f;
-									$client->t=$row->t;
-									$client->origin=$row->origin;
-									$client->date_of_arrival=$row->date_of_arrival;
-									$client->vul_1=$row->vul_1;
-									$client->quantity=intval($row->quantity);
+                                     $clientdt=Client::where('hai_reg_number', '=', $row->hai_reg_number)->get()->first();
+                                     $client =new DumpItemsDisbursement;
+                                     $client->names=$row->names;
+                                     $client->sex=$row->sex;
+                                     $client->age = $row->age;
+                                     $client->marital_status=$clientdt->marital_status;
+                                     $client->m=$clientdt->males_total;
+                                     $client->f=$clientdt->females_total;
+                                     $client->t=$clientdt->females_total + $clientdt->males_total;
+                                     if (is_object($clientdt->fromOrigin) && $clientdt->fromOrigin != null) {
+                                         $client->origin = $clientdt->fromOrigin->origin_name;
+                                     }
+                                     $client->date_of_arrival=$clientdt->date_of_arrival;
+                                     $vul="";
+                                     if (count(ClientVulnerabilityCode::where('client_id','=',$clientdt->id)->get()) >0)
+                                     {
+                                         $vlc=ClientVulnerabilityCode::where('client_id','=',$clientdt->id)->get()->first();
+                                         if (is_object($vlc->code))
+                                         {
+                                             $vul= $vlc->code->code;
+                                         }
+                                     }
+                                     $client->vul_1= $vul;
+                                     $client->quantity=intval($row->quantity);
+                                     $client->date_of_arrival=$clientdt->date_arrival;
 									$client->error_descriptions="Client is not eligible to receive item, is in distribution limit";
 									$client->save();
 									$this->import_errors="Missing filed is marked with red";
@@ -592,19 +619,44 @@ class ItemsDisbursementController extends Controller
                              }
 							 else
 							 {
-								$client =new DumpItemsDisbursement();
-								$client->names=$row->names;
-								$client->sex=$row->sex;
-								$client->age = $row->age;
-								$client->marital_status=$row->marital_status;
-								$client->m=$row->m;
-								$client->f=$row->f;
-								$client->t=$row->t;
-								$client->origin=$row->origin;
-								$client->date_of_arrival=$row->date_of_arrival;
-								$client->vul_1=$row->vul_1;
-								$client->quantity=intval($row->quantity);
-								$client->error_descriptions="Client is not registered in selected camp";
+                                 $filed_error="";
+                                 if($row->quantity ==""){
+                                     $filed_error .="quantity is Missing-";
+                                 }
+                                 if( intval($row->quantity) < 0){
+                                     $filed_error .="quantity can not be less than zero";
+                                 }
+                                 if (!count(Client::where('hai_reg_number', '=', $row->hai_reg_number)->where('camp_id', '=', $request->camp_id)->get()) > 0)
+                                 {
+                                     $camp =Camp::find($request->camp_id);
+                                     $filed_error .="Client not found in registration list for $camp->camp_name camp";
+                                 }
+
+							     $clientdt=Client::where('hai_reg_number', '=', $row->hai_reg_number)->get()->first();
+                                 $client =new DumpItemsDisbursement;
+                                 $client->names=$row->names;
+                                 $client->sex=$row->sex;
+                                 $client->age = $row->age;
+                                 $client->marital_status=$clientdt->marital_status;
+                                 $client->m=$clientdt->males_total;
+                                 $client->f=$clientdt->females_total;
+                                 $client->t=$clientdt->females_total + $clientdt->males_total;
+                                 if (is_object($clientdt->fromOrigin) && $clientdt->fromOrigin != null) {
+                                     $client->origin = $clientdt->fromOrigin->origin_name;
+                                 }
+                                 $client->date_of_arrival=$clientdt->date_of_arrival;
+                                 $vul="";
+                                 if (count(ClientVulnerabilityCode::where('client_id','=',$clientdt->id)->get()) >0)
+                                 {
+                                     $vlc=ClientVulnerabilityCode::where('client_id','=',$clientdt->id)->get()->first();
+                                     if (is_object($vlc->code))
+                                     {
+                                         $vul= $vlc->code->code;
+                                     }
+                                 }
+                                 $client->vul_1= $vul;
+                                 $client->quantity=intval($row->quantity);
+								$client->error_descriptions=$filed_error;
 								$client->save();
                                 $this->import_errors="Missing filed is marked with red";
 							 }
