@@ -396,7 +396,8 @@
                         <li ><a href="{{url('reports/assessments')}}">Assessments Reports</a></li>
                         <li><a href="{{url('reports/referrals')}}">Referrals Reports</a></li>
                         <li><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
-                    </ul>
+                    <li><a href="{{url('reports/case/management')}}">Case Management Reports</a></li>
+                </ul>
                 </li>
                 <!-- /data visualization -->
                 @endpermission
@@ -652,12 +653,12 @@
                             <th>No</th>
                             <th>Reg #</th>
                             <th>Unique id</th>
-                            <th>Names
-                            <th>Sex
-                            <th>Age
-                            <th>Marital Status
-                            <th>Name of Parents
-                            <th>Name of Spouse
+                            <th>Names</th>
+                            <th>Sex</th>
+                            <th>Age</th>
+                            <th>Marital Status</th>
+                            <th>Name of Parents</th>
+                            <th>Name of Spouse</th>
                             <th>Number of Males</th>
                             <th>Number of Females</th>
                             <th>Household Number</th>
@@ -721,12 +722,12 @@
                             <th>No</th>
                             <th>Reg #</th>
                             <th>Unique id</th>
-                            <th>Names
-                            <th>Sex
-                            <th>Age
-                            <th>Marital Status
-                            <th>Name of Parents
-                            <th>Name of Spouse
+                            <th>Names</th>
+                            <th>Sex</th>
+                            <th>Age</th>
+                            <th>Marital Status</th>
+                            <th>Name of Parents</th>
+                            <th>Name of Spouse</th>
                             <th>Number of Males</th>
                             <th>Number of Females</th>
                             <th>Household Number</th>

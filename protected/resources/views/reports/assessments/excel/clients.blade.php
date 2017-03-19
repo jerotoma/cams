@@ -1,4 +1,4 @@
-<table  >
+<table class="table datatable-column-search-inputs table-bordered table-hover" id="tab_logic">
     <thead>
     <tr >
         <th>No</th>
@@ -29,6 +29,28 @@
     <tbody>
     <?php $c=1;?>
     @foreach($clients as $client)
+        <?php
+        $clients_needs="  ";
+        if ($request->clients_needs != "All" ){
+
+            $cneed=\App\Need::find($client->clients_needs);
+            $clients_needs=$cneed->need_name;
+        }
+        else{
+            $cneed=\DB::table('vulnerability_assessments')
+                ->where('assessment_id','=',$client->assessment_id)
+                ->join('client_needs', 'vulnerability_assessments.id', '=', 'client_needs.assessment_id')
+                ->where('client_needs.status', '=', "Yes")
+                ->join('needs', 'client_needs.need_id', '=', 'needs.id')
+                ->select('needs.*')->get();
+            foreach ($cneed as $value)
+            {
+                $clients_needs .=$value->need_name.",";
+            }
+            $clients_needs=substr($clients_needs,0,strlen($clients_needs)-1);
+        }
+
+        ?>
         <tr>
             <td>{{$c++}}</td>
             <td>{{$client->hai_reg_number}}</td>
@@ -51,7 +73,7 @@
             <td>{{$client->present_address}}</td>
             <td>{{$client->ration_card_number}}</td>
             <td>{{$client->hh_relation}}</td>
-            <td>@if(count(\App\Need::find($client->need_id)) > 0 ) {{\App\Need::find($client->need_id)->need_name}}@endif</td>
+            <td>{{$clients_needs}}</td>
             @if(is_object(\App\Client::find($client->id)->vulnerabilityCodes) && count(\App\Client::find($client->id)->vulnerabilityCodes) >0)
                 @foreach(\App\Client::find($client->id)->vulnerabilityCodes as $code)
                     @if(is_object($code->code) && $code->code != null)

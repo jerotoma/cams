@@ -9,6 +9,11 @@
                     <div class="panel-body">
                         <fieldset class="scheduler-border">
                             <legend class="text-bold">Assessment Report</legend>
+                            @if (session('message'))
+                                <div class="alert alert-danger">
+                                    {{ session('message') }}
+                                </div>
+                            @endif
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group ">

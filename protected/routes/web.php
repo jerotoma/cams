@@ -255,6 +255,9 @@ Route::post('reports/assessments','AssessmentReportsController@generateReport');
 Route::get('reports/referrals','ReferralReportsController@index');
 Route::post('reports/referrals','ReferralReportsController@generateReport');
 
+Route::get('reports/case/management','CaseManagementReportsController@index');
+Route::post('reports/case/management','CaseManagementReportsController@generateReport');
+
 
 //Inclusion Assessments
 Route::resource('assessments/inclusion','InclusionAssessmentController');

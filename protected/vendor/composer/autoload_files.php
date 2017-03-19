@@ -22,4 +22,5 @@ return array(
     'dc0a5f8d42024bf101a64e1ff6bd2d40' => $baseDir . '/app/Http/SystemAuditHelper.php',
     '2764aef4f66c19510a6d641a163c7d31' => $baseDir . '/app/Http/AssessmentsHelper.php',
     '896a1b03d4e0c67312e25ac556303409' => $baseDir . '/app/Http/ReferralsHelper.php',
+    'b01f2226a479d64d4f100587313e26d4' => $baseDir . '/app/Http/CaseReportHelper.php',
 );

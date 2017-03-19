@@ -49,19 +49,19 @@ if (!function_exists('getClientCountCashProvisionByCriteriaInNumberTotal')) {
 }
 if (!function_exists('getClientCountCashProvisionByCriteriaInPercentageTotal')) {
     function getClientCountCashProvisionByCriteriaInPercentageTotal($age_score,$range){
-        $totalAgeRange=intval(count(\DB::table('cash_provision_clients')
+
+        $qsex=\DB::table('cash_provision_clients')
             ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
             ->where('clients.age_score','=',$age_score)
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*')));
+            ->select('clients.*')->get();
 
-        $qtotal=intval(count(\DB::table('cash_provision_clients')
+        $qtotal=\DB::table('cash_provision_clients')
             ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
             ->whereBetween('cash_provision_clients.provision_date', $range)
-            ->select('clients.*')->get()));
-
-        if($qtotal >0) {
-            $calcper = ($totalAgeRange / $qtotal) * 100;
+            ->select('clients.*')->get();
+        if (count($qsex) >0 && count($qtotal)) {
+            $calcper = (intval(count($qsex)) / intval(count($qtotal))) * 100;
 
             $percentage = number_format($calcper, 2) . "%";
         }else

@@ -220,7 +220,7 @@ class InventoryReportsController extends Controller
                 break;
             case 6:
                 if($start_time == "" && $end_time =="") {
-                    return redirect()->back();
+                    return redirect()->back()->with('message',"Please select date range");
                 }else{
                     $range = [$start_time, $end_time];
                     if ($request->export_type == 1) {

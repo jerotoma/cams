@@ -1,6 +1,11 @@
 <div class="row clearfix" style="margin-top: 20px">
     <div class="col-md-12 column">
         @if($request->camp_id =="All")
+            <?php $camps_names="";
+            foreach (\App\Camp::all() as $cmp){
+                $camps_names .= " ". strtoupper($cmp->camp_name)." ,";
+            }
+            $camps_names=substr($camps_names,0,strlen($camps_names)-1);?>
             <table class="table table-bordered table-hover">
                 <tr>
                     <td colspan="3" valign="top" style="background-color: #ccc">Name of Population Planning Group:</td>
@@ -68,7 +73,7 @@
                 </tr>
                 <tr>
                     <td  colspan="2" valign="top" style="background-color: #ccc">Major locations:</td>
-                    <td  colspan="5" valign="top" style="background-color: #ccc">Nduta Mtendeni</td>
+                    <td  colspan="5" valign="top" style="background-color: #ccc">{{$camps_names}}</td>
                 </tr>
             </table>
         @else

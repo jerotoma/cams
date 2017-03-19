@@ -316,8 +316,9 @@
                         <li ><a href="{{url('reports/clients')}}">Client Reports</a></li>
                         <li ><a href="{{url('reports/assessments')}}">Assessments Reports</a></li>
                         <li class="active"><a href="{{url('reports/referrals')}}">Referrals Reports</a></li>
-                        <li ><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
-                    </ul>
+                        <li><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
+                    <li><a href="{{url('reports/case/management')}}">Case Management Reports</a></li>
+                </ul>
                 </li>
                 <!-- /data visualization -->
                 @endpermission
