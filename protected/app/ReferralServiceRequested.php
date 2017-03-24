@@ -9,6 +9,6 @@ class ReferralServiceRequested extends Model
     //
     public function services()
     {
-        return $this::hasMany('\App\RequestedService','referral_id');
+        return $this::hasMany('\App\RequestedService','requested_id');
     }
 }

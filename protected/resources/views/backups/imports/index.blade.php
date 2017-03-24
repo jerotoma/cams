@@ -218,16 +218,15 @@
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class=" text-center text-uppercase"> SYSTEM ADVANCED DATA IMPORT</h5>
+            <h5 class=" text-center text-uppercase"> DATA SYNCHRONIZATION IMPORT FROM EXPORTED DATA</h5>
         </div>
 
         <div class="panel-body">
             {!! Form::open(array('url'=>'backup/import/advanced','role'=>'form','id'=>'formImportItems','files'=>true)) !!}
             <div class="form-body">
-                @if(Session::has('error'))
-                    <div class="alert fade in alert-danger">
-                        <i class="icon-remove close" data-dismiss="alert"></i>
-                        {{Session::get('error')}}
+                @if (session('message'))
+                    <div class="alert alert-danger">
+                        {{ session('message') }}
                     </div>
                 @endif
 
@@ -245,7 +244,14 @@
                         <div class="form-group">
                             <label class="control-label text-bold"> System Module</label>
                             <select class="select" name="module" id="module" data-placeholder="Choose an option...">
-                                <option value="1">Main Module</option>
+                                <option></option>
+                                <option value="1">Clients</option>
+                                <option value="2">Clients Assessments</option>
+                                <option value="3">Clients Referrals</option>
+                                <option value="4">NFIs Inventory</option>
+                                <option value="5">Cash Distributions</option>
+                                <option value="6">Progress Monitoring</option>
+                                <option value="7">All Modules</option>
                             </select>
                             @if($errors->first('module') !="")
                                 <label id="address-error" class="validation-error-label" for="module">{{ $errors->first('module') }}</label>

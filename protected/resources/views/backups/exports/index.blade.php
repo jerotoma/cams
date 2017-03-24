@@ -218,7 +218,12 @@
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-            <h5 class=" text-center text-uppercase"> SYSTEM ADVANCED DATA EXPORT</h5>
+            <h5 class=" text-center text-uppercase"> DATA SYNCHRONIZATION EXPORT FROM LOCAL TO CENTRAL SYSTEM</h5>
+            <div class="alert alert-info">
+                This module is design for exporting data from local individual installed system to central system,Select the module to export
+                such as Client module which will export all client registration data from local system, you can do the same to other modules. For exporting
+                all data at per select All Modules
+            </div>
         </div>
 
         <div class="panel-body">
