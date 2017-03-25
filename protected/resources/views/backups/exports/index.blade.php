@@ -229,6 +229,21 @@
         <div class="panel-body">
             {!! Form::open(array('url'=>'backup/export/advanced','role'=>'form','id'=>'formImportItems','files'=>true)) !!}
             <div class="form-body">
+                @if (session('message'))
+                    <div class="alert alert-danger">
+                        {{ session('message') }}
+                    </div>
+                @endif
+
+                @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
                         <div class="form-group">
