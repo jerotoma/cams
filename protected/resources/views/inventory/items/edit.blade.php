@@ -79,7 +79,7 @@
                     @endif
                     <option></option>
                     <option value="Available">Available</option>
-                    <option value="Available">Not available</option>
+                    <option value="Not available">Not available</option>
                 </select>
             </div>
             <div class="row">

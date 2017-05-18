@@ -245,7 +245,7 @@ class ItemInventoryController extends Controller
                 $item->save();
                 return response()->json([
                     'success' => true,
-                    'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Record saved</span><h3>"
+                    'message' => "<h3><span class='text-info'><i class='fa fa-info'></i> Record's Updates saved</span><h3>"
                 ], 200);
             }
         }
