@@ -33,7 +33,7 @@
         $clients_needs="  ";
         if ($request->clients_needs != "All" ){
 
-            $cneed=\App\Need::find($client->clients_needs);
+            $cneed=\App\Need::find($request->clients_needs);
             $clients_needs=$cneed->need_name;
         }
         else{
