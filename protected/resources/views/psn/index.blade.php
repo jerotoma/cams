@@ -355,9 +355,9 @@
             @foreach($codes as $code)
             <tr>
                 <td>{{$i++}}</td>
-                <td>{{$code->code}}</td>
-                <td>{{$code->description}}</td>
+                <td>{{$code->code}}</td> 
                 <td>@if(is_object($code->category)){{$code->category->code}}@endif</td>
+                <td>{{$code->description}}</td>
                 <td>{{$code->definition}}</td>
                 <td>{{$code->for_reporting}}</td>
                 <td><ul class="icons-list text-center">
