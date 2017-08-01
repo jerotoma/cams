@@ -65,9 +65,9 @@ class ClientReportsController extends Controller
         elseif($start_time == "" && $end_time !=""){
             $query->where('date_arrival', $end_time);
         }
-        else{
-            $query->where('date_arrival', null);
-        }
+        //else{
+        //    $query->where('date_arrival', null);
+        //}
 
         if ($request->specific_needs != "All" && $request->specific_needs !=""){
 

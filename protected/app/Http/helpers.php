@@ -570,7 +570,7 @@ if (!function_exists('getHighChatClientByCodes')) {
         $seriesdata1="";
         foreach (\App\PSNCode::where('for_reporting','=','Yes')->get() as $code) {
             $series1 .= "{ ";
-            $series1 .= " name: '".$code->description."',";
+            $series1 .= " name: '".$code->code."',";
 
             $MonthCount = "";
             $monthData = "";
