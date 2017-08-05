@@ -39,7 +39,8 @@
 <!-- Main navbar -->
 <div class="navbar navbar-inverse bg-indigo text-center" style="padding-top: 10px">
 
-        <a  href="#" style="color: #FFFFFF; font-size: 20px;font-weight: bold; text-transform: uppercase; margin-top: 10px;">Case Management Database for Person with Specific Needs</a>
+        <a  href="#" style="color: #FFFFFF; font-size: 20px;font-weight: bold; text-transform: uppercase; margin-top: 10px;"> 
+		 Case Management Database for Person with Specific Needs </a> &nbsp <img src="{{asset('assets/images/helpage.png')}}" style="width: 32px; height: 32px; border-radius: 2px"/> &nbsp<img src="{{asset('assets/images/unhcr.png')}}" style="width: 32px; height: 32px; border-radius: 2px"/> &nbsp<img src="{{asset('assets/images/bprn_logo.png')}}"  style="width: 32px; height: 32px; border-radius: 2px"/>
 
 </div>
 <!-- /main navbar -->
@@ -84,7 +85,8 @@
                             </div>
                         </div>
 
-                        <div class="form-group login-options">
+
+						<div class="form-group login-options">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <label class="checkbox-inline">
@@ -95,10 +97,11 @@
                             <!--
                                 <div class="col-sm-6 text-right">
                                     <a href="{{url('password/recover')}}">Forgot password?</a>
-                                </div> -->
+                                </div> 
+								-->
                             </div>
                         </div>
-
+                        
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block btn-lg">Login <i class="icon-arrow-right14 position-right"></i></button>
                         </div>
@@ -128,15 +131,15 @@
 
 </div>
 <!-- /page container -->
-<!-- Footer -->
+<!-- Footer 
 <div class=" navbar-fixed-bottom">
     <div class="row" style="margin-bottom: 10px; margin-left: 10px">
         <div class="col-md-2 pull-right" style="padding-right: 10px">
             <fieldset class="scheduler-border">
                 <legend class="text-bold"><h6>Sponsored By</h6></legend>
                 <div class="row">
-                    <div class="col-md-6 text-center"><img src="{{asset('assets/images/bprn_logo.png')}}"  style="width: 100px; height: 100px; border-radius: 10px"/><p class="text-center ">BPRM</p></div>
-                    <div class="col-md-6 text-center"><img src="{{asset('assets/images/unhcr.png')}}" style="width: 100px; height: 100px; border-radius: 10px"/><p class="text-center ">UNHCR</p></div>
+                    <div class="col-md-6 text-center"><p class="text-center ">BPRM</p></div>
+                    <div class="col-md-6 text-center"><p class="text-center ">UNHCR</p></div>
                 </div>
             </fieldset>
         </div>
@@ -145,7 +148,7 @@
                 <legend class="text-bold"><h6 class="text-left">Developed For</h6></legend>
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <img src="{{asset('assets/images/helpage.png')}}" style="width: 100px; height: 100px; border-radius: 10px"/>
+                        
                         <p class="text-center">HELPAGE International</p>
                    </div>
                 </div>
