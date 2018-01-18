@@ -34,7 +34,7 @@
                     <td>@if(is_object($case->client) && $case->client != null ){{$case->client->full_name}}@endif</td>
                     <td>@if(is_object($case->client) && $case->client != null ){{$case->client->sex}}@endif</td>
                     <td>@if(is_object($case->client) && $case->client != null ){{$case->client->age}}@endif</td>
-                    <td>@if(is_object($case->client) && $case->client->nationality != null ){{$case->client->nationality->country_name}}@endif</td>
+                    <td>@if(is_object($case->client) && $case->client->fromOrigin != null ){{$case->client->fromOrigin->origin_name}}@endif</td>
                     <td>@if(is_object($case->client) && $case->client != null ){{date('d-M-Y',strtotime($case->client->date_arrival))}}@endif</td>
                 </tr>
             </table>

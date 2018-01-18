@@ -34,7 +34,7 @@
                     <td>@if(is_object($notice->client) && $notice->client != null ){{$notice->client->full_name}}@endif</td>
                     <td>@if(is_object($notice->client) && $notice->client != null ){{$notice->client->sex}}@endif</td>
                     <td>@if(is_object($notice->client) && $notice->client != null ){{$notice->client->age}}@endif</td>
-                    <td>@if(is_object($notice->client) && $notice->client->nationality != null ){{$notice->client->nationality->country_name}}@endif</td>
+                    <td>@if(is_object($notice->client) && $notice->client->fromOrigin != null ){{$notice->client->fromOrigin->origin_name}}@endif</td>
                     <td>@if(is_object($notice->client) && $notice->client != null ){{date('d-M-Y',strtotime($notice->client->date_arrival))}}@endif</td>
                 </tr>
             </table>
