@@ -96,9 +96,21 @@ class HomeAssessmentController extends Controller
 
         $count=1;
         foreach($assessments as $assessment) {
-           $camp_name="";
+            $camp_name="";
+            $hai_reg_number="";
+            $client_number="";
+            $full_name="";
+            $sex="";
+            $age="";
+            $hai_reg_number="";
+
            if (is_object($assessment->client) && is_object($assessment->client->camp)){
                $camp_name =$assessment->client->camp->camp_name;
+               $hai_reg_number=$assessment->client->hai_reg_number;
+               $client_number= $assessment->client->client_number;
+               $full_name=$assessment->client->full_name;
+               $sex=$assessment->client->sex;
+               $age=$assessment->client->age;
            }
             if ($assessment->auth_status == "pending") {
                 if (Auth::user()->can('authorize')) {
@@ -106,11 +118,11 @@ class HomeAssessmentController extends Controller
                         $count++,
                         $assessment->assessment_date,
                         $assessment->case_code,
-                        $assessment->client->hai_reg_number,
-                        $assessment->client->client_number,
-                        $assessment->client->full_name,
-                        $assessment->client->sex,
-                        $assessment->client->age,
+                        $hai_reg_number,
+                        $client_number,
+                        $full_name,
+                        $sex,
+                        $age,
                         $camp_name,
                         $assessment->auth_status,
                         '<ul class="icons-list text-center">
@@ -136,11 +148,11 @@ class HomeAssessmentController extends Controller
                         $count++,
                         $assessment->assessment_date,
                         $assessment->case_code,
-                        $assessment->client->hai_reg_number,
-                        $assessment->client->client_number,
-                        $assessment->client->full_name,
-                        $assessment->client->sex,
-                        $assessment->client->age,
+                        $hai_reg_number,
+                        $client_number,
+                        $full_name,
+                        $sex,
+                        $age,
                         $camp_name,
                         $assessment->auth_status,
                         '<ul class="icons-list text-center">

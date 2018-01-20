@@ -63,8 +63,8 @@
                 </tr>
                 <tr>
                     <th >Nationality/Tribe(s) of PSN</th>
-                    <td colspan="5">@if(is_object($assessment->client) && $assessment->client != null)
-                            {{$assessment->client->full_name}}@endif</td>
+                    <td colspan="5">@if(is_object($assessment->client) && is_object($assessment->client->fromOrigin) && $assessment->client != null)
+                            {{$assessment->client->fromOrigin->origin_name}}@endif</td>
                 </tr>
                 <tr>
                     <th >Name of caregiver/Parent/household head(if different):</th>
@@ -165,18 +165,7 @@
                     <th>Date</th>
                     <th></th>
                 </tr>
-                <tr>
-                    <th>Name of Case Worker: </th>
-                    <th></th>
-                    <th>Signature</th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <th>Name of Project Coordinator: </th>
-                    <th></th>
-                    <th>Signature</th>
-                    <th></th>
-                </tr>
+
                 </thead>
                 <tbody>
 
