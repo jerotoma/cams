@@ -376,6 +376,7 @@ class PostCashMonitoringController extends Controller
                     $usage_category->category_id = $category;
                     $usage_category->currency = $request->currencies[$counter];
                     $usage_category->save();
+                    $counter++;
                 }
 
                 return Response::json(array(
@@ -537,11 +538,14 @@ class PostCashMonitoringController extends Controller
                     $cash_usage->save();
 
                     $counter = 0;
+                    /*
                     if (is_object($assessment->usages) && $assessment->usages != null && is_object($assessment->usages->usages) && count($assessment->usages->usages) >0) {
                         foreach ($assessment->usages as $usage){
                             $usage->delete();
                         }
                     }
+                    */
+                    PCCashUsageCategory::where('usage_id','=',$cash_usage->id)->delete();
                     foreach ($request->categories as $category) {
 
                         $usage_category = new PCCashUsageCategory;
@@ -549,6 +553,7 @@ class PostCashMonitoringController extends Controller
                         $usage_category->category_id = $category;
                         $usage_category->currency = $request->currencies[$counter];
                         $usage_category->save();
+                        $counter++;
                     }
                 }
 

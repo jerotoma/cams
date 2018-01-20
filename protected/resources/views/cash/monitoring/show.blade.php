@@ -16,10 +16,10 @@
                     <h5>1.0 Administrative Details</h5>
                     <table class="table table-bordered">
                         <tr>
-                            <td  valign="top"><br />
+                            <td  valign="top" class="col-md-1"><br />
                                 <strong>1.1</strong></td>
-                            <th  valign="top" class="col-md-3"><p>District</p></th>
-                            <td  valign="top" class="col-md-9"><p> @if($assessment->district_id != "")
+                            <th  valign="top" class="col-md-6"><p>District</p></th>
+                            <td  valign="top" class="col-md-5"><p> @if($assessment->district_id != "")
                                         {{\App\District::findorfail($assessment->district_id)->district_name}}
                                     @endif</p></td>
                         </tr>
@@ -68,10 +68,10 @@
                     <h5>2.0  Demographic Details</h5>
                     <table class="table table-bordered">
                         <tr>
-                            <td  valign="top"><br />
+                            <td  valign="top" class="col-md-1"><br />
                                 <strong>2.1</strong></td>
-                            <td  colspan="2" valign="top" class="col-md-3"><p>Gender of the Respondent <strong>(1= M, 2=F)</strong></p></td>
-                            <td  valign="top" class="col-md-9"><p> @if(is_object($assessment->demographicDetails))
+                            <td  colspan="2" valign="top" class="col-md-6"><p>Gender of the Respondent <strong>(1= M, 2=F)</strong></p></td>
+                            <td  valign="top" class="col-md-5"><p> @if(is_object($assessment->demographicDetails))
                                         {{$assessment->demographicDetails->q2_1}}
                                     @endif</p></td>
                         </tr>
@@ -132,10 +132,10 @@
                     <h5>3.0  Distribution of Cash withdrawal Mechanism/Registration with Cash Withdrawal  Agent</h5>
                     <table class="table table-bordered">
                         <tr>
-                            <td  valign="top"><p><strong>3.1</strong></p></td>
-                            <td  valign="top" class="col-md-3"><p>How many hours did it take    you to travel to the voucher/cash card/token distribution/registration?<br />
+                            <td  valign="top" class="col-md-1"><p><strong>3.1</strong></p></td>
+                            <td  valign="top" class="col-md-6"><p>How many hours did it take    you to travel to the voucher/cash card/token distribution/registration?<br />
                                     <strong>1=</strong> &lt;0.5 hours, <strong>2=</strong> 0.5-1 hour, <strong>3=</strong> 1-1.5 hours, <strong>4=</strong> 1.5-2 hours, <strong>5=</strong> 2-2.5 hours,<strong>6=</strong>  &gt;2.5 hours</p></td>
-                            <td  valign="top" class="col-md-9"><p>@if(is_object($assessment->cashWithdrawal))
+                            <td  valign="top" class="col-md-5"><p>@if(is_object($assessment->cashWithdrawal))
                                         {{$assessment->cashWithdrawal->q3_1}}
                                     @endif</p></td>
                         </tr>
@@ -186,11 +186,11 @@
                     <h5>4.0 Physically  receiving the cash</h5>
                     <table class="table table-bordered">
                         <tr>
-                            <td  valign="top"><br />
+                            <td  valign="top" class="col-md-1"><br />
                                 <strong>4.1</strong></td>
-                            <td  valign="top" class="col-md-3"><p>Was it you or a proxy that    received the cash at the bank? <br />
-                                    <strong>1=</strong>You-    the targeted beneficiary,<strong> 2= </strong>Proxy<strong></strong></p></td>
-                            <td  valign="top" class="col-md-9"><p> @if(is_object($assessment->physicallyReceivingCash))
+                            <td  valign="top" class="col-md-6"><p>Was it you or a proxy that    received the cash at the bank? <br />
+                                    <strong>1=</strong>You-the targeted beneficiary,<strong> 2= </strong>Proxy<strong></strong></p></td>
+                            <td  valign="top" class="col-md-5"><p> @if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_1}}
                                     @endif</p></td>
                         </tr>
@@ -255,22 +255,23 @@
                                     @endif</p></td>
                         </tr>
                     </table>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" style="margin-top: 5px;">
                         <tr>
-                            <td  valign="top"><p><strong>4.10</strong></p></td>
+                            <td  valign="top" class="col-md-1"><p><strong>4.10</strong></p></td>
                             <td  valign="top" class="col-md-3"><p>How much cash did you    receive?<br />
-                                    <strong>@if(is_object($assessment->physicallyReceivingCash))
+                                   </p></td>
+                            <td  valign="top" class="col-md-2"><p> <strong>@if(is_object($assessment->physicallyReceivingCash))
                                             {{$assessment->physicallyReceivingCash->q4_10}}
                                         @endif</strong></p></td>
                             <td  valign="top" class="col-md-3"><p>Was this the amount you    expected? <strong>(1=Yes, 2= No)</strong></p></td>
-                            <td  valign="top"><p>@if(is_object($assessment->physicallyReceivingCash))
+                            <td  valign="top" class="col-md-3"><p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_10_1}}
                                     @endif</p></td>
                         </tr>
                         <tr>
                             <td  valign="top"><p><strong>4.11</strong></p></td>
                             <td  colspan="2" valign="top"><p>Did you have to pay anyone    to receive your cash? <strong>(1=Yes, 2= No)</strong></p></td>
-                            <td  valign="top"><p>@if(is_object($assessment->physicallyReceivingCash))
+                            <td  valign="top" colspan="2"><p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_11}}
                                     @endif</p></td>
                         </tr>
@@ -278,7 +279,7 @@
                             <td  valign="top"><p><strong>4.12</strong></p></td>
                             <td  colspan="2" valign="top"><p>If yes to previous    question, whom did you have to pay?<br />
                                     <strong>1=</strong> Community leader, <strong>2=</strong> NGO staff, <strong>3=</strong> Hawala agent, <strong>4=</strong> Trader, <strong>5=</strong>Police/army, <strong>6=</strong>Other</p></td>
-                            <td  valign="top"><p>&nbsp;</p>
+                            <td  valign="top" colspan="2"><p>&nbsp;</p>
                                 <p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_12}}
                                     @endif</p></td>
@@ -287,7 +288,7 @@
                             <td  valign="top"><p><strong>4.13</strong></p></td>
                             <td  colspan="2" valign="top"><p>Rank the ease with which    you collected your cash<br />
                                     <strong>1= Good                        2= Fair                   3= Poor</strong></p></td>
-                            <td  valign="top"><p>&nbsp;</p>
+                            <td  valign="top" colspan="2"><p>&nbsp;</p>
                                 <p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_13}}
                                     @endif</p></td>
@@ -296,7 +297,7 @@
                             <td  valign="top"><p><strong>4.14</strong></p></td>
                             <td  colspan="2" valign="top"><p>Rank the level of security    at the cash distribution site<br />
                                     <strong>1= Good                        2= Fair                   3= Poor</strong></p></td>
-                            <td  valign="top"><p>@if(is_object($assessment->physicallyReceivingCash))
+                            <td  valign="top" colspan="2"><p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_14}}
                                     @endif</p></td>
                         </tr>
@@ -304,42 +305,42 @@
                             <td  valign="top"><p><strong>4.15</strong></p></td>
                             <td  colspan="2" valign="top"><p>Did the people who gave you    the cash treat you with dignity and respect? <br />
                                     <strong>(1=Yes, 2= No)</strong></p></td>
-                            <td  valign="top"><p>@if(is_object($assessment->physicallyReceivingCash))
+                            <td  valign="top" colspan="2"><p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_15}}
                                     @endif</p></td>
                         </tr>
                         <tr>
                             <td  valign="top"><p><strong>4.16</strong></p></td>
                             <td  colspan="2" valign="top"><p>Did you receive/proxy any    problems with identification by the cash distributors? (banks, traders,    hawala staff) <strong>(1=Yes, 2= No)</strong></p></td>
-                            <td  valign="top"><p>@if(is_object($assessment->physicallyReceivingCash))
+                            <td  valign="top" colspan="2"><p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_16}}
                                     @endif</p></td>
                         </tr>
                         <tr>
                             <td  valign="top"><p><strong>4.17</strong></p></td>
                             <td  colspan="2" valign="top"><p>Did you/proxy experience    any problems with getting the correct bank notes? <strong>(1=Yes, 2= No)</strong></p></td>
-                            <td  valign="top"><p>@if(is_object($assessment->physicallyReceivingCash))
+                            <td  valign="top" colspan="2"><p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_17}}
                                     @endif</p></td>
                         </tr>
                         <tr>
                             <td  valign="top"><p><strong>4.18</strong></p></td>
                             <td  colspan="2" valign="top"><p>Did you experience any    problems with sending another person to collect the money? <strong>(1=Yes, 2= No)</strong></p></td>
-                            <td  valign="top"><p>@if(is_object($assessment->physicallyReceivingCash))
+                            <td  valign="top" colspan="2"><p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_18}}
                                     @endif</p></td>
                         </tr>
                         <tr>
                             <td  valign="top"><p><strong>4.19</strong></p></td>
                             <td  colspan="2" valign="top"><p>I am aware of where and how    to report any complaints/feedback I have about this programme <strong>(1=Yes, 2= No)</strong></p></td>
-                            <td  valign="top"><p>@if(is_object($assessment->physicallyReceivingCash))
+                            <td  valign="top" colspan="2"><p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_19}}
                                     @endif</p></td>
                         </tr>
                         <tr>
                             <td  valign="top"><p><strong>4.20</strong></p></td>
                             <td  colspan="2" valign="top"><p>Did you/proxy experience    any other problems collecting the cash that was not already mentioned?  <strong>(1=Yes,    2= No)</strong></p></td>
-                            <td  valign="top"><p>@if(is_object($assessment->physicallyReceivingCash))
+                            <td  valign="top" colspan="2"><p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_20}}
                                     @endif</p></td>
                         </tr>
@@ -347,7 +348,7 @@
                             <td  valign="top"><p><strong>4.21</strong></p></td>
                             <td  colspan="2" valign="top"><p>If yes to above, please    explain:</p>
                                 <p>&nbsp;</p></td>
-                            <td  valign="top"><p>@if(is_object($assessment->physicallyReceivingCash))
+                            <td  valign="top" colspan="2"><p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_21}}
                                     @endif</p></td>
                         </tr>
@@ -355,7 +356,7 @@
                             <td  valign="top"><p><strong>4.22</strong></p></td>
                             <td  colspan="2" valign="top"><p>Overall, could you please    rate your satisfaction level with the cash assistance provided by HelpAge?<br />
                                     <strong>1=</strong> Highly satisfied, <strong>2=</strong> Satisfied, <strong>3=</strong> Neutral, <strong>4=</strong> Dissatisfied, <strong>5=</strong> Very Dissatisfied</p></td>
-                            <td  valign="top"><p>&nbsp;</p>
+                            <td  valign="top" colspan="2"><p>&nbsp;</p>
                                 <p>@if(is_object($assessment->physicallyReceivingCash))
                                         {{$assessment->physicallyReceivingCash->q4_22}}
                                     @endif</p></td>
@@ -368,10 +369,10 @@
                     <h5>5.0 Communal Relations</h5>
                     <table class="table table-bordered">
                         <tr>
-                            <td  valign="top"><br />
+                            <td  valign="top" class="col-md-1"><br />
                                 <strong>5.1</strong></td>
                             <td  valign="top" class="col-md-6"><p>Control over the cash    received from HelpAge has caused conflict within my household <strong>(1=Yes, 2= No)</strong></p></td>
-                            <td  valign="top"  class="col-md-3"><p>@if(is_object($assessment->communalRelations))
+                            <td  valign="top"  class="col-md-5"><p>@if(is_object($assessment->communalRelations))
                                         {{$assessment->communalRelations->q5_1}}
                                     @endif</p></td>
                         </tr>
