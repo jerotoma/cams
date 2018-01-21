@@ -558,6 +558,7 @@ class ReferralController extends Controller
             if (is_object($services) && $services != null){
                RequestedService::where('requested_id','=',$services->id)->delete();
             }
+            $services->delete();
         }
         $referral->delete();
     }
