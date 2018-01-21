@@ -28,7 +28,7 @@
         <div class="col-md-4">
             <div class="form-group ">
                 <label class="control-label">Age: </label>
-                <input type="text" class="form-control" placeholder="Age " name="" id="cl_age"
+                <input type="text" class="form-control" placeholder="Age " name="cl_age" id="cl_age"
                        value="{{$client->age}}" readonly >
             </div>
         </div>

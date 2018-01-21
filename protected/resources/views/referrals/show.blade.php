@@ -21,15 +21,15 @@
     </div>
     <div class="row" style="margin-top: 10px">
         <tr class="col-md-12 ">
-            <h5><span class="pull-right"><label class="checkbox-inline">
+            <h5><span class="pull-right"><label class="checkbox-inline"> </label>
                                 <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities"
                                 @if($referral->referral_type =="Routine") checked @endif>
                                 Routine
-                            </label> <label class="checkbox-inline" style="margin-left: 10px">
+                             <label class="checkbox-inline" style="margin-left: 10px"></label>
                                 <input type="checkbox" class="styled" name="service_request[]"  value="Psychosocial Activities"
                                        @if($referral->referral_type =="Urgent") checked @endif>
-                                Urgent Date of referral: (DD/MM/YY): {{date("d/m/Y",strtotime($referral->referral_date))}}
-                            </label> </span> <span class="pull-left" style="margin-left: 10px; ">Referring agency copy </span></h5>
+                    &nbsp; Urgent Date of referral: (DD/MM/YY): {{date("d/m/Y",strtotime($referral->referral_date))}}
+                             </span> <span class="pull-left" style=" margin-top: 10px ">Referring agency copy </span></h5>
             <table class="table table-bordered">
                 <tr>
                     <th style="background-color:#ccc" colspan="4">Referring Agency </th>
@@ -44,7 +44,7 @@
                     <th>Phone</th>
                     <td>@if(is_object($referral->referringAgency)) {{$referral->referringAgency->ref_phone}} @endif</td>
                     <th>Email</th>
-                    <td> @if(is_object($referral->referringAgency)) {{$referral->referringAgency->ref_location}} @endif</td>
+                    <td> @if(is_object($referral->referringAgency)) {{$referral->referringAgency->ref_email}} @endif</td>
                 </tr>
                 <tr>
                     <th>Location</th>
@@ -336,11 +336,11 @@
                     <th style="background-color:#ccc" colspan="3">Consent to Release Information (Read with client/ caregiver and answer any questions before s/he signs below) </th>
                 </tr>
                 <tr>
-                    <th>I,.............................................................(client name), understand that the purpose of the referral and of disclosing this information to                                        (receiving agency) is to ensure the safety and continuity of care among service providers seeking to serve the client. The service provider,                                        (referring agency), has clearly explained the procedure of the referral to me and has listed the exact information that is to be disclosed. By signing this form,
-                        I authorize this exchange of information:</th>
+                    <td class="col-md-7">I,.............................................................(client name), understand that the purpose of the referral and of disclosing this information to                                        (receiving agency) is to ensure the safety and continuity of care among service providers seeking to serve the client. The service provider,                                        (referring agency), has clearly explained the procedure of the referral to me and has listed the exact information that is to be disclosed. By signing this form,
+                        I authorize this exchange of information:</td>
 
-                    <th>Signature of Responsible Party:</th>
-                    <td></td>
+                    <td class="col-md-2">Signature of Responsible Party:</td>
+                    <td class="col-md-3"></td>
                 </tr>
 
             </table>
@@ -351,10 +351,10 @@
                     <th style="background-color:#ccc" colspan="4"> Details of Referral</th>
                 </tr>
                 <tr>
-                    <th>Any Contact or other restriction :</th>
-                    <td></td>
-                    <th>Referral delivered via   Phone (Emegency Only);Email;Electronically(App or datbase; </th>
-                    <td></td>
+                    <td class="col-md-4">Any Contact or other restriction :</td>
+                    <td class="col-md-2"></td>
+                    <td class="col-md-4">Referral delivered via   Phone (Emegency Only);Email;Electronically(App or datbase; </td>
+                    <td class="col-md-2"></td>
                 </tr>
                 <tr>
                     <th>Followup Expected Via Phone ;Email ; in Person by Date(DD/MM/YY);</th>

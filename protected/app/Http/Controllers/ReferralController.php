@@ -113,6 +113,21 @@ class ReferralController extends Controller
             $status="";
 
             $vcolor="label-danger";
+            $hai_reg_number="";
+            $full_name="";
+            $sex="";
+            $age="";
+            $camp_name="";
+            if(is_object($referral->client) && $referral->client != null){
+                $hai_reg_number=$referral->client->hai_reg_number;
+                $full_name=$referral->client->full_name;
+                $sex=$referral->client->sex;
+                $age=$referral->client->age;
+
+            }
+            if(is_object($referral->camp) && $referral->camp != null){
+                $camp_name=$referral->camp->camp_name;
+            }
 
             if ($referral->auth_status == "pending")
             {
@@ -122,11 +137,11 @@ class ReferralController extends Controller
                         $count++,
                         $referral->reference_no,
                         $referral->referral_date,
-                        $referral->client->client_number,
-                        $referral->client->full_name,
-                        $referral->client->age,
-                        $referral->client->sex,
-                        $referral->client->camp->camp_name,
+                        $hai_reg_number,
+                        $full_name,
+                        $age,
+                        $sex,
+                        $camp_name,
                         $referral->status,
                         $referral->auth_status,
                         '<ul class="icons-list text-center">
@@ -152,11 +167,12 @@ class ReferralController extends Controller
                         $count++,
                         $referral->reference_no,
                         $referral->referral_date,
-                        $referral->client->client_number,
-                        $referral->client->full_name,
-                        $referral->client->age,
-                        $referral->client->sex,
-                        $referral->client->camp->camp_name,
+                        $referral->referral_date,
+                        $hai_reg_number,
+                        $full_name,
+                        $age,
+                        $sex,
+                        $camp_name,
                         $referral->status,
                         $referral->auth_status,
                         '<ul class="icons-list text-center">
@@ -184,11 +200,12 @@ class ReferralController extends Controller
                         $count++,
                         $referral->reference_no,
                         $referral->referral_date,
-                        $referral->client->client_number,
-                        $referral->client->full_name,
-                        $referral->client->age,
-                        $referral->client->sex,
-                        $referral->client->camp->camp_name,
+                        $referral->referral_date,
+                        $hai_reg_number,
+                        $full_name,
+                        $age,
+                        $sex,
+                        $camp_name,
                         $referral->status,
                         $referral->auth_status,
                         '<ul class="icons-list text-center">
@@ -213,11 +230,12 @@ class ReferralController extends Controller
                         $count++,
                         $referral->reference_no,
                         $referral->referral_date,
-                        $referral->client->client_number,
-                        $referral->client->full_name,
-                        $referral->client->age,
-                        $referral->client->sex,
-                        $referral->client->camp->camp_name,
+                        $referral->referral_date,
+                        $hai_reg_number,
+                        $full_name,
+                        $age,
+                        $sex,
+                        $camp_name,
                         $referral->status,
                         $referral->auth_status,
                         '<ul class="icons-list text-center">
@@ -528,6 +546,19 @@ class ReferralController extends Controller
     public function destroy($id)
     {
         //
-        $referral =  ClientReferral::find($id)->delete();
+        $referral =  ClientReferral::find($id);
+        if(is_object($referral) && $referral != null) {
+            ClientInformation::where("referral_id", '=', $referral->id)->delete();
+            ReceivingAgency::where("referral_id", '=', $referral->id)->delete();
+            ReferringAgency::where("referral_id", '=', $referral->id)->delete();
+            ReferralReason::where("referral_id", '=', $referral->id)->delete();
+
+            $services=ReferralServiceRequested::where("referral_id", '=', $referral->id)->first();
+
+            if (is_object($services) && $services != null){
+               RequestedService::where('requested_id','=',$services->id)->delete();
+            }
+        }
+        $referral->delete();
     }
 }

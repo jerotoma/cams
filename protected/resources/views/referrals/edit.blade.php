@@ -503,7 +503,7 @@
                 </fieldset>
                 <fieldset class="scheduler-border">
                     <legend class="text-bold">Explain any request Service  </legend>
-                    <textarea  class="form-control" name="comments" id="comments">@if(is_object($referral->referralServiceRequested)){{$referral->referralServiceRequested->client_referral_status}}@endif</textarea>
+                    <textarea  class="form-control" name="comments" id="comments">@if(is_object($referral->referralServiceRequested)){{$referral->referralServiceRequested->comments}}@endif</textarea>
                 </fieldset>
 
                 <div class="form-group ">

@@ -438,7 +438,7 @@
                             </div>
                             <div class="col-sm-3">
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" class="styled" name="service_request[]"  value="aterial Assistance">
+                                    <input type="checkbox" class="styled" name="service_request[]"  value="Material Assistance">
                                     Material Assistance
                                 </label>
                             </div>
