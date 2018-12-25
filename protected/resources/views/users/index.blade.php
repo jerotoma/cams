@@ -358,7 +358,7 @@
                 <td>{{$user->phone}}</td>
                 <td>{{$user->email}}</td>
                 <td>{{$user->designation}}</td>
-                <td> @if($user->department_id != "" && count(\App\Department::find($user->department_id)) > 0 )
+                <td> @if($user->department_id != null && $user->department_id != "" && count(\App\Department::all()) > 0 )
                         <option value="{{\App\Department::find($user->department_id)->id}}" selected>{{\App\Department::find($user->department_id)->department_name}}</option>
                     @endif</td>
                 <td>@if(strtolower($user->status)=="active")<a href="#" class="label label-success">{{$user->status}}</a>

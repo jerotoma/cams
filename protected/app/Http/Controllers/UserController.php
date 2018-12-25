@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\RoleUser;
 use App\User;
+use App\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Role;
@@ -33,6 +34,7 @@ class UserController extends Controller
         if (\Auth::user()->hasRole('admin')) {
             $users = User::all();
             //Audit trail
+           // dd(Department::all());
             AuditRegister("UserController","View",$users);
             return view('users.index', ['users' => $users]);
         }

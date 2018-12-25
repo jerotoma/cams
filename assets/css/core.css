@@ -3169,13 +3169,13 @@ li + .dropdown-header.highlight,
     top: 72px;
   }
   .navbar-top {
-    padding-top: 48px;
+    padding-top: 35px;
   }
   .navbar-top .sidebar-fixed.affix {
     top: 68px;
   }
   .navbar-top-sm {
-    padding-top: 46px;
+    padding-top: 35px;
   }
   .navbar-top-sm .sidebar-fixed.affix {
     top: 66px;

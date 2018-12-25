@@ -236,6 +236,7 @@ a.badge,
   float: none;
   margin-top: 0;
 }
+
 /* ------------------------------------------------------------------------------
  *
  *  # Sidebar layouts
@@ -16938,6 +16939,9 @@ thead .htCollapseButton:after {
 .panel > .dataTables_wrapper .table-bordered > tbody > tr:last-child > td {
   border-bottom: 0;
 }
+.datatable-scroll{
+  overflow-x: auto;
+}
 .datatable-scroll-lg,
 .datatable-scroll,
 .datatable-scroll-sm {
@@ -18432,7 +18436,7 @@ thead .htCollapseButton:after {
   background-size: cover;
 }
 .login-container .page-container {
-  padding-top: 40px;
+  padding-top: 0px;
   position: static;
 }
 .login-container .page-container .login-form {
@@ -18493,6 +18497,9 @@ thead .htCollapseButton:after {
   .login-options .text-right {
     text-align: center;
   }
+}
+.navbar-fixed-bottom {
+  max-height: 215px;
 }
 /* ------------------------------------------------------------------------------
  *
