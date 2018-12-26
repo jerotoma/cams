@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MateriaSupport extends Model
+class MaterialSupport extends Model
 {
     //
     public function beneficiary()

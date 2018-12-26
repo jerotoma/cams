@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ItemsInventory;
-use App\MateriaSupport;
+use App\MaterialSupport;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;

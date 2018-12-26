@@ -206,6 +206,8 @@ class ItemInventoryController extends Controller
     {
         //
         $item=ItemsInventory::find($id);
+        
+       // dd($item->category);
         return view('inventory.items.edit',compact('item'));
     }
 

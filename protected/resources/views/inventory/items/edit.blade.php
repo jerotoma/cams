@@ -31,11 +31,11 @@
             <div class="form-group">
                 <label>Category</label>
                 <select name="category_id" class="select" id="category_id" data-placeholder="Choose an option..." >
-                    @if($item->category_id !="" && is_object($item->category) && count($item->category) >0)
-                    <option value="{{$item->category_id}}">{{$item->category->category_name}}</option>
+                    @if($item->category_id !="" && is_object($item->category))
+                        <option value="{{$item->category_id}}">{{$item->category->category_name}}</option>
                     @else
                         <option value="">--Select--</option>
-                        @endif
+                    @endif
                     @foreach(\App\ItemsCategories::all() as $cat)
                         <option value="{{$cat->id}}">{{$cat->category_name}}</option>
                     @endforeach
