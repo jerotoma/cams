@@ -167,7 +167,6 @@ class ReferralController extends Controller
                         $count++,
                         $referral->reference_no,
                         $referral->referral_date,
-                        $referral->referral_date,
                         $hai_reg_number,
                         $full_name,
                         $age,
@@ -200,7 +199,6 @@ class ReferralController extends Controller
                         $count++,
                         $referral->reference_no,
                         $referral->referral_date,
-                        $referral->referral_date,
                         $hai_reg_number,
                         $full_name,
                         $age,
@@ -229,7 +227,6 @@ class ReferralController extends Controller
                     $records["data"][] = array(
                         $count++,
                         $referral->reference_no,
-                        $referral->referral_date,
                         $referral->referral_date,
                         $hai_reg_number,
                         $full_name,

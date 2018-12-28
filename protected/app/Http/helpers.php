@@ -1121,14 +1121,17 @@ if (!function_exists('isNotInDistributionLimit')) {
     }
 }
 if (!function_exists('isInDistributionLimit')) {
-    function isInDistributionLimit($item_id,$client_id,$distribution_date) {
-
-        if(count(\App\ItemsDisbursementItems::where('item_id','=',$item_id)
-                ->where('client_id','=',$client_id)->orderBy('distribution_date','desc')->get()) >0)
-        {
-
-            $itemsds=\App\ItemsDisbursementItems::where('item_id','=',$item_id)
-                ->where('client_id','=',$client_id)->orderBy('distribution_date','desc')->get()->first();
+    
+    function isInDistributionLimit($item_id, $client_id, $distribution_date) {
+        
+        $disBasement = \App\ItemsDisbursementItems::where('item_id','=',$item_id)
+                        ->where('client_id','=',$client_id)
+                        ->orderBy('distribution_date','desc')
+                        ->get();
+                        
+        if(count($disBasement)> 0) {
+           
+            $itemsds= $disBasement->first();
 
             $inventoryItem= \App\ItemsInventory::find($item_id);
             $limit =$inventoryItem->redistribution_limit;

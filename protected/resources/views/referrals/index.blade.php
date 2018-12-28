@@ -396,25 +396,23 @@
         </div>
 
         <div class="panel-body">
+            <table class="table datatable-basic table-hover">
+                <thead>
+                <tr>
+                    <th>SNO</th>
+                    <th>Referral Ref</th>
+                    <th>Date of Referral</th>
+                    <th>Unique Id</th>
+                    <th>Full Name</th>
+                    <th>Age</th>
+                    <th>Sex</th>
+                    <th>Camp</th>
+                    <th>Progress status</th>
+                    <th>Auth status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+                </thead>
+            </table>
         </div>
-
-        <table class="table datatable-basic table-hover">
-            <thead>
-            <tr>
-                <th>SNO</th>
-                <th>Referral Ref</th>
-                <th>Date of Referral</th>
-                <th>Unique Id</th>
-                <th>Full Name</th>
-                <th>Age</th>
-                <th>Sex</th>
-                <th>Camp</th>
-                <th>Progress status</th>
-                <th>Auth status</th>
-                <th class="text-center">Actions</th>
-            </tr>
-            </thead>
-
-        </table>
     </div>
 @stop
