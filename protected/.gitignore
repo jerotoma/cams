@@ -2,3 +2,5 @@
 Homestead.json
 Homestead.yaml
 .idea/workspace.xml
+/vendor
+.vscode/
