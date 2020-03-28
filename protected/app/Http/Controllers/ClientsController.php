@@ -33,7 +33,8 @@ class ClientsController extends Controller
     public function index()
     {
         //
-        if (Auth::user()->can('admin')){
+        //dd(Auth::user()->level());
+        if (Auth::user()->hasPermission('viewer')) {
             $clients=Client::all();
             return view('clients.index',compact('clients'));
         }
@@ -46,7 +47,7 @@ class ClientsController extends Controller
     public function showImportErrors()
     {
 
-        if (Auth::user()->can('edit')) {
+        if (Auth::user()->hasPermission('edit')) {
             $clients = DumpClient::all();
             return view('clients.importerrors', compact('clients'));
         }
@@ -68,7 +69,7 @@ class ClientsController extends Controller
     public function AuthorizeAll()
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $client=Client::where('auth_status', '=', 'pending')
                 ->update([
@@ -88,7 +89,7 @@ class ClientsController extends Controller
     public function AuthorizeClientById($id)
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $client=Client::find($id)
                 ->update([
@@ -190,7 +191,7 @@ class ClientsController extends Controller
 
             if ($client->auth_status == "pending")
             {
-                if (Auth::user()->can('authorize'))
+                if (Auth::user()->hasPermission('authorize'))
                 {
                     $records["data"][] = array(
                         $count++,
@@ -770,7 +771,7 @@ class ClientsController extends Controller
     public function create()
     {
         //
-        if (Auth::user()->can('create')) {
+        if (Auth::user()->hasPermission('create')) {
             return view('clients.create');
         }
         else{
@@ -914,7 +915,7 @@ class ClientsController extends Controller
     public function show($id)
     {
         //
-        if (Auth::user()->can('viewer')) {
+        if (Auth::user()->hasPermission('viewer')) {
             $client = Client::find($id);
             return view('clients.show', compact('client'));
         }
@@ -932,7 +933,7 @@ class ClientsController extends Controller
     public function edit($id)
     {
         //
-        if (Auth::user()->can('viewer')) {
+        if (Auth::user()->hasPermission('viewer')) {
             $client = Client::find($id);
             return view('clients.edit', compact('client'));
         }

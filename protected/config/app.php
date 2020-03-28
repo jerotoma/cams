@@ -190,6 +190,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        jeremykenedy\LaravelRoles\RolesServiceProvider::class,
+
     ],
 
     /*

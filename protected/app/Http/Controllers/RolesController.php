@@ -19,7 +19,8 @@ class RolesController extends Controller
     public function index()
     {
         //
-        $roles=Role::all();
+        $roles = config('roles.models.role')::all();
+        //dd($roles);
         return view('users.roles.index',compact('roles'));
     }
 
@@ -46,12 +47,12 @@ class RolesController extends Controller
         $this->validate($request, [
             'role_name' => 'required',
         ]);
-        if(count(Role::where('name','=',strtolower($request->role_name))->get()) >0)
+        if(count(config('roles.models.role')::where('name','=',strtolower($request->role_name))->get()) >0)
         {
             return "<span class='text-info'><i class='fa fa-info'></i>Duplicate role name ".$request->role_name."</span>";
         }
         else {
-            $role = new Role;
+            $role = new config('roles.models.role');
             $role->name = $request->role_name;
             $role->display_name = $request->display_name;
             $role->description = $request->description;
@@ -80,7 +81,7 @@ class RolesController extends Controller
     public function edit($id)
     {
         //
-        $role=Role::find($id);
+        $role= config('roles.models.role')::find($id);
         return view('users.roles.edit',compact('role'));
     }
 
@@ -97,12 +98,12 @@ class RolesController extends Controller
         $this->validate($request, [
             'role_name' => 'required',
         ]);
-        if(count(Role::where('name','=',strtolower($request->role_name))->where('id','<>',$id)->get()) >0)
+        if(count(config('roles.models.role')::where('name','=',strtolower($request->role_name))->where('id','<>',$id)->get()) >0)
         {
             return "<span class='text-info'><i class='fa fa-info'></i>Duplicate role name ".$request->role_name."</span>";
         }
         else {
-            $role =  Role::find($id);
+            $role =  config('roles.models.role')::find($id);
             $role->name = $request->role_name;
             $role->display_name = $request->display_name;
             $role->description = $request->description;
@@ -119,7 +120,7 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-        $role = Role::findOrFail($id); //
+        $role = config('roles.models.role')::findOrFail($id); //
         $role->forceDelete(); //
     }
 }

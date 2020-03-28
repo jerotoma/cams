@@ -80,8 +80,8 @@
                                 <label class="control-label">Role</label>
                                 <select class="select" name="role_id" id="role_id" data-placeholder="Choose an option...">
                                     <option></option>
-                                    @foreach(\App\Role::all() as $role)
-                                        <option value="{{$role->id}}">{{$role->display_name}}</option>
+                                    @foreach(config('roles.models.role')::all() as $role)
+                                        <option value="{{$role->id}}">{{$role->name}}</option>
                                     @endforeach
                                 </select>
                             </div>

@@ -193,7 +193,7 @@
                         <li><a href="{{url('audit/logs')}}">User Logs</a></li>
                     </ul>
                 </li>
-                
+
                 <li>
                     <a href="#"><i class="icon-users"></i>Clients <span></span></a>
                     <ul>
@@ -207,7 +207,7 @@
                         <li><a href="{{url('assessments/inclusion')}}">Inclusion Assessment</a></li>
                         <li><a href="{{url('assessments/wheelchair')}}">Wheelchair Assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">PSN Needs/Home Assessment </a></li>
-                        
+
                     </ul>
                 </li>
                 <li>
@@ -218,7 +218,7 @@
                 </li>
                 <!-- /main -->
                 <!-- Forms -->
-                
+
                 <li>
                     <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
                     <ul>
@@ -231,7 +231,7 @@
 
                 <!-- /forms -->
                 <!-- Forms -->
-                
+
                 <li>
                     <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
                     <ul>
@@ -241,7 +241,7 @@
                 </li>
             @permission('backup')
             <!-- Backup Restore-->
-                
+
                 <li>
                     <a href="#"><i class="icon-puzzle4"></i> <span>Data import</span></a>
                     <ul>
@@ -258,7 +258,7 @@
             @endpermission
             @permission('reports')
             <!-- Data visualization -->
-                
+
                 <li>
                     <a href="#"><i class="icon-graph"></i> <span>Clients Reports</span></a>
                     <ul>
@@ -287,18 +287,18 @@
             @endpermission
 
             <!-- Settings -->
-                @role('admin')
-                
+            @role('admin')
+
                 <li>
-                <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
-                <ul>
-                    <li><a href="{{url('countries')}}">Countries</a></li>
-                    <li><a href="{{url('regions')}}">Regions</a></li>
-                    <li><a href="{{url('districts')}}">Districts</a></li>
-                    <li><a href="{{url('camps')}}">Camps</a></li>
-					<li><a href="{{url('origins')}}">Origins</a></li>
-                </ul>
-            </li>
+                    <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
+                    <ul>
+                        <li><a href="{{url('countries')}}">Countries</a></li>
+                        <li><a href="{{url('regions')}}">Regions</a></li>
+                        <li><a href="{{url('districts')}}">Districts</a></li>
+                        <li><a href="{{url('camps')}}">Camps</a></li>
+                        <li><a href="{{url('origins')}}">Origins</a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="#"><i class="icon-puzzle4"></i> <span>Vulnerability Codes</span></a>
                     <ul>
@@ -313,7 +313,7 @@
 
                 <li class="navigation-header"><span></span> <i class="icon-menu" title="Users Managements"></i></li>
                 <!-- /Settings -->
-                @endrole
+            @endrole
             </ul>
         </div>
     </div>
@@ -341,10 +341,8 @@
     </div>
     <div class="panel panel-flat">
         <div class="panel-heading">
-
             <h5 class="panel-title text-center text-uppercase">List of All Roles</h5>
         </div>
-
         <div class="panel-body">
             <table class="table datatable-basic table-hover">
             <thead>
@@ -364,11 +362,13 @@
                 <td>{{$role->name}}</td>
                 <td>{{$role->display_name}}</td>
                 <td>{{$role->description}}</td>
-               <td>@if(is_object($role->permissions))
+               <td>
+                    @if(is_object($role->permissions))
                         @foreach($role->permissions as $permission)
-                           {{$permission->role->name}} ,
-                            @endforeach
-                            @endif</td>
+                           {{$permission->name}},
+                        @endforeach
+                    @endif
+                </td>
                </tr>
               @endforeach
             </tbody>

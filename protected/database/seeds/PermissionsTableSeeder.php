@@ -17,27 +17,45 @@ class PermissionsTableSeeder extends Seeder
          */
         $Permissionitems = [
             [
-                'name'        => 'Can View Users',
-                'slug'        => 'view.users',
-                'description' => 'Can view users',
+                'name'        => 'Create',
+                'slug'        => 'create',
+                'description' => 'Can create entity',
                 'model'       => 'Permission',
             ],
             [
-                'name'        => 'Can Create Users',
-                'slug'        => 'create.users',
-                'description' => 'Can create new users',
+                'name'        => 'Edit',
+                'slug'        => 'edit',
+                'description' => 'Can edit entity',
                 'model'       => 'Permission',
             ],
             [
-                'name'        => 'Can Edit Users',
-                'slug'        => 'edit.users',
-                'description' => 'Can edit users',
+                'name'        => 'viewer',
+                'slug'        => 'viewer',
+                'description' => 'Can view data only',
                 'model'       => 'Permission',
             ],
             [
-                'name'        => 'Can Delete Users',
-                'slug'        => 'delete.users',
-                'description' => 'Can delete users',
+                'name'        => 'delete',
+                'slug'        => 'delete',
+                'description' => 'Can delete entity',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'Reports',
+                'slug'        => 'reports',
+                'description' => 'Can view and generate report',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'inventory',
+                'slug'        => 'inventory',
+                'description' => 'Access to NFIs Inventory',
+                'model'       => 'Permission',
+            ],
+            [
+                'name'        => 'backup',
+                'slug'        => 'backup',
+                'description' => 'Access to data export and import',
                 'model'       => 'Permission',
             ],
         ];

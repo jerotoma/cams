@@ -64,8 +64,8 @@ class CreateClientsTable extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        Schema::enableForeignKeyConstraints();
         Schema::dropIfExists('clients');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        Schema::disableForeignKeyConstraints();
     }
 }
