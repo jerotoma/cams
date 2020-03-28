@@ -5,7 +5,7 @@ if (!function_exists('getHighChatMonthlyCasesCountByStatus')) {
         $monthData="";
         for($i=1; $i<= 12; $i++)
         {
-            $MonthCount.=count(\App\ClientCase::where('status','=',$status)->where(\DB::raw('Month(open_date)'),'=',$i)->where(\DB::raw('Year(open_date)'),'=',$year)->get()).",";
+            $MonthCount.=count(\App\ClientCase::where('status','=',$status)->whereMonth('open_date','=', $i)->whereYear('open_date','=',$year)->get()).",";
         }
         $monthData.=substr($MonthCount,0,strlen($MonthCount)-1);
         return $monthData;
@@ -44,7 +44,7 @@ if (!function_exists('getHighChatReferralsMonthlyCountByYear')) {
             $MonthCount = "";
             $monthData = "";
             for ($i = 1; $i <= 12; $i++) {
-                $MonthCount .= count(\App\ClientReferral::where(\DB::raw('Month(referral_date)'), '=', $i)->where(\DB::raw('Year(referral_date)'), '=', $year)->get()) . ",";
+                $MonthCount .= count(\App\ClientReferral::whereMonth('referral_date', '=', $i)->whereYear('referral_date', '=', $year)->get()) . ",";
             }
             $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
             $series1 .= " data:[" . $monthData . "]";
@@ -72,8 +72,8 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
                     ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','A')
                     ->where('clients.sex','=','Male')
-                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
-                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+                    ->whereMonth('provision_date', '=', $i)
+                    ->whereYear('provision_date', '=', $year)->sum( 'amount'). ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -90,8 +90,8 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
                     ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','A')
                     ->where('clients.sex','=','Female')
-                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
-                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+                    ->whereMonth('provision_date', '=', $i)
+                    ->whereYear('provision_date', '=', $year)->sum( 'amount'). ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -107,8 +107,8 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
                     ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','B')
                     ->where('clients.sex','=','Male')
-                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
-                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+                    ->whereMonth('provision_date', '=', $i)
+                    ->whereYear('provision_date', '=', $year)->sum( 'amount'). ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -124,8 +124,8 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
                     ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','B')
                     ->where('clients.sex','=','Female')
-                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
-                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+                    ->whereMonth('provision_date', '=', $i)
+                    ->whereYear('provision_date', '=', $year)->sum( 'amount'). ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -141,8 +141,8 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
                     ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','C')
                     ->where('clients.sex','=','Male')
-                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
-                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+                    ->whereMonth('provision_date', '=', $i)
+                    ->whereYear('provision_date', '=', $year)->sum( 'amount'). ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -157,8 +157,8 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
                     ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','C')
                     ->where('clients.sex','=','Female')
-                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
-                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+                    ->whereMonth('provision_date', '=', $i)
+                    ->whereYear('provision_date', '=', $year)->sum( 'amount'). ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -174,8 +174,8 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
                     ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','D')
                     ->where('clients.sex','=','Male')
-                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
-                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+                    ->whereMonth('provision_date', '=', $i)
+                    ->whereYear('provision_date', '=', $year)->sum( 'amount'). ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -191,8 +191,8 @@ if (!function_exists('getHighCashProvisionsMonthlyCountByYear')) {
                     ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','D')
                     ->where('clients.sex','=','Female')
-                    ->where(\DB::raw('Month(provision_date)'), '=', $i)
-                    ->where(\DB::raw('Year(provision_date)'), '=', $year)->sum( 'amount'). ",";
+                    ->whereMonth('provision_date', '=', $i)
+                    ->whereYear('provision_date', '=', $year)->sum( 'amount'). ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -220,8 +220,8 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
                                 ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
                                 ->where('clients.age_score','=','A')
                                 ->where('clients.sex','=','Male')
-                                ->where(\DB::raw('Month(distribution_date)'), '=', $i)
-                                ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+                                ->whereMonth('distribution_date', '=', $i)
+                                ->whereYear('distribution_date', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -238,8 +238,8 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
                     ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','A')
                     ->where('clients.sex','=','Female')
-                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
-                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+                    ->whereMonth('distribution_date', '=', $i)
+                    ->whereYear('distribution_date', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -255,8 +255,8 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
                     ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','B')
                     ->where('clients.sex','=','Male')
-                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
-                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+                    ->whereMonth('distribution_date', '=', $i)
+                    ->whereYear('distribution_date', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -271,8 +271,8 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
                     ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','B')
                     ->where('clients.sex','=','Female')
-                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
-                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+                    ->whereMonth('distribution_date', '=', $i)
+                    ->whereYear('distribution_date', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -288,8 +288,8 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
                     ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','C')
                     ->where('clients.sex','=','Male')
-                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
-                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+                    ->whereMonth('distribution_date', '=', $i)
+                    ->whereYear('distribution_date', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -305,8 +305,8 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
                     ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','C')
                     ->where('clients.sex','=','Female')
-                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
-                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+                    ->whereMonth('distribution_date', '=', $i)
+                    ->whereYear('distribution_date', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -322,8 +322,8 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
                     ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','D')
                     ->where('clients.sex','=','Male')
-                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
-                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+                    ->whereMonth('distribution_date', '=', $i)
+                    ->whereYear('distribution_date', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -338,8 +338,8 @@ if (!function_exists('getHighItemsDistributionsMonthlyCountByYear')) {
                     ->join('clients', 'items_disbursement_items.client_id', '=', 'clients.id')
                     ->where('clients.age_score','=','D')
                     ->where('clients.sex','=','Female')
-                    ->where(\DB::raw('Month(distribution_date)'), '=', $i)
-                    ->where(\DB::raw('Year(distribution_date)'), '=', $year)->get()) . ",";
+                    ->whereMonth('distribution_date', '=', $i)
+                    ->whereYear('distribution_date', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -364,8 +364,8 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
             for ($i = 1; $i <= 12; $i++) {
                 $MonthCount .= count(\App\Client::where('age_score','=','A')
                         ->where('sex','=','Male')
-                        ->where(\DB::raw('Month(date_arrival)'), '=', $i)
-                        ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+                        ->whereMonth('date_arrival', '=', $i)
+                        ->whereYear('date_arrival', '=', $year)->get()) . ",";
             }
             $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
             $series1 .= " data:[" . $monthData . "]";
@@ -379,8 +379,8 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
         for ($i = 1; $i <= 12; $i++) {
             $MonthCount .= count(\App\Client::where('age_score','=','A')
                     ->where('sex','=','Female')
-                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
-                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+                    ->whereMonth('date_arrival', '=', $i)
+                    ->whereYear('date_arrival', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -394,8 +394,8 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
         for ($i = 1; $i <= 12; $i++) {
             $MonthCount .= count(\App\Client::where('age_score','=','B')
                     ->where('sex','=','Male')
-                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
-                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+                    ->whereMonth('date_arrival', '=', $i)
+                    ->whereYear('date_arrival', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -409,8 +409,8 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
         for ($i = 1; $i <= 12; $i++) {
             $MonthCount .= count(\App\Client::where('age_score','=','B')
                     ->where('sex','=','Female')
-                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
-                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+                    ->whereMonth('date_arrival', '=', $i)
+                    ->whereYear('date_arrival', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -424,8 +424,8 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
         for ($i = 1; $i <= 12; $i++) {
             $MonthCount .= count(\App\Client::where('age_score','=','C')
                     ->where('sex','=','Male')
-                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
-                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+                    ->whereMonth('date_arrival', '=', $i)
+                    ->whereYear('date_arrival', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -439,8 +439,8 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
         for ($i = 1; $i <= 12; $i++) {
             $MonthCount .= count(\App\Client::where('age_score','=','C')
                     ->where('sex','=','Female')
-                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
-                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+                    ->whereMonth('date_arrival', '=', $i)
+                    ->whereYear('date_arrival', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -454,8 +454,8 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
         for ($i = 1; $i <= 12; $i++) {
             $MonthCount .= count(\App\Client::where('age_score','=','D')
                     ->where('sex','=','Male')
-                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
-                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+                    ->whereMonth('date_arrival', '=', $i)
+                    ->whereYear('date_arrival', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -469,8 +469,8 @@ if (!function_exists('getHighChatClientMonthlyCountByYear')) {
         for ($i = 1; $i <= 12; $i++) {
             $MonthCount .= count(\App\Client::where('age_score','=','D')
                     ->where('sex','=','Female')
-                    ->where(\DB::raw('Month(date_arrival)'), '=', $i)
-                    ->where(\DB::raw('Year(date_arrival)'), '=', $year)->get()) . ",";
+                    ->whereMonth('date_arrival', '=', $i)
+                    ->whereYear('date_arrival', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -493,7 +493,7 @@ if (!function_exists('getHighChatReferralsMonthlyCountByYear')) {
             $MonthCount = "";
             $monthData = "";
             for ($i = 1; $i <= 12; $i++) {
-                $MonthCount .= count(\App\ClientReferral::where(\DB::raw('Month(referral_date)'), '=', $i)->where(\DB::raw('Year(referral_date)'), '=', $year)->get()) . ",";
+                $MonthCount .= count(\App\ClientReferral::whereMonth('referral_date', '=', $i)->whereYear('referral_date', '=', $year)->get()) . ",";
             }
             $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
             $series1 .= " data:[" . $monthData . "]";
@@ -516,7 +516,7 @@ if (!function_exists('getHighAssessmentsClientMonthlyCountByYear')) {
             $MonthCount = "";
             $monthData = "";
             for ($i = 1; $i <= 12; $i++) {
-                $MonthCount .= count(\App\VulnerabilityAssessment::where(\DB::raw('Month(q1_5)'), '=', $i)->where(\DB::raw('Year(q1_5)'), '=', $year)->get()) . ",";
+                $MonthCount .= count(\App\VulnerabilityAssessment::whereMonth('q1_5', '=', $i)->whereYear('q1_5', '=', $year)->get()) . ",";
             }
             $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
             $series1 .= " data:[" . $monthData . "]";
@@ -528,7 +528,7 @@ if (!function_exists('getHighAssessmentsClientMonthlyCountByYear')) {
         $MonthCount = "";
         $monthData = "";
         for ($i = 1; $i <= 12; $i++) {
-            $MonthCount .= count(\App\PaediatricAssessment::where(\DB::raw('Month(created_at)'), '=', $i)->where(\DB::raw('Year(created_at)'), '=', $year)->get()) . ",";
+            $MonthCount .= count(\App\PaediatricAssessment::whereMonth('created_at', '=', $i)->whereYear('created_at', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -540,7 +540,7 @@ if (!function_exists('getHighAssessmentsClientMonthlyCountByYear')) {
         $MonthCount = "";
         $monthData = "";
         for ($i = 1; $i <= 12; $i++) {
-            $MonthCount .= count(\App\InclusionAssessment::where(\DB::raw('Month(created_at)'), '=', $i)->where(\DB::raw('Year(created_at)'), '=', $year)->get()) . ",";
+            $MonthCount .= count(\App\InclusionAssessment::whereMonth('created_at', '=', $i)->whereYear('created_at', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -552,7 +552,7 @@ if (!function_exists('getHighAssessmentsClientMonthlyCountByYear')) {
         $MonthCount = "";
         $monthData = "";
         for ($i = 1; $i <= 12; $i++) {
-            $MonthCount .= count(\App\HomeAssessment::where(\DB::raw('Month(assessment_date)'), '=', $i)->where(\DB::raw('Year(assessment_date)'), '=', $year)->get()) . ",";
+            $MonthCount .= count(\App\HomeAssessment::whereMonth('assessment_date', '=', $i)->whereYear('assessment_date', '=', $year)->get()) . ",";
         }
         $monthData .= substr($MonthCount, 0, strlen($MonthCount) - 1);
         $series1 .= " data:[" . $monthData . "]";
@@ -892,7 +892,7 @@ if (!function_exists('getHighChatItemsDistributionByYear')) {
         $monthData="";
         for($i=1; $i<= 12; $i++)
         {
-            $MonthCount.=count(\App\ItemsDisbursement::where(\DB::raw('Month(disbursements_date)'),'=',$i)->where(\DB::raw('Year(disbursements_date)'),'=',$year)->get()).",";
+            $MonthCount.=count(\App\ItemsDisbursement::whereMonth('disbursements_date','=',$i)->whereYear('disbursements_date','=',$year)->get()).",";
         }
         $monthData.=substr($MonthCount,0,strlen($MonthCount)-1);
         return $monthData;
@@ -1121,16 +1121,16 @@ if (!function_exists('isNotInDistributionLimit')) {
     }
 }
 if (!function_exists('isInDistributionLimit')) {
-    
+
     function isInDistributionLimit($item_id, $client_id, $distribution_date) {
-        
+
         $disBasement = \App\ItemsDisbursementItems::where('item_id','=',$item_id)
                         ->where('client_id','=',$client_id)
                         ->orderBy('distribution_date','desc')
                         ->get();
-                        
+
         if(count($disBasement)> 0) {
-           
+
             $itemsds= $disBasement->first();
 
             $inventoryItem= \App\ItemsInventory::find($item_id);
