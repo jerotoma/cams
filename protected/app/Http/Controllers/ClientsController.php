@@ -33,7 +33,7 @@ class ClientsController extends Controller
     public function index()
     {
         //
-        if (Auth::user()->can('viewer')){
+        if (Auth::user()->can('admin')){
             $clients=Client::all();
             return view('clients.index',compact('clients'));
         }
@@ -312,7 +312,7 @@ class ClientsController extends Controller
     {
         return view('clients.search');
     }
-	
+
     public function advancedSearchClient(Request $request)
     {
       try {
@@ -485,7 +485,7 @@ class ClientsController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
 
             }
-            
+
             \DB::table('dump_clients')->truncate();
 
             $extension= strtolower($request->file('clients_import')->getClientOriginalExtension());
@@ -504,7 +504,7 @@ class ClientsController extends Controller
                 $reader->formatDates(false, 'Y-m-d');
                 $results= $reader->get();
                 $results->each(function($row) use($request) {
-                   
+
             if($row->names != "" && $row->sex !="" && is_numeric($row->age) && $row->marital_status !="" &&
                 is_numeric($row->m) &&  is_numeric($row->f) &&  is_numeric($row->t) && $row->origin != "" && $row->date_of_arrival !="" && $row->vul_1 !="" ){
                     $sex ="";
@@ -737,14 +737,14 @@ class ClientsController extends Controller
                     $client->save();
                     $this->import_errors="Missing filed is marked with red";
                 }
-				
+
             });
 
             });
             File::delete($orfile);
             //Audit trail
-            
-			
+
+
 			AuditRegister("ClientsController","Import Clients",$orfile);
             if ($this->import_errors ==""){
                 return redirect('clients');
@@ -753,7 +753,7 @@ class ClientsController extends Controller
             {
                 return redirect('import/clients/errors');
             }
-			
+
 
         }
         catch (\Exception $e)
