@@ -248,8 +248,8 @@
                                                                 <div class="form-group ">
                                                                     <label class="control-label">Role</label>
                                                                     <select class="form-control" name="role_id" id="role_id" data-placeholder="Choose an option..." readonly>
-                                                                        @if(count(\App\RoleUser::where('user_id','=',$user->id)->get()) > 0 )
-                                                                            <option value="{{\App\RoleUser::where('user_id','=',$user->id)->get()->first()->role_id}}" selected>{{\App\RoleUser::where('user_id','=',$user->id)->get()->first()->role->display_name}}</option>
+                                                                        @if(!empty($user->roles))
+                                                                            <option value="{{$user->roles[0]->id}}" selected>{{$user->roles[0]->name}}</option>
                                                                         @endif
                                                                     </select>
                                                                 </div>
@@ -258,11 +258,11 @@
                                                         <div class="form-group ">
                                                             <label class="control-label">Department</label>
                                                             <select class="form-control" name="department_id" id="department_id" data-placeholder="Choose an option...">
-                                                                @if($user->department_id != "" && count(\App\Department::find($user->department_id)) > 0 )
-                                                                    <option value="{{\App\Department::find($user->department_id)->id}}" selected>{{\App\Department::find($user->department_id)->department_name}}</option>
+                                                                @if($user->department != null )
+                                                                    <option value="{{$user->department->id}}" selected>{{$user->department->department_name}}</option>
                                                                 @endif
                                                                 <option></option>
-                                                                @foreach(\App\Department::all() as $department)
+                                                                @foreach($departments as $department)
                                                                     <option value="{{$department->id}}">{{$department->department_name}}</option>
                                                                 @endforeach
                                                             </select>

@@ -82,6 +82,10 @@ class Role extends Model implements RoleHasRelationsContract
     }
 
     public function users() {
-        return $this->hasMany('App\User');
+        return $this->belongsToMany('App\User', '\App\UserRole', 'role_id', 'user_id');
+    }
+
+    public function permissions() {
+        return $this->belongsToMany('App\Permission', 'permission_role', 'role_id', 'permission_id');
     }
 }

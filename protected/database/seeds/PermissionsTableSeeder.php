@@ -35,6 +35,12 @@ class PermissionsTableSeeder extends Seeder
                 'model'       => 'Permission',
             ],
             [
+                'name'        => 'Authorize',
+                'slug'        => 'authorize',
+                'description' => 'Authorize Data imported',
+                'model'       => 'Permission',
+            ],
+            [
                 'name'        => 'delete',
                 'slug'        => 'delete',
                 'description' => 'Can delete entity',

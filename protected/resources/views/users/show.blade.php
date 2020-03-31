@@ -63,10 +63,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
-                            <label class="control-label">Role {{dd($user)}}</label>
+                            <label class="control-label">Role </label>
                                 <select class="select" name="role_id" id="role_id" data-placeholder="Choose an option...">
-                                    @if($user->role != null )
-                                        <option value="{{$user->role->id}}" selected>{{$user->role->name}}</option>
+                                    @if($user->roles != null  && $user->roles[0] != null )
+                                        <option value="{{$user->roles[0]->id}}" selected>{{$user->roles[0]->name}}</option>
                                     @endif
                                     <option></option>
                                     @foreach($roles as $role)
@@ -83,7 +83,7 @@
                                 <option value="{{$user->department->id}}" selected>{{$user->department->department_name}}</option>
                             @endif
                             <option></option>
-                            @foreach(\App\Department::all() as $department)
+                            @foreach($departments as $department)
                                 <option value="{{$department->id}}">{{$department->department_name}}</option>
                             @endforeach
                         </select>

@@ -9,7 +9,6 @@ Route::get('logout','Auth\LoginController@logout');
 
 //Users
 Route::resource('users','UserController');
-Route::get('create-user','UserController@createUser');
 Route::get('account/profile','UserController@getProfile');
 Route::get('account/settings','UserController@getSettings');
 Route::get('account/settings/access','UserController@showChangePassword');
