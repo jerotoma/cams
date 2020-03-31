@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCashProvisionClientsTable extends Migration
+class CreateItemsDisbursementItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,20 @@ class CreateCashProvisionClientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cash_provision_clients', function (Blueprint $table) {
+        Schema::create('items_disbursement_items', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('client_id')->unsigned();
-            $table->integer('activity_id')->unsigned();
-            $table->integer('amount')->unsigned();
-            $table->integer('provision_id')->unsigned();
-            $table->date('provision_date');
+            $table->integer('item_id')->unsigned();
+            $table->integer('quantity')->default(0);
+            $table->integer('distribution_id')->unsigned();
 
             $table->foreign('client_id')->references('id')->on('clients')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('provision_id')->references('id')->on('cash_provisions')
+
+            $table->foreign('item_id')->references('id')->on('items_inventories')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('activity_id')->references('id')->on('budget_activities')
+
+            $table->foreign('distribution_id')->references('id')->on('items_disbursements')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
@@ -38,6 +39,6 @@ class CreateCashProvisionClientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cash_provision_clients');
+        Schema::dropIfExists('items_disbursement_items');
     }
 }

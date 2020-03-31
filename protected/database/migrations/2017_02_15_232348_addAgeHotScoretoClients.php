@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePCCategoriesTable extends Migration
+class AddAgeHotScoretoClients extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePCCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('p_c_categories', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('category_name')->nullable();
-            $table->timestamps();
+        //
+        Schema::table('clients', function(Blueprint $table)
+        {
+            $table->string('age_score')->nullable();
         });
     }
 
@@ -27,6 +27,10 @@ class CreatePCCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('p_c_categories');
+        //
+        Schema::table('clients', function(Blueprint $table)
+        {
+            $table->dropColumn('age_score');
+        });
     }
 }

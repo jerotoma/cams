@@ -31,8 +31,8 @@ class CreateOriginsTable extends Migration
      */
     public function down()
     {
-        Schema::enableForeignKeyConstraints();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('origins');
-        Schema::disableForeignKeyConstraints();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

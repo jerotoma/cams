@@ -39,8 +39,8 @@ class CreateItemReceivedsTable extends Migration
      */
     public function down()
     {
-        Schema::enableForeignKeyConstraints();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('item_receiveds');
-        Schema::disableForeignKeyConstraints();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

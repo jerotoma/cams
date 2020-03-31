@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePCCategoriesTable extends Migration
+class CreateTempReceivedItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreatePCCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('p_c_categories', function (Blueprint $table) {
+        Schema::create('temp_received_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('category_name')->nullable();
+            $table->string('item');
+            $table->string('qty');
+            $table->string('descriptions');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreatePCCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('p_c_categories');
+        Schema::dropIfExists('temp_received_items');
     }
 }
