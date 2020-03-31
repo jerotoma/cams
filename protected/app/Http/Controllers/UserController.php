@@ -32,10 +32,14 @@ class UserController extends Controller
     {
         if (\Auth::user()->hasRole('admin')) {
             $users = User::all();
+            $roles = config('roles.models.role')::all();
             //Audit trail
-           // dd(Department::all());
+           //dd(config('roles.models.role'));
             AuditRegister("UserController","View",$users);
-            return view('users.index', ['users' => $users]);
+            return view('users.index', [
+                'users' => $users,
+                'roles' => $roles,
+                ]);
         }
         else
         {
@@ -125,7 +129,10 @@ class UserController extends Controller
     {
         //
         if (\Auth::user()->hasRole('admin')) {
-            return view('users.create');
+            $roles = config('roles.models.role')::all();
+            return view('users.create', [
+                'roles' => $roles
+            ]);
         }
         else
         {
@@ -217,10 +224,10 @@ class UserController extends Controller
 
         if (\Auth::user()->hasRole('admin')) {
             $user = User::findorfail($id);
-
+            $roles = config('roles.models.role')::all();
             //Audit trail
             AuditRegister("UserController","View User",$user);
-            return view('users.show',compact('user'));
+            return view('users.show',compact('user', 'roles'));
         }
         else
         {
@@ -238,7 +245,8 @@ class UserController extends Controller
     {
         if (\Auth::user()->hasRole('admin')) {
             $user = User::findorfail($id);
-            return view('users.edit',compact('user'));
+            $roles = config('roles.models.role')::all();
+            return view('users.edit',compact('user', 'roles'));
         }
         else
         {
@@ -289,7 +297,7 @@ class UserController extends Controller
                 $user->save();
 
                 //Audit trail
-                AuditRegister("UserController","Update",$user);
+                AuditRegister("UserController","Update", $user);
 
                 return response()->json([
                     'success' => true,

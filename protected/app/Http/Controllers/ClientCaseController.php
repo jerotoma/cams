@@ -29,7 +29,7 @@ class ClientCaseController extends Controller
     public function AuthorizeAll()
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $case=ClientCase::where('auth_status', '=', 'pending')
                 ->update([
@@ -49,7 +49,7 @@ class ClientCaseController extends Controller
     public function AuthorizeClientCaseById($id)
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $case=ClientCase::find($id)
                 ->update([
@@ -94,7 +94,7 @@ class ClientCaseController extends Controller
             $vcolor="label-danger";
 
             if ($case->auth_status == "pending") {
-                if (Auth::user()->can('authorize')) {
+                if (Auth::user()->hasPermission('authorize')) {
                     $records["data"][] = array(
                         $count++,
                         $case->reference_number,

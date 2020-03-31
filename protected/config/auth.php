@@ -69,6 +69,14 @@ return [
             'driver' => 'eloquent',
             'model' => App\User::class,
         ],
+        'roles' => [
+            'driver' => 'eloquent',
+            'model' => App\Role::class,
+        ],
+        'permissions' => [
+            'driver' => 'eloquent',
+            'model' => App\Permission::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',

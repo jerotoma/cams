@@ -63,11 +63,14 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Role</label>
+                            <label class="control-label">Role {{dd($user)}}</label>
                                 <select class="select" name="role_id" id="role_id" data-placeholder="Choose an option...">
+                                    @if($user->role != null )
+                                        <option value="{{$user->role->id}}" selected>{{$user->role->name}}</option>
+                                    @endif
                                     <option></option>
-                                    @foreach(\App\Role::all() as $role)
-                                        <option value="{{$role->id}}">{{$role->display_name}}</option>
+                                    @foreach($roles as $role)
+                                        <option value="{{$role->id}}">{{$role->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -76,8 +79,8 @@
                     <div class="form-group ">
                         <label class="control-label">Department</label>
                         <select class="select" name="department_id" id="department_id" data-placeholder="Choose an option...">
-                            @if($user->department_id != "" && count(\App\Department::find($user->department_id)) > 0 )
-                                <option value="{{\App\Department::find($user->department_id)->id}}" selected>{{\App\Department::find($user->department_id)->department_name}}</option>
+                            @if($user->department != null )
+                                <option value="{{$user->department->id}}" selected>{{$user->department->department_name}}</option>
                             @endif
                             <option></option>
                             @foreach(\App\Department::all() as $department)
