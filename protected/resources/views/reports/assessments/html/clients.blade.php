@@ -328,7 +328,7 @@
                     <ul>
                         <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
-                        
+
                     </ul>
                 </li>
                 <li>
@@ -371,7 +371,7 @@
                 </li>
                 @permission('backup')
             <!-- Backup Restore-->
-                
+
                 <li>
                     <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
@@ -486,8 +486,9 @@
                         <tr >
                             <th>No</th>
                             <th>Reg #</th>
+							<th>Individual id</th>
                             <th>Unique id</th>
-                            <th>Names
+							<th>Names
                             <th>Sex
                             <th>Age
                             <th>Marital Status
@@ -537,6 +538,7 @@
                             <tr>
                                 <td>{{$c++}}</td>
                                 <td>{{$client->hai_reg_number}}</td>
+								<td>{{$client->individual_id}}</td>
                                 <td>{{$client->client_number}}</td>
                                 <td>{{$client->full_name}}</td>
                                 <td>{{$client->sex}}</td>
@@ -579,6 +581,7 @@
                         <tr >
                             <th>No</th>
                             <th>Reg #</th>
+							<th>Individual id</th>
                             <th>Unique id</th>
                             <th>Names
                             <th>Sex

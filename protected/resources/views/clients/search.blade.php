@@ -344,7 +344,7 @@
                     <ul>
                         <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
-                        
+
                     </ul>
                 </li>
                 <li>
@@ -387,7 +387,7 @@
                 </li>
                 @permission('backup')
             <!-- Backup Restore-->
-                
+
                 <li>
                     <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
@@ -516,7 +516,7 @@
                                 Age
                             </th>
                             <th class="text-center">
-                                Rational Card
+                                Address
                             </th>
                             <th class="text-center">
                                 Date of Arrival
@@ -553,7 +553,7 @@
                                 Age
                             </td>
                             <td class="text-center">
-                                Rational Card
+                                Address
                             </td>
                             <td class="text-center">
                                 Date of Arrival

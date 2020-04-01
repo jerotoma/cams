@@ -249,7 +249,7 @@
                     <ul>
                         <li><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li class="active"><a href="{{url('assessments/home')}}">Home Assessment </a></li>
-                        
+
                     </ul>
                 </li>
                 <li>
@@ -292,7 +292,7 @@
                 </li>
                 @permission('backup')
             <!-- Backup Restore-->
-                
+
                 <li>
                     <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
@@ -405,6 +405,7 @@
                 <th>PSN Case code</th>
                 <th>HAI Reg#</th>
                 <th>Client No</th>
+                <th>Individual ID</th>
                 <th>Full Name</th>
                 <th>Sex</th>
                 <th>Age</th>

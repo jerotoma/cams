@@ -141,6 +141,7 @@ class ClientsController extends Controller
             $records["data"][] = array(
                 $count++,
                 $client->client_number,
+                $client->individual_id,
                 $client->full_name,
                 $client->sex,
                 $client->age,
@@ -196,6 +197,7 @@ class ClientsController extends Controller
                     $records["data"][] = array(
                         $count++,
                         $client->hai_reg_number,
+                        $client->individual_id,
                         $client->full_name,
                         $client->sex,
                         $client->age,
@@ -224,6 +226,7 @@ class ClientsController extends Controller
                     $records["data"][] = array(
                         $count++,
                         $client->hai_reg_number,
+                        $client->individual_id,
                         $client->full_name,
                         $client->sex,
                         $client->age,
@@ -253,6 +256,7 @@ class ClientsController extends Controller
                     $records["data"][] = array(
                         $count++,
                         $client->hai_reg_number,
+                        $client->individual_id,
                         $client->full_name,
                         $client->sex,
                         $client->age,
@@ -279,6 +283,7 @@ class ClientsController extends Controller
                     $records["data"][] = array(
                         $count++,
                         $client->hai_reg_number,
+                        $client->individual_id,
                         $client->full_name,
                         $client->sex,
                         $client->age,
@@ -384,6 +389,7 @@ class ClientsController extends Controller
               $records[] = array(
                   $count++,
                   $client->hai_reg_number,
+                  $client->individual_id,
                   $client->client_number,
                   $client->full_name,
                   $client->sex,
@@ -422,6 +428,9 @@ class ClientsController extends Controller
         }
         if($request->unique_id != ""){
             $query->where('client_number','LIKE',"%{$request->unique_id}%");
+        }
+        if($request->individual_id != ""){
+            $query->where('individual_id','LIKE',"%{$request->individual_id}%");
         }
         if($request->full_name != ""){
             $query->where('full_name','LIKE',"%{$request->full_name}%");
@@ -518,6 +527,7 @@ class ClientsController extends Controller
                         $sex = "Male";
                     }
                     $client_number=strtoupper(strtolower(preg_replace('/\s+/S', "",$row->unique_id)));
+                    $individual_id=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->individual_id)));
                     $full_name=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->names)));
                     $age=intval($row->age);
                     $present_address=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->present_address)));
@@ -571,6 +581,7 @@ class ClientsController extends Controller
 
                         $client=new Client;
                         $client->client_number = $client_number;
+                        $client->individual_id = $individual_id;
                         $client->full_name = $full_name;
 
                         $client->sex = $sex;
@@ -716,6 +727,7 @@ class ClientsController extends Controller
 
                     $client =new DumpClient;
                     $client->unique_id=$row->unique_id;
+                    $client->individual_id=$row->individual_id;
                     $client->names=$row->names;
                     $client->sex=$row->sex;
 					$client->age = $row->age;
@@ -820,6 +832,7 @@ class ClientsController extends Controller
                 'present_address'=> 'required',
                 'share_info' => 'required',
                 'hh_relation' => 'required',
+                'individual_id' => 'required',
 
             ]);
             if ($validator->fails()) {
@@ -831,6 +844,7 @@ class ClientsController extends Controller
 
                 $client = new Client;
                 $client->client_number = strtoupper($request->client_number);
+                $client->individual_id = $request->individual_id;
                 $client->full_name = ucwords($request->full_name);
                 $client->sex = ucwords($request->sex);
                 $client->age = $request->age;

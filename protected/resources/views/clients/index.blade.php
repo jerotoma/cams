@@ -239,7 +239,7 @@
                     <ul>
                         <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
-                        
+
                     </ul>
                 </li>
                 <li>
@@ -282,7 +282,7 @@
                 </li>
                 @permission('backup')
             <!-- Backup Restore-->
-                
+
                 <li>
                     <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
@@ -400,6 +400,9 @@
                             <th class="text-center">
                                 HAI Reg #
                             </th>
+							<th class="text-center">
+                                Individual ID
+                            </th>
                             <th class="text-center">
                                 Full Name
                             </th>
@@ -410,7 +413,7 @@
                                 Age
                             </th>
                             <th class="text-center">
-                                Rational Card
+                                Address
                             </th>
                             <th class="text-center">
                                 Date of Arrival
@@ -436,6 +439,9 @@
                             <td class="text-center">
                                 HAI Reg #
                             </td>
+							<td class="text-center">
+                                Individual ID
+                            </td>
                             <td class="text-center">
                                 Full Name
                             </td>
@@ -446,7 +452,7 @@
                                 Age
                             </td>
                             <td class="text-center">
-                                Rational Card
+                                Address
                             </td>
                             <td class="text-center">
                                 Date of Arrival

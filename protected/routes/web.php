@@ -2,6 +2,9 @@
 Route::get('/','HomeController@index');
 Route::get('home','HomeController@index');
 
+//test
+Route::get('fingerprint','FingerprintController@index');
+
 //Authentication
 Route::get('login','Auth\LoginController@login');
 Route::post('login','Auth\LoginController@postLogin');

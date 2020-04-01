@@ -78,6 +78,15 @@
                 </div>
 
             </div>
+	<div class="row">
+                   <div class="col-md-4">
+                    <div class="form-group ">
+                        <label class="control-label">Individual ID</label>
+                        <input type="text" class="form-control"  name="individual_id" id="individual_id"
+                               value="{{old('individual_id')}}">
+                    </div>
+                </div>
+	</div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group ">
@@ -223,7 +232,7 @@
                 </div>
 
 
-                
+
             </div>
         </fieldset>
 

@@ -131,6 +131,9 @@
                                         <th class="text-center">
                                             HAI REG NO
                                         </th>
+										<th class="text-center">
+                                            Individual ID
+                                        </th>
                                         <th class="text-center">
                                             Unique ID
                                         </th>
@@ -163,6 +166,9 @@
                                         </td>
                                         <td class="text-center">
                                             HAI REG NO
+                                        </td>
+										<td class="text-center">
+                                            Individual ID
                                         </td>
                                         <td class="text-center">
                                             Unique ID

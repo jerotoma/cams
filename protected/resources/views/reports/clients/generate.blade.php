@@ -17,113 +17,89 @@
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/pickers/pickadate/picker.date.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
-
+<script type="text/javascript" src="{{asset("assets/js/plugins/notifications/bootbox.min.js")}}"></script>
+<script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
 <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 <script>
-    $('.pickadate').pickadate({
-
-        // Escape any “rule” characters with an exclamation mark (!).
-        format: 'yyyy-mm-dd',
-    });
+    $('.pickadate').pickadate();
 </script>
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::open(array('url'=>'items/distributions','role'=>'form','id'=>'formItemsReceived')) !!}
+        {!! Form::open(array('url'=>'generate/reports/clients','role'=>'form','id'=>'form')) !!}
         <div class="panel panel-flat">
+
+
             <div class="panel-body">
                 <fieldset class="scheduler-border">
-                    <legend class="text-bold"> NFIs Items Distribution</legend>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label">Distribution Date:</label>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="icon-calendar22"></i></span>
-                                    <input type="text" class="form-control pickadate"  value="{{old('disbursements_date')}}" name="disbursements_date" id="disbursements_date">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label">PSN Individual ID NO</label>
-                                <input type="text" class="form-control" name="hai_reg_number"  id="hai_reg_number" value="" >
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label">Items Distributed By</label>
-                                <input type="text" class="form-control" name="disbursements_by"  id="disbursements_by" value="" >
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="control-label">Camp</label>
-                        <select class="select" name="camp_id" id="camp_id" data-placeholder="Choose an option...">
-                            <option ></option>
-                            @foreach(\App\Camp::all() as $item)
-                                <option value="{{$item->id}}">{{$item->camp_name}}</option>
-                            @endforeach
-                        </select>
-                        @if($errors->first('camp_id') !="")
-                            <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
-                        @endif
-                    </div>
-
-                </fieldset>
-                <fieldset class="scheduler-border">
-                    <legend class="text-bold">PSN CLIENTS ITEMS DISTRIBUTION LIST</legend>
+                    <legend class="text-bold">Client Registration Report</legend>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Item</label>
-                                <select class="select" name="item_id" id="item_id" data-placeholder="Choose an option..." data-live-search="true" data-width="100%">
-                                    <option ></option>
-                                    @foreach(\App\ItemsCategories::all() as $category)
-                                        <optgroup label="{{$category->category_name}}">
-                                            @foreach($category->items as $item)
-                                                <option  value="{{$item->id}}"> {{$item->item_name}}</option>
-                                                @endforeach
-                                        </optgroup>
-                                    @endforeach
+                                <label class="control-label">Start Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                                    <input type="text" class="form-control pickadate"  value="{{old('start_date')}}" name="start_date" id="start_date">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label class="control-label">End Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                                    <input type="text" class="form-control pickadate" value="{{old('end_date')}}" name="end_date" id="end_date">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label>Vulnerability Category</label>
+                                <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="vulnerability_code[]" id="vulnerability_code">
+                                    <optgroup label="Vulnerability Code">
+                                        <option value="All">All</option>
+                                        @foreach(\App\PSNCode::all() as $item)
+                                            <option value="{{$item->id}}">{{$item->code}}</option>
+                                        @endforeach
+                                    </optgroup>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">Quantity</label>
-                                <input type="text" class="form-control" name="quantity"  id="quantity" value="" >
+                                <label>Report Type</label>
+                                <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="report_type" id="report_type">
+                                    <optgroup label="Vulnerability Code">
+                                        <option value="Excel" selected>Excel File</option>
+                                        <option value="Graphical" >Graphical</option>
+                                    </optgroup>
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group ">
-                        <label class="control-label"> Comments: </label>
-                        <textarea class="form-control"  name="comments" id="comments">{{old('comments')}}</textarea>
-                    </div>
                 </fieldset>
-            </div>
-        </div>
-        <div class="form-actions">
-            <div class="row">
-                <div class="col-md-8 col-sm-8 pull-left" id="output">
+                <div class="row">
+                    <div class="col-md-8 col-sm-8 pull-left" id="output">
+
+                    </div>
+                    <div class="col-md-4 col-sm-4 pull-right text-right">
+                        <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Generate Report </button>
+                    </div>
 
                 </div>
-                <div class="col-md-4 col-sm-4 pull-right text-right">
-                    <button type="button" class="btn btn-danger "  data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit Form </button>
-                </div>
-
             </div>
         </div>
-
         {!! Form::close() !!}
-
     </div>
 </div>
 <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
 <script>
-    $("#formItemsReceived").validate({
+    $("#formClientReport").validate({
         ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
         errorClass: 'validation-error-label',
         successClass: 'validation-valid-label',
@@ -171,65 +147,51 @@
         },
         errorElement:'div',
         rules: {
-            disbursements_date: "required",
-            disbursements_by: "required",
-            quantity:"required",
-            camp_id:"required",
-            category_id:"required",
-            hai_reg_number:"required",
-            item_id:"required",
+
+            start_date: "required",
+            end_date: "required",
+            report_type: "required",
+            vulnerability_code: "required"
         },
         messages: {
-            disbursements_date: "Please field is required",
-            disbursements_by: "Please field is required",
-            hai_reg_number: "Please enter Registration",
-            quantity:"Please please enter quantity",
-            camp_id:"Please please select camp",
-            item_id:"Please Please select Items",
+            start_date: "Please start_date is required",
+            end_date: "Please end_date is required",
+            report_type: "Please report_type is required",
+            vulnerability_code: "Please vulnerability_code is required"
         },
         submitHandler: function(form) {
             $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
-            var postData = $('#formItemsReceived').serializeArray();
-            var formURL = $('#formItemsReceived').attr("action");
+            var postData = $('#formClients').serializeArray();
+            var formURL = $('#formClients').attr("action");
             $.ajax(
                 {
                     url : formURL,
                     type: "POST",
                     data : postData,
-                    dataType: 'json',
-                    success:function(data)
-                    {
-                        $("#output").html(data.message);
+                    success: function(data){
+                        swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
                         setTimeout(function() {
-                            location.replace('{{url('items/distributions')}}');
+                            location.replace("{{url('clients')}}");
                             $("#output").html("");
                         }, 2000);
-
                     },
                     error: function(jqXhr,status, response) {
+                        console.log(jqXhr);
                         if( jqXhr.status === 401 ) {
                             location.replace('{{url('login')}}');
                         }
                         if( jqXhr.status === 400 ) {
-                            if(jqXhr.responseJSON.errors ==1){
-                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p>';
-                                errorsHtml +='<p>'+ jqXhr.responseJSON.message +'</p></div>';
-
-                                $('#output').html(errorsHtml);
-                            }
-                            else {
-                                var errors = jqXhr.responseJSON.errors;
-                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
-                                $.each(errors, function (key, value) {
-                                    errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
-                                });
-                                errorsHtml += '</ul></di>';
-                                $('#output').html(errorsHtml);
-                            }
+                            var errors = jqXhr.responseJSON.errors;
+                            errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                            $.each(errors, function (key, value) {
+                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                            });
+                            errorsHtml += '</ul></di>';
+                            $('#output').html(errorsHtml);
                         }
                         else
                         {
-                            $('#output').html("");
+                            $('#output').html(jqXhr.message);
                         }
 
                     }
