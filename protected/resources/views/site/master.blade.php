@@ -25,89 +25,72 @@
 
     <!-- Theme css files -->
     @yield('page_css')
-
+    <link href="{{asset("assets/css/cams/app.css")}}" rel="stylesheet" type="text/css">
     <!-- /theme css files -->
 <!-- Theme JS files -->
     @yield('page_js')
-
+    <script type="text/javascript" src="{{asset("assets/js/cams/app.js")}}"></script>
     <!-- /theme JS files -->
 
 </head>
 
 <body class="navbar-top" style="overflow:auto;">
-
-   @include('inc.header')
-
-<!-- Page container -->
-<div class="page-container">
-
-    <!-- Page content -->
-    <div class="page-content">
-
-        <!-- Main sidebar -->
-        <div class="sidebar sidebar-main sidebar-fixed ">
-            <div class="sidebar-content">
-
-                <!-- User menu -->
-                     @include('inc.user_menu')
-                <!-- /user menu -->
-
-
-                <!-- Main navigation -->
-                    @yield("main_navigation")
-
-                <!-- /main navigation -->
-
+<div id="app">
+    @include('inc.header')
+    <!-- Page container -->
+    <div class="page-container">
+        <!-- Page content -->
+        <div class="page-content">
+            <!-- Main sidebar -->
+            <div class="sidebar sidebar-main sidebar-fixed ">
+                <div class="sidebar-content">
+                    <!-- User menu -->
+                        @include('inc.user_menu')
+                    <!-- /user menu -->
+                    <!-- Main navigation -->
+                        @yield("main_navigation")
+                    <!-- /main navigation -->
+                </div>
             </div>
-        </div>
-        <!-- /main sidebar -->
-
-
-        <!-- Main content -->
-        <div class="content-wrapper">
-
-            <!-- Page header -->
-            <div class="page-header page-header-default">
-                <div class="page-header-content">
-                    <div class="page-title">
-                        @yield("page_heading_title")
-
-                    </div>
-                    <div class="heading-elements">
-                        <div class="heading-btn-group">
-                            <a href="{{url('search/clients')}}" class="btn btn-link btn-float has-text"><i class="icon-users4 text-primary"></i><span>Registration</span></a>
-                            <a href="{{url('assessments/vulnerability')}}" class="btn btn-link btn-float has-text"><i class="icon-lab text-primary"></i> <span>Assessments</span></a>
-                            <a href="{{url('cases')}}" class="btn btn-link btn-float has-text"><i class="fa fa-file text-primary"></i> <span>Open Case</span></a>
+            <!-- /main sidebar -->
+            <!-- Main content -->
+            <div class="content-wrapper">
+                <!-- Page header -->
+                <div class="page-header page-header-default">
+                    <div class="page-header-content">
+                        <div class="page-title">
+                            @yield("page_heading_title")
+                        </div>
+                        <div class="heading-elements">
+                            <div class="heading-btn-group">
+                                <a href="{{url('search/clients')}}" class="btn btn-link btn-float has-text"><i class="icon-users4 text-primary"></i><span>Registration</span></a>
+                                <a href="{{url('assessments/vulnerability')}}" class="btn btn-link btn-float has-text"><i class="icon-lab text-primary"></i> <span>Assessments</span></a>
+                                <a href="{{url('cases')}}" class="btn btn-link btn-float has-text"><i class="fa fa-file text-primary"></i> <span>Open Case</span></a>
+                            </div>
                         </div>
                     </div>
+                    <div class="breadcrumb-line">
+                        @yield("breadcrumb")
+                    </div>
                 </div>
-                <div class="breadcrumb-line">
-                    @yield("breadcrumb")
+                <!-- /page header -->
+                <!-- Content area -->
+                <div class="content">
+                    @yield("contents")
+                    <!-- /dashboard content -->
+                    <!-- Footer -->
+                    @include('inc.footer')
+                    <!-- /Footer -->
                 </div>
+                <!-- /content area -->
             </div>
-            <!-- /page header -->
-            <!-- Content area -->
-            <div class="content">
-
-                @yield("contents")
-                <!-- /dashboard content -->
-               
-                <!-- Footer -->
-                @include('inc.footer')
-                 
-                <!-- /Footer -->
-
-            </div>
-            <!-- /content area -->
-
+            <!-- /main content -->
         </div>
-        <!-- /main content -->
-
+        <!-- /page content -->
     </div>
-    <!-- /page content -->
-
-</div>
 <!-- /page container -->
+</div>
+<!-- /app container -->
 @yield('scripts')
 </body>
 </html>

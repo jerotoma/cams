@@ -70,7 +70,7 @@ Route::resource('clients','ClientsController');
 Route::post('authorize/all/clients','ClientsController@AuthorizeAll');
 Route::post('authorize/{id}/clients','ClientsController@AuthorizeClientById');
 
-Route::get('getclientsjson','ClientsController@getJSonDataSearch');
+Route::get('rest/secured/clients','ClientsController@findClientList');
 Route::get('getclientslist','ClientsController@getJSonClientDataSearch');
 Route::get('search/clients','ClientsController@searchClient');
 Route::post('search/clients','ClientsController@postSearchClient');

@@ -9,6 +9,7 @@ use App\DumpClient;
 use App\Origin;
 use App\PSNCode;
 use App\PSNCodeCategory;
+use App\Helpers\PaginateUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -161,11 +162,47 @@ class ClientsController extends Controller
 
         echo json_encode($records);
     }
-    public function getJSonDataSearch()
-    {
-        //
 
-        $clients=Client::orderBy('full_name','ASC')->get();
+    private function processSortRequest(Request $request, $clients) {
+        if ($request->sortField == 'phoneNumber') {
+            $clients = $clients->orderBy('members.phone_number', $request->sortType);
+       } else if ($request->sortField == 'community') {
+            $clients = $clients
+                ->join('addresses', 'addresses.member_id', '=', 'members.id')
+                ->join('communities', 'communities.id', '=', 'members.community_id')
+                ->orderBy('communities.name', $request->sortType)
+                ->select('members.*', 'addresses.id as addressId', 'communities.*');
+       } else if ($request->sortField == 'zone') {
+            $clients = $clients
+                ->join('addresses', 'addresses.member_id', '=', 'members.id')
+                ->join('communities', 'communities.id', '=', 'members.community_id')
+                ->join('zones', 'zones.id', '=', 'communities.zone_id')
+                ->orderBy('zones.name', $request->sortType)
+                ->select('members.*', 'addresses.id as addressId', 'communities.*');
+       } else {
+            $clients = $clients->orderBy($request->sortField, $request->sortType);
+       }
+       return  $clients;
+    }
+    public function findClientList(Request $request) {
+
+        $request->validate([
+            'sortField' => 'required',
+            'sortType' => 'required|max:5',
+            'perPage' => 'required',
+            'page' => 'required',
+        ]);
+
+        $clients = Client::orderBy('full_name','ASC');
+        $clients = $this->processSortRequest($request,  $clients)->paginate($request->perPage);
+        return response()->json([
+            'clients' => $clients,
+            'pagination' =>  PaginateUtility::mapPagination($clients),
+        ]);
+
+
+
+
         $iTotalRecords =count(Client::all());
         $sEcho = intval(10);
 
