@@ -32,7 +32,6 @@
 
             $(".addRecord").on('click', function(e){
                 e.preventDefault();
-                console.log(e)
                 var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" class="modal fade" role="dialog" data-backdrop="false">';
                 modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
                 modaldis+= '<div class="modal-content">';
@@ -57,10 +56,8 @@
                     $('.modal-backdrop').remove();
                 });
             });
-        })
-
+        });
     </script>
-
 @stop
 @section('main_navigation')
     <div class="sidebar-category sidebar-category-visible">

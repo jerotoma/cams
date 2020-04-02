@@ -27,15 +27,13 @@
     @yield('page_css')
     <link href="{{asset("assets/css/cams/app.css")}}" rel="stylesheet" type="text/css">
     <!-- /theme css files -->
-<!-- Theme JS files -->
+    <!-- Theme JS files -->
     @yield('page_js')
-    <script type="text/javascript" src="{{asset("assets/js/cams/app.js")}}"></script>
     <!-- /theme JS files -->
-
 </head>
 
 <body class="navbar-top" style="overflow:auto;">
-<div id="app">
+<div id="campsn-app">
     @include('inc.header')
     <!-- Page container -->
     <div class="page-container">
@@ -92,5 +90,6 @@
 </div>
 <!-- /app container -->
 @yield('scripts')
+<script type="text/javascript" src="{{asset("assets/js/cams/app.js")}}"></script>
 </body>
 </html>
