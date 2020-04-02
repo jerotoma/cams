@@ -141,10 +141,10 @@ export default {
         performAction(actionType, client) {
             switch(actionType) {
                 case 'view':
-                    this.$modal.loadModal('/clients/' + client.id, 'Client Details', 'fa-eye');
+                    this.$modal.loadPageInAModal('/clients/' + client.id, 'Client Details', 'fa-eye');
                     break;
                 case 'edit':
-                    this.$modal.loadModal('/clients/' + client.id + '/edit', 'Update Client Details', 'fa-edit');
+                    this.$modal.loadPageInAModal('/clients/' + client.id + '/edit', 'Update Client Details', 'fa-edit');
                     break;
                 case 'delete':
                      this.$modal.deleteRecord('/clients/' + client.id);

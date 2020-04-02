@@ -7,7 +7,7 @@ const ModalPlugin = {
           };
         },
         methods: {
-            loadModal(url, title, iconClass = 'fa-edit') {
+            loadPageInAModal(url, title, iconClass = 'fa-edit') {
                 var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
                 modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
                 modaldis+= '<div class="modal-content">';

@@ -2042,11 +2042,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     performAction: function performAction(actionType, client) {
       switch (actionType) {
         case 'view':
-          this.$modal.loadModal('/clients/' + client.id, 'Client Details', 'fa-eye');
+          this.$modal.loadPageInAModal('/clients/' + client.id, 'Client Details', 'fa-eye');
           break;
 
         case 'edit':
-          this.$modal.loadModal('/clients/' + client.id + '/edit', 'Update Client Details', 'fa-edit');
+          this.$modal.loadPageInAModal('/clients/' + client.id + '/edit', 'Update Client Details', 'fa-edit');
           break;
 
         case 'delete':
@@ -36412,7 +36412,7 @@ module.exports = g;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store/store */ "./resources/js/store/store.js");
-/* harmony import */ var _modals_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modals/common */ "./resources/js/modals/common.js");
+/* harmony import */ var _shared_modals_modal_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shared/modals/modal-loader */ "./resources/js/shared/modals/modal-loader.js");
 /* harmony import */ var vue_good_table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-good-table */ "./node_modules/vue-good-table/dist/vue-good-table.esm.js");
 /* harmony import */ var vue_good_table_dist_vue_good_table_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-good-table/dist/vue-good-table.css */ "./node_modules/vue-good-table/dist/vue-good-table.css");
 /* harmony import */ var vue_good_table_dist_vue_good_table_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_good_table_dist_vue_good_table_css__WEBPACK_IMPORTED_MODULE_3__);
@@ -36435,7 +36435,7 @@ var moment = __webpack_require__(/*! vue-moment */ "./node_modules/vue-moment/di
 Vue.use(vue_good_table__WEBPACK_IMPORTED_MODULE_2__["default"]); //Plugins
 
 Vue.use(moment);
-Vue.use(_modals_common__WEBPACK_IMPORTED_MODULE_1__["default"]); //Components
+Vue.use(_shared_modals_modal_loader__WEBPACK_IMPORTED_MODULE_1__["default"]); //Components
 
 Vue.component('client-list-component', __webpack_require__(/*! ./pages/clients/ClientListComponent.vue */ "./resources/js/pages/clients/ClientListComponent.vue")["default"]);
 /**
@@ -36478,88 +36478,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
-
-/***/ }),
-
-/***/ "./resources/js/modals/common.js":
-/*!***************************************!*\
-  !*** ./resources/js/modals/common.js ***!
-  \***************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-var ModalPlugin = {
-  install: function install(Vue) {
-    Vue.mixin({
-      data: function data() {
-        return {};
-      },
-      methods: {
-        loadModal: function loadModal(url, title) {
-          var iconClass = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'fa-edit';
-          var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-          modaldis += '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
-          modaldis += '<div class="modal-content">';
-          modaldis += '<div class="modal-header bg-indigo">';
-          modaldis += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-          modaldis += '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center">';
-          modaldis += '<i class="fa ';
-          modaldis += iconClass + ' ';
-          modaldis += ' font-blue-sharp"></i>';
-          modaldis += ' ' + title;
-          modaldis += '</span>';
-          modaldis += '</div>';
-          modaldis += '<div class="modal-body">';
-          modaldis += ' </div>';
-          modaldis += '</div>';
-          modaldis += '</div>';
-          $('body').css('overflow-y', 'scroll');
-          $("body").append(modaldis);
-          $("#myModal").modal("show");
-          $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-          $(".modal-body").load(url);
-          $("#myModal").on('hidden.bs.modal', function () {
-            $("#myModal").remove();
-          });
-        },
-        // Confirmation dialog
-        deleteRecord: function deleteRecord(url) {
-          bootbox.confirm("Are You Sure to delete record?", function (result) {
-            if (result) {
-              axios({
-                method: 'DELETE',
-                url: url
-              }).then(function (response) {
-                location.reload();
-              });
-            }
-          });
-        },
-        // Confirmation dialog
-        authorizeRecord: function authorizeRecord(url) {
-          bootbox.confirm("Are You Sure to athorize record?", function (result) {
-            if (result) {
-              axios({
-                method: 'POST',
-                url: url
-              }).then(function (response) {
-                location.reload();
-              });
-            }
-          });
-        }
-      }
-    });
-    Object.defineProperty(Vue.prototype, "$modal", {
-      get: function get() {
-        return this.$root;
-      }
-    });
-  }
-};
-/* harmony default export */ __webpack_exports__["default"] = (ModalPlugin);
 
 /***/ }),
 
@@ -36629,6 +36547,88 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ClientListComponent_vue_vue_type_template_id_2d5dd418___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/shared/modals/modal-loader.js":
+/*!****************************************************!*\
+  !*** ./resources/js/shared/modals/modal-loader.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var ModalPlugin = {
+  install: function install(Vue) {
+    Vue.mixin({
+      data: function data() {
+        return {};
+      },
+      methods: {
+        loadPageInAModal: function loadPageInAModal(url, title) {
+          var iconClass = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'fa-edit';
+          var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+          modaldis += '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+          modaldis += '<div class="modal-content">';
+          modaldis += '<div class="modal-header bg-indigo">';
+          modaldis += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+          modaldis += '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center">';
+          modaldis += '<i class="fa ';
+          modaldis += iconClass + ' ';
+          modaldis += ' font-blue-sharp"></i>';
+          modaldis += ' ' + title;
+          modaldis += '</span>';
+          modaldis += '</div>';
+          modaldis += '<div class="modal-body">';
+          modaldis += ' </div>';
+          modaldis += '</div>';
+          modaldis += '</div>';
+          $('body').css('overflow-y', 'scroll');
+          $("body").append(modaldis);
+          $("#myModal").modal("show");
+          $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+          $(".modal-body").load(url);
+          $("#myModal").on('hidden.bs.modal', function () {
+            $("#myModal").remove();
+          });
+        },
+        // Confirmation dialog
+        deleteRecord: function deleteRecord(url) {
+          bootbox.confirm("Are You Sure to delete record?", function (result) {
+            if (result) {
+              axios({
+                method: 'DELETE',
+                url: url
+              }).then(function (response) {
+                location.reload();
+              });
+            }
+          });
+        },
+        // Confirmation dialog
+        authorizeRecord: function authorizeRecord(url) {
+          bootbox.confirm("Are You Sure to athorize record?", function (result) {
+            if (result) {
+              axios({
+                method: 'POST',
+                url: url
+              }).then(function (response) {
+                location.reload();
+              });
+            }
+          });
+        }
+      }
+    });
+    Object.defineProperty(Vue.prototype, "$modal", {
+      get: function get() {
+        return this.$root;
+      }
+    });
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (ModalPlugin);
 
 /***/ }),
 

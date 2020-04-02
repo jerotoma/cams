@@ -9,7 +9,7 @@ window.Vue = require('vue');
 const moment = require('vue-moment');
 
 import store from './store/store';
-import ModalPlugin from './modals/common';
+import ModalPlugin from './shared/modals/modal-loader';
 
 import VueGoodTablePlugin from 'vue-good-table';
 
