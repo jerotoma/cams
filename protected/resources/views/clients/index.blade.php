@@ -10,8 +10,7 @@
 @stop
 @section('scripts')
     <script>
-        window.addEventListener('load', function () {
-            $(function() {
+        $(function() {
                 // Confirmation dialog
                 $('.authorizeAllRecord').on('click', function() {
                     var id1 = $(this).parent().attr('id');
@@ -56,7 +55,6 @@
                     $('.modal-backdrop').remove();
                 });
             });
-        });
     </script>
 @stop
 @section('main_navigation')

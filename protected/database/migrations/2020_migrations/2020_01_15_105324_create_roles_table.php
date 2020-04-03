@@ -28,8 +28,17 @@ class CreateRolesTable extends Migration
                 $table->softDeletes();
             });
         } else {
-            Schema::table('users', function (Blueprint $table) {
-                $table->string('email');
+            Schema::table($table , function (Blueprint $table) {
+                if (Schema::hasColumn($table, 'name')) {
+                    $table->renameColumn('name', 'slug');
+                }
+                if (Schema::hasColumn($table, 'display_name')) {
+                    $table->renameColumn('display_name', 'name');
+                }
+                if (Schema::hasColumn($table, 'level')) {
+                    $table->integer('level')->default(1);
+                }
+                $table->softDeletes();
             });
         }
     }

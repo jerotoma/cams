@@ -12,14 +12,14 @@ import store from './store/store';
 import ModalPlugin from './shared/modals/modal-loader';
 
 import VueGoodTablePlugin from 'vue-good-table';
-
-// import the styles
 import 'vue-good-table/dist/vue-good-table.css'
-Vue.use(VueGoodTablePlugin);
+
+
 
 //Plugins
 Vue.use(moment);
 Vue.use(ModalPlugin);
+Vue.use(VueGoodTablePlugin);
 
 //Components
 Vue.component('client-list-component', require('./pages/clients/ClientListComponent.vue').default);

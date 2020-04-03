@@ -89,7 +89,7 @@
 <!-- /page container -->
 </div>
 <!-- /app container -->
-@yield('scripts')
 <script type="text/javascript" src="{{asset("assets/js/cams/app.js")}}"></script>
+@yield('scripts')
 </body>
 </html>

@@ -27,6 +27,19 @@ class CreatePermissionsTable extends Migration
                 $table->timestamps();
                 $table->softDeletes();
             });
+        } else {
+            Schema::table($table , function (Blueprint $table) {
+                if (Schema::hasColumn($table, 'name')) {
+                    $table->renameColumn('name', 'slug');
+                }
+                if (Schema::hasColumn($table, 'display_name')) {
+                    $table->renameColumn('display_name', 'name');
+                }
+                if (Schema::hasColumn($table, 'model')) {
+                    $table->string('model')->nullable();
+                }
+                $table->softDeletes();
+            });
         }
     }
 
