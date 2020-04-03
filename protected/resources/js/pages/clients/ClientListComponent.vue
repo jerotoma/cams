@@ -26,6 +26,9 @@
                 <span v-if="props.column.field == 'date_arrival'">
                     <span class="text-primary">{{props.row.date_arrival | moment("MMMM Do, YYYY")}}</span>
                 </span>
+                <span v-else-if="props.column.field == 'camp'">
+                    <span class="text-primary">{{props.row.camp.camp_name}}</span>
+                </span>
                 <span v-else-if="props.column.field == 'action'">
                     <ul class="icons-list text-center">
                         <li class="dropdown">
@@ -71,41 +74,64 @@ export default {
         return {
             columns: [
                 {
-                label: 'HAI Reg #',
-                field: 'hai_reg_number',
+                    label: 'Full Name',
+                    field: 'full_name',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
                 },
                 {
-                label: 'Individual ID',
-                field: 'individual_id',
+                    label: 'HAI Reg #',
+                    field: 'hai_reg_number',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
                 },
                 {
-                label: 'Full Name',
-                field: 'full_name',
+                    label: 'Individual ID',
+                    field: 'individual_id',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
                 },
                 {
-                label: 'Sex',
-                field: 'sex',
+                    label: 'Sex',
+                    field: 'sex',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
                 },
                 {
-                label: 'Age',
-                field: 'age',
-                type: 'number',
+                    label: 'Age',
+                    field: 'age',
+                    type: 'number',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
                 },
                 {
-                label: 'Address',
-                field: 'address',
+                    label: 'Address',
+                    field: 'present_address',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
                 },
                 {
-                label: 'Date of Arrival',
-                field: 'date_arrival',
+                    label: 'Date of Arrival',
+                    field: 'date_arrival',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
                 },
                 {
-                label: 'Auth Status',
-                field: 'auth_status',
+                    label: 'Camp',
+                    field: 'camp',
+                    type: Object,
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
                 },
                 {
-                label: 'Action',
-                field: 'action',
+                    label: 'Auth Status',
+                    field: 'auth_status',
+                },
+                {
+                    label: 'Action',
+                    field: 'action',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
                 },
             ]
         };

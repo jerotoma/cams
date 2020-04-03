@@ -7,18 +7,14 @@ const ModalPlugin = {
           };
         },
         methods: {
-            loadPageInAModal(url, title, iconClass = 'fa-edit') {
+            loadPageInAModal(url, title = 'View', iconClass = 'fa-eye') {
                 var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
                 modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
                 modaldis+= '<div class="modal-content">';
                 modaldis+= '<div class="modal-header bg-indigo">';
                 modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center">';
-                modaldis+= '<i class="fa ';
-                modaldis+=  iconClass + ' ';
-                modaldis+= ' font-blue-sharp"></i>';
-                modaldis+= ' ' + title;
-                modaldis+= '</span>'
+                modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center">'
+                + '<i class="fa ' + iconClass + ' ' + ' font-blue-sharp"></i>' + ' ' + title + '</span>'
                 modaldis+= '</div>';
                 modaldis+= '<div class="modal-body">';
                 modaldis+= ' </div>';
@@ -62,7 +58,6 @@ const ModalPlugin = {
             },
         },
       });
-
       Object.defineProperty(Vue.prototype, "$modal", {
         get() {
           return this.$root;

@@ -164,25 +164,14 @@ class ClientsController extends Controller
     }
 
     private function processSortRequest(Request $request, $clients) {
-        if ($request->sortField == 'phoneNumber') {
-            $clients = $clients->orderBy('members.phone_number', $request->sortType);
-       } else if ($request->sortField == 'community') {
+       if ($request->sortField == 'camp') {
             $clients = $clients
-                ->join('addresses', 'addresses.member_id', '=', 'members.id')
-                ->join('communities', 'communities.id', '=', 'members.community_id')
-                ->orderBy('communities.name', $request->sortType)
-                ->select('members.*', 'addresses.id as addressId', 'communities.*');
-       } else if ($request->sortField == 'zone') {
-            $clients = $clients
-                ->join('addresses', 'addresses.member_id', '=', 'members.id')
-                ->join('communities', 'communities.id', '=', 'members.community_id')
-                ->join('zones', 'zones.id', '=', 'communities.zone_id')
-                ->orderBy('zones.name', $request->sortType)
-                ->select('members.*', 'addresses.id as addressId', 'communities.*');
+                ->join('camps', 'camps.id', '=', 'clients.camp_id')
+                ->orderBy('camps.camp_name', $request->sortType);
        } else {
             $clients = $clients->orderBy($request->sortField, $request->sortType);
        }
-       return  $clients;
+       return $clients;
     }
     public function findClientList(Request $request) {
 
@@ -193,24 +182,13 @@ class ClientsController extends Controller
             'page' => 'required',
         ]);
 
-        $clients = Client::orderBy('full_name','ASC');
+        $clients = Client::with('camp', 'fromOrigin');
         $clients = $this->processSortRequest($request,  $clients)->paginate($request->perPage);
         return response()->json([
             'clients' => $clients,
             'pagination' =>  PaginateUtility::mapPagination($clients),
         ]);
 
-
-
-
-        $iTotalRecords =count(Client::all());
-        $sEcho = intval(10);
-
-        $records = array();
-        $records["data"] = array();
-
-
-        $count=1;
         foreach($clients as $client) {
             $origin = "";
             $status = "";

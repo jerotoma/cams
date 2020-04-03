@@ -1966,6 +1966,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'client-list-component',
@@ -1982,33 +1985,55 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       columns: [{
+        label: 'Full Name',
+        field: 'full_name',
+        thClass: 'text-center',
+        tdClass: 'text-center'
+      }, {
         label: 'HAI Reg #',
-        field: 'hai_reg_number'
+        field: 'hai_reg_number',
+        thClass: 'text-center',
+        tdClass: 'text-center'
       }, {
         label: 'Individual ID',
-        field: 'individual_id'
-      }, {
-        label: 'Full Name',
-        field: 'full_name'
+        field: 'individual_id',
+        thClass: 'text-center',
+        tdClass: 'text-center'
       }, {
         label: 'Sex',
-        field: 'sex'
+        field: 'sex',
+        thClass: 'text-center',
+        tdClass: 'text-center'
       }, {
         label: 'Age',
         field: 'age',
-        type: 'number'
+        type: 'number',
+        thClass: 'text-center',
+        tdClass: 'text-center'
       }, {
         label: 'Address',
-        field: 'address'
+        field: 'present_address',
+        thClass: 'text-center',
+        tdClass: 'text-center'
       }, {
         label: 'Date of Arrival',
-        field: 'date_arrival'
+        field: 'date_arrival',
+        thClass: 'text-center',
+        tdClass: 'text-center'
+      }, {
+        label: 'Camp',
+        field: 'camp',
+        type: Object,
+        thClass: 'text-center',
+        tdClass: 'text-center'
       }, {
         label: 'Auth Status',
         field: 'auth_status'
       }, {
         label: 'Action',
-        field: 'action'
+        field: 'action',
+        thClass: 'text-center',
+        tdClass: 'text-center'
       }]
     };
   },
@@ -18245,6 +18270,12 @@ var render = function() {
                             )
                           )
                         )
+                      ])
+                    ])
+                  : props.column.field == "camp"
+                  ? _c("span", [
+                      _c("span", { staticClass: "text-primary" }, [
+                        _vm._v(_vm._s(props.row.camp.camp_name))
                       ])
                     ])
                   : props.column.field == "action"
@@ -36566,19 +36597,15 @@ var ModalPlugin = {
         return {};
       },
       methods: {
-        loadPageInAModal: function loadPageInAModal(url, title) {
-          var iconClass = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'fa-edit';
+        loadPageInAModal: function loadPageInAModal(url) {
+          var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'View';
+          var iconClass = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'fa-eye';
           var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
           modaldis += '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
           modaldis += '<div class="modal-content">';
           modaldis += '<div class="modal-header bg-indigo">';
           modaldis += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-          modaldis += '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center">';
-          modaldis += '<i class="fa ';
-          modaldis += iconClass + ' ';
-          modaldis += ' font-blue-sharp"></i>';
-          modaldis += ' ' + title;
-          modaldis += '</span>';
+          modaldis += '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center">' + '<i class="fa ' + iconClass + ' ' + ' font-blue-sharp"></i>' + ' ' + title + '</span>';
           modaldis += '</div>';
           modaldis += '<div class="modal-body">';
           modaldis += ' </div>';
