@@ -14,11 +14,11 @@ class CreatePermissionsTable extends Migration
     public function up()
     {
         $connection = config('roles.connection');
-        $table = config('roles.permissionsTable');
-        $tableCheck = Schema::connection($connection)->hasTable($table);
+        $permissionsTable = config('roles.permissionsTable');
+        $tableCheck = Schema::connection($connection)->hasTable($permissionsTable);
 
         if (!$tableCheck) {
-            Schema::connection($connection)->create($table, function (Blueprint $table) {
+            Schema::connection($connection)->create($permissionsTable, function (Blueprint $table) {
                 $table->increments('id')->unsigned();
                 $table->string('name');
                 $table->string('slug')->unique();
@@ -28,14 +28,15 @@ class CreatePermissionsTable extends Migration
                 $table->softDeletes();
             });
         } else {
-            Schema::table($table , function (Blueprint $table) {
-                if (Schema::hasColumn($table, 'name')) {
+            Schema::table($permissionsTable , function (Blueprint $table) {
+                $permissionsTable = config('roles.permissionsTable');
+                if (Schema::hasColumn($permissionsTable, 'name')) {
                     $table->renameColumn('name', 'slug');
                 }
-                if (Schema::hasColumn($table, 'display_name')) {
+                if (Schema::hasColumn($permissionsTable, 'display_name')) {
                     $table->renameColumn('display_name', 'name');
                 }
-                if (Schema::hasColumn($table, 'model')) {
+                if (!Schema::hasColumn($permissionsTable, 'model')) {
                     $table->string('model')->nullable();
                 }
                 $table->softDeletes();

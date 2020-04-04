@@ -13,8 +13,8 @@ class AddIndividualIdToClientsTable extends Migration
      */
     public function up() {
         Schema::table('clients', function (Blueprint $table) {
-            if (!Schema::hasColumn($table, 'individual_id')) {
-                $table->string('individual_id');
+            if (!Schema::hasColumn('clients', 'individual_id')) {
+                $table->string('individual_id')->nullable();
             }
         });
     }
@@ -26,7 +26,7 @@ class AddIndividualIdToClientsTable extends Migration
      */
     public function down() {
         Schema::table('clients', function (Blueprint $table) {
-            if (Schema::hasColumn($table, 'individual_id')) {
+            if (Schema::hasColumn('clients', 'individual_id')) {
                 $table->dropColumn('individual_id');
             }
         });

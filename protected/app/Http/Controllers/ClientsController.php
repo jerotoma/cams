@@ -16,7 +16,12 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator as ResultValidator;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use DB;
+use Carbon\Carbon;
+
 
 class ClientsController extends Controller
 {
@@ -181,157 +186,108 @@ class ClientsController extends Controller
             'perPage' => 'required',
             'page' => 'required',
         ]);
-
         $clients = Client::with('camp', 'fromOrigin');
         $clients = $this->processSortRequest($request,  $clients)->paginate($request->perPage);
         return response()->json([
+            'authRole' => $this->getRoleName(),
             'clients' => $clients,
             'pagination' =>  PaginateUtility::mapPagination($clients),
         ]);
-
-        foreach($clients as $client) {
-            $origin = "";
-            $status = "";
-            $datearv = "";
-            $camp = "";
-            if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
-                $origin = $client->fromOrigin->origin_name;
-            }
-            if (is_object($client->camp) && $client->camp != null) {
-                $camp = $client->camp->camp_name;
-            }
-            if ($client->date_arrival != "" && $client->date_arrival != null) {
-                $datearv = date('d M Y', strtotime($client->date_arrival));
-            }
-
-
-            if ($client->auth_status == "pending")
-            {
-                if (Auth::user()->hasPermission('authorize'))
-                {
-                    $records["data"][] = array(
-                        $count++,
-                        $client->hai_reg_number,
-                        $client->individual_id,
-                        $client->full_name,
-                        $client->sex,
-                        $client->age,
-                        $client->ration_card_number,
-                        $datearv,
-                        $camp,
-                        $client->auth_status,
-                        '<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                             <li id="' . $client->id . '"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
-                             <li id="' . $client->id . '"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                             <li id="' . $client->id . '"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
-                            </ul>
-                        </li>
-                    </ul>'
-
-                    );
-                }
-                elseif (Auth::user()->hasRole('inputer'))
-                {
-                    $records["data"][] = array(
-                        $count++,
-                        $client->hai_reg_number,
-                        $client->individual_id,
-                        $client->full_name,
-                        $client->sex,
-                        $client->age,
-                        $client->ration_card_number,
-                        $datearv,
-                        $camp,
-                        $client->auth_status,
-                        '<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                             <li id="' . $client->id . '"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                             <li id="' . $client->id . '"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
-                            </ul>
-                        </li>
-                    </ul>'
-
-                    );
-                }
-            }
-            else{
-                if (Auth::user()->hasRole('admin'))
-                {
-                    $records["data"][] = array(
-                        $count++,
-                        $client->hai_reg_number,
-                        $client->individual_id,
-                        $client->full_name,
-                        $client->sex,
-                        $client->age,
-                        $client->ration_card_number,
-                        $datearv,
-                        $camp,
-                        $client->auth_status,
-                        '<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                             <li id="' . $client->id . '"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                             <li id="' . $client->id . '"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
-                            </ul>
-                        </li>
-                    </ul>'
-
-                    );
-                }
-                else {
-                    $records["data"][] = array(
-                        $count++,
-                        $client->hai_reg_number,
-                        $client->individual_id,
-                        $client->full_name,
-                        $client->sex,
-                        $client->age,
-                        $client->ration_card_number,
-                        $datearv,
-                        $camp,
-                        $client->auth_status,
-                        '<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                              <li id="' . $client->id . '"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                            </ul>
-                        </li>
-                    </ul>'
-
-                    );
-                }
-            }
-        }
-
-
-        $records["draw"] = $sEcho;
-        $records["recordsTotal"] = $iTotalRecords;
-        $records["recordsFiltered"] = $iTotalRecords;
-
-        echo json_encode($records);
     }
+
+    private function getRoleName() {
+        $role = 'view';  //Can view client
+        if (Auth::user()->hasRole('admin')) {
+            $role = 'admin'; //Can delete, edit, and view client
+        } else if (Auth::user()->hasRole('authorize')) {
+            $role = 'authorize'; //Can authorize, delete, edit, and view client
+        } else if (Auth::user()->hasRole('inputer')) {
+            $role = 'inputer'; //Can delete, edit, and view client
+        }
+       return $role;
+    }
+
     public function searchClient()
     {
         return view('clients.search');
+    }
+    public function searchClientPaginated(Request $request) {
+
+        try {
+            $validator = Validator::make($request->all(), [
+                'sortField' => 'required',
+                'sortType' => 'required|max:5',
+                'perPage' => 'required',
+                'page' => 'required',
+                'searchTerm' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $this->processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                $clients = $this->findClientBySearchTerm($request->searchTerm)->paginate($request->perPage);
+                return response()->json([
+                    'authRole' => $this->getRoleName(),
+                    'clients' => $clients,
+                    'pagination' =>  PaginateUtility::mapPagination($clients),
+                ]);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+
+    }
+
+    private function processValidatorErrorMessages(ResultValidator $validator) {
+        $errorMessages = array();
+        foreach ($validator->getMessageBag()->toArray() as $key => $value) {
+            foreach ($value as $childKey => $childValue) {
+                $errorMessages[] =   $childValue;
+            }
+        }
+        return $errorMessages;
+    }
+
+    private function findClientBySearchTerm($searchTerm) {
+        $clientQuery =  Client::leftJoin('camps', 'camps.id', '=', 'clients.camp_id')
+            ->leftJoin('origins', 'origins.id', '=', 'clients.origin_id')
+            ->where(DB::raw('lower(clients.full_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.client_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.sex)'), 'LIKE', '%'. Str::lower($searchTerm). '%' );
+        try {
+            if (Carbon::createFromFormat('Y-m-d H:i:s', $searchTerm) !== FALSE) {
+                $clientQuery = $clientQuery
+                    ->orWhereDate('clients.birth_date', 'LIKE', '%'. date("Y-m-d", strtotime($searchTerm)) . '%' )
+                    ->orWhereDate('clients.date_arrival', 'LIKE', '%'. date("Y-m-d", strtotime($searchTerm)) . '%' );
+            }
+        } catch (\Exception $ex) {
+
+        }
+        $clientQuery = $clientQuery->orWhere(DB::raw('lower(clients.hai_reg_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.age_score)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.marital_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.care_giver)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.child_care_giver)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.present_address)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere('clients.females_total', 'LIKE', '%'. $searchTerm . '%' )
+            ->orWhere('clients.males_total', 'LIKE', '%'. $searchTerm . '%' )
+            ->orWhere('clients.household_number', 'LIKE', '%'. $searchTerm . '%' )
+            ->orWhere(DB::raw('lower(clients.ration_card_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.assistance_received)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.problem_specification)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.share_info)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.hh_relation)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(clients.auth_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(camps.camp_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower(origins.origin_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' );
+        return $clientQuery;
     }
 
     public function advancedSearchClient(Request $request)

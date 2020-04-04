@@ -4,8 +4,8 @@
         mode="remote"
         @on-page-change="onPageChange"
         @on-sort-change="onSortChange"
-        @on-column-filter="onColumnFilter"
         @on-per-page-change="onPerPageChange"
+        @on-search="onSearchClient"
         :line-numbers="true"
         :totalRows="pagination.total"
         :isLoading.sync="mLoading"
@@ -27,7 +27,7 @@
                     <span class="text-primary">{{props.row.date_arrival | moment("MMMM Do, YYYY")}}</span>
                 </span>
                 <span v-else-if="props.column.field == 'camp'">
-                    <span class="text-primary">{{props.row.camp.camp_name}}</span>
+                    <span class="text-primary">{{props.row.camp && props.row.camp.camp_name ? props.row.camp.camp_name : props.row.camp_name }}</span>
                 </span>
                 <span v-else-if="props.column.field == 'action'">
                     <ul class="icons-list text-center">
@@ -36,10 +36,14 @@
                                 <i class="icon-menu9"></i>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
-                                <li :id="props.row.id + '-view'"><a href="#" @click="performAction('view', props.row)" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                                <li :id="props.row.id + '-authorize'"><a href="#" @click="performAction('authorize', props.row)" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
-                                <li :id="props.row.id + '-edit'"><a href="#"  @click="performAction('edit', props.row)" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                                <li :id="props.row.id + '-delete'"><a href="#" @click="performAction('delete', props.row)" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                                 <li :id="props.row.id + '-view'"><a href="#" @click="performAction('view', props.row)" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                                 <template v-if="authRole === 'authorize'">
+                                    <li :id="props.row.id + '-authorize'"><a href="#" @click="performAction('authorize', props.row)" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                                 </template>
+                                 <template v-if="authRole === 'admin' || authRole === 'authorize' || authRole === 'inputer' ">
+                                    <li :id="props.row.id + '-edit'"><a href="#"  @click="performAction('edit', props.row)" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                                    <li :id="props.row.id + '-delete'"><a href="#" @click="performAction('delete', props.row)" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                                 </template>
                             </ul>
                         </li>
                     </ul>
@@ -60,6 +64,7 @@ export default {
         ...mapGetters([
             'clients',
             'client',
+            'authRole',
             'isLoading',
             'pagination',
         ]),
@@ -132,6 +137,7 @@ export default {
                     field: 'action',
                     thClass: 'text-center',
                     tdClass: 'text-center',
+                    sortable: false,
                 },
             ]
         };
@@ -163,6 +169,12 @@ export default {
             pagination.prevPage = params.prevPage;
             this.$store.commit('setPagination', pagination);
             this.loadClients();
+        },
+        onSearchClient(params){
+           let pagination = this.pagination;
+            pagination.searchTerm = params.searchTerm;
+            this.$store.commit('setPagination', pagination);
+            this.$store.dispatch('searchClientWithPagination', this.pagination);
         },
         performAction(actionType, client) {
             switch(actionType) {

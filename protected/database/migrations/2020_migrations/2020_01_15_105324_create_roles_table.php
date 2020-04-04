@@ -14,11 +14,11 @@ class CreateRolesTable extends Migration
     public function up()
     {
         $connection = config('roles.connection');
-        $table = config('roles.rolesTable');
-        $tableCheck = Schema::connection($connection)->hasTable($table);
+        $rolesTable = config('roles.rolesTable');
+        $tableCheck = Schema::connection($connection)->hasTable($rolesTable );
 
         if (!$tableCheck) {
-            Schema::connection($connection)->create($table, function (Blueprint $table) {
+            Schema::connection($connection)->create($rolesTable , function (Blueprint $table) {
                 $table->increments('id')->unsigned();
                 $table->string('name');
                 $table->string('slug')->unique();
@@ -28,14 +28,15 @@ class CreateRolesTable extends Migration
                 $table->softDeletes();
             });
         } else {
-            Schema::table($table , function (Blueprint $table) {
-                if (Schema::hasColumn($table, 'name')) {
+            Schema::table($rolesTable , function (Blueprint $table) {
+                $rolesTable = config('roles.rolesTable');
+                if (Schema::hasColumn($rolesTable, 'name')) {
                     $table->renameColumn('name', 'slug');
                 }
-                if (Schema::hasColumn($table, 'display_name')) {
+                if (Schema::hasColumn($rolesTable, 'display_name')) {
                     $table->renameColumn('display_name', 'name');
                 }
-                if (Schema::hasColumn($table, 'level')) {
+                if (!Schema::hasColumn($rolesTable, 'level')) {
                     $table->integer('level')->default(1);
                 }
                 $table->softDeletes();
@@ -51,7 +52,7 @@ class CreateRolesTable extends Migration
     public function down()
     {
         $connection = config('roles.connection');
-        $table = config('roles.rolesTable');
-        Schema::connection($connection)->dropIfExists($table);
+        $rolesTable = config('roles.rolesTable');
+        Schema::connection($connection)->dropIfExists($rolesTable);
     }
 }

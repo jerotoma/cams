@@ -22,9 +22,9 @@ const state = {
         })
         .then((response) => {
             const data = response.data;
-            console.log(data);
             commit('setClients', data.clients.data);
             commit('setPagination', data.pagination);
+            commit('setAuthRole', data.authRole);
         }).catch((error) => {
             console.log(error);
         });
@@ -74,11 +74,29 @@ const state = {
             });
         });
     },
+    searchClientWithPagination({ commit, dispatch }, data) {
+        if (data.searchTerm) {
+            axios({
+                method: 'GET',
+                url: '/rest/secured/clients/search-paginated?searchTerm=' + data.searchTerm + '&page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
+            }).then((response) => {
+                const data = response.data;
+                commit('setClients', data.clients.data);
+                commit('setPagination', data.pagination);
+                commit('setAuthRole', data.authRole);
+            }).catch((error) => {
+                const resp = error.response;
+
+            });
+        } else {
+            dispatch('getClients', data);
+        }
+    },
     searchClient({ commit }, data) {
         return new Promise((resolve, reject) => {
             axios({
                 method: 'GET',
-                url: '/rest/secured/clients/search?searchTerm=' + data.searchTerm
+                url: '/rest/secured/clients/search?searchTerm=' + data.searchTerm,
             }).then((response) => {
                 const data = response.data;
                 resolve(data);

@@ -14,12 +14,12 @@ class CreateRoleUserTable extends Migration
     public function up()
     {
         $connection = config('roles.connection');
-        $table = config('roles.roleUserTable');
+        $roleUsertable = config('roles.roleUserTable');
         $rolesTable = config('roles.rolesTable');
-        $tableCheck = Schema::connection($connection)->hasTable($table);
+        $tableCheck = Schema::connection($connection)->hasTable($roleUsertable);
 
         if (!$tableCheck) {
-            Schema::connection($connection)->create($table, function (Blueprint $table) use ($rolesTable) {
+            Schema::connection($connection)->create($roleUsertable, function (Blueprint $table) use ($rolesTable) {
                 $table->increments('id')->unsigned();
                 $table->integer('role_id')->unsigned()->index();
                 $table->foreign('role_id')->references('id')->on($rolesTable)->onDelete('cascade');

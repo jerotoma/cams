@@ -8,6 +8,9 @@ const mutations =  {
     setPagination(state, pagination) {
         state.pagination = pagination;
     },
+    setAuthRole(state, authRole) {
+        state.authRole = authRole;
+    }
 }
 
 export default mutations;

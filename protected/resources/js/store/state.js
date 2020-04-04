@@ -1,6 +1,7 @@
 const state = {
     isLoading: false,
     isSending: false,
+    authRole: 'view',
     pagination: {
         currentPage: 1,
         firstPageUrl: '',
@@ -16,6 +17,7 @@ const state = {
         sortType: 'desc',
         sortField: 'created_at',
         perPageDropdown: [15, 30, 45, 60],
+        searchTerm: ''
     },
 };
 
