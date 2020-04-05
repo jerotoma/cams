@@ -176,7 +176,7 @@ return [
         //
 		//Barryvdh\DomPDF\ServiceProvider::class,
 		//Zizaco\Entrust\EntrustServiceProvider::class,
-		PrettyRoutes\ServiceProvider::class,
+		//PrettyRoutes\ServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
 		Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
