@@ -174,7 +174,6 @@ return [
          */
 
         //
-		Barryvdh\DomPDF\ServiceProvider::class,
 		//Zizaco\Entrust\EntrustServiceProvider::class,
 		PrettyRoutes\ServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
