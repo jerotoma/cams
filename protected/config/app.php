@@ -175,7 +175,7 @@ return [
 
         //
 		//Zizaco\Entrust\EntrustServiceProvider::class,
-		PrettyRoutes\ServiceProvider::class,
+		//PrettyRoutes\ServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
 		Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
@@ -238,8 +238,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-		//'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-		'DOMPDF' => Barryvdh\DomPDF\Facade::class,
+
+
+        //'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+		//'DOMPDF' => Barryvdh\DomPDF\Facade::class,
 		'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
 		'Excel' => Maatwebsite\Excel\Facades\Excel::class,
