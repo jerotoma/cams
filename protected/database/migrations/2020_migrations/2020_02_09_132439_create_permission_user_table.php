@@ -28,6 +28,20 @@ class CreatePermissionUserTable extends Migration
                 $table->timestamps();
                 $table->softDeletes();
             });
+        } else {
+            Schema::table($permissionsTable , function (Blueprint $table) {
+                $permissionsTable = config('roles.permissionsTable');
+                if (Schema::hasColumn($permissionsTable, 'name')) {
+                    $table->renameColumn('name', 'slug');
+                }
+                if (Schema::hasColumn($permissionsTable, 'display_name')) {
+                    $table->renameColumn('display_name', 'name');
+                }
+                if (!Schema::hasColumn($permissionsTable, 'model')) {
+                    $table->string('model')->nullable();
+                }
+                $table->softDeletes();
+            });
         }
     }
 
