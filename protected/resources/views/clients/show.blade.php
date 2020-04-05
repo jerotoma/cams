@@ -82,6 +82,15 @@
                         </div>
 
                     </div>
+
+                        <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label class="control-label">Individual ID</label>
+                                <input type="text" class="form-control" placeholder="Individual ID" name="client_number" id="client_number"
+                                       value="{{$client->client_number}}">
+                            </div>
+                        </div>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group ">
@@ -257,7 +266,7 @@
                     <div class="col-md-4">
                         <div class="form-group ">
                             <label class="control-label"> Problem Specification </label>
-                            <input type="text" class="form-control" placeholder="Problem Specification" name="problem_specification" id="assistance_received" value="{{$client->assistance_received}}">
+                            <input type="text" class="form-control" placeholder="Problem Specification" name="problem_specification" id="problem_specification" value="{{$client->problem_specification}}">
                             @if($errors->first('problem_specification') !="")
                                 <label id="address-error" class="validation-error-label" for="problem_specification">{{ $errors->first('problem_specification') }}</label>
                             @endif

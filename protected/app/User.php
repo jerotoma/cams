@@ -4,11 +4,12 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
+use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
+
 class User extends Authenticatable
 {
     use Notifiable;
-    use EntrustUserTrait; // add this trait to your user model
+    use HasRoleAndPermission; // add this trait to your user model
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +17,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'fullname', 'user', 'password',
+        'full_name',
+        'username',
+        'password',
+        'role_id',
+        'phone'
     ];
 
     /**
@@ -28,10 +33,16 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function detachAllRoles()
-    {
+    public function detachAllRoles() {
         \DB::table('role_user')->where('user_id', $this->id)->delete();
-
         return $this;
+    }
+
+    public function department() {
+        return $this->belongsTo('\App\Department');
+    }
+
+    public function roles() {
+        return $this->belongsToMany('\App\Role', '\App\RoleUser', 'user_id', 'role_id');
     }
 }

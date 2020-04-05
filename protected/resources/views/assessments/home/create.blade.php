@@ -136,6 +136,9 @@
                                             Unique ID
                                         </th>
                                         <th class="text-center">
+                                            Individual ID
+                                        </th>
+                                        <th class="text-center">
                                             Full Name
                                         </th>
                                         <th class="text-center">
@@ -168,6 +171,9 @@
                                         <td class="text-center">
                                             Unique ID
                                         </td>
+                                        <th class="text-center">
+                                            Individual ID
+                                        </th>
                                         <td class="text-center">
                                             Full Name
                                         </td>
@@ -207,7 +213,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group ">
-                                <label class="control-label">PSN Case code</label>
+                                <label class="control-label">Vulnerability code</label>
                                 <input type="text" class="form-control" placeholder="" name="case_code" id="case_code"
                                        value="">
                             </div>
@@ -231,7 +237,7 @@
                         <textarea class="form-control" name="findings" id="findings"></textarea>
                     </div>
                     <div class="form-group ">
-                        <label class="control-label">Diagnosis</label>
+                        <label class="control-label">DIAGNOSIS</label>
                         <textarea class="form-control" name="diagnosis" id="diagnosis"></textarea>
                     </div>
                 </fieldset>

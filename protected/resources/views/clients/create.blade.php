@@ -47,7 +47,7 @@
                             <input type="text" class="form-control pickadate" placeholder="Date of Arrival" value="{{old('date_arrival')}}" name="date_arrival" id="date_arrival">
                         </div>
                         @if($errors->first('date_arrival') !="")
-                            <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('date_arrival') }}</label>
+                            <label id="date_arrival-error" class="validation-error-label" for="nationality">{{ $errors->first('date_arrival') }}</label>
                         @endif
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                             @endforeach
                         </select>
                         @if($errors->first('camp_id') !="")
-                            <label id="address-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
+                            <label id="camp_id-error" class="validation-error-label" for="nationality">{{ $errors->first('camp_id') }}</label>
                         @endif
                     </div>
                 </div>
@@ -78,6 +78,15 @@
                 </div>
 
             </div>
+	<div class="row">
+                   <div class="col-md-4">
+                    <div class="form-group ">
+                        <label class="control-label">Individual ID</label>
+                        <input type="text" class="form-control"  name="individual_id" id="individual_id"
+                               value="{{old('individual_id')}}">
+                    </div>
+                </div>
+	</div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group ">
@@ -91,7 +100,7 @@
                     <label class="control-label"> Ration Card Number </label>
                     <input type="text" class="form-control" placeholder="Ration Card Number " name="ration_card_number" id="ration_card_number" value="{{old('ration_card_number')}}">
                     @if($errors->first('ration_card_number') !="")
-                        <label id="address-error" class="validation-error-label" for="ration_card_number">{{ $errors->first('ration_card_number') }}</label>
+                        <label id="ration_card_number-error" class="validation-error-label" for="ration_card_number">{{ $errors->first('ration_card_number') }}</label>
                     @endif
                 </div>
                 </div>
@@ -100,7 +109,7 @@
                         <label class="control-label">Full Name</label>
                         <input type="text" class="form-control" placeholder="Full Name" id="full_name" name="full_name" value="{{old('full_name')}}">
                         @if($errors->first('full_name') !="")
-                            <label id="address-error" class="validation-error-label" for="address">{{ $errors->first('full_name') }}</label>
+                            <label id="full_name-error" class="validation-error-label" for="address">{{ $errors->first('full_name') }}</label>
                         @endif
                     </div>
                 </div>
@@ -123,16 +132,16 @@
                         <label class="control-label">Age</label>
                         <input type="number" class="form-control" name="age" id="age" placeholder="Age" value="{{old('age')}}">
                         @if($errors->first('age') !="")
-                            <label id="address-error" class="validation-error-label" for="address">{{ $errors->first('age') }}</label>
+                            <label id="age-error" class="validation-error-label" for="age">{{ $errors->first('age') }}</label>
                         @endif
                     </div>
                 </div>
                 <div class="col-md-4">
                 <div class="form-group ">
-                    <label class="control-label"> Present address (Zone, Cluster, Neibourhood etc)</label>
+                    <label class="control-label" for="present_address"> Present address (Zone, Cluster, Neibourhood etc)</label>
                     <input type="text" class="form-control" placeholder="Present address " name="present_address" id="present_address" value="{{old('address')}}">
                     @if($errors->first('address') !="")
-                        <label id="address-error" class="validation-error-label" for="address">{{ $errors->first('address') }}</label>
+                        <label id="address-error" class="validation-error-label" for="present_address">{{ $errors->first('address') }}</label>
                     @endif
                 </div>
                 </div>
@@ -141,7 +150,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group ">
-                        <label class="control-label">Marital Status</label>
+                        <label class="control-label" for="marital_status" >Marital Status</label>
                         <select class="select" name="marital_status" id="marital_status" data-placeholder="Choose an option...">
                             <option></option>
                             <option value="Child">Child</option>
@@ -151,16 +160,16 @@
                             <option value="Widow">Widow</option>
                         </select>
                         @if($errors->first('civil_status') !="")
-                            <label id="civil_status-error" class="validation-error-label" for="address">{{ $errors->first('civil_status') }}</label>
+                            <label id="civil_status-error" class="validation-error-label" for="marital_status">{{ $errors->first('civil_status') }}</label>
                         @endif
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group ">
-                        <label class="control-label">Name of Spouse</label>
+                        <label class="control-label" for="spouse_name">Name of Spouse</label>
                         <input type="text" class="form-control" placeholder="Name of Spouse" name="spouse_name" id="spouse_name" readonly value="{{old('spouse_name')}}">
                         @if($errors->first('spouse_name') !="")
-                            <label id="address-error" class="validation-error-label" for="spouse_name">{{ $errors->first('spouse_name') }}</label>
+                            <label id="spouse_name-error" class="validation-error-label" for="spouse_name">{{ $errors->first('spouse_name') }}</label>
                         @endif
                     </div>
                 </div>
@@ -169,7 +178,7 @@
                 <label class="control-label">Care Giver</label>
                 <input type="text" class="form-control" placeholder="Care Giver" name="care_giver" id="care_giver" value="{{old('care_giver')}}">
                 @if($errors->first('care_giver') !="")
-                    <label id="address-error" class="validation-error-label" for="care_giver">{{ $errors->first('care_giver') }}</label>
+                    <label id="care_giver" class="validation-error-label" for="care_giver">{{ $errors->first('care_giver') }}</label>
                 @endif
             </div>
         </fieldset>
@@ -178,10 +187,10 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group ">
-                        <label class="control-label"> Household Number</label>
+                        <label class="control-label" for="household_number"> Household Number</label>
                         <input type="text" class="form-control" placeholder="Household Number" name="household_number" id="household_number" value="{{old('household_number')}}">
                         @if($errors->first('household_number') !="")
-                            <label id="address-error" class="validation-error-label" for="household_number">{{ $errors->first('household_number') }}</label>
+                            <label id="household_number-error" class="validation-error-label" for="household_number">{{ $errors->first('household_number') }}</label>
                         @endif
                     </div>
                 </div>
@@ -208,7 +217,7 @@
                         <label class="control-label">Number of Males</label>
                         <input type="number" class="form-control" name="males_total" id="males_total" placeholder="Number of Males" value="{{old('males_total')}}">
                         @if($errors->first('males_total') !="")
-                            <label id="address-error" class="validation-error-label" for="address">{{ $errors->first('males_total') }}</label>
+                            <label id="males_total-error" class="validation-error-label" for="address">{{ $errors->first('males_total') }}</label>
                         @endif
                     </div>
                 </div>
@@ -223,7 +232,7 @@
                 </div>
 
 
-                
+
             </div>
         </fieldset>
 
@@ -237,7 +246,7 @@
                 </optgroup>
             </select>
             @if($errors->first('vulnerability_code') !="")
-                <label id="address-error" class="validation-error-label" for="vulnerability_code">{{ $errors->first('vulnerability_code') }}</label>
+                <label id="vulnerability_code-error" class="validation-error-label" for="vulnerability_code">{{ $errors->first('vulnerability_code') }}</label>
             @endif
         </div>
         <div class="row">
@@ -246,16 +255,16 @@
                     <label class="control-label"> Assistance Received to date </label>
                     <input type="text" class="form-control" name="assistance_received" id="assistance_received" placeholder="Assistance Received to date (mention)..." value="{{old('assistance_received')}}">
                     @if($errors->first('assistance_received') !="")
-                        <label id="address-error" class="validation-error-label" for="assistance_received">{{ $errors->first('assistance_received') }}</label>
+                        <label id="assistance_received-error" class="validation-error-label" for="assistance_received">{{ $errors->first('assistance_received') }}</label>
                     @endif
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group ">
                     <label class="control-label"> Problem Specification </label>
-                    <input type="text" class="form-control" placeholder="Problem Specification" name="problem_specification" id="assistance_received" value="{{old('problem_specification')}}">
+                    <input type="text" class="form-control" placeholder="Problem Specification" name="problem_specification" id="problem_specification" value="{{old('problem_specification')}}">
                     @if($errors->first('problem_specification') !="")
-                        <label id="address-error" class="validation-error-label" for="problem_specification">{{ $errors->first('problem_specification') }}</label>
+                        <label id="problem_specification-error" class="validation-error-label" for="problem_specification">{{ $errors->first('problem_specification') }}</label>
                     @endif
                 </div>
             </div>

@@ -47,7 +47,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="control-label">PSN HAI ID</label>
+                                <label class="control-label">PSN Individual ID NO</label>
                                 <input type="text" class="form-control" name="hai_reg_number"  id="hai_reg_number" value="" >
                             </div>
                         </div>

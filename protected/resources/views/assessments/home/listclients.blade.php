@@ -229,7 +229,7 @@
             <ul class="navigation navigation-main navigation-accordion">
                 <li class="active"><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
                 <!-- Main -->
-                
+
                 <li>
                     <a href="#"><i class="icon-users"></i>Clients <span></span></a>
                     <ul>
@@ -281,7 +281,7 @@
                 </li>
                 <!-- /forms -->
                 <!-- Data visualization -->
-                
+
                 <li>
                     <a href="#"><i class="icon-graph"></i> <span>Clients Reports</span></a>
                     <ul>
@@ -292,7 +292,7 @@
                 </li>
                 <!-- /data visualization -->
                 <!-- Appearance -->
-                
+
                 <li>
                     <a href="#"><i class="icon-list"></i> <span>Countries</span></a>
                     <ul>
@@ -407,6 +407,7 @@
             <tr>
                 <th>SNO</th>
                 <th>Client No</th>
+                <th>Individual ID</th>
                 <th>Full Name</th>
                 <th>Sex</th>
                 <th>Age</th>

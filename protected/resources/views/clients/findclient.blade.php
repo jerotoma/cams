@@ -10,7 +10,7 @@
                         <fieldset class="scheduler-border">
                             <legend class="text-bold">Client Advance Search</legend>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group ">
                                         <label class="control-label">Arrival: Start Date</label>
                                         <div class="input-group">
@@ -19,7 +19,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group ">
                                         <label class="control-label">Arrival: End Date</label>
                                         <div class="input-group">
@@ -28,7 +28,14 @@
                                         </div>
                                     </div>
                                 </div>
+								 <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label class="control-label">Individual ID</label>
+                                        <input type="text" class="form-control" name="individual_id">
+                                    </div>
+                                </div>
                             </div>
+
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group ">

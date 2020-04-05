@@ -250,7 +250,7 @@
                     <ul>
                         <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
                         <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
-                        
+
                     </ul>
                 </li>
                 <li class="active">
@@ -293,7 +293,7 @@
                 </li>
                 @permission('backup')
             <!-- Backup Restore-->
-                
+
                 <li>
                     <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
@@ -366,7 +366,7 @@
     </div>
 @stop
 @section('page_title')
-    Client Referral 
+    Client Referral
 @stop
 @section('page_heading_title')
     <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Client Referral </span> </h4>
@@ -402,6 +402,7 @@
                     <th>SNO</th>
                     <th>Referral Ref</th>
                     <th>Date of Referral</th>
+					<th>Individual ID</th>
                     <th>Unique Id</th>
                     <th>Full Name</th>
                     <th>Age</th>

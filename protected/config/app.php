@@ -168,14 +168,14 @@ return [
          * Package Service Providers by Otoman
          */
         App\Providers\HelperServiceProvider::class,
-       
+
         /*
          * Package Service Providers...
          */
 
         //
 		Barryvdh\DomPDF\ServiceProvider::class,
-		Zizaco\Entrust\EntrustServiceProvider::class,
+		//Zizaco\Entrust\EntrustServiceProvider::class,
 		PrettyRoutes\ServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
 		Maatwebsite\Excel\ExcelServiceProvider::class,
@@ -189,6 +189,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        jeremykenedy\LaravelRoles\RolesServiceProvider::class,
 
     ],
 
@@ -237,7 +239,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-		'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+		//'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
 		'DOMPDF' => Barryvdh\DomPDF\Facade::class,
 		'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,

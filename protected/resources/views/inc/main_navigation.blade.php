@@ -3,7 +3,7 @@
         <ul class="navigation navigation-main navigation-accordion">
             <li class="active"><a href="{{url('home')}}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
             <!-- Main -->
-            
+
             <li>
                 <a href="#"><i class="icon-users"></i> <span>Clients</span></a>
                 <ul>
@@ -13,9 +13,9 @@
             <li>
                 <a href="#"><i class="icon-list-unordered"></i> <span>Client Assessments</span></a>
                 <ul>
-                    <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability assessment</a></li>
+                    <li ><a href="{{url('assessments/vulnerability')}}">Vulnerability Assessment</a></li>
                     <li><a href="{{url('assessments/home')}}">Home Assessment </a></li>
-                    
+
                 </ul>
             </li>
             <li>
@@ -48,7 +48,7 @@
             @endpermission
             <!-- /forms -->
             <!-- Forms -->
-            
+
             <li>
                 <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
                 <ul>
@@ -58,7 +58,7 @@
             </li>
         @permission('backup')
             <!-- Backup Restore-->
-            
+
             <li>
                 <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                 <ul>
@@ -75,7 +75,7 @@
         @endpermission
         @permission('reports')
             <!-- Data visualization -->
-            
+
             <li>
                 <a href="#"><i class="icon-graph"></i> <span> Reports</span></a>
                 <ul>
@@ -91,7 +91,7 @@
 
         <!-- Settings -->
             @role('admin')
-            
+
             <li>
                 <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
                 <ul>

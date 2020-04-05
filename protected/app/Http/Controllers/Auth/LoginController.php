@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Response;
+use Illuminate\Http\Request;
+
 use App\User;
 use DB;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Role;
-use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
@@ -55,10 +57,10 @@ class LoginController extends Controller
     //Post login for Authenticating users
     public function postLogin(Request $request)
      {
-         
+
         $username=strtolower($request->username);
         $password=$request->password;
-        
+
         if (Auth::attempt(['username' => $username, 'password' => $password]))
         {
             if(Auth::user()->blocked ==1 || Auth::user()->status=="Inactive")

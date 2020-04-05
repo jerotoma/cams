@@ -2,6 +2,9 @@
 Route::get('/','HomeController@index');
 Route::get('home','HomeController@index');
 
+//test
+Route::get('fingerprint','FingerprintController@index');
+
 //Authentication
 Route::get('login','Auth\LoginController@login');
 Route::post('login','Auth\LoginController@postLogin');
@@ -9,7 +12,6 @@ Route::get('logout','Auth\LoginController@logout');
 
 //Users
 Route::resource('users','UserController');
-Route::get('create-user','UserController@createUser');
 Route::get('account/profile','UserController@getProfile');
 Route::get('account/settings','UserController@getSettings');
 Route::get('account/settings/access','UserController@showChangePassword');
@@ -68,7 +70,6 @@ Route::resource('clients','ClientsController');
 Route::post('authorize/all/clients','ClientsController@AuthorizeAll');
 Route::post('authorize/{id}/clients','ClientsController@AuthorizeClientById');
 
-Route::get('getclientsjson','ClientsController@getJSonDataSearch');
 Route::get('getclientslist','ClientsController@getJSonClientDataSearch');
 Route::get('search/clients','ClientsController@searchClient');
 Route::post('search/clients','ClientsController@postSearchClient');
@@ -115,7 +116,7 @@ Route::resource('assessments/vulnerability','VulnerabilityAssessmentController')
 Route::get('clients-va','VulnerabilityAssessmentController@showClients');
 Route::get('getvalist','VulnerabilityAssessmentController@assessmentListJsonType');
 Route::get('client/assessments/vulnerability/{id}','VulnerabilityAssessmentController@showClientVulnerability');
-Route::get('vulnerability-assessment/download/{id}','VulnerabilityAssessmentController@downloadForm');
+Route::get('assessments/vulnerability/download/{id}','VulnerabilityAssessmentController@downloadForm');
 Route::get('getvulassessmentpsnprofile/{id}','VulnerabilityAssessmentController@getPSNProfile');
 
 //Authorize
@@ -275,6 +276,18 @@ Route::post('backup/import/advanced','BackupImportExportController@postImport');
 
 Route::get('backup/export/advanced','BackupImportExportController@showExport');
 Route::post('backup/export/advanced','BackupImportExportController@postExport');
+
+Route::prefix('rest/secured')->group(function () {
+    //Clients
+    Route::get('/clients','ClientsController@findClientList');///rest/secured/clients/search
+    Route::get('/clients/search-paginated','ClientsController@searchClientPaginated');///rest/secured/clients/search
+
+    //VulnerabilityAssessmentsearch-paginated
+    Route::get('assessments/vulnerabilities','VulnerabilityAssessmentController@assessmentListJsonType');
+    Route::get('assessments/vulnerabilities/search-paginated','VulnerabilityAssessmentController@assessmentListJsonType');
+
+
+});
 
 
 

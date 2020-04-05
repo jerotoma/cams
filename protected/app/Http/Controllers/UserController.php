@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\RoleUser;
+use App\Role;
 use App\User;
 use App\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
@@ -33,10 +33,14 @@ class UserController extends Controller
     {
         if (\Auth::user()->hasRole('admin')) {
             $users = User::all();
+            $roles = config('roles.models.role')::all();
             //Audit trail
-           // dd(Department::all());
+           //dd(config('roles.models.role'));
             AuditRegister("UserController","View",$users);
-            return view('users.index', ['users' => $users]);
+            return view('users.index', [
+                'users' => $users,
+                'roles' => $roles,
+                ]);
         }
         else
         {
@@ -51,7 +55,8 @@ class UserController extends Controller
     public function getProfile()
     {
         $user =  User::findorfail(Auth::user()->id);
-        return view('users.profile', compact('user') );
+        $departments = Department::all();
+        return view('users.profile', compact('user', 'departments') );
     }
     public function getSettings()
     {
@@ -126,31 +131,16 @@ class UserController extends Controller
     {
         //
         if (\Auth::user()->hasRole('admin')) {
-            return view('users.create');
+            $roles = config('roles.models.role')::all();
+            return view('users.create', [
+                'roles' => $roles
+            ]);
         }
         else
         {
             return redirect('home');
         }
     }
-     public function createUser(Request $request)
-	 {
-		        $user = new User;
-                $user->full_name = 'Otoman Godfrey';
-                $user->phone = 2897751667;
-                $user->email = 'otomang@hotmail.com';
-                $user->password = bcrypt('cams');
-                $user->department_id = 24;
-                $user->designation = 'Kigoma';
-                $user->username = 'otuman';
-                $user->status = "Active";
-                $user->save();
-
-         //Audit trail
-         AuditRegister("UserController","createUser",$user);
-
-		 return 'User Created';
-	 }
     /**
      * Store a newly created resource in storage.
      *
@@ -217,11 +207,13 @@ class UserController extends Controller
     {
 
         if (\Auth::user()->hasRole('admin')) {
-            $user = User::findorfail($id);
+            $user = User::find($id);
+            $roles = config('roles.models.role')::all();
+            $departments = Department::all();
 
             //Audit trail
-            AuditRegister("UserController","View User",$user);
-            return view('users.show',compact('user'));
+            AuditRegister("UserController", "View User", $user);
+            return view('users.show',compact('user', 'roles', 'departments'));
         }
         else
         {
@@ -239,7 +231,9 @@ class UserController extends Controller
     {
         if (\Auth::user()->hasRole('admin')) {
             $user = User::findorfail($id);
-            return view('users.edit',compact('user'));
+            $roles = config('roles.models.role')::all();
+            $departments = Department::all();
+            return view('users.edit',compact('user', 'roles', 'departments'));
         }
         else
         {
@@ -260,8 +254,8 @@ class UserController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'full_name' => 'required',
-                'username' => 'required|unique:users,id,' . $id,
-                'email' => 'required|email|unique:users,email,' . $id,
+                'username' => 'required',
+                'email' => 'required|email',
                 'password' => 'min:8',
                 'role_id' => 'required',
                 'phone' => 'required',
@@ -274,23 +268,22 @@ class UserController extends Controller
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
                 $user = User::findorfail($id);
+                $role = Role::find($request->role_id);
+
                 $user->full_name = $request->full_name;
                 $user->phone = $request->phone;
                 $user->email = $request->email;
-                if ($request->password != "") {
-                    $user->password = bcrypt($request->password);
-                }
                 $user->department_id = $request->department_id;
                 $user->designation = $request->designation;
                 $user->status = $request->status;
                 $user->locked = $request->locked;
                 $user->save();
                 $user->detachAllRoles();
-                $user->attachRole($request->role_id);
-                $user->save();
+                $user->attachRole($role);
+
 
                 //Audit trail
-                AuditRegister("UserController","Update",$user);
+                AuditRegister("UserController","Update", $user);
 
                 return response()->json([
                     'success' => true,

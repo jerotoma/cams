@@ -89,11 +89,11 @@
                     <div class="form-group ">
                         <label class="control-label">Department</label>
                         <select class="select" name="department_id" id="department_id" data-placeholder="Choose an option...">
-                            @if($user->department_id != "" && count(\App\Department::find($user->department_id)) > 0 )
-                                <option value="{{\App\Department::find($user->department_id)->id}}" selected>{{\App\Department::find($user->department_id)->department_name}}</option>
+                            @if($user->department != null)
+                                <option value="{{$user->department->id}}" selected>{{$user->department ->department_name}}</option>
                                 @endif
                             <option></option>
-                            @foreach(\App\Department::all() as $department)
+                            @foreach($departments as $department)
                                 <option value="{{$department->id}}">{{$department->department_name}}</option>
                             @endforeach
                         </select>
