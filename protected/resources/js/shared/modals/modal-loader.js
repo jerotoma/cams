@@ -56,6 +56,19 @@ const ModalPlugin = {
                     }
                 });
             },
+            // Confirmation dialog
+            downloadRecord(url) {
+                bootbox.confirm("Are You Sure to athorize record?", function(result) {
+                    if(result){
+                        axios({
+                            method: 'POST',
+                            url: url,
+                        }).then((response) => {
+                            location.reload();
+                        });
+                    }
+                });
+            },
         },
       });
       Object.defineProperty(Vue.prototype, "$modal", {

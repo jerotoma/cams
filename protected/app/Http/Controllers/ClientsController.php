@@ -9,7 +9,6 @@ use App\DumpClient;
 use App\Origin;
 use App\PSNCode;
 use App\PSNCodeCategory;
-use App\Helpers\PaginateUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -21,6 +20,10 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use DB;
 use Carbon\Carbon;
+
+use App\Helpers\PaginateUtility;
+use App\Helpers\AuthUtility;
+use App\Helpers\ValidatorUtility;
 
 
 class ClientsController extends Controller
@@ -189,22 +192,10 @@ class ClientsController extends Controller
         $clients = Client::with('camp', 'fromOrigin');
         $clients = $this->processSortRequest($request,  $clients)->paginate($request->perPage);
         return response()->json([
-            'authRole' => $this->getRoleName(),
+            'authRole' => AuthUtility::getRoleName(),
             'clients' => $clients,
             'pagination' =>  PaginateUtility::mapPagination($clients),
         ]);
-    }
-
-    private function getRoleName() {
-        $role = 'view';  //Can view client
-        if (Auth::user()->hasRole('admin')) {
-            $role = 'admin'; //Can delete, edit, and view client
-        } else if (Auth::user()->hasRole('authorize')) {
-            $role = 'authorize'; //Can authorize, delete, edit, and view client
-        } else if (Auth::user()->hasRole('inputer')) {
-            $role = 'inputer'; //Can delete, edit, and view client
-        }
-       return $role;
     }
 
     public function searchClient()
@@ -225,7 +216,7 @@ class ClientsController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $this->processValidatorErrorMessages($validator),
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
                 ], 422); // 400 being the HTTP code for an invalid request.
             } else {
                 $clients = $this->findClientBySearchTerm($request->searchTerm)->paginate($request->perPage);

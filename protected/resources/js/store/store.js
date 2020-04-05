@@ -6,13 +6,15 @@ import getters from './getters';
 import actions from './actions';
 
 import client from './modules/client';
+import vulnerabilityAssessment from './modules/vulnerability-assessment';
 
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     modules: {
-        client
+        client,
+        vulnerabilityAssessment
     },
     state,
     getters,
