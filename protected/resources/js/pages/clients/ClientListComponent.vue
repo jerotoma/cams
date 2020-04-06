@@ -37,7 +37,7 @@
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
                                  <li :id="props.row.id + '-view'"><a href="#" @click="performAction('view', props.row)" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                                 <template v-if="authRole === 'authorize'">
+                                 <template v-if="authRole === 'authorize' || authPermission == 'authorize'">
                                     <li :id="props.row.id + '-authorize'"><a href="#" @click="performAction('authorize', props.row)" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
                                  </template>
                                  <template v-if="authRole === 'admin' || authRole === 'authorize' || authRole === 'inputer' ">
@@ -65,6 +65,7 @@ export default {
             'clients',
             'client',
             'authRole',
+            'authPermission',
             'isLoading',
             'pagination',
         ]),

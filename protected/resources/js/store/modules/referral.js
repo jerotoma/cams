@@ -27,6 +27,7 @@ const state = {
             commit('setReferrals', data.referrals.data);
             commit('setPagination', data.pagination);
             commit('setAuthRole', data.authRole);
+            commit('setAuthPermission', data.authPermission);
         }).catch((error) => {
             commit('setLoading', false);
             console.log(error);
@@ -87,6 +88,7 @@ const state = {
                 commit('setReferrals', data.referrals.data);
                 commit('setPagination', data.pagination);
                 commit('setAuthRole', data.authRole);
+                commit('setAuthPermission', data.authPermission);
             }).catch((error) => {
                 const resp = error.response;
 

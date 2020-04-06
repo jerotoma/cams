@@ -2,6 +2,7 @@ const state = {
     isLoading: false,
     isSending: false,
     authRole: 'view',
+    authPermission: 'viewer',
     pagination: {
         currentPage: 1,
         firstPageUrl: '',

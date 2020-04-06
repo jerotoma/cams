@@ -36,14 +36,16 @@
                                 <i class="icon-menu9"></i>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
-                                 <li :id="props.row.id + '-view'"><a href="#" @click="performAction('view', props.row)" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                                 <template v-if="authRole === 'authorize'">
+                                <li :id="props.row.id + '-view'"><a href="#" @click="performAction('view', props.row)" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                                <li :id="props.row.id + '-print'"><a href="#"  :onclick="'printPage(\'/referrals/' + props.row.referralId + '\');'" class="editRecord label "><i class="fa fa-print "></i> Print </a></li>
+                                <li :id="props.row.id + '-download'"><a :href="'/referrals/download/' + props.row.referralId" class="label"><i class="fa fa-download"></i> Download </a></li>
+                                <template v-if="authRole === 'authorize' || authPermission == 'authorize'">
                                     <li :id="props.row.id + '-authorize'"><a href="#" @click="performAction('authorize', props.row)" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
-                                 </template>
-                                 <template v-if="authRole === 'admin' || authRole === 'authorize' || authRole === 'inputer' ">
+                                </template>
+                                <template v-if="authRole === 'admin' || authRole === 'authorize' || authRole === 'inputer' ">
                                     <li :id="props.row.id + '-edit'"><a href="#"  @click="performAction('edit', props.row)" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
                                     <li :id="props.row.id + '-delete'"><a href="#" @click="performAction('delete', props.row)" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
-                                 </template>
+                                </template>
                             </ul>
                         </li>
                     </ul>
@@ -65,6 +67,7 @@ export default {
             'referrals',
             'referral',
             'authRole',
+            'authPermission',
             'isLoading',
             'pagination',
         ]),

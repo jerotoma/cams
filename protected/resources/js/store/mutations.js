@@ -10,6 +10,9 @@ const mutations =  {
     },
     setAuthRole(state, authRole) {
         state.authRole = authRole;
+    },
+    setAuthPermission(state, authPermission) {
+        state.authPermission = authPermission;
     }
 }
 

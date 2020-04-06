@@ -193,6 +193,7 @@ class ClientsController extends Controller
         $clients = $this->processSortRequest($request,  $clients)->paginate($request->perPage);
         return response()->json([
             'authRole' => AuthUtility::getRoleName(),
+            'authPermission' => AuthUtility::getPermissionName(),
             'clients' => $clients,
             'pagination' =>  PaginateUtility::mapPagination($clients),
         ]);
@@ -221,7 +222,8 @@ class ClientsController extends Controller
             } else {
                 $clients = $this->findClientBySearchTerm($request->searchTerm)->paginate($request->perPage);
                 return response()->json([
-                    'authRole' => $this->getRoleName(),
+                    'authRole' => AuthUtility::getRoleName(),
+                    'authPermission' => AuthUtility::getPermissionName(),
                     'clients' => $clients,
                     'pagination' =>  PaginateUtility::mapPagination($clients),
                 ]);
