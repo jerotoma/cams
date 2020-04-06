@@ -7,6 +7,7 @@ import actions from './actions';
 
 import client from './modules/client';
 import vulnerabilityAssessment from './modules/vulnerability-assessment';
+import referral from './modules/referral';
 
 
 Vue.use(Vuex)
@@ -14,7 +15,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     modules: {
         client,
-        vulnerabilityAssessment
+        vulnerabilityAssessment,
+        referral
     },
     state,
     getters,

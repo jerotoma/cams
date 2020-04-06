@@ -17,4 +17,16 @@ class AuthUtility {
         }
        return $role;
     }
+
+    public static function getPermissionName() {
+        $permission = 'view';  //Can view client
+        if (Auth::user()->hasPermission('admin')) {
+            $permission = 'admin'; //Can delete, edit, and view client
+        } else if (Auth::user()->hasPermission('authorize')) {
+            $permission = 'authorize'; //Can authorize, delete, edit, and view client
+        } else if (Auth::user()->hasPermission('inputer')) {
+            $permission = 'inputer'; //Can delete, edit, and view client
+        }
+       return $permission;
+    }
 }

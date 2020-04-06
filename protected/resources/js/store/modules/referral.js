@@ -1,30 +1,30 @@
 // initial state
 const state = {
-    client: {
+    referral: {
 
     },
-    clients: [],
+    referrals: [],
   }
 
   // getters
   const getters = {
-      clients: state => state.clients,
-      client: state => state.client,
-      clientsCount: state => state.clientsCount,
+      referrals: state => state.referrals,
+      referral: state => state.referral,
+      referralsCount: state => state.referralsCount,
   }
 
   // actions
   const actions = {
-    getClients ({ commit }, data) {
+    getReferrals ({ commit }, data) {
         commit('setLoading', true);
         axios({
             method: 'GET',
-            url: '/rest/secured/clients?page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
+            url: '/rest/secured/referrals?page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
         })
         .then((response) => {
             const data = response.data;
             commit('setLoading', false);
-            commit('setClients', data.clients.data);
+            commit('setReferrals', data.referrals.data);
             commit('setPagination', data.pagination);
             commit('setAuthRole', data.authRole);
         }).catch((error) => {
@@ -32,12 +32,12 @@ const state = {
             console.log(error);
         });
     },
-    postClient({ commit }, client) {
+    postReferral({ commit }, referral) {
         return new Promise((resolve, reject) => {
                 axios({
                 method: 'POST',
-                url: '/rest/secured/clients',
-                data: client
+                url: '/rest/secured/referrals',
+                data: referral
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
@@ -47,12 +47,12 @@ const state = {
             });
         });
     },
-    updateClient({ commit }, client) {
+    updateReferral({ commit }, referral) {
         return new Promise((resolve, reject) => {
                 axios({
                 method: 'PUT',
-                url: '/rest/secured/clients',
-                data: client
+                url: '/rest/secured/referrals',
+                data: referral
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
@@ -62,11 +62,11 @@ const state = {
             });
         });
     },
-    deleteClient({ commit }, client) {
+    deleteReferral({ commit }, referral) {
         return new Promise((resolve, reject) => {
             axios({
                 method: 'DELETE',
-                url: '/rest/secured/clients/' + client.id,
+                url: '/rest/secured/referrals/' + referral.id,
                 data: {}
             }).then((response) => {
                 const data = response.data;
@@ -77,14 +77,14 @@ const state = {
             });
         });
     },
-    searchClientWithPagination({ commit, dispatch }, data) {
+    searchReferralWithPagination({ commit, dispatch }, data) {
         if (data.searchTerm) {
             axios({
                 method: 'GET',
-                url: '/rest/secured/clients/search-paginated?searchTerm=' + data.searchTerm + '&page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
+                url: '/rest/secured/referrals/search-paginated?searchTerm=' + data.searchTerm + '&page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
             }).then((response) => {
                 const data = response.data;
-                commit('setClients', data.clients.data);
+                commit('setReferrals', data.referrals.data);
                 commit('setPagination', data.pagination);
                 commit('setAuthRole', data.authRole);
             }).catch((error) => {
@@ -92,14 +92,14 @@ const state = {
 
             });
         } else {
-            dispatch('getClients', data);
+            dispatch('getReferrals', data);
         }
     },
-    searchClient({ commit }, data) {
+    searchReferral({ commit }, data) {
         return new Promise((resolve, reject) => {
             axios({
                 method: 'GET',
-                url: '/rest/secured/clients/search?searchTerm=' + data.searchTerm,
+                url: '/rest/secured/referrals/search?searchTerm=' + data.searchTerm,
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
@@ -113,15 +113,14 @@ const state = {
 
   // mutations
   const mutations = {
-    setClient (state, client) {
-      state.client = client
+    setReferral (state, referral) {
+      state.referral = referral
     },
-    setClients (state, clients) {
-        state.clients = clients
-      },
-
-    setClientsCount (state, count) {
-      state.clientsCount = count;
+    setReferrals (state, referrals) {
+        state.referrals = referrals
+    },
+    setReferralsCount (state, count) {
+      state.referralsCount = count;
     }
   }
 

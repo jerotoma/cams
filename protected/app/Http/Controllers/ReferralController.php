@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
+use App\Helpers\PaginateUtility;
+use App\Helpers\AuthUtility;
+use App\Helpers\ValidatorUtility;
+use DB;
+
 class ReferralController extends Controller
 {
     public function __construct()
@@ -87,20 +92,70 @@ class ReferralController extends Controller
     }
 
 
-    public function downloadPDF($id)
-    {
-        $referral=ClientReferral::find($id);
+    public function downloadPDF($id) {
+        $referral = ClientReferral::find($id);
          $pdf = \PDF::loadView('referrals.show', compact('referral'))
             ->setOption('footer-center', '[page]')
             ->setOption('page-offset', 0);
         return $pdf->download('Client_Referral_form.pdf');
     }
 
-    public function getReferralList()
-    {
+    private function processSortRequest(Request $request, $referrals) {
+        return $referrals->orderBy($request->sortField, $request->sortType);;
+     }
+
+
+    public function getReferralList(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'sortField' => 'required',
+                'sortType' => 'required|max:5',
+                'perPage' => 'required',
+                'page' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                $referrals = ClientReferral::join('clients', 'clients.id', '=', 'client_referrals.client_id')
+                    ->join('camps', 'camps.id', '=', 'clients.camp_id')
+                    ->select(
+                        'client_referrals.id AS referralId',
+                        'client_referrals.referral_date',
+                        'client_referrals.reference_no',
+                        'client_referrals.referral_type',
+                        'client_referrals.auth_status AS referralAuthStatus',
+                        'client_referrals.referral_date',
+                        'client_referrals.status AS referral_status',
+                        'camps.camp_name',
+                        'clients.*'
+                    );
+                $referrals = $this->processSortRequest($request,  $referrals)->paginate($request->perPage);
+                return response()->json([
+                    'authRole' => AuthUtility::getRoleName(),
+                    'authPermission' => AuthUtility::getPermissionName(),
+                    'referrals' => $referrals,
+                    'pagination' =>  PaginateUtility::mapPagination($referrals),
+                ]);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+
+
+
+
         //
-        $referrals=ClientReferral::all();
-        $iTotalRecords =count(ClientReferral::all());
+        $referrals = ClientReferral::all();
+        $iTotalRecords = count(ClientReferral::all());
         $sEcho = intval(10);
 
         $records = array();
@@ -131,7 +186,7 @@ class ReferralController extends Controller
 
             if ($referral->auth_status == "pending")
             {
-                if (Auth::user()->can('authorize'))
+                if (Auth::user()->hasPermission('authorize'))
                 {
                     $records["data"][] = array(
                         $count++,
@@ -342,7 +397,7 @@ class ReferralController extends Controller
                 $client->cl_child_separated=$request->cl_child_separated;
                 $client->cl_care_giver_informed=$request->cl_care_giver_informed;
                 $client->save();
-                
+
                 $reason= new ReferralReason;
                 $reason->referral_id=$referral->id;
                 $reason->client_referral_info=$request->client_referral_info;

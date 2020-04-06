@@ -24,6 +24,7 @@ Vue.use(VueGoodTablePlugin);
 //Components
 Vue.component('client-list-component', require('./pages/clients/ClientListComponent.vue').default);
 Vue.component('vulnerability-assessment-component', require('./pages/assessments/vulnerabilities/VulnerabilityAssessmentComponent.vue').default);
+Vue.component('referral-list-component', require('./pages/referrals/ReferralListComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

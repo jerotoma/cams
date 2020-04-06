@@ -286,6 +286,10 @@ Route::prefix('rest/secured')->group(function () {
     Route::get('assessments/vulnerabilities','VulnerabilityAssessmentController@assessmentListJsonType');
     Route::get('assessments/vulnerabilities/search-paginated','VulnerabilityAssessmentController@assessmentListJsonType');
 
+    //Referrals
+    Route::get('/referrals', 'ReferralController@getReferralList');
+    Route::get('/referrals/search-paginated', 'ReferralController@searchReferralPaginated');
+
 
 });
 
