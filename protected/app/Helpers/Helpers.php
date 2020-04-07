@@ -14,7 +14,7 @@ if (!function_exists('getHighChatMonthlyCasesCountByStatus')) {
 if (!function_exists('getHighChatCasesCountByStatus')) {
     function getHighChatCasesCountByStatus($status) {
 
-        return count(\App\ClientCase::where('status','=',$status)->get());
+        return \App\ClientCase::where('status','=',$status)->get()->count();
     }
 }
 if (!function_exists('reduceItemQuantity')) {

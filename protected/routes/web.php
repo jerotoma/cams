@@ -278,6 +278,10 @@ Route::get('backup/export/advanced','BackupImportExportController@showExport');
 Route::post('backup/export/advanced','BackupImportExportController@postExport');
 
 Route::prefix('rest/secured')->group(function () {
+    //Dashboard
+    Route::get('/dashboard/chart-stats','HomeController@findChartStats');///rest/secured/clients/search
+    Route::get('/clients/search-paginated','ClientsController@searchClientPaginated');///rest/secured/clients/search
+
     //Clients
     Route::get('/clients','ClientsController@findClientList');///rest/secured/clients/search
     Route::get('/clients/search-paginated','ClientsController@searchClientPaginated');///rest/secured/clients/search

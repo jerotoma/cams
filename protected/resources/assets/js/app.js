@@ -11,6 +11,7 @@ const moment = require('vue-moment');
 import store from './store/store';
 import ModalPlugin from './shared/modals/modal-loader';
 
+import VueApexCharts from 'vue-apexcharts'
 import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css'
 
@@ -22,9 +23,11 @@ Vue.use(ModalPlugin);
 Vue.use(VueGoodTablePlugin);
 
 //Components
+Vue.component('apexchart', VueApexCharts)
 Vue.component('client-list-component', require('./pages/clients/ClientListComponent.vue').default);
 Vue.component('vulnerability-assessment-component', require('./pages/assessments/vulnerabilities/VulnerabilityAssessmentComponent.vue').default);
 Vue.component('referral-list-component', require('./pages/referrals/ReferralListComponent.vue').default);
+Vue.component('chart-stat-component', require('./pages/dashboard/ChartStatComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
