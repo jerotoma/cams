@@ -28,6 +28,7 @@ Vue.component('client-list-component', require('./pages/clients/ClientListCompon
 Vue.component('vulnerability-assessment-component', require('./pages/assessments/vulnerabilities/VulnerabilityAssessmentComponent.vue').default);
 Vue.component('referral-list-component', require('./pages/referrals/ReferralListComponent.vue').default);
 Vue.component('chart-stat-component', require('./pages/dashboard/ChartStatComponent.vue').default);
+Vue.component('counter-stat-component', require('./pages/dashboard/CounterStatComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

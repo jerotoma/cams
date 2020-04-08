@@ -8,7 +8,8 @@ import actions from './actions';
 import client from './modules/client';
 import vulnerabilityAssessment from './modules/vulnerability-assessment';
 import referral from './modules/referral';
-import dashboard from './modules/dashboard';
+import chartStat from "./modules/dashboard/chart-stat";
+import counterStat from "./modules/dashboard/counter-stat";
 
 
 Vue.use(Vuex)
@@ -18,7 +19,8 @@ export default new Vuex.Store({
         client,
         vulnerabilityAssessment,
         referral,
-        dashboard
+        counterStat,
+        chartStat
     },
     state,
     getters,

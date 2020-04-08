@@ -10,7 +10,6 @@ const state = {
   const getters = {
       clients: state => state.clients,
       client: state => state.client,
-      clientsCount: state => state.clientsCount,
   }
 
   // actions
@@ -120,11 +119,7 @@ const state = {
     },
     setClients (state, clients) {
         state.clients = clients
-      },
-
-    setClientsCount (state, count) {
-      state.clientsCount = count;
-    }
+    },
   }
 
   export default {

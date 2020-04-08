@@ -11,7 +11,7 @@ class ChartUtility {
             'series' => $dataSeries,
             'options' => [
                 'chart' => [
-                    'height' => 350,
+                    'height' => 365,
                     'type' => 'bar',
                     'stacked' => true,
                     'toolbar' => [
@@ -68,12 +68,12 @@ class ChartUtility {
         );
     }
 
-    public static function getBasicColumn(array $dataSeries, array $categoriesItems, $dateFrom, $dateTo) {
+    public static function getBasicBarChartColumn(array $dataSeries, array $categoriesItems, $dateFrom, $dateTo) {
         return array(
             'series' => $dataSeries,
             'options' => [
                 'chart' => [
-                    'height' => 350,
+                    'height' => 365,
                     'type' => 'line',
                     'stacked' => false
                 ],
@@ -120,7 +120,7 @@ class ChartUtility {
         return array(
             'options' => [
                 'chart' => [
-                    'width' => 400,
+                    'width' => 350,
                     'type' => 'pie',
                 ],
                 'labels' => $labelItems,

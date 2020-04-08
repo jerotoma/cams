@@ -279,12 +279,12 @@ Route::post('backup/export/advanced','BackupImportExportController@postExport');
 
 Route::prefix('rest/secured')->group(function () {
     //Dashboard
-    Route::get('/dashboard/chart-stats','HomeController@findChartStats');///rest/secured/clients/search
-    Route::get('/clients/search-paginated','ClientsController@searchClientPaginated');///rest/secured/clients/search
+    Route::get('/dashboard/chart-stats','HomeController@findChartStats');
+    Route::get('/dashboard/counter-stats','HomeController@findCountStats');
 
     //Clients
-    Route::get('/clients','ClientsController@findClientList');///rest/secured/clients/search
-    Route::get('/clients/search-paginated','ClientsController@searchClientPaginated');///rest/secured/clients/search
+    Route::get('/clients','ClientsController@findClientList');
+    Route::get('/clients/search-paginated','ClientsController@searchClientPaginated');
 
     //VulnerabilityAssessmentsearch-paginated
     Route::get('assessments/vulnerabilities','VulnerabilityAssessmentController@assessmentListJsonType');

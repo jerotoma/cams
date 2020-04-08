@@ -16,7 +16,7 @@
                 </div>
             </div>
              <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-6">
                     <div class="panel panel-default">
                         <div class="panel-heading text-primary">
                             Clients registered & their vulnerabilities
@@ -28,7 +28,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="panel panel-default">
                         <div class="panel-heading text-primary">
                             Client Distribution Age Groups
@@ -48,7 +48,7 @@
                             Monthly NFIS Distributions
                         </div>
                         <div class="panel-body">
-                            <div id="monthlyNfisDistributions" v-if="monthlyItemDistributions&& monthlyItemDistributions.series">
+                            <div id="monthlyNfisDistributions" v-if="monthlyItemDistributions && monthlyItemDistributions.series">
                                 <apexchart width="100%" height="400" type="bar" :options="monthlyItemDistributions.options" :series="monthlyItemDistributions.series"></apexchart>
                             </div>
                         </div>
@@ -73,11 +73,11 @@
                 <div class="col-md-6">
                     <div class="panel panel-default">
                         <div class="panel-heading text-primary">
-                            Client Distribution Age groups
+                            CBR Case status
                         </div>
                         <div class="panel-body">
-                             <div id="cases" v-if="clientNeeds && clientNeeds.series">
-                                <apexchart width="100%" height="400" type="pie" :options="ageGroups.options" :series="ageGroups.series"></apexchart>
+                             <div id="cases" v-if="cases && cases.series">
+                                <apexchart width="100%" height="365" type="pie" :options="cases.options" :series="cases.series"></apexchart>
                             </div>
                         </div>
                     </div>
@@ -85,11 +85,11 @@
                 <div class="col-md-6">
                     <div class="panel panel-default">
                         <div class="panel-heading text-primary">
-                            Client Distribution Age groups
+                            Monthly Average Cases
                         </div>
                         <div class="panel-body">
-                            <div id="casesPerStatus" v-if="clientNeeds && clientNeeds.series">
-                                <apexchart width="100%" height="400" type="pie" :options="ageGroups.options" :series="ageGroups.series"></apexchart>
+                            <div id="casesPerStatus" v-if="casesPerStatus && casesPerStatus.series">
+                                <apexchart width="100%" height="365" type="bar" :options="casesPerStatus.options" :series="casesPerStatus.series"></apexchart>
                             </div>
                         </div>
                     </div>
@@ -111,7 +111,9 @@ export default {
             'clientNeeds',
             'monthlyCashProvisions',
             'monthlyItemDistributions',
-            'clientRegistration'
+            'clientRegistration',
+            'cases',
+            'casesPerStatus'
         ]),
         mLoading: {
             get() { return this.isLoading; },

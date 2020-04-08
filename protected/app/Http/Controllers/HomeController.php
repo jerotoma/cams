@@ -12,6 +12,8 @@ use App\PSNCode;
 use App\ClientCase;
 use App\ClientVulnerabilityCode;
 use App\ItemsDisbursement;
+use App\ClientReferral;
+use App\VulnerabilityAssessment;
 
 use App\Helpers\AuthUtility;
 use App\Helpers\PaginateUtility;
@@ -37,6 +39,29 @@ class HomeController extends Controller {
             ]);
         } else {
             return redirect('account/profile');
+        }
+    }
+
+    public function findCountStats() {
+        try {
+            if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('authorizer') || Auth::user()->hasPermission('reports')) {
+
+                return response()->json([
+                    'authRole' => AuthUtility::getRoleName(),
+                    'authPermission' => AuthUtility::getPermissionName(),
+                    'vulnerabilityAssessmentCount' => VulnerabilityAssessment::count(),
+                    'itemsDisbursementCount' => ItemsDisbursement::count(),
+                    'clientReferralCount' => ClientReferral::count(),
+                    'usersCount' => User::count(),
+                    'clientCasesCount' => ClientCase::count(),
+                    'clientsCount' => Client::count(),
+                ]);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
         }
     }
 
@@ -75,17 +100,7 @@ class HomeController extends Controller {
             $clientByCodeNames[] = $code->code;
         }
 
-        return array(
-            'options' => [
-                'chart' => [
-                    'width' => 400,
-                    'type' => 'pie',
-                ],
-                'labels' => $clientByCodeNames,
-
-            ],
-            'series' => $clientCountByCodes
-        );
+        return ChartUtility::getBasicPieChartData($clientCountByCodes, $clientByCodeNames);
     }
 
     public function getClientRegistrationByParams($ageGroup, $gender, $dateFrom, $dateTo) {
@@ -111,38 +126,36 @@ class HomeController extends Controller {
 
     public function getMonthlyCasesCountByStatus($status, $year) {
         $caseCount = array();
-        $caseMonth = array();
-
         foreach(CommonConstant::MONTHS as $num => $monthName) {
-            $caseMonth[] = $monthName;
             $caseCount[] = ClientCase::whereMonth('open_date', '=', $num)
-                                ->whereYear('open_date', '=', $year)
-                                ->where('status', '=', $status)->count();
+                    ->whereYear('open_date', '=', $year)
+                    ->where('status', '=', $status)->count();
         }
-       return [
-           'caseMonth' => $caseMonth,
-           'caseCount' => $caseCount
-       ];
+       return $caseCount;
     }
 
     public function getMonthlyCasesCountByYear($year) {
-        $cases = array();
+        $dataSeries = array();
         foreach (CommonConstant::CASE_STATUSES as $key => $caseStatus) {
-            $cases[$key]  = $this->getMonthlyCasesCountByStatus($caseStatus, $year);
+            $dataSeries[]  = [
+                'name' => $caseStatus,
+                'data' => $this->getMonthlyCasesCountByStatus($caseStatus, $year)
+            ];
         }
-
-        return $cases;
+        foreach (CommonConstant::MONTHS as $num => $monthName) {           //
+            $dataCategories[] = $monthName;
+        }
+        return ChartUtility::getStackedColumn($dataSeries, $dataCategories, 'Monthly Average Cases for year '. $year);
     }
 
     public function loadCasesCountByStatus() {
-        $cases = [];
+        $caseStatuses = [];
+        $caseStatusesCount = [];
         foreach (CommonConstant::CASE_STATUSES as $key => $caseStatus) {
-            $cases[]  = [
-                'status' => $caseStatus,
-                'count' => $this->getCasesCountByStatus($caseStatus)
-            ];
+            $caseStatuses[]  = $caseStatus;
+            $caseStatusesCount[] = $this->getCasesCountByStatus($caseStatus);
         }
-        return $cases;
+        return ChartUtility::getBasicPieChartData($caseStatusesCount, $caseStatuses);
     }
 
     private function loadClientRegistrationCountByDateRange($dateFrom, $dateTo) {
@@ -156,7 +169,7 @@ class HomeController extends Controller {
         foreach ($ageGroups  as $key => $ageGroup) {
             $maleClientCount[] = $this->getClientRegistrationByParams($key, $maleGender, $dateFrom, $dateTo)->count();
             $femaleClientCount[] = $this->getClientRegistrationByParams($key, $femaleGender, $dateFrom, $dateTo)->count();
-            $ageGroupList[] = $ageGroup;
+            $ageGroupList[] = ' Age group ('. $ageGroup . ')';
         }
 
         $dataSeries = [
@@ -171,7 +184,7 @@ class HomeController extends Controller {
                 'data' => $femaleClientCount
             ]
         ];
-        return ChartUtility::getBasicColumn($dataSeries, $ageGroupList, $dateFrom, $dateTo);
+        return ChartUtility::getBasicBarChartColumn($dataSeries, $ageGroupList, $dateFrom, $dateTo);
     }
 
     public function getMonthlyItemsDistributionCountByYear($year) {
@@ -200,7 +213,6 @@ class HomeController extends Controller {
         foreach (CommonConstant::MONTHS as $num => $monthName) {           //
             $dataCategories[] = $monthName;
         }
-
        return ChartUtility::getStackedColumn($dataSeries, $dataCategories, 'Monthly Item Distribution for year '. $year);
     }
 

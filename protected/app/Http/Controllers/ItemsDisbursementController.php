@@ -75,7 +75,7 @@ class ItemsDisbursementController extends Controller
                     'auth_date' => date('Y-m-d H:i')
                 ]);
             //Audit trail
-            AuditRegister("ItemsDisbursementController","AuthorizeItemsDisbursementById",$disbursements);
+            AuditRegister("ItemsDisbursementController","AuthorizeItemsDisbursementById", $disbursements);
         }else{
             return null;
         }
