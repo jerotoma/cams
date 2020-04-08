@@ -13,15 +13,14 @@ use App\ClientCase;
 use App\ClientVulnerabilityCode;
 use App\ItemsDisbursement;
 
-
 use App\Helpers\AuthUtility;
 use App\Helpers\PaginateUtility;
 use App\Helpers\ValidatorUtility;
+use App\Helpers\ChartUtility;
 use App\Helpers\CommonConstant;
 use DB;
 
-class HomeController extends Controller
-{
+class HomeController extends Controller {
     public function __construct()
     {
      $this->middleware('auth');
@@ -51,8 +50,8 @@ class HomeController extends Controller
                     'authPermission' => AuthUtility::getPermissionName(),
                     'ageGroups' => $this->getClientRegistrationCountByAgeGruop(),
                     'clientNeeds' => $this->getClientVulnerabilityCountByCode(),
-                    'monthlyNfisDistributions' => $this->getItemsDistributionCountByYear(Carbon::now()->year),
-                    'monthlyCashProvisions' =>  $this->getItemsDistributionsMonthlyCountByYear(Carbon::now()->year),
+                    'monthlyCashProvisions' => $this->getMonthlyCashProvisionCountByYear(Carbon::now()->year),
+                    'monthlyItemDistributions' => $this->getMonthlyItemsDistributionCountByYear(Carbon::now()->year),
                     'cases' => $this->loadCasesCountByStatus(),
                     'casesPerStatus' => $this->getMonthlyCasesCountByYear(2017),
                     'clientRegistration' => $this->loadClientRegistrationCountByDateRange('2016-07-01', Carbon::now()->toDateTimeString()),
@@ -104,16 +103,7 @@ class HomeController extends Controller
             $ageGroupNames[] = $ageGroup;
             $ageGroupCount[] = Client::where('age_score', '=', $key)->count();
         }
-        return array(
-            'options' => [
-                'chart' => [
-                    'width' => 400,
-                    'type' => 'pie',
-                ],
-                'labels' => $ageGroupNames,
-            ],
-            'series' => $ageGroupCount
-        );
+        return ChartUtility::getBasicPieChartData($ageGroupCount, $ageGroupNames);
     }
     public function getCasesCountByStatus($status) {
         return ClientCase::where('status','=', $status)->count();
@@ -140,7 +130,7 @@ class HomeController extends Controller
         foreach (CommonConstant::CASE_STATUSES as $key => $caseStatus) {
             $cases[$key]  = $this->getMonthlyCasesCountByStatus($caseStatus, $year);
         }
-        //dd($cases);
+
         return $cases;
     }
 
@@ -168,70 +158,29 @@ class HomeController extends Controller
             $femaleClientCount[] = $this->getClientRegistrationByParams($key, $femaleGender, $dateFrom, $dateTo)->count();
             $ageGroupList[] = $ageGroup;
         }
-        return array(
-            'series' => [
-                [
-                    'name' => 'Male Client Registered ',
-                    'type' => 'column',
-                    'data' => $maleClientCount
-                ],
-                [
-                    'name' => 'Female Client Registered ',
-                    'type' => 'column',
-                    'data' => $femaleClientCount
-                ]
+
+        $dataSeries = [
+            [
+                'name' => 'Male Client Registered ',
+                'type' => 'column',
+                'data' => $maleClientCount
             ],
-            'options' => [
-                'chart' => [
-                    'height' => 350,
-                    'type' => 'line',
-                    'stacked' => false
-                ],
-                'dataLabels' => [
-                    'enabled' => false,
-                ],
-                'stroke' => [
-                    'width' => [1, 1],
-                    'curve' => 'smooth'
-                ],
-                'title' => [
-                    'text' => 'Number of Registered Clients from '. Carbon::parse($dateFrom)->isoFormat('MMMM Do, YYYY') . ' to ' .Carbon::parse($dateTo)->isoFormat('MMMM Do, YYYY'),
-                    'align' => 'left',
-                    'offsetX' => 50
-                ],
-                'xaxis' => [
-                    'categories' => $ageGroupList
-                ],
-                'yaxis' => [
-                    'axisTicks' => [
-                        'show' => true,
-                    ],
-                    'axisBorder' => [
-                        'show' => true,
-                        'color' => '#008FFB'
-                    ],
-                    'labels' => [
-                        'style' => [
-                            'colors' => '#008FFB'
-                        ]
-                    ],
-                    'title' => [
-                        'text' => 'Number of Registered Clients per Age Group',
-                        'style' => [
-                            'colors' => '#008FFB'
-                        ]
-                    ]
-                ]
-            ],
-        );
+            [
+                'name' => 'Female Client Registered ',
+                'type' => 'column',
+                'data' => $femaleClientCount
+            ]
+        ];
+        return ChartUtility::getBasicColumn($dataSeries, $ageGroupList, $dateFrom, $dateTo);
     }
-    public function getItemsDistributionsMonthlyCountByYear($year) {
+
+    public function getMonthlyItemsDistributionCountByYear($year) {
         $maleGender = 'Male';
         $femaleGender = 'Female';
 
         $ageGroups = CommonConstant::AGE_GROUPS;
-        $dataSeries = [];
-        $caseMonths = array();
+        $dataSeries = array();
+        $dataCategories = array();
         foreach ($ageGroups  as $key => $ageGroup) {
             $caseMaleCount = array();
             $caseFemaleCount = array();       //
@@ -240,69 +189,50 @@ class HomeController extends Controller
                 $caseFemaleCount[] = $this->getItemsDistributionsMonthlyCount($key, $femaleGender, $num, $year)->count();
             }
             $dataSeries[] = [
-                'name' => $ageGroup,
+                'name' => $maleGender. ' (' .$ageGroup . ')',
                 'data' => $caseMaleCount,
-                'name' => $ageGroup,
-                'data' => $caseFemaleCount
+            ];
+            $dataSeries[] = [
+                'name' => $femaleGender. ' (' .$ageGroup . ')',
+                'data' => $caseFemaleCount,
             ];
         }
-
         foreach (CommonConstant::MONTHS as $num => $monthName) {           //
-            $caseMonths[] = $monthName;
+            $dataCategories[] = $monthName;
         }
 
-        return array(
-            'series' => $dataSeries,
-            'options' => [
-                'chart' => [
-                    'height' => 350,
-                    'type' => 'bar',
-                    'stacked' => true,
-                    'toolbar' => [
-                        'show' => true
-                    ],
-                    'zoom' => [
-                        'enabled' => true,
-                    ],
-                ],
-                'dataLabels' => [
-                    'enabled' => false,
-                ],
-                'title' => [
-                    'text' => 'Monthly Cash Distribution for year ' . $year,
-                    'align' => 'left',
-                    'offsetX' => 50
-                ],
-                'plotOptions' => [
-                    'bar' => [
-                      'horizontal' => false,
-                    ],
-                ],
-                'xaxis' => [
-                    'categories' => $caseMonths
-                ],
-                'yaxis' => [
-                    'axisTicks' => [
-                        'show' => true,
-                    ],
-                    'axisBorder' => [
-                        'show' => true,
-                        'color' => '#008FFB'
-                    ],
-                    'labels' => [
-                        'style' => [
-                            'colors' => '#008FFB'
-                        ]
-                    ],
-                    'title' => [
-                        'text' => 'Number of Monthly Cash Distribution for year '. $year,
-                        'style' => [
-                            'colors' => '#008FFB'
-                        ]
-                    ]
-                ]
-            ],
-        );
+       return ChartUtility::getStackedColumn($dataSeries, $dataCategories, 'Monthly Item Distribution for year '. $year);
+    }
+
+
+    public function getMonthlyCashProvisionCountByYear($year) {
+        $maleGender = 'Male';
+        $femaleGender = 'Female';
+
+        $ageGroups = CommonConstant::AGE_GROUPS;
+        $dataSeries = array();
+        $dataCategories = array();
+        foreach ($ageGroups  as $key => $ageGroup) {
+            $caseMaleCount = array();
+            $caseFemaleCount = array();       //
+            foreach(CommonConstant::MONTHS as $num => $monthName) {
+                $caseMaleCount[] = $this->getCashProvisionMonthlyCount($key, $maleGender, $num, $year)->count();
+                $caseFemaleCount[] = $this->getCashProvisionMonthlyCount($key, $femaleGender, $num, $year)->count();
+            }
+            $dataSeries[] = [
+                'name' => $maleGender. ' (' .$ageGroup . ')',
+                'data' => $caseMaleCount,
+            ];
+            $dataSeries[] = [
+                'name' => $femaleGender. ' (' .$ageGroup . ')',
+                'data' => $caseFemaleCount,
+            ];
+        }
+        foreach (CommonConstant::MONTHS as $num => $monthName) {           //
+            $dataCategories[] = $monthName;
+        }
+
+       return ChartUtility::getStackedColumn($dataSeries, $dataCategories, 'Monthly Cash Provision for year '. $year);
     }
 
     public function getItemsDistributionsMonthlyCount($ageGroup, $gender, $month, $year) {
@@ -314,16 +244,13 @@ class HomeController extends Controller
                 ->whereYear('distribution_date', '=', $year);
     }
 
-    public function getItemsDistributionCountByYear($year) {
+    public function getCashProvisionMonthlyCount($ageGroup, $gender, $month, $year) {
+        return DB::table('cash_provision_clients')
+                    ->join('clients', 'cash_provision_clients.client_id', '=', 'clients.id')
+                    ->where('clients.age_score', '=', $ageGroup)
+                    ->where('clients.sex', '=', $gender)
+                    ->whereMonth('provision_date', '=', $month)
+                    ->whereYear('provision_date', '=', $year);
 
-        $monthData = [];
-        for($i=1; $i <= 12; $i++) {
-           $monthData[] = [
-                'month' => $i,
-                'count' => ItemsDisbursement::whereMonth('disbursements_date', '=', $i)->whereYear('disbursements_date', '=', $year)->count()
-                ];
-        }
-        return $monthData;
     }
-
 }

@@ -3,7 +3,7 @@ const state = {
     clientRegistration: [],
     clientNeeds: [],
     ageGroups: [],
-    monthlyNfisDistributions: [],
+    monthlyItemDistributions: [],
     monthlyCashProvisions: [],
     cases: [],
     casesPerStatus: [],
@@ -13,7 +13,7 @@ const state = {
   const getters = {
     clientNeeds: state => state.clientNeeds,
     ageGroups: state => state.ageGroups,
-    monthlyNfisDistributions: state => state.monthlyNfisDistributions,
+    monthlyItemDistributions: state => state.monthlyItemDistributions,
     monthlyCashProvisions: state => state.monthlyCashProvisions,
     cases: state => state.cases,
     casesPerStatus: state => state.casesPerStatus,
@@ -33,7 +33,7 @@ const state = {
             commit('setLoading', false);
             commit('setClientNeeds', data.clientNeeds);
             commit('setAgeGroups', data.ageGroups);
-            commit('setMonthlyNfisDistributions', data.monthlyNfisDistributions);
+            commit('setMonthlyItemDistributions', data.monthlyItemDistributions);
             commit('setMonthlyCashProvisions', data.monthlyCashProvisions );
             commit('setCases', data.cases);
             commit('setCasesPerStatus', data.casesPerStatus);
@@ -55,8 +55,8 @@ const state = {
     setAgeGroups(state, ageGroups) {
         state.ageGroups = ageGroups
     },
-    setMonthlyNfisDistributions (state, monthlyNfisDistributions) {
-      state.monthlyNfisDistributions = monthlyNfisDistributions;
+    setMonthlyItemDistributions (state, monthlyItemDistributions) {
+      state.monthlyItemDistributions = monthlyItemDistributions;
     },
     setMonthlyCashProvisions(state, monthlyCashProvisions) {
         state.monthlyCashProvisions = monthlyCashProvisions;
