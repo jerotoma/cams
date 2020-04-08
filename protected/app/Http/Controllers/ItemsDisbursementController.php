@@ -46,7 +46,7 @@ class ItemsDisbursementController extends Controller
     public function AuthorizeAll()
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $disbursements=ItemsDisbursement::where('auth_status', '=', 'pending')
                 ->update([
@@ -66,7 +66,7 @@ class ItemsDisbursementController extends Controller
     public function AuthorizeItemsDisbursementById($id)
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $disbursements=ItemsDisbursement::find($id)
                 ->update([
@@ -98,7 +98,7 @@ class ItemsDisbursementController extends Controller
                 $camp_name =$disbursement->camp->camp_name;
             }
             if ($disbursement->auth_status == "pending") {
-                if (Auth::user()->can('authorize')) {
+                if (Auth::user()->hasPermission('authorize')) {
                     $records["data"][] = array(
                         $count++,
                         $disbursement->disbursements_date,
@@ -204,7 +204,7 @@ class ItemsDisbursementController extends Controller
 
         echo json_encode($records);
     }
-    
+
     public function showImport()
     {
         //
@@ -213,7 +213,7 @@ class ItemsDisbursementController extends Controller
     public function showImportErrors()
     {
 
-        if (Auth::user()->can('edit')) {
+        if (Auth::user()->hasPermission('edit')) {
             $clients=DumpItemsDisbursement::all();
             return view('inventory.disbursement.importerrors',compact('clients'));
         }
@@ -233,7 +233,7 @@ class ItemsDisbursementController extends Controller
     }
 
 
-    
+
     public function postImport(Request $request)
     {
 
@@ -490,7 +490,7 @@ class ItemsDisbursementController extends Controller
 								if( !is_numeric($row->quantity)){
 									$filed_error .="Quantity is Missing-";
 								}
-							
+
 								if( $row->vul_1 == "" ){
 									$filed_error .="Vulnerability code(s) is Missing-";
 								}
@@ -956,7 +956,7 @@ class ItemsDisbursementController extends Controller
                 'message' => $ex->getMessage()
             ), 402); // 400 being the HTTP code for an invalid request.
         }
-        
+
     }
 
     /**

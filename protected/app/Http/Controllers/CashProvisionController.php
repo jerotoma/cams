@@ -36,7 +36,7 @@ class CashProvisionController extends Controller
     public function AuthorizeAll()
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $provisions=CashProvision::where('auth_status', '=', 'pending')
                 ->update([
@@ -56,7 +56,7 @@ class CashProvisionController extends Controller
     public function AuthorizeCashProvisionById($id)
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $provisions=CashProvision::find($id)
                 ->update([
@@ -74,7 +74,7 @@ class CashProvisionController extends Controller
     public function showImportErrors()
     {
 
-        if (Auth::user()->can('edit')) {
+        if (Auth::user()->hasPermission('edit')) {
             $clients=DumpCashDistribution::all();
             return view('cash.provision.importerrors',compact('clients'));
         }
@@ -118,7 +118,7 @@ class CashProvisionController extends Controller
             }
 
             if ($provision->auth_status == "pending") {
-                if (Auth::user()->can('authorize')) {
+                if (Auth::user()->hasPermission('authorize')) {
                     $records["data"][] = array(
                         $count++,
                         $provision->provision_date,
@@ -373,7 +373,7 @@ class CashProvisionController extends Controller
 
                                         if ($client != null && count($client) > 0) {
 
-                                            if (!isClientInProvisionLimit($request->activity_id, $client->id,$provision->provision_date)) {
+                                            if (!hasClientReachedProvisionLimit($request->activity_id, $client->id,$provision->provision_date)) {
 
 
                                                 if (!isActivityOutOfFunds($request->activity_id, $row->amount)) {
@@ -552,11 +552,11 @@ class CashProvisionController extends Controller
 
                                     $client = Client::where('hai_reg_number', '=', $row->hai_reg_number)->get()->first();
                                     if ($client != null && count($client) > 0) {
-                                        if (!isClientInProvisionLimit($request->activity_id, $client->id,$provision->provision_date)) {
+                                        if (!hasClientReachedProvisionLimit($request->activity_id, $client->id,$provision->provision_date)) {
 
                                             if (!isActivityOutOfFunds($request->activity_id, intval($row->amount))) {
 
-                                               
+
                                                     $provision_client = new CashProvisionClient;
                                                     $provision_client->client_id = $client->id;
                                                     $provision_client->activity_id = $request->activity_id;
@@ -568,7 +568,7 @@ class CashProvisionController extends Controller
                                                     AuditRegister("CashProvisionController","Created CashProvisionClient",$provision_client);
                                                     //Deduct money
                                                     deductActivityAmount($request->activity_id, $amount);
-                                                
+
 
                                             }
 											else
@@ -755,9 +755,9 @@ class CashProvisionController extends Controller
 
                     $client=Client::where('hai_reg_number','=',$request->hai_reg_number)->get()->first();
 
-                    if (!isClientInProvisionLimit($request->activity_id, $client->id,$request->provision_date)) {
+                    if (!hasClientReachedProvisionLimit($request->activity_id, $client->id, $request->provision_date)) {
 
-                        if (!isActivityOutOfFunds($request->activity_id,$request->amount)) {
+                        if (!isActivityOutOfFunds($request->activity_id, $request->amount)) {
 
                             $provision=new CashProvision;
                             $provision->provision_date=$request->provision_date;

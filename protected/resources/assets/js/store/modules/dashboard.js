@@ -1,7 +1,7 @@
 // initial state
 const state = {
     clientRegistration: [],
-    clientsNeeds: [],
+    clientNeeds: [],
     ageGroups: [],
     monthlyNfisDistributions: [],
     monthlyCashProvisions: [],
@@ -11,7 +11,7 @@ const state = {
 
   // getters
   const getters = {
-    clientsNeeds: state => state.clientsNeeds,
+    clientNeeds: state => state.clientNeeds,
     ageGroups: state => state.ageGroups,
     monthlyNfisDistributions: state => state.monthlyNfisDistributions,
     monthlyCashProvisions: state => state.monthlyCashProvisions,
@@ -49,8 +49,8 @@ const state = {
 
   // mutations
   const mutations = {
-    setClientNeeds(state, clientsNeeds) {
-      state.clientsNeeds = clientsNeeds
+    setClientNeeds(state, clientNeeds) {
+      state.clientNeeds = clientNeeds
     },
     setAgeGroups(state, ageGroups) {
         state.ageGroups = ageGroups

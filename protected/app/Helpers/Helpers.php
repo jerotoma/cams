@@ -1127,11 +1127,11 @@ if (!function_exists('isInDistributionLimit')) {
         $disBasement = \App\ItemsDisbursementItems::where('item_id','=',$item_id)
                         ->where('client_id','=',$client_id)
                         ->orderBy('distribution_date','desc')
-                        ->get();
+                        ->first();
 
-        if(count($disBasement)> 0) {
+        if($disBasement > 0) {
 
-            $itemsds= $disBasement->first();
+            $itemsds= $disBasement;
 
             $inventoryItem= \App\ItemsInventory::find($item_id);
             $limit =$inventoryItem->redistribution_limit;
@@ -1229,12 +1229,9 @@ if (!function_exists('getAllClientsReceivedItemByItemId')) {
 }
 if (!function_exists('isAuthorized')) {
     function isAuthorized($status) {
-
         if(strtolower($status) =="pending"){
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
@@ -1243,12 +1240,9 @@ if (!function_exists('isAuthorized')) {
 //Check if service was selected
 if (!function_exists('isReferralServiceSelected')) {
     function isReferralServiceSelected($id,$service_request) {
-
-        if(count(\App\RequestedService::where('service_request','=',$service_request)->where('requested_id','=',$id)->get()) >0){
+        if(\App\RequestedService::where('service_request', '=', $service_request)->where('requested_id', '=', $id)->get() != null){
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -1283,70 +1277,56 @@ if (!function_exists('checkRegistrationByHAIRegCampID')) {
     }
 }
 
-if (!function_exists('isClientInProvisionLimit')) {
-    function isClientInProvisionLimit($activity_id,$client_id,$provision_date) {
+if (!function_exists('hasClientReachedProvisionLimit')) {
+    function hasClientReachedProvisionLimit($activity_id, $client_id, $provision_date) {
 
+       $cashProvisionClient =  \App\CashProvisionClient::where('activity_id', '=', $activity_id)
+                                    ->where('client_id', '=', $client_id)->orderBy('provision_date', 'desc')->first();
 
-        if(count(\App\CashProvisionClient::where('activity_id','=',$activity_id)
-                ->where('client_id','=',$client_id)->orderBy('provision_date','desc')->get()) >0)
-        {
+        if($cashProvisionClient != null) {
 
-            $activity_Provision=\App\CashProvisionClient::where('activity_id','=',$activity_id)
-                ->where('client_id','=',$client_id)->orderBy('provision_date','desc')->get()->first();
+            $activity = \App\BudgetActivity::find($activity_id);
+            $limit = $activity->provision_limit;
 
-            $activity= \App\BudgetActivity::find($activity_id);
-            $limit =$activity->provision_limit;
-
-            $ts1 = strtotime($activity_Provision->provision_date);
+            $ts1 = strtotime($cashProvisionClient->provision_date);
             $ts2 = strtotime($provision_date);
-            $datediff =$ts2-$ts1;
-            $dayspass= floor($datediff / (60 * 60 * 24));
+
+            $datediff = $ts2 - $ts1;
+
+            $dayspass = floor($datediff / (60 * 60 * 24));
+
             if( $dayspass < 0 ) {
                 $dayspass = -1 * $dayspass;
             }
-            if($dayspass <= $limit ){
+
+            if($dayspass <= $limit ) {
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
-
         }
-        else
-        {
-            return false;
-        }
-
+        return false;
     }
 }
 
 
 if (!function_exists('isActivityOutOfFunds')) {
-    function isActivityOutOfFunds($activity_id,$amount) {
-
-        $actvy=\App\BudgetActivity::find($activity_id);
-        $current_amount=$actvy->amount;
-        if(($current_amount - $amount) <= 0 )
-        {
+    function isActivityOutOfFunds($activity_id, $amount) {
+        $actvy = \App\BudgetActivity::find($activity_id);
+        $current_amount = $actvy->amount;
+        if(($current_amount - $amount) <= 0 ) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 }
 if (!function_exists('isActivityOutOfFundsbyID')) {
     function isActivityOutOfFundsbyID($activity_id) {
-
-        $actvy=\App\BudgetActivity::find($activity_id);
-        if($actvy->amount <= 0 )
-        {
+        $actvy = \App\BudgetActivity::find($activity_id);
+        if($actvy->amount <= 0 ) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -1354,13 +1334,14 @@ if (!function_exists('isActivityOutOfFundsbyID')) {
 
 //Deduct money
 if (!function_exists('deductActivityAmount')) {
-    function deductActivityAmount($activity_id,$amount){
-
+    function deductActivityAmount($activity_id, $amount){
         $actvy = \App\BudgetActivity::find($activity_id);
-        if (count($actvy) > 0 && $actvy != null) {
+        if ($actvy != null && $actvy->amount != null) {
+
             $current_amount = $actvy->amount;
-            $after_amount = ($current_amount - $amount);
-            if (($current_amount - $amount) <= 0) {
+            $after_amount = $current_amount - $amount;
+
+            if ($after_amount <= 0) {
                 $actvy->status = "Insufficient Funds";
                 $actvy->amount = 0.0;
             } else {

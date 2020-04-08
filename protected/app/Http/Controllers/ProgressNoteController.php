@@ -31,7 +31,7 @@ class ProgressNoteController extends Controller
     public function AuthorizeAll()
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $notices=ProgressNote::where('auth_status', '=', 'pending')
                 ->update([
@@ -51,7 +51,7 @@ class ProgressNoteController extends Controller
     public function AuthorizeProgressNoteById($id)
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $notices=ProgressNote::find($id)
                 ->update([
@@ -79,7 +79,7 @@ class ProgressNoteController extends Controller
         $count=1;
         foreach($notices as $note) {
             if ($note->auth_status == "pending") {
-                if (Auth::user()->can('authorize')) {
+                if (Auth::user()->hasPermission('authorize')) {
                     $records["data"][] = array(
                         $count++,
                         $note->reference_number,

@@ -2409,10 +2409,61 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'chart-stat-component',
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['authRole', 'authPermission', 'isLoading', 'pagination']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['authRole', 'authPermission', 'isLoading', 'ageGroups', 'clientNeeds', 'monthlyCashProvisions', 'clientRegistration']), {
     mLoading: {
       get: function get() {
         return this.isLoading;
@@ -19598,125 +19649,230 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c(
-          "div",
-          { staticClass: "row", staticStyle: { "margin-top": "10px" } },
-          [
-            _c("div", { staticClass: "col-md-12" }, [
-              _c("div", {
-                staticStyle: {
-                  "min-width": "310px",
-                  height: "400px",
-                  margin: "0 auto"
-                },
-                attrs: { id: "clientRegistration" }
-              })
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "row", staticStyle: { "margin-top": "10px" } },
-          [
-            _c("div", { staticClass: "col-md-8" }, [
-              _c("div", {
-                staticStyle: {
-                  "min-width": "410px",
-                  height: "500px",
-                  margin: "0 auto"
-                },
-                attrs: { id: "clientsNeeds" }
-              })
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-md-12" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-12" }, [
+          _c("div", { staticClass: "panel panel-default" }, [
+            _c("div", { staticClass: "panel-heading text-primary" }, [
+              _vm._v(
+                "\n                        Monthly Client Registration for year\n                    "
+              )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-4" }, [
-              _c("div", {
-                staticStyle: {
-                  "min-width": "410px",
-                  height: "500px",
-                  margin: "0 auto"
-                },
-                attrs: { id: "ageGroup" }
-              })
+            _c("div", { staticClass: "panel-body" }, [
+              _vm.clientRegistration && _vm.clientRegistration.series
+                ? _c(
+                    "div",
+                    { attrs: { id: "clientRegistration" } },
+                    [
+                      _c("apexchart", {
+                        attrs: {
+                          width: "100%",
+                          type: "line",
+                          options: _vm.clientRegistration.options,
+                          series: _vm.clientRegistration.series
+                        }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e()
             ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "row", staticStyle: { "margin-top": "20px" } },
-          [
-            _c("div", { staticClass: "col-md-12" }, [
-              _c("div", {
-                staticStyle: {
-                  "min-width": "310px",
-                  height: "500px",
-                  margin: "0 auto"
-                },
-                attrs: { id: "monthlyNfisDistributions" }
-              })
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "row", staticStyle: { "margin-top": "20px" } },
-          [
-            _c("div", { staticClass: "col-md-12" }, [
-              _c("div", {
-                staticStyle: {
-                  "min-width": "310px",
-                  height: "500px",
-                  margin: "0 auto"
-                },
-                attrs: { id: "monthlyCashProvisions" }
-              })
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "row", staticStyle: { "margin-top": "20px" } },
-          [
-            _c("div", { staticClass: "col-md-6" }, [
-              _c("div", {
-                staticStyle: {
-                  "min-width": "310px",
-                  height: "400px",
-                  margin: "0 auto"
-                },
-                attrs: { id: "cases" }
-              })
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-7" }, [
+          _c("div", { staticClass: "panel panel-default" }, [
+            _c("div", { staticClass: "panel-heading text-primary" }, [
+              _vm._v(
+                "\n                        Clients registered & their vulnerabilities\n                    "
+              )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-6" }, [
-              _c("div", {
-                staticStyle: {
-                  "min-width": "310px",
-                  height: "400px",
-                  margin: "0 auto"
-                },
-                attrs: { id: "casesPerStatus" }
-              })
+            _c("div", { staticClass: "panel-body" }, [
+              _vm.clientNeeds && _vm.clientNeeds.series
+                ? _c(
+                    "div",
+                    { attrs: { id: "clientsNeeds" } },
+                    [
+                      _c("apexchart", {
+                        attrs: {
+                          width: "500",
+                          type: "pie",
+                          options: _vm.clientNeeds.options,
+                          series: _vm.clientNeeds.series
+                        }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e()
             ])
-          ]
-        )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-5" }, [
+          _c("div", { staticClass: "panel panel-default" }, [
+            _c("div", { staticClass: "panel-heading text-primary" }, [
+              _vm._v(
+                "\n                        Client Distribution Age Groups\n                    "
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "panel-body" }, [
+              _vm.ageGroups && _vm.ageGroups.series
+                ? _c(
+                    "div",
+                    { attrs: { id: "ageGroup" } },
+                    [
+                      _c("apexchart", {
+                        attrs: {
+                          width: "500",
+                          type: "pie",
+                          options: _vm.ageGroups.options,
+                          series: _vm.ageGroups.series
+                        }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e()
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-12" }, [
+          _c("div", { staticClass: "panel panel-default" }, [
+            _c("div", { staticClass: "panel-heading text-primary" }, [
+              _vm._v(
+                "\n                        Monthly Cash Distribution\n                    "
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "panel-body" }, [
+              _vm.monthlyCashProvisions && _vm.monthlyCashProvisions.series
+                ? _c(
+                    "div",
+                    { attrs: { id: "monthlyNfisDistributions" } },
+                    [
+                      _c("apexchart", {
+                        attrs: {
+                          width: "100%",
+                          type: "bar",
+                          options: _vm.monthlyCashProvisions.options,
+                          series: _vm.monthlyCashProvisions.series
+                        }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e()
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-12" }, [
+          _c("div", { staticClass: "panel panel-default" }, [
+            _c("div", { staticClass: "panel-heading text-primary" }, [
+              _vm._v(
+                "\n                        Monthly Cash Distribution\n                    "
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "panel-body" }, [
+              _vm.clientNeeds && _vm.clientNeeds.series
+                ? _c(
+                    "div",
+                    [
+                      _c("apexchart", {
+                        attrs: {
+                          width: "500",
+                          type: "pie",
+                          options: _vm.ageGroups.options,
+                          series: _vm.ageGroups.series
+                        }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e()
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("div", { staticClass: "panel panel-default" }, [
+            _c("div", { staticClass: "panel-heading text-primary" }, [
+              _vm._v(
+                "\n                        Client Distribution Age groups\n                    "
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "panel-body" }, [
+              _vm.clientNeeds && _vm.clientNeeds.series
+                ? _c(
+                    "div",
+                    { attrs: { id: "cases" } },
+                    [
+                      _c("apexchart", {
+                        attrs: {
+                          width: "500",
+                          type: "pie",
+                          options: _vm.ageGroups.options,
+                          series: _vm.ageGroups.series
+                        }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e()
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("div", { staticClass: "panel panel-default" }, [
+            _c("div", { staticClass: "panel-heading text-primary" }, [
+              _vm._v(
+                "\n                        Client Distribution Age groups\n                    "
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "panel-body" }, [
+              _vm.clientNeeds && _vm.clientNeeds.series
+                ? _c(
+                    "div",
+                    { attrs: { id: "casesPerStatus" } },
+                    [
+                      _c("apexchart", {
+                        attrs: {
+                          width: "500",
+                          type: "pie",
+                          options: _vm.ageGroups.options,
+                          series: _vm.ageGroups.series
+                        }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e()
+            ])
+          ])
+        ])
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38736,7 +38892,7 @@ __webpack_require__.r(__webpack_exports__);
 // initial state
 var state = {
   clientRegistration: [],
-  clientsNeeds: [],
+  clientNeeds: [],
   ageGroups: [],
   monthlyNfisDistributions: [],
   monthlyCashProvisions: [],
@@ -38745,8 +38901,8 @@ var state = {
 }; // getters
 
 var getters = {
-  clientsNeeds: function clientsNeeds(state) {
-    return state.clientsNeeds;
+  clientNeeds: function clientNeeds(state) {
+    return state.clientNeeds;
   },
   ageGroups: function ageGroups(state) {
     return state.ageGroups;
@@ -38795,8 +38951,8 @@ var actions = {
 }; // mutations
 
 var mutations = {
-  setClientNeeds: function setClientNeeds(state, clientsNeeds) {
-    state.clientsNeeds = clientsNeeds;
+  setClientNeeds: function setClientNeeds(state, clientNeeds) {
+    state.clientNeeds = clientNeeds;
   },
   setAgeGroups: function setAgeGroups(state, ageGroups) {
     state.ageGroups = ageGroups;

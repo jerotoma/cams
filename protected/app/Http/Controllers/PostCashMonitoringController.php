@@ -30,7 +30,7 @@ class PostCashMonitoringController extends Controller
     public function AuthorizeAll()
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $assessments=PostCashAssessment::where('auth_status', '=', 'pending')
                 ->update([
@@ -50,7 +50,7 @@ class PostCashMonitoringController extends Controller
     public function AuthorizePostCashAssessmentById($id)
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $assessments=PostCashAssessment::find($id)
                 ->update([
@@ -118,7 +118,7 @@ class PostCashMonitoringController extends Controller
                 $camp_name=$assessment->camp->camp_name;
             }
             if ($assessment->auth_status == "pending") {
-                if (Auth::user()->can('authorize')) {
+                if (Auth::user()->hasPermission('authorize')) {
                     $records["data"][] = array(
                         $count++,
                         $assessment->interview_date,

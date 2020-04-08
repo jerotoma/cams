@@ -1,7 +1,6 @@
 @extends('site.master')
 @section('page_js')
     @include('inc.page_js')
-
 @stop
 @section('main_navigation')
      @include('inc.main_navigation')
@@ -104,11 +103,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="panel">
-                <div class="panel-content">
-                    <chart-stat-component></chart-stat-component>
-                </div>
-            </div>
+            <chart-stat-component></chart-stat-component>
         </div>
     </div>
 @stop

@@ -56,7 +56,7 @@ class ReferralController extends Controller
     public function AuthorizeAll()
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $assessments=ClientReferral::where('auth_status', '=', 'pending')
                 ->update([
@@ -76,7 +76,7 @@ class ReferralController extends Controller
     public function AuthorizeReferralsById($id)
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $assessments=ClientReferral::find($id)
                 ->update([

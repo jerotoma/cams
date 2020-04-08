@@ -54,8 +54,8 @@ class HomeController extends Controller
                     'monthlyNfisDistributions' => $this->getItemsDistributionCountByYear(Carbon::now()->year),
                     'monthlyCashProvisions' =>  $this->getItemsDistributionsMonthlyCountByYear(Carbon::now()->year),
                     'cases' => $this->loadCasesCountByStatus(),
-                    'casesPerStatus' => $this->getMonthlyCasesCountByYear(Carbon::now()->year),
-                    'clientRegistration' => $this->loadClientCountByDateRange(Carbon::now()->subYear()->toDateTimeString(), Carbon::now()->toDateTimeString()),
+                    'casesPerStatus' => $this->getMonthlyCasesCountByYear(2017),
+                    'clientRegistration' => $this->loadClientRegistrationCountByDateRange('2016-07-01', Carbon::now()->toDateTimeString()),
                 ]);
             }
         } catch (\Exception $ex) {
@@ -69,14 +69,24 @@ class HomeController extends Controller
 
     public function getClientVulnerabilityCountByCode() {
         $psnCodes = PSNCode::where('for_reporting','=','Yes')->get();
-        $clientByCodes = array();
+        $clientCountByCodes = array();
+        $clientByCodeNames = array();
         foreach ($psnCodes as $key => $code) {
-            $clientByCodes[] = [
-                'name' => $code->code,
-                'count' => ClientVulnerabilityCode::where('code_id','=',$code->id)->count()
-            ];
+            $clientCountByCodes[] = ClientVulnerabilityCode::where('code_id','=', $code->id)->count();
+            $clientByCodeNames[] = $code->code;
         }
-        return $clientByCodes;
+
+        return array(
+            'options' => [
+                'chart' => [
+                    'width' => 400,
+                    'type' => 'pie',
+                ],
+                'labels' => $clientByCodeNames,
+
+            ],
+            'series' => $clientCountByCodes
+        );
     }
 
     public function getClientRegistrationByParams($ageGroup, $gender, $dateFrom, $dateTo) {
@@ -89,38 +99,48 @@ class HomeController extends Controller
     public function getClientRegistrationCountByAgeGruop() {
         $ageGroups = CommonConstant::AGE_GROUPS;
         $ageGroupCount = array();
+        $ageGroupNames = array();
         foreach ($ageGroups  as $key => $ageGroup) {
-            $ageGroupCount[] = [
-                'ageGroup' => $ageGroup,
-                'count' =>  Client::where('age_score', '=', $key)->count()
-            ];
+            $ageGroupNames[] = $ageGroup;
+            $ageGroupCount[] = Client::where('age_score', '=', $key)->count();
         }
-        return $ageGroupCount;
+        return array(
+            'options' => [
+                'chart' => [
+                    'width' => 400,
+                    'type' => 'pie',
+                ],
+                'labels' => $ageGroupNames,
+            ],
+            'series' => $ageGroupCount
+        );
     }
     public function getCasesCountByStatus($status) {
         return ClientCase::where('status','=', $status)->count();
     }
 
     public function getMonthlyCasesCountByStatus($status, $year) {
-        $clientCaseCount = array();
-        for($i = 1; $i <= 12; $i++) {
-            $clientCaseCount[] = [
-                'month' => $i,
-                'status' => $status,
-                'count' => ClientCase::where('status', '=', $status)
-                    ->whereMonth('open_date', '=', $i)
-                    ->whereYear('open_date', '=', $year)
-                    ->count()
-            ];
+        $caseCount = array();
+        $caseMonth = array();
+
+        foreach(CommonConstant::MONTHS as $num => $monthName) {
+            $caseMonth[] = $monthName;
+            $caseCount[] = ClientCase::whereMonth('open_date', '=', $num)
+                                ->whereYear('open_date', '=', $year)
+                                ->where('status', '=', $status)->count();
         }
-        return $clientCaseCount;
+       return [
+           'caseMonth' => $caseMonth,
+           'caseCount' => $caseCount
+       ];
     }
 
     public function getMonthlyCasesCountByYear($year) {
-        $cases = [];
+        $cases = array();
         foreach (CommonConstant::CASE_STATUSES as $key => $caseStatus) {
-            $cases[]  = $this->getMonthlyCasesCountByStatus($caseStatus, $year);
+            $cases[$key]  = $this->getMonthlyCasesCountByStatus($caseStatus, $year);
         }
+        //dd($cases);
         return $cases;
     }
 
@@ -135,86 +155,154 @@ class HomeController extends Controller
         return $cases;
     }
 
-    private function loadClientCountByDateRange($dateFrom, $dateTo) {
+    private function loadClientRegistrationCountByDateRange($dateFrom, $dateTo) {
         $maleGender = 'Male';
         $femaleGender = 'Female';
 
         $ageGroups = CommonConstant::AGE_GROUPS;
-        $maleClientStats = array();
+        $maleClientCount = array();
+        $femaleClientCount = array();
+        $ageGroupList = array();
         foreach ($ageGroups  as $key => $ageGroup) {
-            $maleClientStats[] = [
-                'ageGroup' => $ageGroup,
-                'count' => $this->getClientRegistrationByParams($key, $maleGender, $dateFrom, $dateTo)->count(),
-                'dateRange' => [
-                    'from' => $dateFrom,
-                    'to' => $dateTo
-                ],
-                'gender' => $maleGender
-            ];
+            $maleClientCount[] = $this->getClientRegistrationByParams($key, $maleGender, $dateFrom, $dateTo)->count();
+            $femaleClientCount[] = $this->getClientRegistrationByParams($key, $femaleGender, $dateFrom, $dateTo)->count();
+            $ageGroupList[] = $ageGroup;
         }
-
-        $femaleClientStats = array();
-        foreach ($ageGroups as $key => $ageGroup) {
-            $femaleClientStats[] = [
-                'ageGroup' => $ageGroup,
-                'count' => $this->getClientRegistrationByParams($key, $femaleGender, $dateFrom, $dateTo)->count(),
-                'dateRange' => [
-                    'from' => $dateFrom,
-                    'to' => $dateTo
+        return array(
+            'series' => [
+                [
+                    'name' => 'Male Client Registered ',
+                    'type' => 'column',
+                    'data' => $maleClientCount
                 ],
-                'gender' => $femaleGender
-            ];
-        }
-        $clientRegStats = [
-            'maleClientStats' => $maleClientStats,
-            'femaleClientStats' => $femaleClientStats
-        ];
-        return $clientRegStats;
+                [
+                    'name' => 'Female Client Registered ',
+                    'type' => 'column',
+                    'data' => $femaleClientCount
+                ]
+            ],
+            'options' => [
+                'chart' => [
+                    'height' => 350,
+                    'type' => 'line',
+                    'stacked' => false
+                ],
+                'dataLabels' => [
+                    'enabled' => false,
+                ],
+                'stroke' => [
+                    'width' => [1, 1],
+                    'curve' => 'smooth'
+                ],
+                'title' => [
+                    'text' => 'Number of Registered Clients from '. Carbon::parse($dateFrom)->isoFormat('MMMM Do, YYYY') . ' to ' .Carbon::parse($dateTo)->isoFormat('MMMM Do, YYYY'),
+                    'align' => 'left',
+                    'offsetX' => 50
+                ],
+                'xaxis' => [
+                    'categories' => $ageGroupList
+                ],
+                'yaxis' => [
+                    'axisTicks' => [
+                        'show' => true,
+                    ],
+                    'axisBorder' => [
+                        'show' => true,
+                        'color' => '#008FFB'
+                    ],
+                    'labels' => [
+                        'style' => [
+                            'colors' => '#008FFB'
+                        ]
+                    ],
+                    'title' => [
+                        'text' => 'Number of Registered Clients per Age Group',
+                        'style' => [
+                            'colors' => '#008FFB'
+                        ]
+                    ]
+                ]
+            ],
+        );
     }
     public function getItemsDistributionsMonthlyCountByYear($year) {
         $maleGender = 'Male';
         $femaleGender = 'Female';
 
         $ageGroups = CommonConstant::AGE_GROUPS;
-        $maleClientStats = [
-            'gender' => $maleGender,
-            'year' => $year,
-            'data' => array()
-        ];
+        $dataSeries = [];
+        $caseMonths = array();
         foreach ($ageGroups  as $key => $ageGroup) {
-           //
-           $maleClientStats['data'][$key] = [
-                        'ageGroup' => $ageGroup,
-                        'mounthes' => array()
-                    ];
-            for ($i = 1; $i <= 12; $i++) {
-                $maleClientStats['data'][$key]['mounthes'][] = [
-                    'count' => $this->getClientRegistrationByParams($key, $maleGender, $i, $year)->count(),
-                    'month' => $i];
+            $caseMaleCount = array();
+            $caseFemaleCount = array();       //
+            foreach(CommonConstant::MONTHS as $num => $monthName) {
+                $caseMaleCount[] = $this->getItemsDistributionsMonthlyCount($key, $maleGender, $num, $year)->count();
+                $caseFemaleCount[] = $this->getItemsDistributionsMonthlyCount($key, $femaleGender, $num, $year)->count();
             }
+            $dataSeries[] = [
+                'name' => $ageGroup,
+                'data' => $caseMaleCount,
+                'name' => $ageGroup,
+                'data' => $caseFemaleCount
+            ];
         }
 
-        $femaleClientStats = [
-            'gender' => $femaleGender,
-            'year' => $year,
-            'data' => array()
-        ];
-        foreach ($ageGroups  as $key => $ageGroup) {           //
-           $femaleClientStats['data'][$key] = [
-                        'ageGroup' => $ageGroup,
-                        'mounthes' => array()
-                    ];
-            for ($i = 1; $i <= 12; $i++) {
-                $femaleClientStats['data'][$key]['mounthes'][] = [
-                    'count' => $this->getClientRegistrationByParams($key, $femaleGender, $i, $year)->count(),
-                    'month' => $i];
-            }
+        foreach (CommonConstant::MONTHS as $num => $monthName) {           //
+            $caseMonths[] = $monthName;
         }
-        $clientRegStats = [
-            'maleClientStats' => $maleClientStats,
-            'femaleClientStats' => $femaleClientStats
-        ];
-        return $clientRegStats;
+
+        return array(
+            'series' => $dataSeries,
+            'options' => [
+                'chart' => [
+                    'height' => 350,
+                    'type' => 'bar',
+                    'stacked' => true,
+                    'toolbar' => [
+                        'show' => true
+                    ],
+                    'zoom' => [
+                        'enabled' => true,
+                    ],
+                ],
+                'dataLabels' => [
+                    'enabled' => false,
+                ],
+                'title' => [
+                    'text' => 'Monthly Cash Distribution for year ' . $year,
+                    'align' => 'left',
+                    'offsetX' => 50
+                ],
+                'plotOptions' => [
+                    'bar' => [
+                      'horizontal' => false,
+                    ],
+                ],
+                'xaxis' => [
+                    'categories' => $caseMonths
+                ],
+                'yaxis' => [
+                    'axisTicks' => [
+                        'show' => true,
+                    ],
+                    'axisBorder' => [
+                        'show' => true,
+                        'color' => '#008FFB'
+                    ],
+                    'labels' => [
+                        'style' => [
+                            'colors' => '#008FFB'
+                        ]
+                    ],
+                    'title' => [
+                        'text' => 'Number of Monthly Cash Distribution for year '. $year,
+                        'style' => [
+                            'colors' => '#008FFB'
+                        ]
+                    ]
+                ]
+            ],
+        );
     }
 
     public function getItemsDistributionsMonthlyCount($ageGroup, $gender, $month, $year) {
@@ -223,7 +311,7 @@ class HomeController extends Controller
                 ->where('clients.age_score', '=', $ageGroup)
                 ->where('clients.sex', '=', $gender)
                 ->whereMonth('distribution_date', '=', $month)
-                ->whereYear('distribution_date', '=', $year)->count();
+                ->whereYear('distribution_date', '=', $year);
     }
 
     public function getItemsDistributionCountByYear($year) {

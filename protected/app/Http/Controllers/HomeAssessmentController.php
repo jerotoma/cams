@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class HomeAssessmentController extends Controller
 {
-    
+
     public function __construct(){
         $this->middleware('auth');
     }
@@ -28,7 +28,7 @@ class HomeAssessmentController extends Controller
     public function AuthorizeAll()
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $assessments=HomeAssessment::where('auth_status', '=', 'pending')
                 ->update([
@@ -48,7 +48,7 @@ class HomeAssessmentController extends Controller
     public function AuthorizeAssessmentById($id)
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $assessments=HomeAssessment::find($id)
                 ->update([
@@ -113,7 +113,7 @@ class HomeAssessmentController extends Controller
                $age=$assessment->client->age;
            }
             if ($assessment->auth_status == "pending") {
-                if (Auth::user()->can('authorize')) {
+                if (Auth::user()->hasPermission('authorize')) {
                     $records["data"][] = array(
                         $count++,
                         $assessment->assessment_date,

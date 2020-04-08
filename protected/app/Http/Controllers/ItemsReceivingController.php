@@ -34,7 +34,7 @@ class ItemsReceivingController extends Controller
     public function AuthorizeAll()
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $items=InventoryReceived::where('auth_status', '=', 'pending')
                 ->update([
@@ -54,7 +54,7 @@ class ItemsReceivingController extends Controller
     public function AuthorizeInventoryReceivedById($id)
     {
         //
-        if (Auth::user()->can('authorize')){
+        if (Auth::user()->hasPermission('authorize')){
 
             $items=InventoryReceived::find($id)
                 ->update([
@@ -89,7 +89,7 @@ class ItemsReceivingController extends Controller
         foreach($items as $item) {
 
             if ($item->auth_status == "pending") {
-                if (Auth::user()->can('authorize')) {
+                if (Auth::user()->hasPermission('authorize')) {
                     $records["data"][] = array(
                         $count++,
                         $item->reference_number,
@@ -420,7 +420,7 @@ class ItemsReceivingController extends Controller
 
                 $results->each(function($row) {
 
-                    //Categories 
+                    //Categories
 
                     //Items
                     if($row->item_name != null & $row->item_name !="")
@@ -665,7 +665,7 @@ class ItemsReceivingController extends Controller
                 'errors' => $ex->getMessage()
             ), 400); // 400 being the HTTP code for an invalid request.
         }
-        
+
     }
 
 
