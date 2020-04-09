@@ -116,7 +116,7 @@ class ClientsController extends Controller
     public function  getJSonClientDataSearch()
     {
         //
-        $clients=Client::orderBy('full_name','ASC')->get();
+        $clients = Client::orderBy('full_name','ASC')->get();
         $iTotalRecords =count(Client::all());
         $sEcho = intval(10);
 
@@ -248,11 +248,13 @@ class ClientsController extends Controller
     }
 
     private function findClientBySearchTerm($searchTerm) {
+        $dbPrefix = DB::getTablePrefix();
+
         $clientQuery =  Client::leftJoin('camps', 'camps.id', '=', 'clients.camp_id')
             ->leftJoin('origins', 'origins.id', '=', 'clients.origin_id')
-            ->where(DB::raw('lower(clients.full_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.client_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.sex)'), 'LIKE', '%'. Str::lower($searchTerm). '%' );
+            ->where(DB::raw('lower('.$dbPrefix.'clients.full_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.client_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.sex)'), 'LIKE', '%'. Str::lower($searchTerm). '%' );
         try {
             if (Carbon::createFromFormat('Y-m-d H:i:s', $searchTerm) !== FALSE) {
                 $clientQuery = $clientQuery
@@ -263,23 +265,23 @@ class ClientsController extends Controller
 
         }
         $clientQuery = $clientQuery->orWhere(DB::raw('lower(clients.hai_reg_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.age_score)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.marital_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.care_giver)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.child_care_giver)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.present_address)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.age_score)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.marital_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.care_giver)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.child_care_giver)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.present_address)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
             ->orWhere('clients.females_total', 'LIKE', '%'. $searchTerm . '%' )
             ->orWhere('clients.males_total', 'LIKE', '%'. $searchTerm . '%' )
             ->orWhere('clients.household_number', 'LIKE', '%'. $searchTerm . '%' )
-            ->orWhere(DB::raw('lower(clients.ration_card_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.assistance_received)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.problem_specification)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.share_info)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.hh_relation)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(clients.auth_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(camps.camp_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower(origins.origin_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' );
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.ration_card_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.assistance_received)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.problem_specification)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.share_info)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.hh_relation)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.auth_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'camps.camp_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'origins.origin_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' );
         return $clientQuery;
     }
 

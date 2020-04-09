@@ -129,6 +129,21 @@ class ChartUtility {
                 'chart' => [
                     'height' => $height,
                     'type' => 'pie',
+                    'toolbar' => [
+                        'show' => true,
+                        'offsetX' => 0,
+                        'offsetY' => 0,
+                        'tools' => [
+                          'download' => true,
+                          'selection' => true,
+                          'zoom' => true,
+                          'zoomin' => true,
+                          'zoomout' => true,
+                          'pan' => true,
+                          'reset' => true,
+                        ],
+                        'autoSelected' => 'zoom'
+                    ],
                 ],
                 'labels' => $labelItems,
             ],
