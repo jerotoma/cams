@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
 use App\Client;
@@ -23,20 +24,14 @@ use App\Helpers\CommonConstant;
 use DB;
 
 class HomeController extends Controller {
-    public function __construct()
-    {
-     $this->middleware('auth');
+
+    public function __construct()  {
+        $this->middleware('auth');
     }
     //
-
-    public function index()
-    {
+    public function index() {
         if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('authorizer') || Auth::user()->hasPermission('reports')) {
-            return view('site.dashboard', [
-                'usersCount' => User::count(),
-                'clientCasesCount' => ClientCase::count(),
-                'clientsCount' => Client::count(),
-            ]);
+            return view('site.dashboard');
         } else {
             return redirect('account/profile');
         }
@@ -78,8 +73,8 @@ class HomeController extends Controller {
                     'monthlyCashProvisions' => $this->getMonthlyCashProvisionCountByYear(Carbon::now()->year),
                     'monthlyItemDistributions' => $this->getMonthlyItemsDistributionCountByYear(Carbon::now()->year),
                     'cases' => $this->loadCasesCountByStatus(),
-                    'casesPerStatus' => $this->getMonthlyCasesCountByYear(2017),
-                    'clientRegistration' => $this->loadClientRegistrationCountByDateRange('2016-07-01', Carbon::now()->toDateTimeString()),
+                    'casesPerStatus' => $this->getMonthlyCasesCountByYear(Carbon::now()->year),
+                    'clientRegistration' => $this->loadClientRegistrationCountByDateRange(Carbon::now()->subYears(5)->toDateTimeString(), Carbon::now()->toDateTimeString()),
                 ]);
             }
         } catch (\Exception $ex) {
@@ -89,6 +84,122 @@ class HomeController extends Controller {
             ), 400); // 400 being the HTTP code for an invalid request.
         }
 
+    }
+
+    public function loadClientRegistrationByDateRange(Request $request) {
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'startDate' => 'required|date',
+                'endDate' => 'required|date',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('authorizer') || Auth::user()->hasPermission('reports')) {
+
+                    return response()->json([
+                        'authRole' => AuthUtility::getRoleName(),
+                        'authPermission' => AuthUtility::getPermissionName(),
+                        'clientRegistration' => $this->loadClientRegistrationCountByDateRange($request->startDate, $request->endDate),
+                    ]);
+                }
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+    }
+
+    public function loadNFISDistributionByYear(Request $request) {
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'year' => 'required|numeric'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('authorizer') || Auth::user()->hasPermission('reports')) {
+                    return response()->json([
+                        'authRole' => AuthUtility::getRoleName(),
+                        'authPermission' => AuthUtility::getPermissionName(),
+                        'monthlyItemDistributions' => $this->getMonthlyItemsDistributionCountByYear($request->year),
+                    ]);
+                }
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+    }
+
+    public function loadMonthlyCashProvisionByYear(Request $request) {
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'year' => 'required|numeric'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('authorizer') || Auth::user()->hasPermission('reports')) {
+                    return response()->json([
+                        'authRole' => AuthUtility::getRoleName(),
+                        'authPermission' => AuthUtility::getPermissionName(),
+                        'monthlyCashProvisions' => $this->getMonthlyCashProvisionCountByYear($request->year),
+                    ]);
+                }
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+    }
+    public function loadMonthlyAverageCaseByYear(Request $request) {
+        try {
+            $validator = Validator::make($request->all(), [
+                'year' => 'required|numeric'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('authorizer') || Auth::user()->hasPermission('reports')) {
+                    return response()->json([
+                        'authRole' => AuthUtility::getRoleName(),
+                        'authPermission' => AuthUtility::getPermissionName(),
+                        'casesPerStatus' => $this->getMonthlyCasesCountByYear($request->year),
+                    ]);
+                }
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     public function getClientVulnerabilityCountByCode() {
@@ -155,7 +266,7 @@ class HomeController extends Controller {
             $caseStatuses[]  = $caseStatus;
             $caseStatusesCount[] = $this->getCasesCountByStatus($caseStatus);
         }
-        return ChartUtility::getBasicPieChartData($caseStatusesCount, $caseStatuses);
+        return ChartUtility::getBasicPieChartData($caseStatusesCount, $caseStatuses, 380);
     }
 
     private function loadClientRegistrationCountByDateRange($dateFrom, $dateTo) {

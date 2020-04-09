@@ -281,6 +281,10 @@ Route::prefix('rest/secured')->group(function () {
     //Dashboard
     Route::get('/dashboard/chart-stats','HomeController@findChartStats');
     Route::get('/dashboard/counter-stats','HomeController@findCountStats');
+    Route::post('/dashboard/registered-clients/date-range', 'HomeController@loadClientRegistrationByDateRange');
+    Route::post('/dashboard/nfis-distributions/year', 'HomeController@loadNFISDistributionByYear');
+    Route::post('/dashboard/cash-provisions/year', 'HomeController@loadMonthlyCashProvisionByYear');
+    Route::post('/dashboard/cases/year', 'HomeController@loadMonthlyAverageCaseByYear');
 
     //Clients
     Route::get('/clients','ClientsController@findClientList');

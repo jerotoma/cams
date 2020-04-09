@@ -18,7 +18,7 @@ class ChartUtility {
                         'show' => true
                     ],
                     'zoom' => [
-                        'enabled' => true,
+                        'enabled' => false,
                     ],
                 ],
                 'dataLabels' => [
@@ -111,16 +111,23 @@ class ChartUtility {
                             'colors' => '#008FFB'
                         ]
                     ]
-                ]
+                ],
+                'legend' => [
+                    'position' => 'right',
+                    'offsetY' => 40
+                ],
+                'fill' => [
+                    'opacity' => 1
+                ],
             ],
         );
     }
 
-    public static function getBasicPieChartData(array $dataSeries, array $labelItems) {
+    public static function getBasicPieChartData(array $dataSeries, array $labelItems, $height = 365) {
         return array(
             'options' => [
                 'chart' => [
-                    'width' => 350,
+                    'height' => $height,
                     'type' => 'pie',
                 ],
                 'labels' => $labelItems,
