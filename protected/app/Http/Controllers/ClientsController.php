@@ -264,7 +264,7 @@ class ClientsController extends Controller
         } catch (\Exception $ex) {
 
         }
-        $clientQuery = $clientQuery->orWhere(DB::raw('lower(clients.hai_reg_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+        $clientQuery = $clientQuery->orWhere(DB::raw('lower('.$dbPrefix.'clients.hai_reg_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
             ->orWhere(DB::raw('lower('.$dbPrefix.'clients.age_score)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
             ->orWhere(DB::raw('lower('.$dbPrefix.'clients.marital_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
             ->orWhere(DB::raw('lower('.$dbPrefix.'clients.care_giver)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
