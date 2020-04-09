@@ -6,7 +6,7 @@ class CommonConstant {
     public const AGE_GROUPS = [
         'A' => '0 - 17',
         'B' => '18 - 49',
-        'C' => '50 - 58',
+        'C' => '50 - 59',
         'D' => '60 and Above'
     ];
 
@@ -32,4 +32,19 @@ class CommonConstant {
         11 => 'November',
         12 => 'December'
     ];
+
+    public function getAgeScore($age){
+        if($age <=17 ){
+            return "A";
+        }
+        else if($age >17 && $age < 50){
+            return "B";
+        }
+        else if($age >=50 && $age < 60){
+            return "C";
+        }
+        else if($age >= 60 ){
+            return "D";
+        }
+    }
 }

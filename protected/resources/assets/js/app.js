@@ -10,6 +10,7 @@ const moment = require('vue-moment');
 
 import store from './store/store';
 import DatePlugin from './shared/utilities/DateUtilities';
+import StringUtilPlugin from './shared/utilities/StringUtil';
 import ModalPlugin from './shared/modals/modal-loader';
 
 import VueApexCharts from 'vue-apexcharts'
@@ -22,6 +23,7 @@ import 'vue-good-table/dist/vue-good-table.css'
 Vue.use(moment);
 Vue.use(ModalPlugin);
 Vue.use(DatePlugin);
+Vue.use(StringUtilPlugin);
 Vue.use(VueGoodTablePlugin);
 
 //Components

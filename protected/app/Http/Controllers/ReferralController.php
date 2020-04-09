@@ -15,11 +15,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 use App\Helpers\PaginateUtility;
 use App\Helpers\AuthUtility;
 use App\Helpers\ValidatorUtility;
-use DB;
+use DB, Log;
 
 class ReferralController extends Controller
 {
@@ -149,171 +151,108 @@ class ReferralController extends Controller
                 'errors' => $ex->getMessage()
             ), 400); // 400 being the HTTP code for an invalid request.
         }
-
-
-
-
-        //
-        $referrals = ClientReferral::all();
-        $iTotalRecords = count(ClientReferral::all());
-        $sEcho = intval(10);
-
-        $records = array();
-        $records["data"] = array();
-
-
-        $count=1;
-        foreach($referrals as $referral) {
-            $origin="";
-            $status="";
-
-            $vcolor="label-danger";
-            $hai_reg_number="";
-            $full_name="";
-            $sex="";
-            $age="";
-            $camp_name="";
-            if(is_object($referral->client) && $referral->client != null){
-                $hai_reg_number=$referral->client->hai_reg_number;
-                $full_name=$referral->client->full_name;
-                $sex=$referral->client->sex;
-                $age=$referral->client->age;
-
-            }
-            if(is_object($referral->camp) && $referral->camp != null){
-                $camp_name=$referral->camp->camp_name;
-            }
-
-            if ($referral->auth_status == "pending")
-            {
-                if (Auth::user()->hasPermission('authorize'))
-                {
-                    $records["data"][] = array(
-                        $count++,
-                        $referral->reference_no,
-                        $referral->referral_date,
-                        $hai_reg_number,
-                        $full_name,
-                        $age,
-                        $sex,
-                        $camp_name,
-                        $referral->status,
-                        $referral->auth_status,
-                        '<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                             <li id="'.$referral->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                             <li id="'.$referral->id.'"><a href="#" class=" label " onclick="printPage(\''.url('referrals').'/'.$referral->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
-                             <li id="'.$referral->id.'"><a href="'.url('download/referrals/form').'/'.$referral->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
-                             <li id="'.$referral->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
-                             <li id="'.$referral->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                             <li id="'.$referral->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
-                            </ul>
-                        </li>
-                    </ul>'
-                    );
-                }
-                elseif (Auth::user()->hasRole('inputer'))
-                {
-                    $records["data"][] = array(
-                        $count++,
-                        $referral->reference_no,
-                        $referral->referral_date,
-                        $hai_reg_number,
-                        $full_name,
-                        $age,
-                        $sex,
-                        $camp_name,
-                        $referral->status,
-                        $referral->auth_status,
-                        '<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                             <li id="'.$referral->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                             <li id="'.$referral->id.'"><a href="#" class=" label " onclick="printPage(\''.url('referrals').'/'.$referral->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
-                             <li id="'.$referral->id.'"><a href="'.url('download/referrals/form').'/'.$referral->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
-                             <li id="'.$referral->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                             <li id="'.$referral->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
-                            </ul>
-                        </li>
-                    </ul>'
-                    );
-                }
-            }
-            else
-            {
-                if (Auth::user()->hasRole('admin'))
-                {
-                    $records["data"][] = array(
-                        $count++,
-                        $referral->reference_no,
-                        $referral->referral_date,
-                        $hai_reg_number,
-                        $full_name,
-                        $age,
-                        $sex,
-                        $camp_name,
-                        $referral->status,
-                        $referral->auth_status,
-                        '<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                             <li id="'.$referral->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                             <li id="'.$referral->id.'"><a href="#" class=" label " onclick="printPage(\''.url('referrals').'/'.$referral->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
-                             <li id="'.$referral->id.'"><a href="'.url('download/referrals/form').'/'.$referral->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
-                             <li id="'.$referral->id.'"><a href="#" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                             <li id="'.$referral->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
-                            </ul>
-                        </li>
-                    </ul>'
-                    );
-                }
-                else
-                {
-                    $records["data"][] = array(
-                        $count++,
-                        $referral->reference_no,
-                        $referral->referral_date,
-                        $hai_reg_number,
-                        $full_name,
-                        $age,
-                        $sex,
-                        $camp_name,
-                        $referral->status,
-                        $referral->auth_status,
-                        '<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                             <li id="'.$referral->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                             <li id="'.$referral->id.'"><a href="#" class=" label " onclick="printPage(\''.url('referrals').'/'.$referral->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
-                             <li id="'.$referral->id.'"><a href="'.url('download/referrals/form').'/'.$referral->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
-                            </ul>
-                        </li>
-                    </ul>'
-                    );
-                }
-            }
-        }
-
-
-        $records["draw"] = $sEcho;
-        $records["recordsTotal"] = $iTotalRecords;
-        $records["recordsFiltered"] = $iTotalRecords;
-
-        echo json_encode($records);
     }
+
+    public function searchReferralPaginated(Request $request) {
+        try {
+            $validator = Validator::make($request->all(), [
+                'sortField' => 'required',
+                'sortType' => 'required|max:5',
+                'perPage' => 'required',
+                'page' => 'required',
+                'searchTerm' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                $assessments = $this->processSortRequest($request,  $this->findReferralBySearchTerm($request->searchTerm))->paginate($request->perPage);
+                return response()->json([
+                    'authRole' => AuthUtility::getRoleName(),
+                    'authPermission' => AuthUtility::getPermissionName(),
+                    'referrals' => $assessments,
+                    'pagination' =>  PaginateUtility::mapPagination($assessments),
+                ]);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+    }
+    private function findReferralBySearchTerm($searchTerm) {
+        $dataType = config('database.default') == 'pgsql' ? 'INTEGER' : 'UNSIGNED';
+        $dbPrefix = DB::getTablePrefix();
+        $referrals = ClientReferral::join('clients', 'clients.id', '=', 'client_referrals.client_id')
+            ->leftJoin('camps', 'camps.id', '=', 'clients.camp_id')
+            ->leftJoin('origins', 'origins.id', '=', 'clients.origin_id')
+            ->select(
+                'client_referrals.id AS referralId',
+                'client_referrals.referral_date',
+                'client_referrals.reference_no',
+                'client_referrals.referral_type',
+                'client_referrals.auth_status AS referralAuthStatus',
+                'client_referrals.status AS referral_status',
+                'camps.camp_name',
+                'clients.*'
+            )
+            ->where(DB::raw('lower('.$dbPrefix.'client_referrals.status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'client_referrals.reference_no)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'client_referrals.auth_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'client_referrals.referral_type)'), 'LIKE', '%'. Str::lower($searchTerm) . '%');
+            try {
+                if (Carbon::createFromFormat('Y-m-d H:i:s', $searchTerm) !== FALSE) {
+                    $referrals = $referrals->orWhereDate('clients.birth_date', 'LIKE', '%'. date("Y-m-d", strtotime($searchTerm)) . '%' )
+                        ->orWhereDate('client_referrals.referral_date', 'LIKE', '%'. date("Y-m-d", strtotime($searchTerm)) . '%' );
+                }
+            } catch (\Exception $ex) {
+                Log::debug('Invalid Date. ', [
+                    'user_id' => Auth::user()->id,
+                    'errors' => $ex->getMessage()]);
+            }
+            //Client
+            $referrals = $referrals
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.full_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.client_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.sex)'), 'LIKE', '%'. Str::lower($searchTerm). '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.hai_reg_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.age_score)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.marital_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.care_giver)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.child_care_giver)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.present_address)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere('clients.females_total', 'LIKE', '%'. $searchTerm . '%' )
+            ->orWhere('clients.males_total', 'LIKE', '%'. $searchTerm . '%' )
+            ->orWhere('clients.household_number', 'LIKE', '%'. $searchTerm . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.ration_card_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.assistance_received)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.problem_specification)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.share_info)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.hh_relation)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.auth_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' );
+            try {
+                if (Carbon::createFromFormat('Y-m-d H:i:s', $searchTerm) !== FALSE) {
+                    $referrals = $referrals->orWhereDate('clients.birth_date', 'LIKE', '%'. date("Y-m-d", strtotime($searchTerm)) . '%' )
+                        ->orWhereDate('clients.date_arrival', 'LIKE', '%'. date("Y-m-d", strtotime($searchTerm)) . '%' );
+                }
+            } catch (\Exception $ex) {
+                Log::debug('Invalid Date. ', [
+                    'user_id' => Auth::user()->id,
+                    'errors' => $ex->getMessage()]);
+            }
+             //Camp
+             $referrals = $referrals
+            ->orWhere(DB::raw('lower('.$dbPrefix.'camps.camp_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            //Origin
+            ->orWhere(DB::raw('lower('.$dbPrefix.'origins.origin_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' );
+        return $referrals;
+    }
+
 
     /**
      * Show the form for creating a new resource.

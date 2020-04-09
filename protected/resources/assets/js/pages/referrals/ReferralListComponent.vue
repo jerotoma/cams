@@ -23,11 +23,8 @@
             perPageDropdown: pagination.perPageDropdown,
         }">
             <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'date_arrival'">
-                    <span class="text-primary">{{props.row.date_arrival | moment("MMMM Do, YYYY")}}</span>
-                </span>
-                <span v-else-if="props.column.field == 'camp'">
-                    <span class="text-primary">{{props.row.camp && props.row.camp.camp_name ? props.row.camp.camp_name : props.row.camp_name }}</span>
+                <span v-if="props.column.field == 'referral_date'">
+                    <span class="text-primary">{{props.row.referral_date | moment("MMMM Do, YYYY")}}</span>
                 </span>
                 <span v-else-if="props.column.field == 'action'">
                     <ul class="icons-list text-center">
@@ -121,24 +118,28 @@ export default {
                 {
                     label: 'Sex',
                     field: 'sex',
+                    formatFn: this.$stringUtil.capitalize,
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
                 {
                     label: 'Camp',
                     field: 'camp_name',
+                    formatFn: this.$stringUtil.capitalize,
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
                 {
                     label: 'Progress Status',
                     field: 'referral_status',
+                    formatFn: this.$stringUtil.capitalize,
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
                 {
                     label: 'Auth Status',
                     field: 'auth_status',
+                    formatFn: this.$stringUtil.capitalize,
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },

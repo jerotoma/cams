@@ -27,7 +27,7 @@
                     <span class="text-primary">{{props.row.date_arrival | moment("MMMM Do, YYYY")}}</span>
                 </span>
                 <span v-else-if="props.column.field == 'camp'">
-                    <span class="text-primary">{{props.row.camp && props.row.camp.camp_name ? props.row.camp.camp_name : props.row.camp_name }}</span>
+                    <span class="text-primary">{{props.row.camp && props.row.camp.camp_name ? $stringUtil.capitalize(props.row.camp.camp_name) : $stringUtil.capitalize(props.row.camp_name)}}</span>
                 </span>
                 <span v-else-if="props.column.field == 'action'">
                     <ul class="icons-list text-center">
@@ -82,6 +82,7 @@ export default {
                 {
                     label: 'Full Name',
                     field: 'full_name',
+                    formatFn: this.$stringUtil.capitalize,
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
@@ -100,6 +101,7 @@ export default {
                 {
                     label: 'Sex',
                     field: 'sex',
+                    formatFn: this.$stringUtil.capitalize,
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
@@ -113,6 +115,7 @@ export default {
                 {
                     label: 'Address',
                     field: 'present_address',
+                    formatFn: this.$stringUtil.capitalize,
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
@@ -132,6 +135,7 @@ export default {
                 {
                     label: 'Auth Status',
                     field: 'auth_status',
+                    formatFn: this.$stringUtil.capitalize,
                 },
                 {
                     label: 'Action',

@@ -99,6 +99,7 @@ class HomeAssessmentController extends Controller
             $camp_name="";
             $hai_reg_number="";
             $client_number="";
+            $individual_id = "";
             $full_name="";
             $sex="";
             $age="";
@@ -108,6 +109,7 @@ class HomeAssessmentController extends Controller
                $camp_name =$assessment->client->camp->camp_name;
                $hai_reg_number=$assessment->client->hai_reg_number;
                $client_number= $assessment->client->client_number;
+               $individual_id = $assessment->client->individual_id;
                $full_name=$assessment->client->full_name;
                $sex=$assessment->client->sex;
                $age=$assessment->client->age;
@@ -120,6 +122,7 @@ class HomeAssessmentController extends Controller
                         $assessment->case_code,
                         $hai_reg_number,
                         $client_number,
+                        $individual_id,
                         $full_name,
                         $sex,
                         $age,
@@ -150,6 +153,7 @@ class HomeAssessmentController extends Controller
                         $assessment->case_code,
                         $hai_reg_number,
                         $client_number,
+                        $individual_id,
                         $full_name,
                         $sex,
                         $age,
@@ -181,6 +185,7 @@ class HomeAssessmentController extends Controller
                         $assessment->case_code,
                         $assessment->client->hai_reg_number,
                         $assessment->client->client_number,
+                        $assessment->client->individual_id,
                         $assessment->client->full_name,
                         $assessment->client->sex,
                         $assessment->client->age,
@@ -209,6 +214,7 @@ class HomeAssessmentController extends Controller
                         $assessment->case_code,
                         $assessment->client->hai_reg_number,
                         $assessment->client->client_number,
+                        $assessment->client->individual_id,
                         $assessment->client->full_name,
                         $assessment->client->sex,
                         $assessment->client->age,

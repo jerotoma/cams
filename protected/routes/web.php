@@ -114,7 +114,6 @@ Route::resource('assessments/functional','FunctionalAssessmentController');
 //Vulnerability Assessments
 Route::resource('assessments/vulnerability','VulnerabilityAssessmentController');
 Route::get('clients-va','VulnerabilityAssessmentController@showClients');
-Route::get('getvalist','VulnerabilityAssessmentController@assessmentListJsonType');
 Route::get('client/assessments/vulnerability/{id}','VulnerabilityAssessmentController@showClientVulnerability');
 Route::get('assessments/vulnerability/download/{id}','VulnerabilityAssessmentController@downloadForm');
 Route::get('getvulassessmentpsnprofile/{id}','VulnerabilityAssessmentController@getPSNProfile');
@@ -291,8 +290,8 @@ Route::prefix('rest/secured')->group(function () {
     Route::get('/clients/search-paginated','ClientsController@searchClientPaginated');
 
     //VulnerabilityAssessmentsearch-paginated
-    Route::get('assessments/vulnerabilities','VulnerabilityAssessmentController@assessmentListJsonType');
-    Route::get('assessments/vulnerabilities/search-paginated','VulnerabilityAssessmentController@assessmentListJsonType');
+    Route::get('assessments/vulnerabilities','VulnerabilityAssessmentController@findVulnerabilityAssessments');
+    Route::get('assessments/vulnerabilities/search-paginated','VulnerabilityAssessmentController@searchVulnerabilityAssessments');
 
     //Referrals
     Route::get('/referrals', 'ReferralController@getReferralList');

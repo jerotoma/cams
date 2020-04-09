@@ -24,7 +24,7 @@ use Carbon\Carbon;
 use App\Helpers\PaginateUtility;
 use App\Helpers\AuthUtility;
 use App\Helpers\ValidatorUtility;
-
+use App\Helpers\CommonConstant;
 
 class ClientsController extends Controller
 {
@@ -572,7 +572,7 @@ class ClientsController extends Controller
                         $client->females_total = $females_total;
                         $client->males_total = $males_total;
                         $client->created_by = Auth::user()->username;
-                        $client->age_score= $this->getAgeScore($row->age);
+                        $client->age_score= CommonConstant::getAgeScore($row->age);
                         $client->save();
 
                         //Generate computer number
@@ -756,31 +756,7 @@ class ClientsController extends Controller
            return redirect('home');
         }
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    //Culculate age score
-    public function getAgeScore($age){
-
-        if($age <=17 ){
-            return "A";
-        }
-        else if($age >17 && $age < 50){
-            return "B";
-        }
-        else if($age >=50 && $age < 60){
-            return "C";
-        }
-        else if($age >= 60 ){
-            return "D";
-        }
-    }
-
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
         try {
             $validator = Validator::make($request->all(), [
@@ -841,7 +817,7 @@ class ClientsController extends Controller
                 $client->share_info= $request->share_info;
                 $client->created_by = Auth::user()->username;
                 $client->status= $request->status;
-                $client->age_score= $this->getAgeScore($request->age);
+                $client->age_score= CommonConstant::getAgeScore($request->age);
                 $client->save();
 
                 //Generate computer number
@@ -989,7 +965,7 @@ class ClientsController extends Controller
                 $client->share_info= $request->share_info;
                 $client->status= $request->status;
                 $client->created_by = Auth::user()->username;
-                $client->age_score= $this->getAgeScore($request->age);
+                $client->age_score= CommonConstant::getAgeScore($request->age);
                 $client->save();
 
 
