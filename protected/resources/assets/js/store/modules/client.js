@@ -15,21 +15,26 @@ const state = {
   // actions
   const actions = {
     getClients ({ commit }, data) {
-        commit('setLoading', true);
-        axios({
-            method: 'GET',
-            url: '/rest/secured/clients?page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
-        })
-        .then((response) => {
-            const data = response.data;
-            commit('setLoading', false);
-            commit('setClients', data.clients.data);
-            commit('setPagination', data.pagination);
-            commit('setAuthRole', data.authRole);
-            commit('setAuthPermission', data.authPermission);
-        }).catch((error) => {
-            commit('setLoading', false);
-            console.log(error);
+        return new Promise((resolve, reject) => {
+            commit('setLoading', true);
+            axios({
+                method: 'GET',
+                url: '/rest/secured/clients?page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
+            })
+            .then((response) => {
+                const data = response.data;
+                commit('setLoading', false);
+                commit('setClients', data.clients.data);
+                commit('setPagination', data.pagination);
+                commit('setAuthRole', data.authRole);
+                commit('setAuthPermission', data.authPermission);
+                resolve(data);
+            }).catch((error) => {
+                commit('setLoading', false);
+                const resp = error.response;
+                reject(resp);
+                console.log(error);
+            });
         });
     },
     postClient({ commit }, client) {

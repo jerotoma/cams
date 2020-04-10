@@ -10,29 +10,49 @@
 @stop
 @section('scripts')
     <script>
-        $(".addRecord").click(function(){
-            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
-            modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header bg-indigo">';
-            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="text-center " style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Client Referral</span>';
-            modaldis+= '</div>';
-            modaldis+= '<div class="modal-body">';
-            modaldis+= ' </div>';
-            modaldis+= '</div>';
-            modaldis+= '</div>';
-             $('body').css('overflow-y','scroll');
+         $(function() {
+                // Confirmation dialog
+            $('.authorizeAllRecords').on('click', function() {
+                var id1 = $(this).parent().attr('id');
+                var btn=$(this).parent().parent().parent().parent().parent().parent();
+                bootbox.confirm("Are you sure? You want to authorize All pending records", function(result) {
+                    if(result){
+                        $.ajax({
+                            url:"<?php echo url('authorize/referrals') ?>",
+                            type: 'post',
+                            data: {_method: 'post', _token :"{{csrf_token()}}"},
+                            success:function(msg){
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            });
+            $(".addRecord").click(function(){
+                var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+                modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+                modaldis+= '<div class="modal-content">';
+                modaldis+= '<div class="modal-header bg-indigo">';
+                modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+                modaldis+= '<span id="myModalLabel" class="text-center " style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> Client Referral</span>';
+                modaldis+= '</div>';
+                modaldis+= '<div class="modal-body">';
+                modaldis+= ' </div>';
+                modaldis+= '</div>';
+                modaldis+= '</div>';
+                $('body').css('overflow-y','scroll');
 
-            $("body").append(modaldis);
-            $("#myModal").modal("show");
-            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("referrals/create") ?>");
-            $("#myModal").on('hidden.bs.modal',function(){
-                $("#myModal").remove();
-            })
+                $("body").append(modaldis);
+                $("#myModal").modal("show");
+                $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+                $(".modal-body").load("<?php echo url("referrals/create") ?>");
+                $("#myModal").on('hidden.bs.modal',function(){
+                    $("#myModal").remove();
+                })
 
-        });
+            });
+         });
+
         function closePrint () {
             document.body.removeChild(this.__container__);
         }

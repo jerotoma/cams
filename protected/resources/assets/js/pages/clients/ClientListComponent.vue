@@ -26,8 +26,18 @@
                 <span v-if="props.column.field == 'date_arrival'">
                     <span class="text-primary">{{props.row.date_arrival | moment("MMMM Do, YYYY")}}</span>
                 </span>
+                <span v-else-if="props.column.field == 'auth_status'">
+                    <span v-if="props.row.auth_status == 'pending' || props.row.auth_status == 'Pending'"
+                        class="label label-info">
+                        {{$stringUtil.capitalize(props.row.auth_status)}}
+                    </span>
+                    <span v-else
+                        class="label label-success">
+                        {{$stringUtil.capitalize(props.row.auth_status)}}
+                    </span>
+                </span>
                 <span v-else-if="props.column.field == 'camp'">
-                    <span class="text-primary">{{props.row.camp && props.row.camp.camp_name ? $stringUtil.capitalize(props.row.camp.camp_name) : $stringUtil.capitalize(props.row.camp_name)}}</span>
+                    {{props.row.camp && props.row.camp.camp_name ? $stringUtil.capitalize(props.row.camp.camp_name) : $stringUtil.capitalize(props.row.camp_name)}}
                 </span>
                 <span v-else-if="props.column.field == 'action'">
                     <ul class="icons-list text-center">
@@ -84,7 +94,7 @@ export default {
                     field: 'full_name',
                     formatFn: this.$stringUtil.capitalize,
                     thClass: 'text-center',
-                    tdClass: 'text-center',
+                    tdClass: 'text-center text-primary',
                 },
                 {
                     label: 'HAI Reg #',
@@ -96,7 +106,7 @@ export default {
                     label: 'Individual ID',
                     field: 'individual_id',
                     thClass: 'text-center',
-                    tdClass: 'text-center',
+                    tdClass: 'text-center text-primary',
                 },
                 {
                     label: 'Sex',
@@ -110,7 +120,7 @@ export default {
                     field: 'age',
                     type: 'number',
                     thClass: 'text-center',
-                    tdClass: 'text-center',
+                    tdClass: 'text-center text-primary',
                 },
                 {
                     label: 'Address',
@@ -135,7 +145,6 @@ export default {
                 {
                     label: 'Auth Status',
                     field: 'auth_status',
-                    formatFn: this.$stringUtil.capitalize,
                 },
                 {
                     label: 'Action',
@@ -193,7 +202,7 @@ export default {
                      this.$modal.deleteRecord('/clients/' + client.id);
                     break;
                 case 'authorize':
-                     this.$modal.authorizeRecord('/authorize/' + client.id);
+                     this.$modal.authorizeRecord('/rest/secured/clients/' + client.id + '/authorize');
                     break;
             }
         },

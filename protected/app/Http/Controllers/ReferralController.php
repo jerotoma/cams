@@ -125,18 +125,8 @@ class ReferralController extends Controller
                 ], 422); // 400 being the HTTP code for an invalid request.
             } else {
                 $referrals = ClientReferral::join('clients', 'clients.id', '=', 'client_referrals.client_id')
-                    ->join('camps', 'camps.id', '=', 'clients.camp_id')
-                    ->select(
-                        'client_referrals.id AS referralId',
-                        'client_referrals.referral_date',
-                        'client_referrals.reference_no',
-                        'client_referrals.referral_type',
-                        'client_referrals.auth_status AS referralAuthStatus',
-                        'client_referrals.referral_date',
-                        'client_referrals.status AS referral_status',
-                        'camps.camp_name',
-                        'clients.*'
-                    );
+                    ->join('camps', 'camps.id', '=', 'clients.camp_id');
+                $referrals = $this->getSelectItems($referrals);
                 $referrals = $this->processSortRequest($request,  $referrals)->paginate($request->perPage);
                 return response()->json([
                     'authRole' => AuthUtility::getRoleName(),
@@ -184,23 +174,26 @@ class ReferralController extends Controller
             ), 400); // 400 being the HTTP code for an invalid request.
         }
     }
+    private function getSelectItems($referrals) {
+        return $referrals->select(
+            'client_referrals.id AS referralId',
+            'client_referrals.referral_date',
+            'client_referrals.reference_no',
+            'client_referrals.referral_type',
+            'client_referrals.auth_status AS referral_auth_status',
+            'client_referrals.status AS referral_status',
+            'camps.camp_name',
+            'clients.*'
+        );
+    }
     private function findReferralBySearchTerm($searchTerm) {
         $dataType = config('database.default') == 'pgsql' ? 'INTEGER' : 'UNSIGNED';
         $dbPrefix = DB::getTablePrefix();
         $referrals = ClientReferral::join('clients', 'clients.id', '=', 'client_referrals.client_id')
             ->leftJoin('camps', 'camps.id', '=', 'clients.camp_id')
-            ->leftJoin('origins', 'origins.id', '=', 'clients.origin_id')
-            ->select(
-                'client_referrals.id AS referralId',
-                'client_referrals.referral_date',
-                'client_referrals.reference_no',
-                'client_referrals.referral_type',
-                'client_referrals.auth_status AS referralAuthStatus',
-                'client_referrals.status AS referral_status',
-                'camps.camp_name',
-                'clients.*'
-            )
-            ->where(DB::raw('lower('.$dbPrefix.'client_referrals.status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->leftJoin('origins', 'origins.id', '=', 'clients.origin_id');
+        $referrals = $this->getSelectItems($referrals);
+        $referrals = $referrals->where(DB::raw('lower('.$dbPrefix.'client_referrals.status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
             ->orWhere(DB::raw('lower('.$dbPrefix.'client_referrals.reference_no)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
             ->orWhere(DB::raw('lower('.$dbPrefix.'client_referrals.auth_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
             ->orWhere(DB::raw('lower('.$dbPrefix.'client_referrals.referral_type)'), 'LIKE', '%'. Str::lower($searchTerm) . '%');

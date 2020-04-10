@@ -10,10 +10,10 @@
         :totalRows="pagination.total"
         :isLoading.sync="mLoading"
         :columns="columns"
-        :rows="referrals"
+        :rows="homeAssessments"
         :search-options="{
             enabled: true,
-            placeholder: 'Search for a referral',
+            placeholder: 'Search for a Home Assessments',
         }"
         :pagination-options="{
             enabled: true,
@@ -23,27 +23,17 @@
             perPageDropdown: pagination.perPageDropdown,
         }">
             <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'referral_date'">
-                    <span class="text-primary">{{props.row.referral_date | moment("MMMM Do, YYYY")}}</span>
+                <span v-if="props.column.field == 'assessment_date'">
+                    <span class="text-primary">{{props.row.assessment_date | moment("MMMM Do, YYYY")}}</span>
                 </span>
-                <span v-else-if="props.column.field == 'referral_auth_status'">
-                    <span v-if="props.row.referral_auth_status == 'pending' || props.row.referral_auth_status == 'Pending'"
+                <span v-else-if="props.column.field == 'assessment_auth_status'">
+                    <span v-if="props.row.assessment_auth_status == 'pending' || props.row.assessment_auth_status == 'Pending'"
                         class="label label-info">
-                        {{$stringUtil.capitalize(props.row.referral_auth_status)}}
+                        {{$stringUtil.capitalize(props.row.assessment_auth_status)}}
                     </span>
                     <span v-else
                         class="label label-success">
-                        {{$stringUtil.capitalize(props.row.referral_auth_status)}}
-                    </span>
-                </span>
-                <span v-else-if="props.column.field == 'referral_status'">
-                    <span v-if="props.row.referral_status == 'closed' || props.row.referral_status == 'Closed'"
-                        class="label label-warning">
-                        {{$stringUtil.capitalize(props.row.referral_status)}}
-                    </span>
-                    <span v-else
-                        class="label label-success">
-                        {{$stringUtil.capitalize(props.row.referral_status)}}
+                        {{$stringUtil.capitalize(props.row.assessment_auth_status)}}
                     </span>
                 </span>
                 <span v-else-if="props.column.field == 'action'">
@@ -54,9 +44,9 @@
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
                                 <li :id="props.row.id + '-view'"><a href="#" @click="performAction('view', props.row)" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                                <li :id="props.row.id + '-print'"><a href="#"  :onclick="'printPage(\'/referrals/' + props.row.referralId + '\');'" class="editRecord label "><i class="fa fa-print "></i> Print </a></li>
-                                <li :id="props.row.id + '-download'"><a :href="'/referrals/download/' + props.row.referralId" class="label"><i class="fa fa-download"></i> Download </a></li>
-                                <template v-if="authRole === 'authorize' || authPermission == 'authorize'">
+                                <li :id="props.row.id + '-print'"><a href="#"  :onclick="'printPage(\'/assessments/home/' + props.row.assessment_id + '\');'" class="editRecord label "><i class="fa fa-print "></i> Print </a></li>
+                                <li :id="props.row.id + '-download'"><a :href="'/assessments/home/download/' + props.row.assessment_id" target="_blank" class="label"><i class="fa fa-download"></i> Download </a></li>
+                                <template v-if="authRole === 'authorize'  || authPermission == 'authorize'">
                                     <li :id="props.row.id + '-authorize'"><a href="#" @click="performAction('authorize', props.row)" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
                                 </template>
                                 <template v-if="authRole === 'admin' || authRole === 'authorize' || authRole === 'inputer' ">
@@ -78,35 +68,42 @@
 <script>
 import { mapGetters } from 'vuex';
 export default {
-    name: 'referral-list-component',
+    name: 'home-assessment-component',
     computed: {
         ...mapGetters([
-            'referrals',
-            'referral',
-            'authRole',
+            'homeAssessments',
+            'homeAssessment',
             'authPermission',
+            'authRole',
             'isLoading',
             'pagination',
-        ]),
-        mLoading: {
-            get() { return this.$store.state.isLoading; },
-            set(value){
-                this.$store.commit('setLoading', value);
-            }
-        }
+        ])
     },
     data(){
         return {
+            mLoading: true,
             columns: [
                 {
-                    label: 'Referral Ref',
-                    field: 'reference_no',
+                    label: 'Date of Interview',
+                    field: 'assessment_date',
+                    thClass: 'text-center',
+                    tdClass: 'text-center text-primary',
+                },
+                {
+                    label: 'PSN Case Code',
+                    field: 'case_code',
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
                 {
-                    label: 'Referral Date',
-                    field: 'referral_date',
+                    label: 'HAI Reg #',
+                    field: 'hai_reg_number',
+                    thClass: 'text-center',
+                    tdClass: 'text-center text-primary',
+                },
+                {
+                    label: 'Client No',
+                    field: 'client_number',
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
@@ -114,24 +111,12 @@ export default {
                     label: 'Individual ID',
                     field: 'individual_id',
                     thClass: 'text-center',
-                    tdClass: 'text-center',
-                },
-                {
-                    label: 'Unique ID',
-                    field: 'client_number',
-                    thClass: 'text-center',
-                    tdClass: 'text-center',
+                    tdClass: 'text-center text-primary',
                 },
                 {
                     label: 'Full Name',
                     field: 'full_name',
-                    thClass: 'text-center',
-                    tdClass: 'text-center',
-                },
-                {
-                    label: 'Age',
-                    field: 'age',
-                    type: 'number',
+                    formatFn: this.$stringUtil.capitalize,
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
@@ -139,6 +124,12 @@ export default {
                     label: 'Sex',
                     field: 'sex',
                     formatFn: this.$stringUtil.capitalize,
+                    thClass: 'text-center',
+                    tdClass: 'text-center text-primary',
+                },
+                {
+                    label: 'Age',
+                    field: 'age',
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
@@ -150,18 +141,8 @@ export default {
                     tdClass: 'text-center',
                 },
                 {
-                    label: 'Progress Status',
-                    field: 'referral_status',
-                    formatFn: this.$stringUtil.capitalize,
-                    thClass: 'text-center',
-                    tdClass: 'text-center',
-                },
-                {
                     label: 'Auth Status',
-                    field: 'referral_auth_status',
-                    formatFn: this.$stringUtil.capitalize,
-                    thClass: 'text-center',
-                    tdClass: 'text-center',
+                    field: 'assessment_auth_status',
                 },
                 {
                     label: 'Action',
@@ -183,7 +164,7 @@ export default {
             pagination.sortType = params[0].type;
             pagination.sortField = params[0].field;
             this.$store.commit('setPagination', pagination);
-            this.loadReferrals();
+            this.loadHomeAssessments();
         },
         onColumnFilter(params) {
             console.log('onColumnFilter', params[0]);
@@ -199,36 +180,41 @@ export default {
             pagination.perPage = params.currentPerPage;
             pagination.prevPage = params.prevPage;
             this.$store.commit('setPagination', pagination);
-            this.loadReferrals();
+            this.loadHomeAssessments();
         },
         onSearch(params){
            let pagination = this.pagination;
             pagination.searchTerm = params.searchTerm;
             this.$store.commit('setPagination', pagination);
-            this.$store.dispatch('searchReferralWithPagination', this.pagination);
+            this.$store.dispatch('searchHomeAssessmentWithPagination', this.pagination);
         },
-        performAction(actionType, referral) {
+        performAction(actionType, homeAssessment) {
             switch(actionType) {
                 case 'view':
-                    this.$modal.loadPageInAModal('/referrals/' + referral.referralId, 'Referral Details', 'fa-eye');
+                    this.$modal.loadPageInAModal('/assessments/home/' + homeAssessment.assessment_id, 'View Vulnerabiltiy Assessment', 'fa-eye');
                     break;
                 case 'edit':
-                    this.$modal.loadPageInAModal('/referrals/' + referral.referralId + '/edit', 'Update Referral Details', 'fa-edit');
+                    this.$modal.loadPageInAModal('/assessments/home/' + homeAssessment.assessment_id + '/edit', 'Update Vulnerabiltiy Assessment', 'fa-edit');
                     break;
                 case 'delete':
-                     this.$modal.deleteRecord('/referrals/' + referral.referralId);
+                     this.$modal.deleteRecord('/assessments/home/' + homeAssessment.assessment_id);
                     break;
                 case 'authorize':
-                     this.$modal.authorizeRecord('/rest/secured/referrals/' + referral.referralId+ '/authorize');
+                     this.$modal.authorizeRecord('/rest/secured/assessments/home/' + homeAssessment.assessment_id + '/authorize');
                     break;
             }
         },
-        loadReferrals() {
-            this.$store.dispatch('getReferrals', this.pagination);
+        loadHomeAssessments() {
+            this.$store.dispatch('getHomeAssessments', this.pagination)
+                .then((resp) => {
+                    this.mLoading = this.isLoading;
+                }).catch(resp => {
+                    this.mLoading = this.isLoading;
+                });
         },
     },
     created() {
-        this.loadReferrals();
+        this.loadHomeAssessments();
     },
 };
 </script>

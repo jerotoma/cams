@@ -51,7 +51,9 @@ const ModalPlugin = {
                             method: 'POST',
                             url: url,
                         }).then((response) => {
-                            location.reload();
+                            if (response) {
+                               location.reload();
+                            }
                         });
                     }
                 });

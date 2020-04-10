@@ -1,48 +1,47 @@
 // initial state
 const state = {
-    referral: {
+    homeAssessment: {
 
     },
-    referrals: [],
+    homeAssessments: [],
   }
 
   // getters
   const getters = {
-      referrals: state => state.referrals,
-      referral: state => state.referral,
-      referralsCount: state => state.referralsCount,
+      homeAssessments: state => state.homeAssessments,
+      homeAssessment: state => state.homeAssessment,
+      homeAssessmentsCount: state => state.homeAssessmentsCount,
   }
 
   // actions
   const actions = {
-    getReferrals ({ commit }, data) {
+    getHomeAssessments ({ commit }, data) {
         return new Promise((resolve, reject) => {
             commit('setLoading', true);
             axios({
                 method: 'GET',
-                url: '/rest/secured/referrals?page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
+                url: '/rest/secured/assessments/home?page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
             })
             .then((response) => {
                 const data = response.data;
                 commit('setLoading', false);
-                commit('setReferrals', data.referrals.data);
+                commit('setHomeAssessments', data.homeAssessments.data);
                 commit('setPagination', data.pagination);
                 commit('setAuthRole', data.authRole);
                 commit('setAuthPermission', data.authPermission);
                 resolve(data);
             }).catch((error) => {
-                commit('setLoading', false);
                 const resp = error.response;
                 reject(resp);
             });
         });
     },
-    postReferral({ commit }, referral) {
+    postHomeAssessment({ commit }, homeAssessment) {
         return new Promise((resolve, reject) => {
                 axios({
                 method: 'POST',
-                url: '/rest/secured/referrals',
-                data: referral
+                url: '/rest/secured/assessments/home',
+                data: homeAssessment
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
@@ -52,12 +51,12 @@ const state = {
             });
         });
     },
-    updateReferral({ commit }, referral) {
+    updateHomeAssessment({ commit }, homeAssessment) {
         return new Promise((resolve, reject) => {
                 axios({
                 method: 'PUT',
-                url: '/rest/secured/referrals',
-                data: referral
+                url: '/rest/secured/assessments/home',
+                data: homeAssessment
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
@@ -67,11 +66,11 @@ const state = {
             });
         });
     },
-    deleteReferral({ commit }, referral) {
+    deleteHomeAssessment({ commit }, homeAssessment) {
         return new Promise((resolve, reject) => {
             axios({
                 method: 'DELETE',
-                url: '/rest/secured/referrals/' + referral.id,
+                url: '/rest/secured/assessments/home/' + homeAssessment.id,
                 data: {}
             }).then((response) => {
                 const data = response.data;
@@ -82,14 +81,14 @@ const state = {
             });
         });
     },
-    searchReferralWithPagination({ commit, dispatch }, data) {
+    searchHomeAssessmentWithPagination({ commit, dispatch }, data) {
         if (data.searchTerm) {
             axios({
                 method: 'GET',
-                url: '/rest/secured/referrals/search-paginated?searchTerm=' + data.searchTerm + '&page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
+                url: '/rest/secured/assessments/home/search-paginated?searchTerm=' + data.searchTerm + '&page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
             }).then((response) => {
                 const data = response.data;
-                commit('setReferrals', data.referrals.data);
+                commit('setHomeAssessments', data.homeAssessments.data);
                 commit('setPagination', data.pagination);
                 commit('setAuthRole', data.authRole);
                 commit('setAuthPermission', data.authPermission);
@@ -98,14 +97,14 @@ const state = {
 
             });
         } else {
-            dispatch('getReferrals', data);
+            dispatch('getHomeAssessments', data);
         }
     },
-    searchReferral({ commit }, data) {
+    searchHomeAssessment({ commit }, data) {
         return new Promise((resolve, reject) => {
             axios({
                 method: 'GET',
-                url: '/rest/secured/referrals/search?searchTerm=' + data.searchTerm,
+                url: '/rest/secured/assessments/home/search?searchTerm=' + data.searchTerm,
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
@@ -119,14 +118,14 @@ const state = {
 
   // mutations
   const mutations = {
-    setReferral (state, referral) {
-      state.referral = referral
+    setHomeAssessment (state, homeAssessment) {
+      state.homeAssessment = homeAssessment
     },
-    setReferrals (state, referrals) {
-        state.referrals = referrals
+    setHomeAssessments (state, homeAssessments) {
+        state.homeAssessments = homeAssessments
     },
-    setReferralsCount (state, count) {
-      state.referralsCount = count;
+    setHomeAssessmentsCount (state, count) {
+      state.homeAssessmentsCount = count;
     }
   }
 

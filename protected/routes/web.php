@@ -67,8 +67,8 @@ Route::resource('psncodes-categories','PSNCodeCategoryController');
 Route::resource('clients','ClientsController');
 
 //Authorize
-Route::post('authorize/all/clients','ClientsController@AuthorizeAll');
-Route::post('authorize/{id}/clients','ClientsController@AuthorizeClientById');
+Route::post('authorize/all/clients','ClientsController@authorizeAll');
+Route::post('authorize/{id}/clients','ClientsController@authorizeClientById');
 
 Route::get('getclientslist','ClientsController@getJSonClientDataSearch');
 Route::get('search/clients','ClientsController@searchClient');
@@ -119,8 +119,8 @@ Route::get('assessments/vulnerability/download/{id}','VulnerabilityAssessmentCon
 Route::get('getvulassessmentpsnprofile/{id}','VulnerabilityAssessmentController@getPSNProfile');
 
 //Authorize
-Route::post('authorize/assessments/vulnerability','VulnerabilityAssessmentController@AuthorizeAll');
-Route::post('authorize/assessments/{id}/vulnerability','VulnerabilityAssessmentController@AuthorizeAssessmentById');
+Route::post('authorize/assessments/vulnerability','VulnerabilityAssessmentController@authorizeAll');
+Route::post('authorize/assessments/{id}/vulnerability','VulnerabilityAssessmentController@authorizeAssessmentById');
 
 
 //Paediatric Assessments
@@ -288,15 +288,22 @@ Route::prefix('rest/secured')->group(function () {
     //Clients
     Route::get('/clients','ClientsController@findClientList');
     Route::get('/clients/search-paginated','ClientsController@searchClientPaginated');
+    Route::post('/clients/{id}/authorize','ClientsController@authorizeClientById');
 
     //VulnerabilityAssessmentsearch-paginated
-    Route::get('assessments/vulnerabilities','VulnerabilityAssessmentController@findVulnerabilityAssessments');
-    Route::get('assessments/vulnerabilities/search-paginated','VulnerabilityAssessmentController@searchVulnerabilityAssessments');
+    Route::get('/assessments/vulnerabilities','VulnerabilityAssessmentController@findVulnerabilityAssessments');
+    Route::get('/assessments/vulnerabilities/search-paginated','VulnerabilityAssessmentController@searchVulnerabilityAssessments');
+    Route::post('/assessments/vulnerability/{id}/authorize', 'VulnerabilityAssessmentController@authorizeAssessmentById');
+
+    //HomeAssessmentsearch-paginated
+    Route::get('/assessments/home','HomeAssessmentController@findHomeAssessments');
+    Route::get('/assessments/home/search-paginated','HomeAssessmentController@searchHomeAssessments');
+    Route::post('/assessments/home/{id}/authorize', 'HomeAssessmentController@authorizeAssessmentById');
 
     //Referrals
     Route::get('/referrals', 'ReferralController@getReferralList');
     Route::get('/referrals/search-paginated', 'ReferralController@searchReferralPaginated');
-
+    Route::post('/referrals/{id}/authorize', 'ReferralController@AuthorizeReferralsById');
 
 });
 

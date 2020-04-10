@@ -24,11 +24,7 @@ class ChartUtility {
                 'dataLabels' => [
                     'enabled' => false,
                 ],
-                'title' => [
-                    'text' =>  $title,
-                    'align' => 'left',
-                    'offsetX' => 50
-                ],
+                'title' => self::getTitle($title, 50, 0, 'left', '#000000'),
                 'plotOptions' => [
                     'bar' => [
                       'horizontal' => false,
@@ -57,18 +53,14 @@ class ChartUtility {
                             'colors' => '#008FFB'
                         ]
                     ],
-                    'title' => [
-                        'text' => 'Number of '. $title,
-                        'style' => [
-                            'colors' => '#008FFB'
-                        ]
-                    ]
+                    'title' => self::getTitle('Number of '. $title, 0, 0, 'left', '#008FFB', '12px')
                 ]
             ],
         );
     }
 
     public static function getBasicBarChartColumn(array $dataSeries, array $categoriesItems, $dateFrom, $dateTo) {
+        $title = 'Number of Registered Clients from '. Carbon::parse($dateFrom)->isoFormat('MMMM Do, YYYY') . ' to ' .Carbon::parse($dateTo)->isoFormat('MMMM Do, YYYY');
         return array(
             'series' => $dataSeries,
             'options' => [
@@ -84,11 +76,7 @@ class ChartUtility {
                     'width' => [1, 1],
                     'curve' => 'smooth'
                 ],
-                'title' => [
-                    'text' => 'Number of Registered Clients from '. Carbon::parse($dateFrom)->isoFormat('MMMM Do, YYYY') . ' to ' .Carbon::parse($dateTo)->isoFormat('MMMM Do, YYYY'),
-                    'align' => 'left',
-                    'offsetX' => 50
-                ],
+                'title' => self::getTitle($title, 50, 0, 'left', '#000000'),
                 'xaxis' => [
                     'categories' => $categoriesItems
                 ],
@@ -105,12 +93,7 @@ class ChartUtility {
                             'colors' => '#008FFB'
                         ]
                     ],
-                    'title' => [
-                        'text' => 'Number of Registered Clients per Age Group',
-                        'style' => [
-                            'colors' => '#008FFB'
-                        ]
-                    ]
+                    'title' => self::getTitle('Number of Registered Clients per Age Group', 0, 0, 'left', '#008FFB', '12px'),
                 ],
                 'legend' => [
                     'position' => 'right',
@@ -129,25 +112,44 @@ class ChartUtility {
                 'chart' => [
                     'height' => $height,
                     'type' => 'pie',
-                    'toolbar' => [
-                        'show' => true,
-                        'offsetX' => 0,
-                        'offsetY' => 0,
-                        'tools' => [
-                          'download' => true,
-                          'selection' => true,
-                          'zoom' => true,
-                          'zoomin' => true,
-                          'zoomout' => true,
-                          'pan' => true,
-                          'reset' => true,
-                        ],
-                        'autoSelected' => 'zoom'
-                    ],
+                    'toolbar' => self::getToolbar(),
                 ],
                 'labels' => $labelItems,
             ],
             'series' => $dataSeries
         );
+    }
+
+    private static function getTitle($title, $offsetX = 0, $offsetY = 0, $align = 'left;', $color = '#008FFB', $fontSize ='14px', $fontFamily='sans-serif;', $fontWeight = 400 ) {
+        return [
+            'text' => $title,
+            'align' => $align,
+            'offsetX' => $offsetX,
+            'offsetY' => $offsetY,
+            'style' => [
+                'fontWeight' => $fontWeight,
+                'fontFamily' => $fontFamily,
+                'color' => $color,
+                'fontSize' => $fontSize
+            ]
+        ];
+    }
+
+    private static function getToolbar($zoom = false, $zoomIn = false, $zoomOut = false, $selection = false ) {
+        return [
+            'show' => true,
+            'offsetX' => 0,
+            'offsetY' => 0,
+            'tools' => [
+              'download' => true,
+              'selection' => true,
+              'zoom' => true,
+              'zoomin' => true,
+              'zoomout' => true,
+              'pan' => true,
+              'reset' => true,
+            ],
+            'autoSelected' => 'zoom'
+        ];
     }
 }

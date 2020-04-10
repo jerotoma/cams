@@ -11,201 +11,49 @@
 @section('scripts')
     <script>
         $(function() {
+            $(".addRecord").click(function(){
+                var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+                modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
+                modaldis+= '<div class="modal-content">';
+                modaldis+= '<div class="modal-header bg-indigo">';
+                modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+                modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp text-bold text-uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> PSN Needs/Home assessment</span>';
+                modaldis+= '</div>';
+                modaldis+= '<div class="modal-body">';
+                modaldis+= ' </div>';
+                modaldis+= '</div>';
+                modaldis+= '</div>';
+                $('body').css('overflow-y','scroll');
 
+                $("body").append(modaldis);
+                $("#myModal").modal("show");
+                $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
+                $(".modal-body").load("<?php echo url("assessments/home/create") ?>");
+                $("#myModal").on('hidden.bs.modal',function(){
+                    $("#myModal").remove();
+                })
 
-            // Table setup
-            // ------------------------------
-
-            // Setting datatable defaults
-            $.extend( $.fn.dataTable.defaults, {
-                autoWidth: false,
-                dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
-                language: {
-                    search: '<span>Filter:</span> _INPUT_',
-                    lengthMenu: '<span>Show:</span> _MENU_',
-                    paginate: { 'first': 'First', 'last': 'Last', 'next': '&rarr;', 'previous': '&larr;' }
-                },
-                drawCallback: function () {
-                    $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').addClass('dropup');
-                },
-                preDrawCallback: function() {
-                    $(this).find('tbody tr').slice(-3).find('.dropdown, .btn-group').removeClass('dropup');
-                }
             });
 
-
-            // Basic datatable
-            $('.datatable-basic').DataTable({
-                "scrollX": false,
-                ajax: '{{url('list/assessments/home')}}',
-                "fnDrawCallback": function (oSettings) {
-                    $(".showRecord").click(function(){
-                        var id1 = $(this).parent().attr('id');
-                        var modaldis = '<div class="modal fade"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-                        modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
-                        modaldis+= '<div class="modal-content">';
-                        modaldis+= '<div class="modal-header bg-indigo">';
-                        modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-eye font-blue-sharp"></i> Individual Vulnerability Assessment Details</span>';
-                        modaldis+= '</div>';
-                        modaldis+= '<div class="modal-body">';
-                        modaldis+= ' </div>';
-                        modaldis+= '</div>';
-                        modaldis+= '</div>';
-                         $('body').css('overflow-y','scroll');
-
-                        $("body").append(modaldis);
-                        $("#myModal").modal("show");
-                        $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("assessments/home") ?>/"+id1);
-                        $("#myModal").on('hidden.bs.modal',function(){
-                            $("#myModal").remove();
-                        })
-
-                    });
-
-                    $(".editRecord").click(function(){
-                        var id1 = $(this).parent().attr('id');
-                        var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-                        modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
-                        modaldis+= '<div class="modal-content">';
-                        modaldis+= '<div class="modal-header bg-indigo">';
-                        modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-                        modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp bold uppercase" style="text-align: center"><i class="fa fa-edit font-blue-sharp"></i> Update Individual Vulnerability Assessment Details </span>';
-                        modaldis+= '</div>';
-                        modaldis+= '<div class="modal-body">';
-                        modaldis+= ' </div>';
-                        modaldis+= '</div>';
-                        modaldis+= '</div>';
-                         $('body').css('overflow-y','scroll');
-
-                        $("body").append(modaldis);
-                        $("#myModal").modal("show");
-                        $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-                        $(".modal-body").load("<?php echo url("assessments/home") ?>/"+id1+"/edit");
-                        $("#myModal").on('hidden.bs.modal',function(){
-                            $("#myModal").remove();
-                        })
-
-                    });
-                    // Confirmation dialog
-                    $('.authorizeAllRecords').on('click', function() {
-                        var id1 = $(this).parent().attr('id');
-                        var btn=$(this).parent().parent().parent().parent().parent().parent();
-                        bootbox.confirm("Are You Sure to authorize All pending records?", function(result) {
-                            if(result){
-                                $.ajax({
-                                    url:"<?php echo url('authorize/home/assessments') ?>",
-                                    type: 'post',
-                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
-                                    success:function(msg){
-                                        location.reload();
-                                    }
-                                });
+            // Confirmation dialog
+            $('.authorizeAllRecords').on('click', function() {
+                var id1 = $(this).parent().attr('id');
+                var btn=$(this).parent().parent().parent().parent().parent().parent();
+                bootbox.confirm("Are you sure? You want to authorize All pending records", function(result) {
+                    if(result){
+                        $.ajax({
+                            url:"<?php echo url('authorize/home/assessments') ?>",
+                            type: 'post',
+                            data: {_method: 'post', _token :"{{csrf_token()}}"},
+                            success:function(msg){
+                                location.reload();
                             }
                         });
-                    });
-                    // Confirmation dialog
-                    $('.authorizeRecord').on('click', function() {
-                        var id1 = $(this).parent().attr('id');
-                        var btn=$(this).parent().parent().parent().parent().parent().parent();
-                        bootbox.confirm("Are You Sure to authorize record?", function(result) {
-                            if(result){
-                                $.ajax({
-                                    url:"<?php echo url('authorize/home') ?>/"+id1+"/assessments",
-                                    type: 'post',
-                                    data: {_method: 'post', _token :"{{csrf_token()}}"},
-                                    success:function(msg){
-                                        location.reload();
-                                    }
-                                });
-                            }
-                        });
-                    });
-                    // Confirmation dialog
-                    $('.deleteRecord').on('click', function() {
-                        var id1 = $(this).parent().attr('id');
-                        var btn=$(this).parent().parent().parent().parent().parent().parent();
-                        bootbox.confirm("Are You Sure to delete record?", function(result) {
-                            if(result){
-                                $.ajax({
-                                    url:"<?php echo url('assessments/home') ?>/"+id1,
-                                    type: 'post',
-                                    data: {_method: 'delete', _token :"{{csrf_token()}}"},
-                                    success:function(msg){
-                                        btn.hide("slow").next("hr").hide("slow");
-                                    }
-                                });
-                            }
-                        });
-                    });
-                }
+                    }
+                });
             });
-
-
-            // Alternative pagination
-            $('.datatable-pagination').DataTable({
-                pagingType: "simple",
-                language: {
-                    paginate: {'next': 'Next &rarr;', 'previous': '&larr; Prev'}
-                }
-            });
-
-
-            // Datatable with saving state
-            $('.datatable-save-state').DataTable({
-                stateSave: true
-            });
-
-
-            // Scrollable datatable
-            $('.datatable-scroll-y').DataTable({
-                autoWidth: true,
-                scrollY: 300
-            });
-
-
-
-            // External table additions
-            // ------------------------------
-
-            // Add placeholder to the datatable filter option
-            $('.dataTables_filter input[type=search]').attr('placeholder','Type to filter...');
-
-
-            // Enable Select2 select for the length option
-            $('.dataTables_length select').select2({
-                minimumResultsForSearch: Infinity,
-                width: 'auto'
-            });
-
         });
-        // AJAX sourced data
 
-
-        $(".addRecord").click(function(){
-            var modaldis = '<div class="modal fade" data-backdrop="false" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-            modaldis+= '<div class="modal-dialog" style="width:70%;margin-right: 15% ;margin-left: 15%">';
-            modaldis+= '<div class="modal-content">';
-            modaldis+= '<div class="modal-header bg-indigo">';
-            modaldis+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-            modaldis+= '<span id="myModalLabel" class="caption caption-subject font-blue-sharp text-bold text-uppercase" style="text-align: center"><i class="fa fa-plus font-blue-sharp"></i> PSN Needs/Home assessment</span>';
-            modaldis+= '</div>';
-            modaldis+= '<div class="modal-body">';
-            modaldis+= ' </div>';
-            modaldis+= '</div>';
-            modaldis+= '</div>';
-             $('body').css('overflow-y','scroll');
-
-            $("body").append(modaldis);
-            $("#myModal").modal("show");
-            $(".modal-body").html("<h3><i class='fa fa-spin fa-spinner '></i><span>loading...</span><h3>");
-            $(".modal-body").load("<?php echo url("assessments/home/create") ?>");
-            $("#myModal").on('hidden.bs.modal',function(){
-                $("#myModal").remove();
-            })
-
-        });
         function closePrint () {
             document.body.removeChild(this.__container__);
         }
@@ -389,34 +237,12 @@
             <a  href="{{url('assessments/home')}}" class="btn  btn-primary"><i class="fa fa-list "></i> <span>List All Assessment</span></a>
         </div>
     </div>
-    <div class="panel panel-flat">
+    <div class="panel panel-default">
         <div class="panel-heading">
-            <h5 class="panel-title text-bold">PSN Needs/Home assessment  details</h5>
+            <h5 class="panel-title text-bold">PSN Needs/Home Assessment  List</h5>
         </div>
-
         <div class="panel-body">
+            <home-assessment-component></home-assessment-component>
         </div>
-
-        <table class="table datatable-basic table-hover">
-            <thead>
-            <tr>
-                <th>SNO</th>
-                <th>Date of interview</th>
-                <th>PSN Case code</th>
-                <th>HAI Reg#</th>
-                <th>Client No</th>
-                <th>Individual ID</th>
-                <th>Full Name</th>
-                <th>Sex</th>
-                <th>Age</th>
-                <th>Camp Name</th>
-                <th class="text-center">
-                    Auth Status
-                </th>
-                <th class="text-center">Actions</th>
-            </tr>
-            </thead>
-
-        </table>
     </div>
 @stop

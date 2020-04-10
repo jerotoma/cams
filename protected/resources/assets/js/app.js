@@ -29,6 +29,7 @@ Vue.use(VueGoodTablePlugin);
 //Components
 Vue.component('apexchart', VueApexCharts)
 Vue.component('client-list-component', require('./pages/clients/ClientListComponent.vue').default);
+Vue.component('home-assessment-component', require('./pages/assessments/home/HomeAssessmentComponent.vue').default);
 Vue.component('vulnerability-assessment-component', require('./pages/assessments/vulnerabilities/VulnerabilityAssessmentComponent.vue').default);
 Vue.component('referral-list-component', require('./pages/referrals/ReferralListComponent.vue').default);
 Vue.component('chart-stat-component', require('./pages/dashboard/ChartStatComponent.vue').default);

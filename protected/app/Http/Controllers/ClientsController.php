@@ -75,12 +75,12 @@ class ClientsController extends Controller
         })->download('xlsx');
     }
 
-    public function AuthorizeAll()
+    public function authorizeAll()
     {
         //
         if (Auth::user()->hasPermission('authorize')){
 
-            $client=Client::where('auth_status', '=', 'pending')
+            $clients = Client::where('auth_status', '=', 'pending')
                 ->update([
                     'auth_status' => 'authorized',
                     'auth_by' => Auth::user()->username,
@@ -88,14 +88,14 @@ class ClientsController extends Controller
                 ]);
 
             //Audit trail
-            AuditRegister("ClientsController","AuthorizeClientById",$client);
+            AuditRegister("ClientsController","authorizeAll", $clients);
 
         }else{
             return null;
         }
 
     }
-    public function AuthorizeClientById($id)
+    public function authorizeClientById($id)
     {
         //
         if (Auth::user()->hasPermission('authorize')){
@@ -107,7 +107,7 @@ class ClientsController extends Controller
                     'auth_date' => date('Y-m-d H:i')
                 ]);
             //Audit trail
-            AuditRegister("ClientsController","AuthorizeClientById",$client);
+            AuditRegister("ClientsController","authorizeClientById", $client);
         }else{
             return null;
         }

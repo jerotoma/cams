@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
+use App\Helpers\PaginateUtility;
+use App\Helpers\AuthUtility;
+use App\Helpers\ValidatorUtility;
+use DB;
+use Log;
+
 class HomeAssessmentController extends Controller
 {
 
@@ -20,23 +29,18 @@ class HomeAssessmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
         return view('assessments.home.index');
     }
-    public function AuthorizeAll()
-    {
+    public function AuthorizeAll() {
         //
         if (Auth::user()->hasPermission('authorize')){
-
-            $assessments=HomeAssessment::where('auth_status', '=', 'pending')
+            $assessments = HomeAssessment::where('auth_status', '=', 'pending')
                 ->update([
                     'auth_status' => 'authorized',
                     'auth_by' => Auth::user()->username,
                     'auth_date' => date('Y-m-d H:i')
                 ]);
-
             //Audit trail
             AuditRegister("HomeAssessmentController","AuthorizeAllAssessments",$assessments);
 
@@ -62,8 +66,7 @@ class HomeAssessmentController extends Controller
             return null;
         }
     }
-    public function downloadPDF($id)
-    {
+    public function downloadPDF($id) {
 
         $assessment=HomeAssessment::findorfail($id);
 
@@ -83,8 +86,147 @@ class HomeAssessmentController extends Controller
     {
         return view('assessments.home.listclients');
     }
-    public function getJSonAssessmentList()
-    {
+
+    private function processSortRequest(Request $request, $assessments) {
+        if ($request->sortField == 'camp') {
+            $assessments = $assessments
+                 ->orderBy('camps.camp_name', $request->sortType);
+        } else {
+            $assessments = $assessments->orderBy($request->sortField, $request->sortType);
+        }
+        return $assessments;
+     }
+
+    public function findHomeAssessments(Request $request) {
+        //
+        try {
+            $validator = Validator::make($request->all(), [
+                'sortField' => 'required',
+                'sortType' => 'required|max:5',
+                'perPage' => 'required',
+                'page' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                $dataType = config('database.default') == 'pgsql' ? 'INTEGER' : 'UNSIGNED';
+                $db_prefix = config('database.default') == 'pgsql' ? '' : 'cams_';
+                $assessments = HomeAssessment::join('clients', 'clients.id', '=', 'home_assessments.client_id')
+                    ->join('origins', 'origins.id', '=', 'clients.origin_id')
+                    ->join('camps', 'camps.id', '=', 'clients.camp_id');
+                $assessments = $this->getSelectItems($assessments);
+
+                $assessments = $this->processSortRequest($request,  $assessments)->paginate($request->perPage);
+                return response()->json([
+                    'authRole' => AuthUtility::getRoleName(),
+                    'authPermission' => AuthUtility::getPermissionName(),
+                    'homeAssessments' => $assessments,
+                    'pagination' =>  PaginateUtility::mapPagination($assessments),
+                ]);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+    }
+
+    private function getSelectItems($assessments) {
+        return $assessments->select(
+            'home_assessments.id AS assessment_id',
+            'home_assessments.case_worker_name',
+            'home_assessments.case_code',
+            'home_assessments.needs_description',
+            'home_assessments.assessment_date',
+            'home_assessments.auth_status AS assessment_auth_status',
+            'home_assessments.findings',
+            'home_assessments.diagnosis',
+            'home_assessments.organization',
+            'home_assessments.final_decision',
+            'home_assessments.recommendations',
+            'home_assessments.linked_case_code',
+            'clients.*',
+            'camps.camp_name'
+        );
+    }
+
+    private function findVulnerabilityBySearchTerm($searchTerm) {
+        $dataType = config('database.default') == 'pgsql' ? 'INTEGER' : 'UNSIGNED';
+        $dbPrefix = DB::getTablePrefix();
+
+        $assessments = HomeAssessment::join('clients', 'clients.id', '=', 'home_assessments.client_id')
+            ->leftJoin('camps', 'camps.id', '=', 'clients.camp_id')
+            ->leftJoin('origins', 'origins.id', '=', 'clients.origin_id');
+        $assessments = $this->getSelectItems($assessments);
+        $assessments = $assessments->where(DB::raw('lower('.$dbPrefix.'home_assessments.q1_1)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.case_worker_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.case_code)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.needs_description)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.auth_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.findings)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.diagnosis)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.organization)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.final_decision)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.recommendations)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.linked_case_code)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            //Client
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.full_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.client_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.sex)'), 'LIKE', '%'. Str::lower($searchTerm). '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.hai_reg_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.age_score)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.marital_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.care_giver)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.child_care_giver)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.present_address)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere('clients.females_total', 'LIKE', '%'. $searchTerm . '%' )
+            ->orWhere('clients.males_total', 'LIKE', '%'. $searchTerm . '%' )
+            ->orWhere('clients.household_number', 'LIKE', '%'. $searchTerm . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.ration_card_number)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.assistance_received)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.problem_specification)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.share_info)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.hh_relation)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.auth_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' );
+            try {
+                if (Carbon::createFromFormat('Y-m-d H:i:s', $searchTerm) !== FALSE) {
+                    $assessments = $assessments->orWhereDate('clients.birth_date', 'LIKE', '%'. date("Y-m-d", strtotime($searchTerm)) . '%' )
+                        ->orWhereDate('clients.date_arrival', 'LIKE', '%'. date("Y-m-d", strtotime($searchTerm)) . '%' );
+                }
+            } catch (\Exception $ex) {
+                Log::debug('Invalid Date. ', [
+                    'user_id' => Auth::user()->id,
+                    'errors' => $ex->getMessage()]);
+            }
+             //Camp
+            $assessments = $assessments
+            ->orWhere(DB::raw('lower('.$dbPrefix.'camps.camp_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            //Origin
+            ->orWhere(DB::raw('lower('.$dbPrefix.'origins.origin_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' );
+
+        return $assessments;
+    }
+
+
+    public function findjsonHomeAssessments() {
+
+
+
+
+
+
+
+
+
+
+
+
         //
         $assessments=HomeAssessment::all();
         $iTotalRecords =count(HomeAssessment::all());
