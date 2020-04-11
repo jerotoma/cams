@@ -1,30 +1,30 @@
 // initial state
 const state = {
-    referral: {
+    receivedItem: {
 
     },
-    referrals: [],
+    receivedItems: [],
   }
 
   // getters
   const getters = {
-      referrals: state => state.referrals,
-      referral: state => state.referral,
-     }
+      receivedItems: state => state.receivedItems,
+      receivedItem: state => state.receivedItem,
+  }
 
   // actions
   const actions = {
-    getReferrals ({ commit }, data) {
+    getReceivedItems ({ commit }, data) {
         return new Promise((resolve, reject) => {
             commit('setLoading', true);
             axios({
                 method: 'GET',
-                url: '/rest/secured/referrals?page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
+                url: '/rest/secured/inventories/received-items?page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
             })
             .then((response) => {
                 const data = response.data;
                 commit('setLoading', false);
-                commit('setReferrals', data.referrals.data);
+                commit('setReceivedItems', data.receivedItems.data);
                 commit('setPagination', data.pagination);
                 commit('setAuthRole', data.authRole);
                 commit('setAuthPermission', data.authPermission);
@@ -36,12 +36,12 @@ const state = {
             });
         });
     },
-    postReferral({ commit }, referral) {
+    postReceivedItem({ commit }, receivedItem) {
         return new Promise((resolve, reject) => {
                 axios({
                 method: 'POST',
-                url: '/rest/secured/referrals',
-                data: referral
+                url: '/rest/secured/inventories/received-items',
+                data: receivedItem
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
@@ -51,12 +51,12 @@ const state = {
             });
         });
     },
-    updateReferral({ commit }, referral) {
+    updateReceivedItem({ commit }, receivedItem) {
         return new Promise((resolve, reject) => {
                 axios({
                 method: 'PUT',
-                url: '/rest/secured/referrals',
-                data: referral
+                url: '/rest/secured/inventories/received-items',
+                data: receivedItem
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
@@ -66,11 +66,11 @@ const state = {
             });
         });
     },
-    deleteReferral({ commit }, referral) {
+    deleteReceivedItem({ commit }, receivedItem) {
         return new Promise((resolve, reject) => {
             axios({
                 method: 'DELETE',
-                url: '/rest/secured/referrals/' + referral.id,
+                url: '/rest/secured/inventories/received-items/' + receivedItem.id,
                 data: {}
             }).then((response) => {
                 const data = response.data;
@@ -81,14 +81,14 @@ const state = {
             });
         });
     },
-    searchReferralWithPagination({ commit, dispatch }, data) {
+    searchReceivedItemWithPagination({ commit, dispatch }, data) {
         if (data.searchTerm) {
             axios({
                 method: 'GET',
-                url: '/rest/secured/referrals/search-paginated?searchTerm=' + data.searchTerm + '&page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
+                url: '/rest/secured/inventories/received-items/search-paginated?searchTerm=' + data.searchTerm + '&page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
             }).then((response) => {
                 const data = response.data;
-                commit('setReferrals', data.referrals.data);
+                commit('setReceivedItems', data.receivedItems.data);
                 commit('setPagination', data.pagination);
                 commit('setAuthRole', data.authRole);
                 commit('setAuthPermission', data.authPermission);
@@ -97,14 +97,14 @@ const state = {
 
             });
         } else {
-            dispatch('getReferrals', data);
+            dispatch('getReceivedItems', data);
         }
     },
-    searchReferral({ commit }, data) {
+    searchReceivedItem({ commit }, data) {
         return new Promise((resolve, reject) => {
             axios({
                 method: 'GET',
-                url: '/rest/secured/referrals/search?searchTerm=' + data.searchTerm,
+                url: '/rest/secured/inventories/received-items/search?searchTerm=' + data.searchTerm,
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
@@ -118,11 +118,11 @@ const state = {
 
   // mutations
   const mutations = {
-    setReferral (state, referral) {
-      state.referral = referral
+    setReceivedItem (state, receivedItem) {
+      state.receivedItem = receivedItem
     },
-    setReferrals (state, referrals) {
-        state.referrals = referrals
+    setReceivedItems (state, receivedItems) {
+        state.receivedItems = receivedItems
     },
   }
 

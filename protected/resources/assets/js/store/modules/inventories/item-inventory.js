@@ -1,30 +1,28 @@
 // initial state
 const state = {
-    referral: {
-
-    },
-    referrals: [],
+    inventory: {},
+    inventories: [],
   }
 
   // getters
   const getters = {
-      referrals: state => state.referrals,
-      referral: state => state.referral,
-     }
+      inventories: state => state.inventories,
+      inventory: state => state.inventory,
+  }
 
   // actions
   const actions = {
-    getReferrals ({ commit }, data) {
+    getInventories ({ commit }, data) {
         return new Promise((resolve, reject) => {
             commit('setLoading', true);
             axios({
                 method: 'GET',
-                url: '/rest/secured/referrals?page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
+                url: '/rest/secured/inventories?page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
             })
             .then((response) => {
                 const data = response.data;
                 commit('setLoading', false);
-                commit('setReferrals', data.referrals.data);
+                commit('setInventories', data.inventories.data);
                 commit('setPagination', data.pagination);
                 commit('setAuthRole', data.authRole);
                 commit('setAuthPermission', data.authPermission);
@@ -36,12 +34,12 @@ const state = {
             });
         });
     },
-    postReferral({ commit }, referral) {
+    postInventory({ commit }, inventory) {
         return new Promise((resolve, reject) => {
                 axios({
                 method: 'POST',
-                url: '/rest/secured/referrals',
-                data: referral
+                url: '/rest/secured/inventories',
+                data: inventory
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
@@ -51,12 +49,12 @@ const state = {
             });
         });
     },
-    updateReferral({ commit }, referral) {
+    updateInventory({ commit }, inventory) {
         return new Promise((resolve, reject) => {
                 axios({
                 method: 'PUT',
-                url: '/rest/secured/referrals',
-                data: referral
+                url: '/rest/secured/inventories',
+                data: inventory
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
@@ -66,11 +64,11 @@ const state = {
             });
         });
     },
-    deleteReferral({ commit }, referral) {
+    deleteInventory({ commit }, inventory) {
         return new Promise((resolve, reject) => {
             axios({
                 method: 'DELETE',
-                url: '/rest/secured/referrals/' + referral.id,
+                url: '/rest/secured/inventories/' + inventory.id,
                 data: {}
             }).then((response) => {
                 const data = response.data;
@@ -81,14 +79,14 @@ const state = {
             });
         });
     },
-    searchReferralWithPagination({ commit, dispatch }, data) {
+    searchInventoryWithPagination({ commit, dispatch }, data) {
         if (data.searchTerm) {
             axios({
                 method: 'GET',
-                url: '/rest/secured/referrals/search-paginated?searchTerm=' + data.searchTerm + '&page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
+                url: '/rest/secured/inventories/search-paginated?searchTerm=' + data.searchTerm + '&page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
             }).then((response) => {
                 const data = response.data;
-                commit('setReferrals', data.referrals.data);
+                commit('setInventories', data.inventories.data);
                 commit('setPagination', data.pagination);
                 commit('setAuthRole', data.authRole);
                 commit('setAuthPermission', data.authPermission);
@@ -97,14 +95,14 @@ const state = {
 
             });
         } else {
-            dispatch('getReferrals', data);
+            dispatch('getInventories', data);
         }
     },
-    searchReferral({ commit }, data) {
+    searchInventory({ commit }, data) {
         return new Promise((resolve, reject) => {
             axios({
                 method: 'GET',
-                url: '/rest/secured/referrals/search?searchTerm=' + data.searchTerm,
+                url: '/rest/secured/inventories/search?searchTerm=' + data.searchTerm,
             }).then((response) => {
                 const data = response.data;
                 resolve(data);
@@ -118,11 +116,11 @@ const state = {
 
   // mutations
   const mutations = {
-    setReferral (state, referral) {
-      state.referral = referral
+    setInventory (state, inventory) {
+      state.inventory = inventory
     },
-    setReferrals (state, referrals) {
-        state.referrals = referrals
+    setInventories (state, inventories) {
+        state.inventories = inventories
     },
   }
 

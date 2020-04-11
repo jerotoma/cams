@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
+use App\Helpers\ValidatorUtility;
+use App\Helpers\AuthUtility;
+use App\Helpers\PaginateUtility;
+
 class ItemInventoryController extends Controller
 {
 
@@ -33,6 +37,52 @@ class ItemInventoryController extends Controller
         $items=ItemsInventory::all();
         return view('inventory.items.index',compact('items'));
     }
+
+    private function processSortRequest(Request $request, $inventories) {
+        return $inventories->orderBy($request->sortField, $request->sortType);;
+     }
+
+    public function findInventories(Request $request) {
+        try {
+            $validator = Validator::make($request->all(), [
+                'sortField' => 'required',
+                'sortType' => 'required|max:5',
+                'perPage' => 'required',
+                'page' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                $inventories = ItemsInventory::join('items_categories', 'items_categories.id', '=', 'items_inventories.category_id');
+                $inventories = $this->getSelectItems($inventories);
+                $inventories = $this->processSortRequest($request,  $inventories)->paginate($request->perPage);
+                return response()->json([
+                    'authRole' => AuthUtility::getRoleName(),
+                    'authPermission' => AuthUtility::getPermissionName(),
+                    'inventories' => $inventories,
+                    'pagination' =>  PaginateUtility::mapPagination($inventories),
+                ]);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+    }
+
+    private function getSelectItems($inventories) {
+        return $inventories->select(
+            'items_inventories.*',
+            'items_categories.category_name',
+            'items_categories.id as category_id'
+        );
+    }
+
     //Import
     public function showImport()
     {
@@ -69,13 +119,13 @@ class ItemInventoryController extends Controller
                 $results = $reader->get();
 
                 $results->each(function($row) {
-                    
-                    //Categories 
+
+                    //Categories
                     $cate_id="";
                    $cate= ItemsCategories::where('category_name','=',$row->category)->get()->first();
                     if(count($cate) >0 && $cate != null)
                     {
-                        $cate_id= $cate->id; 
+                        $cate_id= $cate->id;
                     }
                     else
                     {
@@ -88,7 +138,7 @@ class ItemInventoryController extends Controller
                     $item= ItemsInventory::where('item_name','=',$row->item_name)->get()->first();
                     if(count($item) >0 && $item != null)
                     {
-                        
+
                     }
                     else
                     {
@@ -100,9 +150,9 @@ class ItemInventoryController extends Controller
                         $item->unit=$row->unit;
                         $item->remarks=$row->remarks;
                         $item->status="Available";
-                        $item->save(); 
+                        $item->save();
                     }
-                   
+
                 });
 
             });
@@ -206,7 +256,7 @@ class ItemInventoryController extends Controller
     {
         //
         $item=ItemsInventory::find($id);
-        
+
        // dd($item->category);
         return view('inventory.items.edit',compact('item'));
     }
@@ -279,7 +329,7 @@ class ItemInventoryController extends Controller
         }
         $item->delete();
     }
-    
+
     //Import
 
 }

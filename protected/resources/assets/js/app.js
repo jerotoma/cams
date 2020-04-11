@@ -31,6 +31,10 @@ Vue.component('apexchart', VueApexCharts)
 Vue.component('client-list-component', require('./pages/clients/ClientListComponent.vue').default);
 Vue.component('home-assessment-component', require('./pages/assessments/home/HomeAssessmentComponent.vue').default);
 Vue.component('vulnerability-assessment-component', require('./pages/assessments/vulnerabilities/VulnerabilityAssessmentComponent.vue').default);
+Vue.component('item-received-list-component', require('./pages/inventories/ItemReceivedComponent.vue').default);
+Vue.component('item-category-list-component', require('./pages/inventories/ItemCategoryComponent.vue').default);
+Vue.component('item-distribution-list-component', require('./pages/inventories/ItemDistributionComponent.vue').default);
+Vue.component('inventory-list-component', require('./pages/inventories/InventoryListComponent.vue').default);
 Vue.component('referral-list-component', require('./pages/referrals/ReferralListComponent.vue').default);
 Vue.component('chart-stat-component', require('./pages/dashboard/ChartStatComponent.vue').default);
 Vue.component('counter-stat-component', require('./pages/dashboard/CounterStatComponent.vue').default);

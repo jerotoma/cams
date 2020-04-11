@@ -9,6 +9,11 @@ import client from './modules/client';
 import vulnerabilityAssessment from './modules/assessments/vulnerability-assessment';
 import homeAssessment from './modules/assessments/home-assessment';
 import referral from './modules/referral';
+import itemCategory from './modules/inventories/item-category';
+import itemReceived from './modules/inventories/item-received';
+import itemDistribution from './modules/inventories/item-distribution';
+import itemInventory from './modules/inventories/item-inventory';
+
 import chartStat from "./modules/dashboard/chart-stat";
 import counterStat from "./modules/dashboard/counter-stat";
 
@@ -22,7 +27,11 @@ export default new Vuex.Store({
         vulnerabilityAssessment,
         referral,
         counterStat,
-        chartStat
+        chartStat,
+        itemCategory,
+        itemDistribution,
+        itemInventory,
+        itemReceived
     },
     state,
     getters,

@@ -80,6 +80,7 @@ Route::get('create-client','ClientsController@createClient');
 //NFIs Item inventory
 Route::resource('inventory-categories','ItemsCategoriesController');
 Route::post('onflycategory','ItemsCategoriesController@onFlyCategory');
+Route::resource('inventories','ItemInventoryController');
 Route::resource('inventory','ItemInventoryController');
 
 //Item received
@@ -305,6 +306,21 @@ Route::prefix('rest/secured')->group(function () {
     Route::get('/referrals/search-paginated', 'ReferralController@searchReferralPaginated');
     Route::post('/referrals/{id}/authorize', 'ReferralController@AuthorizeReferralsById');
 
+    //Inventories
+    Route::get('/inventories','ItemInventoryController@findInventories');
+    Route::get('/inventories/search-paginated','ItemInventoryController@searchInventoryPaginated');
+
+    //Item Categories
+    Route::get('/inventories/categories','ItemsCategoriesController@findInventories');
+    Route::get('/inventories/categories/search-paginated','ItemsCategoriesController@searchInventoryPaginated');
+
+    //Item Distributions
+    Route::get('/inventories/distributions','ItemInventoryController@findInventories');
+    Route::get('/inventories/distributions/search-paginated','ItemInventoryController@searchInventoryPaginated');
+
+    //Received Items
+    Route::get('/inventories/received-items','ItemsReceivingController@getListItemsReceived');
+    Route::get('/inventories/received-items/search-paginated','ItemInventoryController@searchInventoryPaginated');
 });
 
 

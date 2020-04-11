@@ -10,6 +10,10 @@ const StringUtilPlugin = {
             capitalize(value) {
                 return _.startCase(_.camelCase(value));
             },
+            lowerCase(value) {
+                return _.toLower(value);
+            },
+
         }
       });
       Object.defineProperty(Vue.prototype, "$stringUtil", {

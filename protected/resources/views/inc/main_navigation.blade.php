@@ -33,7 +33,7 @@
                     <ul>
                         <li><a href="{{url('items/distributions')}}">Item Distribution</a></li>
                         <li><a href="{{url('inventory-received')}}">Received Items</a></li>
-                        <li><a href="{{url('inventory')}}">Items Inventory</a></li>
+                        <li><a href="{{url('inventories')}}">Items Inventory</a></li>
                         <li><a href="{{url('inventory-categories')}}">Items Categories</a></li>
                     </ul>
                 </li>

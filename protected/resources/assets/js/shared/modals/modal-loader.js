@@ -32,7 +32,7 @@ const ModalPlugin = {
             },
             // Confirmation dialog
             deleteRecord(url) {
-                bootbox.confirm("Are You Sure to delete record?", function(result) {
+                bootbox.confirm("Are you sure you want to delete this record?", function(result) {
                     if(result){
                         axios({
                             method: 'DELETE',
@@ -45,7 +45,7 @@ const ModalPlugin = {
             },
              // Confirmation dialog
              authorizeRecord(url) {
-                bootbox.confirm("Are You Sure to athorize record?", function(result) {
+                bootbox.confirm("Are you sure you want to athorize this record?", function(result) {
                     if(result){
                         axios({
                             method: 'POST',
@@ -60,7 +60,7 @@ const ModalPlugin = {
             },
             // Confirmation dialog
             downloadRecord(url) {
-                bootbox.confirm("Are You Sure to athorize record?", function(result) {
+                bootbox.confirm("Are you sure you want to athorize this record?", function(result) {
                     if(result){
                         axios({
                             method: 'POST',
