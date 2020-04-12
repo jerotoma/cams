@@ -1,4 +1,4 @@
-@extends('site.master')
+@extends('layout.master')
 @section('page_js')
     <script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/selects/select2.min.js")}}"></script>
@@ -35,9 +35,6 @@
         });
 
     </script>
-@stop
-@section('main_navigation')
-    @include('inc.main_navigation')
 @stop
 @section('page_title')
     Item Inventories

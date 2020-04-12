@@ -1,12 +1,9 @@
-@extends('site.master')
+@extends('layout.master')
 @section('page_css')
    @include('assessments.inclusion.inc.inclusion_css')
 @stop
 @section('page_js')
     @include('inc.page_js')
-@stop
-@section('main_navigation')
-     @include('inc.main_navigation')
 @stop
 @section('page_title')
     Rehabilitation!

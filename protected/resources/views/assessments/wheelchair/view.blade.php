@@ -1,9 +1,6 @@
-@extends('site.master')
+@extends('layout.master')
 @section('page_js')
     @include('inc.page_js')
-@stop
-@section('main_navigation')
-     @include('inc.main_navigation')
 @stop
 @section('page_title')
     WheelChair Assessments
@@ -23,7 +20,7 @@
     <style>
         .list-group-item-heading,
         .list-group-item-text{
-          font-size: 12px; 
+          font-size: 12px;
           font-weight: 700;
         }
         .move-it-right-20px{
@@ -38,7 +35,7 @@
 		color: #fff;
 	   }
     </style>
-   
+
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
             <a  href="{{url('clients-va')}}" class=" btn"><i class="fa fa-search text-success"></i> <span>Search Client</span></a>

@@ -1,9 +1,9 @@
-@extends('site.master')
+@extends('layout.master')
 @section('page_js')
-    @include('inc.page_js')
+    @include('layout.page_js')
 @stop
 @section('main_navigation')
-     @include('inc.main_navigation')
+     @include('layout.main_navigation')
 @stop
 @section('page_title')
     welcome!

@@ -1,9 +1,6 @@
-@extends('site.master')
+@extends('layout.master')
 @section('page_js')
     @include('inc.page_js')
-@stop
-@section('main_navigation')
-     @include('inc.main_navigation')
 @stop
 @section('page_title')
     WheelChair Assessments
@@ -23,7 +20,7 @@
     <style>
         .list-group-item-heading,
         .list-group-item-text{
-          font-size: 12px; 
+          font-size: 12px;
           font-weight: 700;
         }
         .move-it-right-20px{
@@ -38,14 +35,14 @@
 		color: #fff;
 	 }
     </style>
-   
+
     <div class="row" style="margin-bottom: 5px">
         <div class="col-md-12 text-right">
             @permission('create')
              <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#client_wheelchair_assessment"><i class="fa fa-plus text-success" aria-hidden="true"></i> <span> Assess Client</span></a>
             @endpermission
             <a  href="{{url('assessments/wheelchair')}}" class="btn btn-primary  "><i class="fa fa-list text-info"></i> <span>List All Assessments</span></a>
-    
+
 		</div>
     </div>
     <div class="panel panel-flat">
@@ -56,7 +53,7 @@
           @include('assessments.wheelchair.inc.list_all')
 		</div>
     </div>
-  
+
 <!-- Modal -->
 <div id="client_wheelchair_assessment" class="modal fade" role="dialog" data-backdrop="false">
   <div class="modal-dialog modal-lg">

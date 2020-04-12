@@ -1,4 +1,4 @@
-@extends('site.master')
+@extends('layout.master')
 @section('page_js')
     <script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
@@ -119,9 +119,6 @@
             }
         });
     </script>
-@stop
-@section('main_navigation')
-    @include('inc.main_navigation')
 @stop
 @section('page_title')
     NFIs Items Distribution

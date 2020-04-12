@@ -1,12 +1,6 @@
-@extends('site.master')
+@extends('layout.master')
 @section('page_js')
     @include('inc.page_js')
-@stop
-@section('main_navigation')
-     @include('inc.main_navigation')
-@stop
-@section('page_title')
-    Rehabilitation!
 @stop
 @section('page_heading_title')
         <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Rehabilitation Service </span> - Progress</h4>
@@ -33,9 +27,9 @@
             <h5 class="panel-title text-center">Progress</h5>
         </div>
         <div class="panel-body">
-            
+
         </div>
     </div>
-      
+
 
 @stop

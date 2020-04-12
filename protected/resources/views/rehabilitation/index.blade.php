@@ -1,9 +1,6 @@
-@extends('site.master')
+@extends('layout.master')
 @section('page_js')
     @include('inc.page_js')
-@stop
-@section('main_navigation')
-     @include('inc.main_navigation')
 @stop
 @section('page_title')
     Rehabilitation!
@@ -33,10 +30,10 @@
             <h5 class="panel-title text-center">Add new</h5>
         </div>
         <div class="panel-body">
-            
+
         </div>
     </div>
-      
+
 
 @stop
 

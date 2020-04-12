@@ -34,7 +34,7 @@
 
 <body class="navbar-top" style="overflow:auto;">
 <div id="campsn-app">
-    @include('inc.header')
+    @include('layout.header')
     <!-- Page container -->
     <div class="page-container">
         <!-- Page content -->
@@ -43,10 +43,10 @@
             <div class="sidebar sidebar-main sidebar-fixed ">
                 <div class="sidebar-content">
                     <!-- User menu -->
-                        @include('inc.user_menu')
+                        @include('layout.user_menu')
                     <!-- /user menu -->
                     <!-- Main navigation -->
-                        @yield("main_navigation")
+                        @include("layout.main_navigation")
                     <!-- /main navigation -->
                 </div>
             </div>
@@ -77,7 +77,7 @@
                     @yield("contents")
                     <!-- /dashboard content -->
                     <!-- Footer -->
-                    @include('inc.footer')
+                    @include('layout.footer')
                     <!-- /Footer -->
                 </div>
                 <!-- /content area -->

@@ -1,4 +1,4 @@
-@extends('site.master')
+@extends('layout.master')
 @section('page_css')
    @include('assessments.inclusion.inc.inclusion_css')
 @stop

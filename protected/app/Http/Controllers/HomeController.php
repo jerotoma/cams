@@ -31,7 +31,7 @@ class HomeController extends Controller {
     //
     public function index() {
         if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('authorizer') || Auth::user()->hasPermission('reports')) {
-            return view('site.dashboard');
+            return view('home.dashboard');
         } else {
             return redirect('account/profile');
         }
