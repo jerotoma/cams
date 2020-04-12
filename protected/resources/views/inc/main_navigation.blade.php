@@ -108,7 +108,7 @@
         <!-- Settings -->
         @role('admin')
 
-            <li {{
+            <li class="{{
                 Request::is('countries') ||
                 Request::is('regions') ||
                 Request::is('districts') ||
