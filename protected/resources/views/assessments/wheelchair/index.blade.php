@@ -1,6 +1,6 @@
 @extends('layout.master')
 @section('page_js')
-    @include('inc.page_js')
+    @include('layout.page_js')
 @stop
 @section('page_title')
     WheelChair Assessments

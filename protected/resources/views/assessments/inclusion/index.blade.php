@@ -3,7 +3,7 @@
    @include('assessments.inclusion.inc.inclusion_css')
 @stop
 @section('page_js')
-    @include('inc.page_js')
+    @include('layout.page_js')
 @stop
 @section('main_navigation')
      @include('inc.main_navigation')

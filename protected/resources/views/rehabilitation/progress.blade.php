@@ -1,6 +1,6 @@
 @extends('layout.master')
 @section('page_js')
-    @include('inc.page_js')
+    @include('layout.page_js')
 @stop
 @section('page_heading_title')
         <h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Rehabilitation Service </span> - Progress</h4>

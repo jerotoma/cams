@@ -1,6 +1,6 @@
 @extends('layout.master')
 @section('page_js')
-    @include('inc.page_js')
+    @include('layout.page_js')
     <script type="text/javascript" src="{{asset("assets/js/plugins/tables/datatables/datatables.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/core/libraries/jasny_bootstrap.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
