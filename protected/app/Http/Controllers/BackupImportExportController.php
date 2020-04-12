@@ -70,14 +70,11 @@ class BackupImportExportController extends Controller
     {
         //
     }
-    public function showExport()
-    {
-        //
+    public function showExport() {
         return view('backups.exports.index');
     }
-    public function postExport(Request $request)
-    { ob_clean();
-
+    public function postExport(Request $request) {
+        ob_clean();
         try {
             $this->validate($request, [
                 'module' => 'required',
@@ -86,109 +83,110 @@ class BackupImportExportController extends Controller
                 $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
                 $xml .= "<ApplicationData>";
                 $xml .= "<Clients>";
-                foreach (Client::all() as $client) {
-                    $xml .= "<Client>";
-                    $xml .= "<hai_reg_number><![CDATA[" . $client->hai_reg_number . "]]></hai_reg_number>";
-                    $xml .= "<client_number><![CDATA[" . $client->client_number . "]]></client_number>";
-                    $xml .= "<full_name><![CDATA[" . $client->full_name . "]]></full_name>";
-                    $xml .= "<sex><![CDATA[" . $client->sex . "]]></sex>";
-                    $xml .= "<birth_date><![CDATA[" . $client->birth_date . "]]></birth_date>";
-                    $xml .= "<age><![CDATA[" . $client->age . "]]></age>";
-                    $xml .= "<marital_status><![CDATA[" . $client->marital_status . "]]></marital_status>";
-                    $xml .= "<spouse_name><![CDATA[" . $client->spouse_name . "]]></spouse_name>";
-                    $xml .= "<care_giver><![CDATA[" . $client->care_giver . "]]></care_giver>";
-                    $xml .= "<child_care_giver><![CDATA[" . $client->child_care_giver . "]]></child_care_giver>";
-                    $xml .= "<date_arrival><![CDATA[" . $client->date_arrival . "]]></date_arrival>";
-                    $xml .= "<present_address><![CDATA[" . $client->present_address . "]]></present_address>";
-                    $xml .= "<females_total><![CDATA[" . $client->females_total . "]]></females_total>";
-                    $xml .= "<males_total><![CDATA[" . $client->males_total . "]]></males_total>";
-                    $xml .= "<household_number><![CDATA[" . $client->household_number . "]]></household_number>";
-                    $xml .= "<ration_card_number><![CDATA[" . $client->ration_card_number . "]]></ration_card_number>";
-                    $xml .= "<assistance_received><![CDATA[" . $client->assistance_received . "]]></assistance_received>";
-                    $xml .= "<problem_specification><![CDATA[" . $client->problem_specification . "]]></problem_specification>";
-                    $xml .= "<status><![CDATA[" . $client->status . "]]></status>";
-                    $xml .= "<share_info><![CDATA[" . $client->share_info . "]]></share_info>";
-                    $xml .= "<hh_relation><![CDATA[" . $client->hh_relation . "]]></hh_relation>";
-                    $xml .= "<auth_status><![CDATA[" . $client->auth_status . "]]></auth_status>";
-                    $xml .= "<created_by><![CDATA[" . $client->created_by . "]]></created_by>";
-                    $xml .= "<updated_by><![CDATA[" . $client->updated_by . "]]></updated_by>";
-                    $xml .= "<auth_by><![CDATA[" . $client->auth_by . "]]></auth_by>";
-                    $xml .= "<auth_date><![CDATA[" . $client->auth_date . "]]></auth_date>";
-                    $xml .= "<ClientVulnerabilityCodes>";
-                    if (is_object($client->vulnerabilityCodes) && $client->vulnerabilityCodes != null) {
-                        foreach ($client->vulnerabilityCodes as $code) {
-                            $xml .= "<ClientVulnerabilityCode>";
-                            if (is_object($code->code) && $code->code != null) {
-                                $xml .= "<PSNCode>";
-                                $xml .= "<code><![CDATA[" . $code->code->code . "]]></code>";
-                                $xml .= "<description><![CDATA[" . $code->code->description . "]]></description>";
-                                $xml .= "<definition><![CDATA[" . $code->code->definition . "]]></definition>";
-                                $xml .= "<for_reporting><![CDATA[" . $code->code->for_reporting . "]]></for_reporting>";
-                                if (is_object($code->code->category) && $code->code->category != null) {
-                                    $xml .= "<PSNCodeCategory>";
-                                    $xml .= "<code><![CDATA[" . $code->code->category->code . "]]></code>";
-                                    $xml .= "<description><![CDATA[" . $code->code->category->description . "]]></description>";
-                                    $xml .= "<definition><![CDATA[" . $code->code->category->definition . "]]></definition>";
-                                    $xml .= "<for_reporting><![CDATA[" . $code->code->category->for_reporting . "]]></for_reporting>";
-                                    $xml .= "</PSNCodeCategory>";
+                Client::chunk(200, function($clients) use ($xml) {
+                    foreach ($clients as $client) {
+                        $xml .= "<Client>";
+                        $xml .= "<hai_reg_number><![CDATA[" . $client->hai_reg_number . "]]></hai_reg_number>";
+                        $xml .= "<client_number><![CDATA[" . $client->client_number . "]]></client_number>";
+                        $xml .= "<full_name><![CDATA[" . $client->full_name . "]]></full_name>";
+                        $xml .= "<sex><![CDATA[" . $client->sex . "]]></sex>";
+                        $xml .= "<birth_date><![CDATA[" . $client->birth_date . "]]></birth_date>";
+                        $xml .= "<age><![CDATA[" . $client->age . "]]></age>";
+                        $xml .= "<marital_status><![CDATA[" . $client->marital_status . "]]></marital_status>";
+                        $xml .= "<spouse_name><![CDATA[" . $client->spouse_name . "]]></spouse_name>";
+                        $xml .= "<care_giver><![CDATA[" . $client->care_giver . "]]></care_giver>";
+                        $xml .= "<child_care_giver><![CDATA[" . $client->child_care_giver . "]]></child_care_giver>";
+                        $xml .= "<date_arrival><![CDATA[" . $client->date_arrival . "]]></date_arrival>";
+                        $xml .= "<present_address><![CDATA[" . $client->present_address . "]]></present_address>";
+                        $xml .= "<females_total><![CDATA[" . $client->females_total . "]]></females_total>";
+                        $xml .= "<males_total><![CDATA[" . $client->males_total . "]]></males_total>";
+                        $xml .= "<household_number><![CDATA[" . $client->household_number . "]]></household_number>";
+                        $xml .= "<ration_card_number><![CDATA[" . $client->ration_card_number . "]]></ration_card_number>";
+                        $xml .= "<assistance_received><![CDATA[" . $client->assistance_received . "]]></assistance_received>";
+                        $xml .= "<problem_specification><![CDATA[" . $client->problem_specification . "]]></problem_specification>";
+                        $xml .= "<status><![CDATA[" . $client->status . "]]></status>";
+                        $xml .= "<share_info><![CDATA[" . $client->share_info . "]]></share_info>";
+                        $xml .= "<hh_relation><![CDATA[" . $client->hh_relation . "]]></hh_relation>";
+                        $xml .= "<auth_status><![CDATA[" . $client->auth_status . "]]></auth_status>";
+                        $xml .= "<created_by><![CDATA[" . $client->created_by . "]]></created_by>";
+                        $xml .= "<updated_by><![CDATA[" . $client->updated_by . "]]></updated_by>";
+                        $xml .= "<auth_by><![CDATA[" . $client->auth_by . "]]></auth_by>";
+                        $xml .= "<auth_date><![CDATA[" . $client->auth_date . "]]></auth_date>";
+                        $xml .= "<ClientVulnerabilityCodes>";
+                        if ($client->vulnerabilityCodes != null && is_object($client->vulnerabilityCodes)) {
+                            foreach ($client->vulnerabilityCodes as $code) {
+                                $xml .= "<ClientVulnerabilityCode>";
+                                if (is_object($code->code) && $code->code != null) {
+                                    $xml .= "<PSNCode>";
+                                    $xml .= "<code><![CDATA[" . $code->code->code . "]]></code>";
+                                    $xml .= "<description><![CDATA[" . $code->code->description . "]]></description>";
+                                    $xml .= "<definition><![CDATA[" . $code->code->definition . "]]></definition>";
+                                    $xml .= "<for_reporting><![CDATA[" . $code->code->for_reporting . "]]></for_reporting>";
+                                    if (is_object($code->code->category) && $code->code->category != null) {
+                                        $xml .= "<PSNCodeCategory>";
+                                        $xml .= "<code><![CDATA[" . $code->code->category->code . "]]></code>";
+                                        $xml .= "<description><![CDATA[" . $code->code->category->description . "]]></description>";
+                                        $xml .= "<definition><![CDATA[" . $code->code->category->definition . "]]></definition>";
+                                        $xml .= "<for_reporting><![CDATA[" . $code->code->category->for_reporting . "]]></for_reporting>";
+                                        $xml .= "</PSNCodeCategory>";
+                                    }
+                                    $xml .= "</PSNCode>";
                                 }
-                                $xml .= "</PSNCode>";
+                                $xml .= "</ClientVulnerabilityCode>";
                             }
-                            $xml .= "</ClientVulnerabilityCode>";
-                        }
 
-                    }
-                    $xml .= "</ClientVulnerabilityCodes>";
-                    $xml .= "<Origin>";
-                    if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
-                        $origin = $client->fromOrigin;
-                        $xml .= "<origin_name><![CDATA[" . $origin->origin_name . "]]></origin_name>";
-                        $xml .= "<auth_status><![CDATA[" . $origin->auth_status . "]]></auth_status>";
-                        $xml .= "<created_by><![CDATA[" . $origin->created_by . "]]></created_by>";
-                        $xml .= "<updated_by><![CDATA[" . $origin->updated_by . "]]></updated_by>";
-                        $xml .= "<auth_by><![CDATA[" . $origin->auth_by . "]]></auth_by>";
-                    }
-                    $xml .= "</Origin>";
-                    $xml .= "<Camp>";
-                    if (is_object($client->camp) && $client->camp != null) {
-                        $camp = $client->camp;
-                        $xml .= "<reg_no><![CDATA[" . $camp->reg_no . "]]></reg_no>";
-                        $xml .= "<camp_name><![CDATA[" . $camp->camp_name . "]]></camp_name>";
-                        $xml .= "<description><![CDATA[" . $camp->description . "]]></description>";
-                        $xml .= "<address><![CDATA[" . $camp->address . "]]></address>";
-                        $xml .= "<tel><![CDATA[" . $camp->tel . "]]></tel>";
-                        $xml .= "<zone><![CDATA[" . $camp->zone . "]]></zone>";
-                        $xml .= "<status><![CDATA[" . $camp->status . "]]></status>";
-                        $xml .= "<auth_status><![CDATA[" . $camp->auth_status . "]]></auth_status>";
-                        $xml .= "<created_by><![CDATA[" . $camp->created_by . "]]></created_by>";
-                        $xml .= "<updated_by><![CDATA[" . $camp->updated_by . "]]></updated_by>";
-                        $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
-                        $xml .= "<Region>";
-                        $region = Region::find($camp->region_id);
-                        if (count($region) > 0 && $region != null) {
-                            $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                         }
-                        $xml .= "</Region>";
-                        $xml .= "<District>";
-                        $district = District::find($camp->district_id);
-                        if (count($district) > 0 && $district != null) {
-                            $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
+                        $xml .= "</ClientVulnerabilityCodes>";
+                        $xml .= "<Origin>";
+                        if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
+                            $origin = $client->fromOrigin;
+                            $xml .= "<origin_name><![CDATA[" . $origin->origin_name . "]]></origin_name>";
+                            $xml .= "<auth_status><![CDATA[" . $origin->auth_status . "]]></auth_status>";
+                            $xml .= "<created_by><![CDATA[" . $origin->created_by . "]]></created_by>";
+                            $xml .= "<updated_by><![CDATA[" . $origin->updated_by . "]]></updated_by>";
+                            $xml .= "<auth_by><![CDATA[" . $origin->auth_by . "]]></auth_by>";
+                        }
+                        $xml .= "</Origin>";
+                        $xml .= "<Camp>";
+                        if (is_object($client->camp) && $client->camp != null) {
+                            $camp = $client->camp;
+                            $xml .= "<reg_no><![CDATA[" . $camp->reg_no . "]]></reg_no>";
+                            $xml .= "<camp_name><![CDATA[" . $camp->camp_name . "]]></camp_name>";
+                            $xml .= "<description><![CDATA[" . $camp->description . "]]></description>";
+                            $xml .= "<address><![CDATA[" . $camp->address . "]]></address>";
+                            $xml .= "<tel><![CDATA[" . $camp->tel . "]]></tel>";
+                            $xml .= "<zone><![CDATA[" . $camp->zone . "]]></zone>";
+                            $xml .= "<status><![CDATA[" . $camp->status . "]]></status>";
+                            $xml .= "<auth_status><![CDATA[" . $camp->auth_status . "]]></auth_status>";
+                            $xml .= "<created_by><![CDATA[" . $camp->created_by . "]]></created_by>";
+                            $xml .= "<updated_by><![CDATA[" . $camp->updated_by . "]]></updated_by>";
+                            $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
-                            $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            $region = Region::find($camp->region_id);
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
-                        }
-                        $xml .= "</District>";
+                            $xml .= "<District>";
+                            $district = District::find($camp->district_id);
+                            if ($district != null && $district->district_name != null) {
+                                $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
+                                $xml .= "<Region>";
+                                $region = Region::find($district->region_id);
+                                if ($region != null && $region->region_name != null) {
+                                    $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
+                                }
+                                $xml .= "</Region>";
+                            }
+                            $xml .= "</District>";
 
+                        }
+                        $xml .= "</Camp>";
+                        $xml .= "</Client>";
                     }
-                    $xml .= "</Camp>";
-                    $xml .= "</Client>";
-                }
+                });
                 $xml .= "</Clients>";
                 $xml .= "</ApplicationData>";
-
                 File::put(storage_path() . '/SystemClients.xml', $xml);
                 return Response::download(storage_path() . '/SystemClients.xml');
             } elseif ($request->module == 2) {
@@ -284,17 +282,17 @@ class BackupImportExportController extends Controller
                             $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
                             $region = Region::find($camp->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
                             $xml .= "<District>";
                             $district = District::find($camp->district_id);
-                            if (count($district) > 0 && $district != null) {
+                            if ($district != null && $district->district_name != null) {
                                 $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                 $xml .= "<Region>";
                                 $region = Region::find($district->region_id);
-                                if (count($region) > 0 && $region != null) {
+                                if ($region != null && $region->region_name != null) {
                                     $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                 }
                                 $xml .= "</Region>";
@@ -535,17 +533,17 @@ class BackupImportExportController extends Controller
                             $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
                             $region = Region::find($camp->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
                             $xml .= "<District>";
                             $district = District::find($camp->district_id);
-                            if (count($district) > 0 && $district != null) {
+                            if ($district != null && $district->district_name != null) {
                                 $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                 $xml .= "<Region>";
                                 $region = Region::find($district->region_id);
-                                if (count($region) > 0 && $region != null) {
+                                if ($region != null && $region->region_name != null) {
                                     $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                 }
                                 $xml .= "</Region>";
@@ -656,17 +654,17 @@ class BackupImportExportController extends Controller
                             $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
                             $region = Region::find($camp->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
                             $xml .= "<District>";
                             $district = District::find($camp->district_id);
-                            if (count($district) > 0 && $district != null) {
+                            if ($district != null && $district->district_name != null) {
                                 $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                 $xml .= "<Region>";
                                 $region = Region::find($district->region_id);
-                                if (count($region) > 0 && $region != null) {
+                                if ($region != null && $region->region_name != null) {
                                     $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                 }
                                 $xml .= "</Region>";
@@ -846,17 +844,17 @@ class BackupImportExportController extends Controller
                         $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                         $xml .= "<Region>";
                         $region = Region::find($camp->region_id);
-                        if (count($region) > 0 && $region != null) {
+                        if ($region != null && $region->region_name != null ) {
                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                         }
                         $xml .= "</Region>";
                         $xml .= "<District>";
                         $district = District::find($camp->district_id);
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -952,17 +950,17 @@ class BackupImportExportController extends Controller
                                     $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                                     $xml .= "<Region>";
                                     $region = Region::find($camp->region_id);
-                                    if (count($region) > 0 && $region != null) {
+                                    if ($region != null && $region->region_name != null) {
                                         $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                     }
                                     $xml .= "</Region>";
                                     $xml .= "<District>";
                                     $district = District::find($camp->district_id);
-                                    if (count($district) > 0 && $district != null) {
+                                    if ($district != null && $district->district_name != null) {
                                         $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                         $xml .= "<Region>";
                                         $region = Region::find($district->region_id);
-                                        if (count($region) > 0 && $region != null) {
+                                        if ($region != null && $region->region_name != null) {
                                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                         }
                                         $xml .= "</Region>";
@@ -1053,17 +1051,17 @@ class BackupImportExportController extends Controller
                         $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                         $xml .= "<Region>";
                         $region = Region::find($camp->region_id);
-                        if (count($region) > 0 && $region != null) {
+                        if ($region != null && $region->region_name) {
                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                         }
                         $xml .= "</Region>";
                         $xml .= "<District>";
                         $district = District::find($camp->district_id);
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -1176,17 +1174,17 @@ class BackupImportExportController extends Controller
                                     $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                                     $xml .= "<Region>";
                                     $region = Region::find($camp->region_id);
-                                    if (count($region) > 0 && $region != null) {
+                                    if ($region != null && $region->region_name != null) {
                                         $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                     }
                                     $xml .= "</Region>";
                                     $xml .= "<District>";
                                     $district = District::find($camp->district_id);
-                                    if (count($district) > 0 && $district != null) {
+                                    if ($district != null && $district->district_name != null) {
                                         $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                         $xml .= "<Region>";
                                         $region = Region::find($district->region_id);
-                                        if (count($region) > 0 && $region != null) {
+                                        if ($region != null && $region->region_name != null) {
                                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                         }
                                         $xml .= "</Region>";
@@ -1319,17 +1317,17 @@ class BackupImportExportController extends Controller
                             $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
                             $region = Region::find($camp->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
                             $xml .= "<District>";
                             $district = District::find($camp->district_id);
-                            if (count($district) > 0 && $district != null) {
+                            if ($district != null && $district->district_name != null) {
                                 $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                 $xml .= "<Region>";
                                 $region = Region::find($district->region_id);
-                                if (count($region) > 0 && $region != null) {
+                                if ($region != null && $region->region_name != null) {
                                     $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                 }
                                 $xml .= "</Region>";
@@ -1343,11 +1341,11 @@ class BackupImportExportController extends Controller
                     $xml .= "<District>";
                     if (is_object($assessment->district) && $assessment->district != null) {
                         $district = $assessment->district;
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -1370,17 +1368,17 @@ class BackupImportExportController extends Controller
                         $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                         $xml .= "<Region>";
                         $region = Region::find($camp->region_id);
-                        if (count($region) > 0 && $region != null) {
+                        if ($region != null && $region->region_name != null) {
                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                         }
                         $xml .= "</Region>";
                         $xml .= "<District>";
                         $district = District::find($camp->district_id);
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -1521,17 +1519,17 @@ class BackupImportExportController extends Controller
                         $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                         $xml .= "<Region>";
                         $region = Region::find($camp->region_id);
-                        if (count($region) > 0 && $region != null) {
+                        if ($region != null && $region->region_name != null) {
                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                         }
                         $xml .= "</Region>";
                         $xml .= "<District>";
                         $district = District::find($camp->district_id);
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -1622,17 +1620,17 @@ class BackupImportExportController extends Controller
                             $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
                             $region = Region::find($camp->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
                             $xml .= "<District>";
                             $district = District::find($camp->district_id);
-                            if (count($district) > 0 && $district != null) {
+                            if ($district != null && $district->district_name != null) {
                                 $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                 $xml .= "<Region>";
                                 $region = Region::find($district->region_id);
-                                if (count($region) > 0 && $region != null) {
+                                if ($region != null && $region->region_name != null) {
                                     $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                 }
                                 $xml .= "</Region>";
@@ -1679,17 +1677,17 @@ class BackupImportExportController extends Controller
                         $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                         $xml .= "<Region>";
                         $region = Region::find($camp->region_id);
-                        if (count($region) > 0 && $region != null) {
+                        if ($region != null && $region->region_name != null) {
                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                         }
                         $xml .= "</Region>";
                         $xml .= "<District>";
                         $district = District::find($camp->district_id);
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -1778,17 +1776,17 @@ class BackupImportExportController extends Controller
                             $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
                             $region = Region::find($camp->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
                             $xml .= "<District>";
                             $district = District::find($camp->district_id);
-                            if (count($district) > 0 && $district != null) {
+                            if ($district != null && $district->district_name != null) {
                                 $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                 $xml .= "<Region>";
                                 $region = Region::find($district->region_id);
-                                if (count($region) > 0 && $region != null) {
+                                if ($region != null && $region->region_name != null) {
                                     $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                 }
                                 $xml .= "</Region>";
@@ -1893,17 +1891,17 @@ class BackupImportExportController extends Controller
                         $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                         $xml .= "<Region>";
                         $region = Region::find($camp->region_id);
-                        if (count($region) > 0 && $region != null) {
+                        if ($region != null && $region->region_name != null) {
                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                         }
                         $xml .= "</Region>";
                         $xml .= "<District>";
                         $district = District::find($camp->district_id);
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -2007,17 +2005,17 @@ class BackupImportExportController extends Controller
                             $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
                             $region = Region::find($camp->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
                             $xml .= "<District>";
                             $district = District::find($camp->district_id);
-                            if (count($district) > 0 && $district != null) {
+                            if ($district != null && $district->district_name != null) {
                                 $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                 $xml .= "<Region>";
                                 $region = Region::find($district->region_id);
-                                if (count($region) > 0 && $region != null) {
+                                if ($region != null && $region->region_name != null) {
                                     $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                 }
                                 $xml .= "</Region>";
@@ -2258,17 +2256,17 @@ class BackupImportExportController extends Controller
                             $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
                             $region = Region::find($camp->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
                             $xml .= "<District>";
                             $district = District::find($camp->district_id);
-                            if (count($district) > 0 && $district != null) {
+                            if ($district != null && $district->district_name != null) {
                                 $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                 $xml .= "<Region>";
                                 $region = Region::find($district->region_id);
-                                if (count($region) > 0 && $region != null) {
+                                if ($region != null && $region->region_name != null) {
                                     $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                 }
                                 $xml .= "</Region>";
@@ -2376,17 +2374,17 @@ class BackupImportExportController extends Controller
                             $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
                             $region = Region::find($camp->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
                             $xml .= "<District>";
                             $district = District::find($camp->district_id);
-                            if (count($district) > 0 && $district != null) {
+                            if ($district != null && $district->district_name != null) {
                                 $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                 $xml .= "<Region>";
                                 $region = Region::find($district->region_id);
-                                if (count($region) > 0 && $region != null) {
+                                if ($region != null && $region->region_name != null) {
                                     $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                 }
                                 $xml .= "</Region>";
@@ -2564,17 +2562,17 @@ class BackupImportExportController extends Controller
                         $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                         $xml .= "<Region>";
                         $region = Region::find($camp->region_id);
-                        if (count($region) > 0 && $region != null) {
+                        if ($region != null && $region->region_name != null) {
                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                         }
                         $xml .= "</Region>";
                         $xml .= "<District>";
                         $district = District::find($camp->district_id);
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -2670,17 +2668,17 @@ class BackupImportExportController extends Controller
                                     $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                                     $xml .= "<Region>";
                                     $region = Region::find($camp->region_id);
-                                    if (count($region) > 0 && $region != null) {
+                                    if ($region != null && $region->region_name != null) {
                                         $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                     }
                                     $xml .= "</Region>";
                                     $xml .= "<District>";
                                     $district = District::find($camp->district_id);
-                                    if (count($district) > 0 && $district != null) {
+                                    if ($district != null && $district->district_name != null) {
                                         $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                         $xml .= "<Region>";
                                         $region = Region::find($district->region_id);
-                                        if (count($region) > 0 && $region != null) {
+                                        if ($region != null && $region->region_name != null) {
                                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                         }
                                         $xml .= "</Region>";
@@ -2768,17 +2766,17 @@ class BackupImportExportController extends Controller
                         $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                         $xml .= "<Region>";
                         $region = Region::find($camp->region_id);
-                        if (count($region) > 0 && $region != null) {
+                        if ($region != null && $region->region_name != null) {
                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                         }
                         $xml .= "</Region>";
                         $xml .= "<District>";
                         $district = District::find($camp->district_id);
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -2891,17 +2889,17 @@ class BackupImportExportController extends Controller
                                     $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                                     $xml .= "<Region>";
                                     $region = Region::find($camp->region_id);
-                                    if (count($region) > 0 && $region != null) {
+                                    if ($region != null && $region->region_name != null) {
                                         $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                     }
                                     $xml .= "</Region>";
                                     $xml .= "<District>";
                                     $district = District::find($camp->district_id);
-                                    if (count($district) > 0 && $district != null) {
+                                    if ($district != null && $district->district_name != null) {
                                         $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                         $xml .= "<Region>";
                                         $region = Region::find($district->region_id);
-                                        if (count($region) > 0 && $region != null) {
+                                        if ($region != null && $region->region_name != null) {
                                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                         }
                                         $xml .= "</Region>";
@@ -3034,17 +3032,17 @@ class BackupImportExportController extends Controller
                             $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
                             $region = Region::find($camp->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
                             $xml .= "<District>";
                             $district = District::find($camp->district_id);
-                            if (count($district) > 0 && $district != null) {
+                            if ($district != null && $district->district_name != null) {
                                 $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                 $xml .= "<Region>";
                                 $region = Region::find($district->region_id);
-                                if (count($region) > 0 && $region != null) {
+                                if ($region != null && $region->region_name != null) {
                                     $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                 }
                                 $xml .= "</Region>";
@@ -3058,11 +3056,11 @@ class BackupImportExportController extends Controller
                     $xml .= "<District>";
                     if (is_object($assessment->district) && $assessment->district != null) {
                         $district = $assessment->district;
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -3085,17 +3083,17 @@ class BackupImportExportController extends Controller
                         $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                         $xml .= "<Region>";
                         $region = Region::find($camp->region_id);
-                        if (count($region) > 0 && $region != null) {
+                        if ($region != null && $region->region_name != null) {
                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                         }
                         $xml .= "</Region>";
                         $xml .= "<District>";
                         $district = District::find($camp->district_id);
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -3231,17 +3229,17 @@ class BackupImportExportController extends Controller
                         $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                         $xml .= "<Region>";
                         $region = Region::find($camp->region_id);
-                        if (count($region) > 0 && $region != null) {
+                        if ($region != null && $region->region_name != null) {
                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                         }
                         $xml .= "</Region>";
                         $xml .= "<District>";
                         $district = District::find($camp->district_id);
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -3332,17 +3330,17 @@ class BackupImportExportController extends Controller
                             $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
                             $region = Region::find($camp->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
                             $xml .= "<District>";
                             $district = District::find($camp->district_id);
-                            if (count($district) > 0 && $district != null) {
+                            if ($district != null && $district->district_name != null) {
                                 $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                 $xml .= "<Region>";
                                 $region = Region::find($district->region_id);
-                                if (count($region) > 0 && $region != null) {
+                                if ($region != null && $region->region_name != null) {
                                     $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                 }
                                 $xml .= "</Region>";
@@ -3389,17 +3387,17 @@ class BackupImportExportController extends Controller
                         $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                         $xml .= "<Region>";
                         $region = Region::find($camp->region_id);
-                        if (count($region) > 0 && $region != null) {
+                        if ($region != null && $region->region_name != null) {
                             $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                         }
                         $xml .= "</Region>";
                         $xml .= "<District>";
                         $district = District::find($camp->district_id);
-                        if (count($district) > 0 && $district != null) {
+                        if ($district != null && $district->district_name != null) {
                             $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                             $xml .= "<Region>";
                             $region = Region::find($district->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
@@ -3488,17 +3486,17 @@ class BackupImportExportController extends Controller
                             $xml .= "<auth_by><![CDATA[" . $camp->auth_status . "]]></auth_by>";
                             $xml .= "<Region>";
                             $region = Region::find($camp->region_id);
-                            if (count($region) > 0 && $region != null) {
+                            if ($region != null && $region->region_name != null) {
                                 $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                             }
                             $xml .= "</Region>";
                             $xml .= "<District>";
                             $district = District::find($camp->district_id);
-                            if (count($district) > 0 && $district != null) {
+                            if ($district != null && $district->district_name != null) {
                                 $xml .= "<district_name><![CDATA[" . $district->district_name . "]]></district_name>";
                                 $xml .= "<Region>";
                                 $region = Region::find($district->region_id);
-                                if (count($region) > 0 && $region != null) {
+                                if ($region != null && $region->region_name != null) {
                                     $xml .= "<region_name><![CDATA[" . $region->region_name . "]]></region_name>";
                                 }
                                 $xml .= "</Region>";
@@ -3556,7 +3554,7 @@ class BackupImportExportController extends Controller
             if($request->module =="1") {
                 foreach ($xml->Clients as $clients) {
                     foreach ($clients as $clnt) {
-                        
+
 						$client_id = $this->ImportClient($clnt);
                     }
                 }
@@ -3565,7 +3563,7 @@ class BackupImportExportController extends Controller
                 foreach ($xml->VulnerabilityAssessments as $vassessments) {
                     foreach ($vassessments as $vassessment) {
 
-                        
+
 						$vulAssessment=$vassessment;
                         $client=$vulAssessment->Client;
                         $vprofile =$vulAssessment->AssessmentHousholdProfile;
@@ -3581,7 +3579,7 @@ class BackupImportExportController extends Controller
 
                         $client_id=$this->ImportClient($client);
 
-                        
+
 						if(count(VulnerabilityAssessment::where('client_id','=',$client_id)
                                                         ->where('q1_5','=',$vulAssessment->q1_5)
                                 ->where('q1_1','=',$vulAssessment->q1_1)
@@ -3750,7 +3748,7 @@ class BackupImportExportController extends Controller
                 }
                 foreach ($xml->HomeAssessments as $homeAssessments) {
                     foreach ($homeAssessments as $homeAssessment) {
-                        
+
 						$ha=$homeAssessment;
                         $client_id = $this->ImportClient($ha->Client);
 
@@ -3761,7 +3759,7 @@ class BackupImportExportController extends Controller
 											   ->where('organization','=',$ha->organization)
 											   ->where('project_coordinator','=',$ha->project_coordinator)->get()) <=0)
 						{
-						
+
 						$assessment = new HomeAssessment;
                         $assessment->client_id = $client_id;
                         $assessment->case_code = $ha->case_code;
@@ -3801,7 +3799,7 @@ class BackupImportExportController extends Controller
                                 ->where('created_by', '=', $cl_referral->created_by)
                                 ->get()) > 0)
                         {
-                            
+
 							$referral = new ClientReferral;
                             $referral->client_id = $client_id;
                             $referral->referral_type = $cl_referral->referral_type;
@@ -3809,7 +3807,7 @@ class BackupImportExportController extends Controller
                             $referral->created_by = $cl_referral->created_by;
                             $referral->status = $cl_referral->status;
                             $referral->updated_by = $cl_referral->updated_by;
-                            
+
                             $referral->save();
 
                             //Create references
@@ -3864,7 +3862,7 @@ class BackupImportExportController extends Controller
                             $service->comments = $referralServiceRequested->comments;
                             $service->save();
 
-                            
+
                             foreach ($referralServiceRequested->RequestedServicies->RequestedService as $service_req)
 							{
 
@@ -3935,7 +3933,7 @@ class BackupImportExportController extends Controller
                                     $invItem->status = "Available";
                                     $invItem->save();
                                 }
-                                
+
                             }
                         }
                     }
@@ -5051,11 +5049,11 @@ class BackupImportExportController extends Controller
             {
                 File::delete($requiredFile);
             }
-            
+
             return redirect('home');
         }
-        catch (\Exception $ex)
-        {
+        catch (\Exception $ex) {
+            \Log::info('Export failed: ', $ex->getMessage());
             return redirect()->back()->with('message',$ex->getMessage());
         }
 
@@ -5166,7 +5164,7 @@ class BackupImportExportController extends Controller
     public function ImportClient($client_data)
     {
 
-          
+
 
 			$clnt = $client_data;
             $origin=$clnt->Origin;
@@ -5259,7 +5257,7 @@ class BackupImportExportController extends Controller
                     ->where('household_number','=',$clnt->household_number)
                     ->where('females_total','=',$clnt->females_total)
                     ->where('males_total','=',$clnt->males_total)->get()->first();
-                
+
 				$client_id=$client->id;
             }
             else
@@ -5300,8 +5298,8 @@ class BackupImportExportController extends Controller
                 {
                     foreach ($cvcodes as $cvc)
                     {
-                       
-					
+
+
                         $psnCode=$cvc->PSNCode;
                         $psnCodeCategory=$psnCode->PSNCodeCategory;
                         $category_id="";

@@ -28,7 +28,7 @@
             </li>
             <!-- /main -->
             <!-- Forms -->
-          @permission('inventory')
+            @permission('inventory')
             <li class="{{
                 Request::is('items/distributions')  ||
                 Request::is('inventories')          ||
@@ -57,7 +57,6 @@
             @endpermission
             <!-- /forms -->
             <!-- Forms -->
-
             <li class="{{Request::is('cases') || Request::is('progressive/notices') ? 'active' : ''}}">
                 <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
                 <ul>
@@ -65,95 +64,93 @@
                     <li class="{{Request::is('progressive/notices') ? 'active' : ''}}"><a href="{{url('progressive/notices')}}">Progressive Note</a></li>
                 </ul>
             </li>
-        @permission('backup')
-            <!-- Backup Restore-->
+            @permission('backup')
+                <!-- Backup Restore-->
 
-            <li class="{{Request::is('backup/import/advanced') ? 'active' : ''}}">
-                <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
-                <ul>
-                    <li class="{{Request::is('backup/import/advanced') ? 'active' : ''}}"><a href="{{url('backup/import/advanced')}}">Import data</a></li>
-                </ul>
-            </li>
-            <li class="{{Request::is('backup/export/advanced') ? 'active' : ''}}">
-                <a href="#"><i class="fa fa-download"></i> <span>Data Export</span></a>
-                <ul>
-                    <li class="{{Request::is('backup/export/advanced') ? 'active' : ''}}"><a href="{{url('backup/export/advanced')}}">Export data</a></li>
-                </ul>
-            </li>
-            <!-- End Backup Restore-->
-        @endpermission
-        @permission('reports')
-            <!-- Data visualization -->
+                <li class="{{Request::is('backup/import/advanced') ? 'active' : ''}}">
+                    <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
+                    <ul>
+                        <li class="{{Request::is('backup/import/advanced') ? 'active' : ''}}"><a href="{{url('backup/import/advanced')}}">Import data</a></li>
+                    </ul>
+                </li>
+                <li class="{{Request::is('backup/export/advanced') ? 'active' : ''}}">
+                    <a href="#"><i class="fa fa-download"></i> <span>Data Export</span></a>
+                    <ul>
+                        <li class="{{Request::is('backup/export/advanced') ? 'active' : ''}}"><a href="{{url('backup/export/advanced')}}">Export data</a></li>
+                    </ul>
+                </li>
+                <!-- End Backup Restore-->
+            @endpermission
+            @permission('reports')
+                <!-- Data visualization -->
+                <li class="{{
+                    Request::is('backup/import/advanced') ||
+                    Request::is('reports/clients') ||
+                    Request::is('reports/assessments') ||
+                    Request::is('reports/referrals') ||
+                    Request::is('reports/nfis') ||
+                    Request::is('reports/case/management')
+                    ? 'active' : ''}}">
+                    <a href="#"><i class="icon-graph"></i> <span> Reports</span></a>
+                    <ul>
+                        <li class="{{Request::is('reports/clients') ? 'active' : ''}}"><a href="{{url('reports/clients')}}">Client Reports</a></li>
+                        <li class="{{Request::is('reports/assessments') ? 'active' : ''}}"><a href="{{url('reports/assessments')}}">Assessments Reports</a></li>
+                        <li class="{{Request::is('reports/referrals') ? 'active' : ''}}"><a href="{{url('reports/referrals')}}">Referrals Reports</a></li>
+                        <li class="{{Request::is('reports/nfis') ? 'active' : ''}}"><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
+                        <li class="{{Request::is('reports/case/management') ? 'active' : ''}}"><a href="{{url('reports/case/management')}}">Case Management Reports</a></li>
+                    </ul>
+                </li>
+                <!-- /data visualization -->
+            @endpermission
 
-            <li class="{{
-                Request::is('backup/import/advanced') ||
-                Request::is('reports/clients') ||
-                Request::is('reports/assessments') ||
-                Request::is('reports/referrals') ||
-                Request::is('reports/nfis') ||
-                Request::is('reports/case/management')
-                ? 'active' : ''}}">
-                <a href="#"><i class="icon-graph"></i> <span> Reports</span></a>
-                <ul>
-                    <li class="{{Request::is('reports/clients') ? 'active' : ''}}"><a href="{{url('reports/clients')}}">Client Reports</a></li>
-                    <li class="{{Request::is('reports/assessments') ? 'active' : ''}}"><a href="{{url('reports/assessments')}}">Assessments Reports</a></li>
-                    <li class="{{Request::is('reports/referrals') ? 'active' : ''}}"><a href="{{url('reports/referrals')}}">Referrals Reports</a></li>
-                    <li class="{{Request::is('reports/nfis') ? 'active' : ''}}"><a href="{{url('reports/nfis')}}">NFIs Reports</a></li>
-                    <li class="{{Request::is('reports/case/management') ? 'active' : ''}}"><a href="{{url('reports/case/management')}}">Case Management Reports</a></li>
-                </ul>
-            </li>
-            <!-- /data visualization -->
-        @endpermission
+            <!-- Settings -->
+            @role('admin')
+                <li class="{{
+                    Request::is('countries') ||
+                    Request::is('regions') ||
+                    Request::is('districts') ||
+                    Request::is('camps') ||
+                    Request::is('origins')
+                    ? 'active' : ''}}">
+                    <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
+                    <ul>
+                        <li class="{{Request::is('countries') ? 'active' : ''}}"><a href="{{url('countries')}}">Countries</a></li>
+                        <li class="{{Request::is('regions') ? 'active' : ''}}"><a href="{{url('regions')}}">Regions</a></li>
+                        <li class="{{Request::is('districts') ? 'active' : ''}}"><a href="{{url('districts')}}">Districts</a></li>
+                        <li class="{{Request::is('camps') ? 'active' : ''}}"><a href="{{url('camps')}}">Camps</a></li>
+                        <li class="{{Request::is('origins') ? 'active' : ''}}"><a href="{{url('origins')}}">Origins</a></li>
+                    </ul>
+                </li>
+                <li class="{{Request::is('backup/import/advanced') ? 'active' : ''}}">
+                    <a href="#"><i class="icon-puzzle4"></i> <span>Vulnerability Codes</span></a>
+                    <ul>
+                        <li class="{{Request::is('psncodes') ? 'active' : ''}}"><a href="{{url('psncodes')}}">Codes</a></li>
+                        <li class="{{Request::is('psncodes-categories') ? 'active' : ''}}"><a href="{{url('psncodes-categories')}}">Categories</a></li>
+                    </ul>
+                </li>
+                <li class="{{Request::is('setting/client/needs') ? 'active' : ''}}">
+                    <a href="{{url('setting/client/needs')}}"><i class="icon-puzzle4"></i> <span>Client Needs Setting</span></a>
+                </li>
 
-        <!-- Settings -->
-        @role('admin')
+                <!-- /appearance -->
 
-            <li class="{{
-                Request::is('countries') ||
-                Request::is('regions') ||
-                Request::is('districts') ||
-                Request::is('camps') ||
-                Request::is('origins')
-                ? 'active' : ''}}">
-                <a href="#"><i class="icon-list"></i> <span>Locations</span></a>
-                <ul>
-                    <li class="{{Request::is('countries') ? 'active' : ''}}"><a href="{{url('countries')}}">Countries</a></li>
-                    <li class="{{Request::is('regions') ? 'active' : ''}}"><a href="{{url('regions')}}">Regions</a></li>
-                    <li class="{{Request::is('districts') ? 'active' : ''}}"><a href="{{url('districts')}}">Districts</a></li>
-                    <li class="{{Request::is('camps') ? 'active' : ''}}"><a href="{{url('camps')}}">Camps</a></li>
-					<li class="{{Request::is('origins') ? 'active' : ''}}"><a href="{{url('origins')}}">Origins</a></li>
-                </ul>
-            </li>
-            <li class="{{Request::is('backup/import/advanced') ? 'active' : ''}}">
-                <a href="#"><i class="icon-puzzle4"></i> <span>Vulnerability Codes</span></a>
-                <ul>
-                    <li class="{{Request::is('psncodes') ? 'active' : ''}}"><a href="{{url('psncodes')}}">Codes</a></li>
-                    <li class="{{Request::is('psncodes-categories') ? 'active' : ''}}"><a href="{{url('psncodes-categories')}}">Categories</a></li>
-                </ul>
-            </li>
-            <li class="{{Request::is('setting/client/needs') ? 'active' : ''}}">
-                <a href="{{url('setting/client/needs')}}"><i class="icon-puzzle4"></i> <span>Client Needs Setting</span></a>
-            </li>
-
-            <!-- /appearance -->
-
-            <!-- Layout -->
-            <li class="navigation-header"><span>Users Managements</span> <i class="icon-menu" title="Users Managements"></i></li>
-            <li class="{{
-                Request::is('users') ||
-                Request::is('departments') ||
-                Request::is('access/rights') ||
-                Request::is('audit/logs')
-                ? 'active' : ''}}">
-                <a href="#"><i class="icon-users"></i> <span>Users</span></a>
-                <ul>
-                    <li class="{{Request::is('users') ? 'active' : ''}}"><a href="{{url('users')}}">Manage Users</a></li>
-                    <li class="{{Request::is('departments') ? 'active' : ''}}"><a href="{{url('departments')}}">Departments</a></li>
-                    <li class="{{Request::is('access/rights') ? 'active' : ''}}"><a href="{{url('access/rights')}}">User Rights</a></li>
-                    <li class="{{Request::is('audit/logs') ? 'active' : ''}}"><a href="{{url('audit/logs')}}">User Logs</a></li>
-                </ul>
-            </li>
-            <li class="navigation-header"><span></span> <i class="icon-menu" title="Users Managements"></i></li>
+                <!-- Layout -->
+                <li class="navigation-header"><span>Users Managements</span> <i class="icon-menu" title="Users Managements"></i></li>
+                <li class="{{
+                    Request::is('users') ||
+                    Request::is('departments') ||
+                    Request::is('access/rights') ||
+                    Request::is('audit/logs')
+                    ? 'active' : ''}}">
+                    <a href="#"><i class="icon-users"></i> <span>Users</span></a>
+                    <ul>
+                        <li class="{{Request::is('users') ? 'active' : ''}}"><a href="{{url('users')}}">Manage Users</a></li>
+                        <li class="{{Request::is('departments') ? 'active' : ''}}"><a href="{{url('departments')}}">Departments</a></li>
+                        <li class="{{Request::is('access/rights') ? 'active' : ''}}"><a href="{{url('access/rights')}}">User Rights</a></li>
+                        <li class="{{Request::is('audit/logs') ? 'active' : ''}}"><a href="{{url('audit/logs')}}">User Logs</a></li>
+                    </ul>
+                </li>
+                <li class="navigation-header"><span></span> <i class="icon-menu" title="Users Managements"></i></li>
             <!-- /Settings -->
             @endrole
         </ul>

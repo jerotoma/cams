@@ -67,23 +67,18 @@ class HomeAssessmentController extends Controller
         }
     }
     public function downloadPDF($id) {
-
-        $assessment=HomeAssessment::findorfail($id);
-
-         $pdf = \PDF::loadView('assessments.home.show',compact('assessment'))
+        $assessment = HomeAssessment::findOrFail($id);
+        $pdf = \PDF::loadView('assessments.home.show', compact('assessment'))
             ->setOption('footer-center', '[page]')
             ->setOption('page-offset', 0);
         return $pdf->download('PSN_Home_Assessments_form.pdf');
     }
-    public function getPSNProfile($id)
-    {
-        $client=Client::findorfail($id);
-        return view('assessments.home.psnprofile',compact('client'));
-
+    public function getPSNProfile($id) {
+        $client = Client::findOrFail($id);
+        return view('assessments.home.psnprofile', compact('client'));
     }
 
-    public function showClients()
-    {
+    public function showClients() {
         return view('assessments.home.listclients');
     }
 
@@ -288,7 +283,7 @@ class HomeAssessmentController extends Controller
     public function show($id)
     {
         //
-        $assessment=HomeAssessment::findorfail($id);
+        $assessment=HomeAssessment::findOrFail($id);
         return view('assessments.home.show',compact('assessment'));
     }
 
@@ -298,10 +293,8 @@ class HomeAssessmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-        $assessment=HomeAssessment::findorfail($id);
+    public function edit($id) {
+        $assessment = HomeAssessment::findOrFail($id);
         return view('assessments.home.edit',compact('assessment'));
     }
 
