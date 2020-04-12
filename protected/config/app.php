@@ -174,7 +174,7 @@ return [
          */
 
         //
-		//Barryvdh\DomPDF\ServiceProvider::class,
+		Barryvdh\DomPDF\ServiceProvider::class,
 		//Zizaco\Entrust\EntrustServiceProvider::class,
 		//PrettyRoutes\ServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
@@ -239,11 +239,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-		//'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
 		'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-		'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        //'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
 
     ],

@@ -48,7 +48,7 @@
                              <ul class="dropdown-menu dropdown-menu-right">
                                 <li :id="props.row.id + '-view'"><a href="#" @click="performAction('view', props.row)" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
                                 <li :id="props.row.id + '-print'"><a href="#"  :onclick="'printPage(\'/assessments/home/' + props.row.assessment_id + '\');'" class="editRecord label "><i class="fa fa-print "></i> Print </a></li>
-                                <li :id="props.row.id + '-download'"><a :href="'/assessments/home/download/' + props.row.assessment_id" target="_blank" class="label"><i class="fa fa-download"></i> Download </a></li>
+                                <li :id="props.row.id + '-download'"><a :href="'/assessments/home/' + props.row.assessment_id + '/download'" target="_blank" class="label"><i class="fa fa-download"></i> Download </a></li>
                                 <template v-if="authRole === 'authorize'  || authPermission == 'authorize'">
                                     <li :id="props.row.id + '-authorize'"><a href="#" @click="performAction('authorize', props.row)" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
                                 </template>

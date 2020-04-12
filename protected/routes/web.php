@@ -132,11 +132,10 @@ Route::get('client/assessments/paediatric/{id}','PaediatricAssessmentController@
 Route::get('paediatric-assessment/download/{id}','PaediatricAssessmentController@downloadForm');
 
 //PSN Needs/Home assessment Form
-Route::resource('assessments/home','HomeAssessmentController');
 Route::get('clients-hm','HomeAssessmentController@showClients');
-Route::get('download/assessments/home/{id}','HomeAssessmentController@downloadPDF');
-Route::get('list/assessments/home','HomeAssessmentController@getJSonAssessmentList');
+Route::get('assessments/home/{id}/download','HomeAssessmentController@downloadPDF');
 Route::get('gethomeassessmentpsnprofile/{id}','HomeAssessmentController@getPSNProfile');
+Route::resource('assessments/home','HomeAssessmentController');
 
 //Authorize
 Route::post('authorize/home/assessments','HomeAssessmentController@AuthorizeAll');
