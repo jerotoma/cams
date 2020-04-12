@@ -8,12 +8,12 @@
         @on-search="onSearch"
         :line-numbers="true"
         :totalRows="pagination.total"
-        :isLoading.sync="$store.getters.isLoading"
+        :isLoading="isLoading"
         :columns="columns"
-        :rows="ItemReceivedItem"
+        :rows="receivedItems"
         :search-options="{
             enabled: true,
-            placeholder: 'Search for a Item ReceivedItem',
+            placeholder: 'Search for a Item Received',
         }"
         :pagination-options="{
             enabled: true,
@@ -22,28 +22,21 @@
             perPage: pagination.perPage,
             perPageDropdown: pagination.perPageDropdown,
         }">
+            <div slot="emptystate">
+                No Item Received was found
+            </div>
             <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'referral_date'">
-                    <span class="text-primary">{{props.row.referral_date | moment("MMMM Do, YYYY")}}</span>
+                <span v-if="props.column.field == 'date_received'">
+                    <span class="text-primary">{{props.row.date_received | moment("MMMM Do, YYYY")}}</span>
                 </span>
-                <span v-else-if="props.column.field == 'referral_auth_status'">
-                    <span v-if="props.row.referral_auth_status == 'pending' || props.row.referral_auth_status == 'Pending'"
+                <span v-else-if="props.column.field == 'auth_status'">
+                    <span v-if="$stringUtil.lowerCase(props.row.auth_status) == 'pending'"
                         class="label label-info">
-                        {{$stringUtil.capitalize(props.row.referral_auth_status)}}
+                        {{$stringUtil.capitalize(props.row.auth_status)}}
                     </span>
                     <span v-else
                         class="label label-success">
-                        {{$stringUtil.capitalize(props.row.referral_auth_status)}}
-                    </span>
-                </span>
-                <span v-else-if="props.column.field == 'status'">
-                    <span v-if="props.row.status == 'closed' || props.row.status == 'Closed'"
-                        class="label label-warning">
-                        {{$stringUtil.capitalize(props.row.status)}}
-                    </span>
-                    <span v-else
-                        class="label label-success">
-                        {{$stringUtil.capitalize(props.row.status)}}
+                        {{$stringUtil.capitalize(props.row.auth_status)}}
                     </span>
                 </span>
                 <span v-else-if="props.column.field == 'action'">
@@ -53,10 +46,16 @@
                                 <i class="icon-menu9"></i>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
-                               <template v-if="authRole === 'admin' || authRole === 'authorize' || authRole === 'inputer' ">
-                                    <li :id="props.row.id + '-edit'"><a href="#"  @click="performAction('edit', props.row)" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                                    <li :id="props.row.id + '-delete'"><a href="#" @click="performAction('delete', props.row)" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
-                                </template>
+                                    <li :id="props.row.id + '-view'"><a href="#" @click="performAction('view', props.row)" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                                    <li :id="props.row.id + '-print'"><a href="#"  :onclick="'printPage(\'/print/inventory-received/' + props.row.id + '\');'" class="editRecord label "><i class="fa fa-print "></i> Print </a></li>
+                                    <li :id="props.row.id + '-download'"><a :href="'download/pdf/inventory-received/' + props.row.id" target="_blank" class="label"><i class="fa fa-download"></i> Download </a></li>
+                                    <template v-if="authRole === 'authorize'  || authPermission == 'authorize'">
+                                        <li :id="props.row.id + '-authorize'"><a href="#" @click="performAction('authorize', props.row)" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                                    </template>
+                                    <template v-if="authRole === 'admin' || authRole === 'authorize' || authRole === 'inputer' ">
+                                        <li :id="props.row.id + '-edit'"><a href="#"  @click="performAction('edit', props.row)" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
+                                        <li :id="props.row.id + '-delete'"><a href="#" @click="performAction('delete', props.row)" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                                    </template>
                             </ul>
                         </li>
                     </ul>
@@ -82,31 +81,43 @@ export default {
             'isLoading',
             'pagination',
         ]),
-        mLoading: {
-            get() { return this.$store.state.isLoading; },
-            set(value){
-                this.$store.commit('setLoading', value);
-            }
-        }
     },
     data(){
         return {
             columns: [
                 {
-                    label: 'Item Name',
-                    field: 'name',
+                    label: 'Ref No#',
+                    field: 'reference_number',
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
                 {
-                    label: 'Discription',
-                    field: 'discription',
+                    label: 'Date Received',
+                    field: 'date_received',
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
                 {
-                    label: 'Status',
-                    field: 'status',
+                    label: 'Donor Ref',
+                    field: 'donor_ref',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
+                },
+                {
+                    label: 'Received From/Supplier',
+                    field: 'received_from',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
+                },
+                {
+                    label: 'HAI Receiving Officer',
+                    field: 'receiving_officer',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
+                },
+                {
+                    label: 'Auth Status',
+                    field: 'auth_status',
                     formatFn: this.$stringUtil.capitalize,
                     thClass: 'text-center',
                     tdClass: 'text-center',
@@ -158,16 +169,16 @@ export default {
          performAction(actionType, receivedItem) {
             switch(actionType) {
                 case 'view':
-                    this.$modal.loadPageInAModal('/inventories/receivedItems/' + receivedItem.id, 'NFIS Received Item Details', 'fa-eye');
+                    this.$modal.loadPageInAModal('/inventories/received-items/' + receivedItem.id, 'NFIS Received Item Details', 'fa-eye');
                     break;
                 case 'edit':
-                    this.$modal.loadPageInAModal('/inventories/receivedItems/' + receivedItem.id + '/edit', 'Edit NFIS Received Item Details', 'fa-edit');
+                    this.$modal.loadPageInAModal('/inventories/received-items/' + receivedItem.id + '/edit', 'Edit NFIS Received Item Details', 'fa-edit');
                     break;
                 case 'delete':
-                     this.$modal.deleteRecord('/inventories/receivedItems/' + receivedItem.id);
+                     this.$modal.deleteRecord('/inventories/received-items/' + receivedItem.id);
                     break;
                 case 'authorize':
-                     this.$modal.authorizeRecord('/rest/secured/inventories/receivedItems/' + receivedItem.id+ '/authorize');
+                     this.$modal.authorizeRecord('/rest/secured/inventories/received-items/' + receivedItem.id+ '/authorize');
                     break;
             }
         },

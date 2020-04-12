@@ -8,9 +8,9 @@
         @on-search="onSearch"
         :line-numbers="true"
         :totalRows="pagination.total"
-        :isLoading.sync="$store.getters.isLoading"
+        :isLoading="isLoading"
         :columns="columns"
-        :rows="ItemCategory"
+        :rows="itemCategories"
         :search-options="{
             enabled: true,
             placeholder: 'Search for a Item Category',
@@ -22,22 +22,25 @@
             perPage: pagination.perPage,
             perPageDropdown: pagination.perPageDropdown,
         }">
+            <div slot="emptystate">
+                No Item Categories were found
+            </div>
             <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'referral_date'">
-                    <span class="text-primary">{{props.row.referral_date | moment("MMMM Do, YYYY")}}</span>
+                <span v-if="props.column.field == 'created_at'">
+                    <span class="text-primary">{{props.row.created_at | moment("MMMM Do, YYYY")}}</span>
                 </span>
-                <span v-else-if="props.column.field == 'referral_auth_status'">
-                    <span v-if="props.row.referral_auth_status == 'pending' || props.row.referral_auth_status == 'Pending'"
+                <span v-else-if="props.column.field == 'auth_status'">
+                    <span v-if="$stringUtil.lowerCase(props.row.auth_status) == 'pending'"
                         class="label label-info">
-                        {{$stringUtil.capitalize(props.row.referral_auth_status)}}
+                        {{$stringUtil.capitalize(props.row.auth_status)}}
                     </span>
                     <span v-else
                         class="label label-success">
-                        {{$stringUtil.capitalize(props.row.referral_auth_status)}}
+                        {{$stringUtil.capitalize(props.row.auth_status)}}
                     </span>
                 </span>
                 <span v-else-if="props.column.field == 'status'">
-                    <span v-if="props.row.status == 'closed' || props.row.status == 'Closed'"
+                    <span v-if="$stringUtil.lowerCase(props.row.status) !== 'available'"
                         class="label label-warning">
                         {{$stringUtil.capitalize(props.row.status)}}
                     </span>
@@ -54,8 +57,8 @@
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
                                <template v-if="authRole === 'admin' || authRole === 'authorize' || authRole === 'inputer' ">
-                                    <li :id="props.row.id + '-edit'"><a href="#"  @click="performAction('edit', props.row)" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                                    <li :id="props.row.id + '-delete'"><a href="#" @click="performAction('delete', props.row)" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                                    <li :id="props.row.id + '-edit'"><a href="#"  @click="performAction('edit', props.row)" class="editRecord label text-primary"><i class="fa fa-pencil "></i> Edit </a></li>
+                                    <li :id="props.row.id + '-delete'"><a href="#"  @click="performAction('delete', props.row)" class="deleteRecord label text-danger"><i class="fa fa-trash text-danger "></i> Remove </a></li>
                                 </template>
                             </ul>
                         </li>
@@ -94,13 +97,13 @@ export default {
             columns: [
                 {
                     label: 'Category Name',
-                    field: 'name',
+                    field: 'category_name',
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
                 {
                     label: 'Discription',
-                    field: 'discription',
+                    field: 'description',
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
@@ -108,6 +111,19 @@ export default {
                     label: 'Status',
                     field: 'status',
                     formatFn: this.$stringUtil.capitalize,
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
+                },
+                {
+                    label: 'Auth Status',
+                    field: 'auth_status',
+                    formatFn: this.$stringUtil.capitalize,
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
+                },
+                {
+                    label: 'Date Created',
+                    field: 'created_at',
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
@@ -157,17 +173,11 @@ export default {
         },
          performAction(actionType, itemCategory) {
             switch(actionType) {
-                case 'view':
-                    this.$modal.loadPageInAModal('/inventories/categories/' + itemCategory.id, 'NFIS Item Category Details', 'fa-eye');
-                    break;
-                case 'edit':
+               case 'edit':
                     this.$modal.loadPageInAModal('/inventories/categories/' + itemCategory.id + '/edit', 'Edit NFIS Item Category Details', 'fa-edit');
                     break;
                 case 'delete':
                      this.$modal.deleteRecord('/inventories/categories/' + itemCategory.id);
-                    break;
-                case 'authorize':
-                     this.$modal.authorizeRecord('/rest/secured/inventories/categories/' + itemCategory.id+ '/authorize');
                     break;
             }
         },

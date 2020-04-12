@@ -8,7 +8,7 @@
         @on-search="onSearch"
         :line-numbers="true"
         :totalRows="pagination.total"
-        :isLoading.sync="mLoading"
+        :isLoading="isLoading"
         :columns="columns"
         :rows="homeAssessments"
         :search-options="{
@@ -22,6 +22,9 @@
             perPage: pagination.perPage,
             perPageDropdown: pagination.perPageDropdown,
         }">
+            <div slot="emptystate">
+                No Home Assessments were found
+            </div>
             <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'assessment_date'">
                     <span class="text-primary">{{props.row.assessment_date | moment("MMMM Do, YYYY")}}</span>

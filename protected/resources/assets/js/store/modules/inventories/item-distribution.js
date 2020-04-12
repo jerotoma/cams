@@ -3,37 +3,33 @@ const state = {
     itemDistribution: {
 
     },
-    itemDistribution: [],
+    itemDistributions: [],
   }
 
   // getters
   const getters = {
       itemDistribution: state => state.itemDistribution,
-      itemDistribution: state => state.itemDistribution,
+      itemDistributions: state => state.itemDistributions,
   }
 
   // actions
   const actions = {
     getItemDistributions ({ commit }, data) {
-        return new Promise((resolve, reject) => {
-            commit('setLoading', true);
-            axios({
-                method: 'GET',
-                url: '/rest/secured/inventories/distributions?page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
-            })
-            .then((response) => {
-                const data = response.data;
-                commit('setLoading', false);
-                commit('setItemDistributions', data.itemDistribution.data);
-                commit('setPagination', data.pagination);
-                commit('setAuthRole', data.authRole);
-                commit('setAuthPermission', data.authPermission);
-                resolve(data);
-            }).catch((error) => {
-                commit('setLoading', false);
-                const resp = error.response;
-                reject(resp);
-            });
+        commit('setLoading', true);
+        axios({
+            method: 'GET',
+            url: '/rest/secured/inventories/distributions?page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
+        })
+        .then((response) => {
+            const data = response.data;
+            commit('setLoading', false);
+            commit('setItemDistributions', data.itemDistributions);
+            commit('setPagination', data.pagination);
+            commit('setAuthRole', data.authRole);
+            commit('setAuthPermission', data.authPermission);
+        }).catch((error) => {
+            commit('setLoading', false);
+            const resp = error.response;
         });
     },
     postItemDistribution({ commit }, itemDistribution) {
@@ -121,8 +117,8 @@ const state = {
     setItemDistribution (state, itemDistribution) {
       state.itemDistribution = itemDistribution
     },
-    setItemDistributions (state, itemDistribution) {
-        state.itemDistribution = itemDistribution
+    setItemDistributions (state, itemDistributions) {
+        state.itemDistributions = itemDistributions
     },
   }
 

@@ -8,9 +8,9 @@
         @on-search="onSearch"
         :line-numbers="true"
         :totalRows="pagination.total"
-        :isLoading.sync="$store.getters.isLoading"
+        :isLoading="isLoading"
         :columns="columns"
-        :rows="ItemDistribution"
+        :rows="itemDistributions"
         :search-options="{
             enabled: true,
             placeholder: 'Search for a Item Distributions',
@@ -22,28 +22,21 @@
             perPage: pagination.perPage,
             perPageDropdown: pagination.perPageDropdown,
         }">
+            <div slot="emptystate">
+                No Item Distributions were found
+            </div>
             <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'referral_date'">
-                    <span class="text-primary">{{props.row.referral_date | moment("MMMM Do, YYYY")}}</span>
+                <span v-if="props.column.field == 'disbursements_date'">
+                    <span class="text-primary">{{props.row.disbursements_date | moment("MMMM Do, YYYY")}}</span>
                 </span>
-                <span v-else-if="props.column.field == 'referral_auth_status'">
-                    <span v-if="props.row.referral_auth_status == 'pending' || props.row.referral_auth_status == 'Pending'"
+                <span v-else-if="props.column.field == 'auth_status'">
+                    <span v-if="$stringUtil.lowerCase(props.row.auth_status) == 'pending'"
                         class="label label-info">
-                        {{$stringUtil.capitalize(props.row.referral_auth_status)}}
+                        {{$stringUtil.capitalize(props.row.auth_status)}}
                     </span>
                     <span v-else
                         class="label label-success">
-                        {{$stringUtil.capitalize(props.row.referral_auth_status)}}
-                    </span>
-                </span>
-                <span v-else-if="props.column.field == 'status'">
-                    <span v-if="props.row.status == 'closed' || props.row.status == 'Closed'"
-                        class="label label-warning">
-                        {{$stringUtil.capitalize(props.row.status)}}
-                    </span>
-                    <span v-else
-                        class="label label-success">
-                        {{$stringUtil.capitalize(props.row.status)}}
+                        {{$stringUtil.capitalize(props.row.auth_status)}}
                     </span>
                 </span>
                 <span v-else-if="props.column.field == 'action'">
@@ -53,10 +46,15 @@
                                 <i class="icon-menu9"></i>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-right">
-                               <template v-if="authRole === 'admin' || authRole === 'authorize' || authRole === 'inputer' ">
-                                    <li :id="props.row.id + '-edit'"><a href="#"  @click="performAction('edit', props.row)" class="editRecord label "><i class="fa fa-pencil "></i> Edit </a></li>
-                                    <li :id="props.row.id + '-delete'"><a href="#" @click="performAction('delete', props.row)" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
-                                </template>
+                                    <li :id="props.row.id + '-view'"><a href="#" @click="performAction('view', props.row)" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
+                                    <li :id="props.row.id + '-print'"><a href="#"  :onclick="'printPage(\'/print/items/distributions/' + props.row.id + '\');'" class="editRecord label "><i class="fa fa-print "></i> Print </a></li>
+                                    <li :id="props.row.id + '-download'"><a :href="'/download/pdf/items/distributions/' + props.row.id" target="_blank" class="label"><i class="fa fa-download"></i> Download </a></li>
+                                    <template v-if="authRole === 'authorize'  || authPermission == 'authorize'">
+                                        <li :id="props.row.id + '-authorize'"><a href="#" @click="performAction('authorize', props.row)" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
+                                    </template>
+                                    <template v-if="authRole === 'admin' || authRole === 'authorize' || authRole === 'inputer' ">
+                                        <li :id="props.row.id + '-delete'"><a href="#" @click="performAction('delete', props.row)" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
+                                    </template>
                             </ul>
                         </li>
                     </ul>
@@ -75,39 +73,65 @@ export default {
     name: 'item-distribution-list-component',
     computed: {
         ...mapGetters([
-            'inventoryCategories',
-            'inventoryDistributions',
+            'itemDistribution',
+            'itemDistributions',
             'authRole',
             'authPermission',
             'isLoading',
             'pagination',
         ]),
-        mLoading: {
-            get() { return this.$store.state.isLoading; },
-            set(value){
-                this.$store.commit('setLoading', value);
-            }
-        }
     },
     data(){
         return {
             columns: [
                 {
-                    label: 'Distributions Name',
-                    field: 'name',
+                    label: 'Items',
+                    field: 'items',
+                     formatFn: this.$stringUtil.concatString,
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
                 {
-                    label: 'Discription',
-                    field: 'discription',
+                    label: 'Full Name',
+                    field: 'full_name',
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
                 {
-                    label: 'Status',
-                    field: 'status',
+                    label: 'Hai Reg #',
+                    field: 'hai_reg_number',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
+                },
+                {
+                    label: 'Distributed By',
+                    field: 'disbursements_by',
                     formatFn: this.$stringUtil.capitalize,
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
+                },
+                {
+                    label: 'Comment',
+                    field: 'comments',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
+                },
+                {
+                    label: 'Camp',
+                    field: 'camp_name',
+                    formatFn: this.$stringUtil.capitalize,
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
+                },
+                {
+                    label: 'Distribution Date',
+                    field: 'disbursements_date',
+                    thClass: 'text-center',
+                    tdClass: 'text-center',
+                },
+                {
+                    label: 'Auth Status',
+                    field: 'auth_status',
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
@@ -158,13 +182,10 @@ export default {
         performAction(actionType, itemDistribution) {
             switch(actionType) {
                 case 'view':
-                    this.$modal.loadPageInAModal('/inventories/distributions/' + itemDistribution.id, 'NFIS Item Distributions Details', 'fa-eye');
-                    break;
-                case 'edit':
-                    this.$modal.loadPageInAModal('/inventories/distributions/' + itemDistribution.id + '/edit', 'Edit NFIS Item Distributions Details', 'fa-edit');
+                    this.$modal.loadPageInAModal('/items/distributions/' + itemDistribution.id, 'NFIS Item Distributions Details', 'fa-eye');
                     break;
                 case 'delete':
-                     this.$modal.deleteRecord('/inventories/distributions/' + itemDistribution.id);
+                     this.$modal.deleteRecord('/items/distributions/' + itemDistribution.id);
                     break;
                 case 'authorize':
                      this.$modal.authorizeRecord('/rest/secured/inventories/distributions/' + itemDistribution.id+ '/authorize');

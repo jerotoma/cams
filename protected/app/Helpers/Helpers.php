@@ -1129,8 +1129,7 @@ if (!function_exists('isInDistributionLimit')) {
                         ->orderBy('distribution_date','desc')
                         ->first();
 
-        if($disBasement > 0) {
-
+        if($disBasement !=  null) {
             $itemsds= $disBasement;
 
             $inventoryItem= \App\ItemsInventory::find($item_id);
@@ -1162,31 +1161,30 @@ if (!function_exists('isInDistributionLimit')) {
 }
 
 if (!function_exists('deductItems')) {
-    function deductItems($item_id,$q) {
-       $item=\App\ItemsInventory::find($item_id);
-        $item->quantity=$item->quantity - $q;
+    function deductItems($item_id, $q) {
+        $item = \App\ItemsInventory::find($item_id);
+        $quantityLeft = $item->quantity - $q;
+        $item->quantity = $quantityLeft;
         $item->save();
-        if($item->quantity <= 0)
-        {
-            $item->quantity=0;
-            $item->status="Out of stock";
+        if($quantityLeft <= 0) {
+            $item->quantity = 0;
+            $item->status = "Out of stock";
             $item->save();
         }
     }
 }
 
 if (!function_exists('isItemOutOfStock')) {
-    function isItemOutOfStock($item_id,$quantity) {
+    function isItemOutOfStock($item_id, $quantity) {
 
-        $item=\App\ItemsInventory::find($item_id);
-        if(($item->quantity - $quantity) < 0)
-        {
+        $item = \App\ItemsInventory::find($item_id);
+        if ($item == null) {
             return true;
         }
-        else
-        {
-            return false;
+        if ($item->quantity < 0) {
+            return true;
         }
+        return ($item->quantity - $quantity) < 0;
     }
 }
 if (!function_exists('isItemOutOfStockNoQ')) {

@@ -8,7 +8,7 @@
         @on-search="onSearch"
         :line-numbers="true"
         :totalRows="pagination.total"
-        :isLoading.sync="mLoading"
+        :isLoading="isLoading"
         :columns="columns"
         :rows="inventories"
         :search-options="{
@@ -22,6 +22,9 @@
             perPage: pagination.perPage,
             perPageDropdown: pagination.perPageDropdown,
         }">
+            <div slot="emptystate">
+                No inventories were found
+            </div>
             <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'created_at'">
                     <span class="text-primary">{{props.row.created_at | moment("MMMM Do, YYYY")}}</span>
@@ -71,12 +74,6 @@ export default {
             'isLoading',
             'pagination',
         ]),
-        mLoading: {
-            get() { return this.$store.state.isLoading; },
-            set(value){
-                this.$store.commit('setLoading', value);
-            }
-        }
     },
     data(){
         return {

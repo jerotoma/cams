@@ -9,6 +9,10 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
+use App\Helpers\ValidatorUtility;
+use App\Helpers\AuthUtility;
+use App\Helpers\PaginateUtility;
+
 class ItemsCategoriesController extends Controller
 {
     public function __construct()
@@ -20,17 +24,16 @@ class ItemsCategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-        $categories=ItemsCategories::all();
-        return view('inventory.categories.index',compact('categories'));
+    public function index() {
+        $categories = ItemsCategories::all();
+        return view('inventory.categories.index', [
+            'categories' =>  $categories
+        ]);
     }
-    public function getItemsList($id)
-    {
-        //
-        $sel= "<option></option>";
-        $categories=ItemsCategories::find($id);
+
+    public function getItemsList($id) {
+        $sel = "<option></option>";
+        $categories = ItemsCategories::find($id);
         if (count($categories->items) >0) {
             foreach ($categories->items as $item) {
                 $sel .="<option value='" . $item->id . "'>" . $item->item_name . "</option>";
@@ -39,7 +42,36 @@ class ItemsCategoriesController extends Controller
         return $sel;
     }
 
+    public function findInventories(Request $request) {
+        try {
+            $validator = Validator::make($request->all(), [
+                'sortField' => 'required',
+                'sortType' => 'required|max:5',
+                'perPage' => 'required',
+                'page' => 'required'
+            ]);
 
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                $categories = ItemsCategories::orderBy($request->sortField, $request->sortType)->paginate($request->perPage);
+                return response()->json([
+                    'authRole' => AuthUtility::getRoleName(),
+                    'authPermission' => AuthUtility::getPermissionName(),
+                    'itemCategories' => $categories,
+                    'pagination' =>  PaginateUtility::mapPagination($categories),
+                ]);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+    }
 
     /**
      * Show the form for creating a new resource.

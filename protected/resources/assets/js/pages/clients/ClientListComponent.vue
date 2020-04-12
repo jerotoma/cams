@@ -8,7 +8,7 @@
         @on-search="onSearch"
         :line-numbers="true"
         :totalRows="pagination.total"
-        :isLoading.sync="mLoading"
+        :isLoading="isLoading"
         :columns="columns"
         :rows="clients"
         :search-options="{
@@ -22,6 +22,9 @@
             perPage: pagination.perPage,
             perPageDropdown: pagination.perPageDropdown,
         }">
+            <div slot="emptystate">
+                No clients were found
+            </div>
             <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'date_arrival'">
                     <span class="text-primary">{{props.row.date_arrival | moment("MMMM Do, YYYY")}}</span>
@@ -79,12 +82,6 @@ export default {
             'isLoading',
             'pagination',
         ]),
-        mLoading: {
-            get() { return this.isLoading; },
-            set(value){
-                this.$store.commit('setLoading', value);
-            }
-        }
     },
     data(){
         return {

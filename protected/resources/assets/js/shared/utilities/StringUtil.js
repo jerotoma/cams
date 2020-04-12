@@ -13,6 +13,26 @@ const StringUtilPlugin = {
             lowerCase(value) {
                 return _.toLower(value);
             },
+            concatString(values) {
+              let concatString = '';
+                if (_.isArray(values)) {
+                    for (var i = 0; i < values.length; i++) {
+
+                        if (i == 0) {
+                            concatString = values[i];
+                        } else {
+                            if (values.length - i !== 1) {
+                                concatString.concat(values[i]).concat(',');
+                            } else {
+                                concatString.concat(values[i])
+                            }
+                        }
+                    }
+                    return concatString;
+                } else {
+                    return values
+                }
+            }
 
         }
       });

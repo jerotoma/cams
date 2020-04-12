@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Requests;
 use Maatwebsite\Excel\Facades\Excel;
 
+use App\Helpers\ValidatorUtility;
+use App\Helpers\AuthUtility;
+use App\Helpers\PaginateUtility;
+
 class ItemsReceivingController extends Controller
 {
     public function __construct()
@@ -51,8 +55,7 @@ class ItemsReceivingController extends Controller
         }
 
     }
-    public function AuthorizeInventoryReceivedById($id)
-    {
+    public function authorizeInventoryReceivedById($id) {
         //
         if (Auth::user()->hasPermission('authorize')){
 
@@ -68,139 +71,36 @@ class ItemsReceivingController extends Controller
             return null;
         }
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
-    public function getListItemsReceived()
-    {
-        //
-        $items=InventoryReceived::all();
-        $iTotalRecords =count(InventoryReceived::all());
-        $sEcho = intval(10);
+    public function getReceivedItemList(Request $request) {
+        try {
+            $validator = Validator::make($request->all(), [
+                'sortField' => 'required',
+                'sortType' => 'required|max:5',
+                'perPage' => 'required',
+                'page' => 'required'
+            ]);
 
-        $records = array();
-        $records["data"] = array();
-
-
-        $count=1;
-        foreach($items as $item) {
-
-            if ($item->auth_status == "pending") {
-                if (Auth::user()->hasPermission('authorize')) {
-                    $records["data"][] = array(
-                        $count++,
-                        $item->reference_number,
-                        $item->date_received,
-                        $item->donor_ref,
-                        $item->received_from,
-                        $item->receiving_officer,
-                        $item->auth_status,
-                        '<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                             <li id="'.$item->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                             <li id="'.$item->id.'"><a href="#" class=" label " onclick="printPage(\''.url('print/inventory-received').'/'.$item->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
-                             <li id="'.$item->id.'"><a href="'.url('download/pdf/inventory-received').'/'.$item->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
-                             <li id="'.$item->id.'"><a href="#" class="authorizeRecord label "><i class="fa fa-check "></i> Authorize </a></li>
-                             <li id="'.$item->id.'"><a href="#" title="Edit" class="label editRecord "> <i class="fa fa-edit "></i> Edit</a></li>
-                             <li id="'.$item->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
-                            </ul>
-                        </li>
-                    </ul>'
-                    );
-                }
-                elseif (Auth::user()->hasRole('inputer'))
-                {
-                    $records["data"][] = array(
-                        $count++,
-                        $item->reference_number,
-                        $item->date_received,
-                        $item->donor_ref,
-                        $item->received_from,
-                        $item->receiving_officer,
-                        $item->auth_status,
-                        '<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                             <li id="'.$item->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                             <li id="'.$item->id.'"><a href="#" class=" label " onclick="printPage(\''.url('print/inventory-received').'/'.$item->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
-                             <li id="'.$item->id.'"><a href="'.url('download/pdf/inventory-received').'/'.$item->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
-                             <li id="'.$item->id.'"><a href="#" title="Edit" class="label editRecord "> <i class="fa fa-edit "></i> Edit</a></li>
-                             <li id="'.$item->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
-                            </ul>
-                        </li>
-                    </ul>'
-                    );
-                }
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                $receivedItems = InventoryReceived::orderBy($request->sortField, $request->sortType)->paginate($request->perPage);
+                return response()->json([
+                    'authRole' => AuthUtility::getRoleName(),
+                    'authPermission' => AuthUtility::getPermissionName(),
+                    'receivedItems' => $receivedItems,
+                    'pagination' =>  PaginateUtility::mapPagination($receivedItems),
+                ]);
             }
-            else{
-                if (Auth::user()->hasRole('admin'))
-                {
-                    $records["data"][] = array(
-                        $count++,
-                        $item->reference_number,
-                        $item->date_received,
-                        $item->donor_ref,
-                        $item->received_from,
-                        $item->receiving_officer,
-                        $item->auth_status,
-                        '<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                             <li id="'.$item->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                             <li id="'.$item->id.'"><a href="#" class=" label " onclick="printPage(\''.url('print/inventory-received').'/'.$item->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
-                             <li id="'.$item->id.'"><a href="'.url('download/pdf/inventory-received').'/'.$item->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
-                             <li id="'.$item->id.'"><a href="#" title="Edit" class="label editRecord "> <i class="fa fa-edit "></i> Edit</a></li>
-                             <li id="'.$item->id.'"><a href="#" class="deleteRecord label"><i class="fa fa-trash text-danger "></i> Delete </a></li>
-                            </ul>
-                        </li>
-                    </ul>'
-                    );
-                }
-                else{
-                    $records["data"][] = array(
-                        $count++,
-                        $item->reference_number,
-                        $item->date_received,
-                        $item->donor_ref,
-                        $item->received_from,
-                        $item->receiving_officer,
-                        $item->auth_status,
-                        '<ul class="icons-list text-center">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-menu9"></i>
-                            </a>
-                             <ul class="dropdown-menu dropdown-menu-right">
-                             <li id="'.$item->id.'"><a href="#" class="showRecord label "><i class="fa fa-eye "></i> View </a></li>
-                             <li id="'.$item->id.'"><a href="#" class=" label " onclick="printPage(\''.url('print/inventory-received').'/'.$item->id.'\');"  ><i class="fa fa-print "></i> Print </a></li>
-                             <li id="'.$item->id.'"><a href="'.url('download/pdf/inventory-received').'/'.$item->id.'" class="label "><i class="fa  fa-download"></i> Download </a></li>
-                            </ul>
-                        </li>
-                    </ul>'
-                    );
-                }
-            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
         }
-
-
-        $records["draw"] = $sEcho;
-        $records["recordsTotal"] = $iTotalRecords;
-        $records["recordsFiltered"] = $iTotalRecords;
-
-        echo json_encode($records);
     }
 
     public function create()

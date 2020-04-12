@@ -79,6 +79,7 @@ Route::get('create-client','ClientsController@createClient');
 
 //NFIs Item inventory
 Route::resource('inventory-categories','ItemsCategoriesController');
+Route::resource('/inventories/categories','ItemsCategoriesController');
 Route::post('onflycategory','ItemsCategoriesController@onFlyCategory');
 Route::resource('inventories','ItemInventoryController');
 Route::resource('inventory','ItemInventoryController');
@@ -86,14 +87,13 @@ Route::resource('inventory','ItemInventoryController');
 //Item received
 Route::get('list-items-received','ItemsReceivingController@getListItemsReceived');
 Route::resource('inventory-received','ItemsReceivingController');
+Route::resource('/inventories/received-items','ItemsReceivingController');
 Route::get('download/pdf/inventory-received/{id}','ItemsReceivingController@downloadPDF');
 Route::get('print/inventory-received/{id}','ItemsReceivingController@loadPrintForm');
 Route::get('fetchitemsbycategoryid/{id}','ItemsCategoriesController@getItemsList');
 
 //Authorize
 Route::post('authorize/inventory/received','ItemsReceivingController@AuthorizeAll');
-Route::post('authorize/inventory/{id}/received','ItemsReceivingController@AuthorizeInventoryReceivedById');
-
 
 //Referrals
 Route::resource('referrals','ReferralController');
@@ -315,11 +315,13 @@ Route::prefix('rest/secured')->group(function () {
     Route::get('/inventories/categories/search-paginated','ItemsCategoriesController@searchInventoryPaginated');
 
     //Item Distributions
-    Route::get('/inventories/distributions','ItemInventoryController@findInventories');
+    Route::get('/inventories/distributions','ItemsDisbursementController@findItemDistributions');
     Route::get('/inventories/distributions/search-paginated','ItemInventoryController@searchInventoryPaginated');
+    Route::post('/inventories/distributions/{id}/authorize','ItemsDisbursementController@AuthorizeItemsDisbursementById');
 
     //Received Items
-    Route::get('/inventories/received-items','ItemsReceivingController@getListItemsReceived');
+    Route::get('/inventories/received-items','ItemsReceivingController@getReceivedItemList');
+    Route::post('/inventories/received-items/{id}/authorize','ItemsReceivingController@authorizeInventoryReceivedById');
     Route::get('/inventories/received-items/search-paginated','ItemInventoryController@searchInventoryPaginated');
 });
 

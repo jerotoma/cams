@@ -8,7 +8,7 @@
         @on-search="onSearch"
         :line-numbers="true"
         :totalRows="pagination.total"
-        :isLoading.sync="mLoading"
+        :isLoading="isLoading"
         :columns="columns"
         :rows="referrals"
         :search-options="{
