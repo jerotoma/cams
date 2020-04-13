@@ -87,13 +87,14 @@ export default {
                 {
                     label: 'Items',
                     field: 'items',
-                     formatFn: this.$stringUtil.concatString,
+                    formatFn: this.$stringUtil.concatString,
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },
                 {
                     label: 'Full Name',
                     field: 'full_name',
+                    formatFn: this.$stringUtil.capitalize,
                     thClass: 'text-center',
                     tdClass: 'text-center',
                 },

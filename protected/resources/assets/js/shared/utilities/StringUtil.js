@@ -19,12 +19,12 @@ const StringUtilPlugin = {
                     for (var i = 0; i < values.length; i++) {
 
                         if (i == 0) {
-                            concatString = values[i];
+                            concatString = this.capitalize(values[i]);
                         } else {
                             if (values.length - i !== 1) {
-                                concatString.concat(values[i]).concat(',');
+                                concatString.concat(this.capitalize(values[i])).concat(',');
                             } else {
-                                concatString.concat(values[i])
+                                concatString.concat(this.capitalize(values[i]));
                             }
                         }
                     }
