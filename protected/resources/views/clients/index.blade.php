@@ -11,22 +11,13 @@
 @section('scripts')
     <script>
         $(function() {
-                // Confirmation dialog
-                $('.authorizeAllRecord').on('click', function() {
-                    var id1 = $(this).parent().attr('id');
-                    var btn=$(this).parent().parent().parent().parent().parent().parent();
-                    bootbox.confirm("You can not authorize all here!, Please click search and select pending ", function(result) {
+            // Confirmation dialog
+            $('.authorizeAllRecord').on('click', function() {
+                var id1 = $(this).parent().attr('id');
+                var btn=$(this).parent().parent().parent().parent().parent().parent();
+                bootbox.confirm("You can not authorize all here!, Please click search and select pending ", function(result) {
 
-                    });
                 });
-                // Enable Select2 select for the length option
-                $('.dataTables_length select').select2({
-                    minimumResultsForSearch: Infinity,
-                    width: 'auto'
-                });
-                // Enable Select2 select for individual column searching
-                $('.filter-select').select2();
-
             });
 
             $(".addRecord").on('click', function(e){
@@ -55,6 +46,8 @@
                     $('.modal-backdrop').remove();
                 });
             });
+        });
+
     </script>
 @stop
 @section('page_title')

@@ -10,10 +10,12 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 use App\Helpers\ValidatorUtility;
 use App\Helpers\AuthUtility;
 use App\Helpers\PaginateUtility;
+use DB;
 
 class ItemInventoryController extends Controller
 {
@@ -31,10 +33,9 @@ class ItemInventoryController extends Controller
         //
         return view('inventory.index');
     }
-    public function index()
-    {
+    public function index() {
         //
-        $items=ItemsInventory::all();
+        $items = ItemsInventory::all();
         return view('inventory.items.index',compact('items'));
     }
 
@@ -81,6 +82,52 @@ class ItemInventoryController extends Controller
             'items_categories.category_name',
             'items_categories.id as category_id'
         );
+    }
+
+    public function searchInventoryPaginated(Request $request) {
+        try {
+            $validator = Validator::make($request->all(), [
+                'sortField' => 'required',
+                'sortType' => 'required|max:5',
+                'perPage' => 'required',
+                'page' => 'required',
+                'searchTerm' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                $inventories = $this->processSortRequest($request,  $this->findItemInventroyBySearchTerm($request->searchTerm))->paginate($request->perPage);
+                return response()->json([
+                    'authRole' => AuthUtility::getRoleName(),
+                    'authPermission' => AuthUtility::getPermissionName(),
+                    'inventories' => $inventories,
+                    'pagination' =>  PaginateUtility::mapPagination($inventories),
+                ]);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+    }
+
+    private function findItemInventroyBySearchTerm($searchTerm) {
+        $dataType = config('database.default') == 'pgsql' ? 'INTEGER' : 'UNSIGNED';
+        $dbPrefix = DB::getTablePrefix();
+
+        $inventories = ItemsInventory::join('items_categories', 'items_categories.id', '=', 'items_inventories.category_id');
+        $inventories = $this->getSelectItems($inventories);
+        $inventories = $inventories->where(DB::raw('lower('.$dbPrefix.'items_categories.category_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'items_inventories.item_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'items_inventories.unit)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'items_inventories.description)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'items_inventories.status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' );
+        return $inventories;
     }
 
     //Import

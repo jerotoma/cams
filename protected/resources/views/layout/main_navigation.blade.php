@@ -131,10 +131,6 @@
                 <li class="{{Request::is('setting/client/needs') ? 'active' : ''}}">
                     <a href="{{url('setting/client/needs')}}"><i class="icon-puzzle4"></i> <span>Client Needs Setting</span></a>
                 </li>
-
-                <!-- /appearance -->
-
-                <!-- Layout -->
                 <li class="navigation-header"><span>Users Managements</span> <i class="icon-menu" title="Users Managements"></i></li>
                 <li class="{{
                     Request::is('users') ||
@@ -150,7 +146,23 @@
                         <li class="{{Request::is('audit/logs') ? 'active' : ''}}"><a href="{{url('audit/logs')}}">User Logs</a></li>
                     </ul>
                 </li>
-                <li class="navigation-header"><span></span> <i class="icon-menu" title="Users Managements"></i></li>
+                <li class="navigation-header"><span>System Settings</span> <i class="icon-menu" title="Users Managements"></i></li>
+                <li class="{{
+                    Request::is('settings/users') ? 'active' : ''}}">
+                    <a href="#"><i class="icon-puzzle"></i> <span>User Settings</span></a>
+                    <ul>
+                        <li class="{{Request::is('settings/users') ? 'active' : ''}}"><a href="{{url('settings/users')}}">Users</a></li>
+                    </ul>
+                </li>
+                <li class="{{
+                    Request::is('settings/clients')
+                    ? 'active' : ''}}">
+                    <a href="#"><i class="icon-puzzle"></i> <span>Clent Settings</span></a>
+                    <ul>
+                        <li class="{{Request::is('settings/clients') ? 'active' : ''}}"><a href="{{url('/settings/clients')}}">Clients</a></li>
+                    </ul>
+                </li>
+                <li class="navigation-header"><span></span> <i class="icon-menu" title="System Settings"></i></li>
             <!-- /Settings -->
             @endrole
         </ul>

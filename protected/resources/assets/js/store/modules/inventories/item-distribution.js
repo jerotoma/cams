@@ -84,7 +84,7 @@ const state = {
                 url: '/rest/secured/inventories/distributions/search-paginated?searchTerm=' + data.searchTerm + '&page='+ data.currentPage + '&perPage=' + data.perPage + '&sortType='+ data.sortType + '&sortField=' + data.sortField,
             }).then((response) => {
                 const data = response.data;
-                commit('setItemDistributions', data.itemDistribution.data);
+                commit('setItemDistributions', data.itemDistributions);
                 commit('setPagination', data.pagination);
                 commit('setAuthRole', data.authRole);
                 commit('setAuthPermission', data.authPermission);

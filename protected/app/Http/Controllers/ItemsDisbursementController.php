@@ -18,10 +18,12 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 use App\Helpers\ValidatorUtility;
 use App\Helpers\AuthUtility;
 use App\Helpers\PaginateUtility;
+use DB;
 
 class ItemsDisbursementController extends Controller
 {
@@ -108,33 +110,8 @@ class ItemsDisbursementController extends Controller
                         ->join('origins', 'origins.id', '=', 'clients.origin_id')
                         ->join('camps', 'camps.id', '=', 'clients.camp_id');
                 $disbursements = $this->processSortRequest($request,  $this->getSelectItems($disbursements))->paginate($request->perPage);
-                $itemDistributions = array();
-                foreach ($disbursements as $key => $disbursement) {
-                    $itemDistributions[] = [
-                        'id'=> $disbursement->id,
-                        'disbursements_date'=> $disbursement->disbursements_date,
-                        'disbursements_by'=> $disbursement->disbursements_by,
-                        'comments'=> $disbursement->comments,
-                        'camp_id'=> $disbursement->camp_id,
-                        'created_by'=> $disbursement->created_by,
-                        'updated_by'=> $disbursement->updated_by,
-                        'auth_status'=> $disbursement->auth_status,
-                        'auth_by'=> $disbursement->auth_by,
-                        'auth_date'=> $disbursement->auth_date,
-                        'created_at'=> $disbursement->created_at,
-                        'updated_at'=> $disbursement->updated_at,
-                        'full_name'=> $disbursement->full_name,
-                        'client_number'=> $disbursement->client_number,
-                        'hai_reg_number'=> $disbursement->hai_reg_number,
-                        'client_id'=> $disbursement->client_id,
-                        'camp_name'=> $disbursement->camp_name,
-                        'origin_name'=> $disbursement->origin_name,
-                        'quantity' => $disbursement->quantity,
-                        'items' => [
-                            $this->getItems($disbursement->item_id)->item_name
-                        ]
-                    ];
-                }
+                $itemDistributions = $this->mapItemDisbursements($disbursements);
+
                 return response()->json([
                     'authRole' => AuthUtility::getRoleName(),
                     'authPermission' => AuthUtility::getPermissionName(),
@@ -149,6 +126,90 @@ class ItemsDisbursementController extends Controller
             ), 400); // 400 being the HTTP code for an invalid request.
         }
     }
+
+    public function searchItemDistributionPaginated(Request $request) {
+        try {
+            $validator = Validator::make($request->all(), [
+                'sortField' => 'required',
+                'sortType' => 'required|max:5',
+                'perPage' => 'required',
+                'page' => 'required',
+                'searchTerm' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                $disbursements = $this->processSortRequest($request,  $this->findItemDistributionsBySearchTerm($request->searchTerm))->paginate($request->perPage);
+                $itemDistributions = $this->mapItemDisbursements($disbursements);
+                return response()->json([
+                    'authRole' => AuthUtility::getRoleName(),
+                    'authPermission' => AuthUtility::getPermissionName(),
+                    'itemDistributions' => $itemDistributions,
+                    'pagination' =>  PaginateUtility::mapPagination($disbursements),
+                ]);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+    }
+
+    private function findItemDistributionsBySearchTerm($searchTerm) {
+        $dataType = config('database.default') == 'pgsql' ? 'INTEGER' : 'UNSIGNED';
+        $dbPrefix = DB::getTablePrefix();
+
+        $disbursements = ItemsDisbursement::join('items_disbursement_items', 'items_disbursement_items.distribution_id', '=', 'items_disbursements.id')
+            ->join('clients', 'clients.id', '=', 'items_disbursement_items.client_id')
+            ->join('origins', 'origins.id', '=', 'clients.origin_id')
+            ->join('camps', 'camps.id', '=', 'clients.camp_id');
+        $disbursements = $this->getSelectItems($disbursements);
+        $disbursements = $disbursements->where(DB::raw('lower('.$dbPrefix.'items_disbursements.comments)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'items_disbursements.disbursements_by)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'items_disbursements.created_by)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'items_disbursements.auth_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'clients.full_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'origins.origin_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+            ->orWhere(DB::raw('lower('.$dbPrefix.'camps.camp_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' );
+        return $disbursements;
+    }
+
+    public function mapItemDisbursements($disbursements = array()) {
+        $itemDistributions = array();
+        foreach ($disbursements as $key => $disbursement) {
+            $itemDistributions[] = [
+                'id'=> $disbursement->id,
+                'disbursements_date'=> $disbursement->disbursements_date,
+                'disbursements_by'=> $disbursement->disbursements_by,
+                'comments'=> $disbursement->comments,
+                'camp_id'=> $disbursement->camp_id,
+                'created_by'=> $disbursement->created_by,
+                'updated_by'=> $disbursement->updated_by,
+                'auth_status'=> $disbursement->auth_status,
+                'auth_by'=> $disbursement->auth_by,
+                'auth_date'=> $disbursement->auth_date,
+                'created_at'=> $disbursement->created_at,
+                'updated_at'=> $disbursement->updated_at,
+                'full_name'=> $disbursement->full_name,
+                'client_number'=> $disbursement->client_number,
+                'hai_reg_number'=> $disbursement->hai_reg_number,
+                'client_id'=> $disbursement->client_id,
+                'camp_name'=> $disbursement->camp_name,
+                'origin_name'=> $disbursement->origin_name,
+                'quantity' => $disbursement->quantity,
+                'items' => [
+                    $this->getItems($disbursement->item_id)->item_name
+                ]
+            ];
+        }
+        return $itemDistributions;
+    }
+
     private function getItems($item_id) {
         return ItemsInventory::find($item_id);
     }

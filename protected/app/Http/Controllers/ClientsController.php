@@ -746,13 +746,11 @@ class ClientsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
         if (Auth::user()->hasPermission('create')) {
             return view('clients.create');
-        }
-        else{
+        } else {
            return redirect('home');
         }
     }
@@ -791,15 +789,14 @@ class ClientsController extends Controller
                 $client->sex = ucwords($request->sex);
                 $client->age = $request->age;
                 if ($request->age != null) {
-                    $agedef=Date("Y") - $request->age;
-                    $birthdate=$agedef."-01-01";
+                    $agedef = Date("Y") - $request->age;
+                    $birthdate = $agedef."-01-01";
                     $client->birth_date = $birthdate;
                 }
                 $client->marital_status = $request->marital_status;
                 $client->spouse_name = $request->spouse_name;
                 $client->care_giver = $request->care_giver;
-                if($request->date_arrival !="" && $request->date_arrival != null)
-                {
+                if($request->date_arrival != "" && $request->date_arrival != null) {
                     $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
                 }
                 $client->present_address = $request->present_address;
@@ -821,15 +818,15 @@ class ClientsController extends Controller
                 $client->save();
 
                 //Generate computer number
-                $vn="";
+                $vn = "";
                 foreach ($request->vulnerability_code as $item) {
-                    $code=PSNCode::find($item);
+                    $code = PSNCode::find($item);
                     $vn .= $code->code."-,";
-                    $vn=substr($vn,0,strlen($vn)-1);
+                    $vn = substr($vn, 0, strlen($vn)-1);
                 }
-                $vn=substr($vn,0,strlen($vn)-1);
+                $vn = substr($vn,0,strlen($vn)-1);
 
-                $client->hai_reg_number="HAI-".str_pad($client->id,4,'0',STR_PAD_LEFT).$vn;
+                $client->hai_reg_number = "HAI-".str_pad($client->id, 4, '0', STR_PAD_LEFT). $vn;
                 $client->save();
 
                 //Save validation codes

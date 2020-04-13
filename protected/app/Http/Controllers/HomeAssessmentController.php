@@ -92,6 +92,46 @@ class HomeAssessmentController extends Controller
         return $assessments;
      }
 
+     public function searchHomeAssessments(Request $request) {
+        //
+        try {
+            $validator = Validator::make($request->all(), [
+                'sortField' => 'required',
+                'sortType' => 'required|max:5',
+                'perPage' => 'required',
+                'page' => 'required',
+                'searchTerm' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ValidatorUtility::processValidatorErrorMessages($validator),
+                ], 422); // 400 being the HTTP code for an invalid request.
+            } else {
+                $dataType = config('database.default') == 'pgsql' ? 'INTEGER' : 'UNSIGNED';
+                $db_prefix = config('database.default') == 'pgsql' ? '' : 'cams_';
+                $assessments = HomeAssessment::join('clients', 'clients.id', '=', 'home_assessments.client_id')
+                    ->join('origins', 'origins.id', '=', 'clients.origin_id')
+                    ->join('camps', 'camps.id', '=', 'clients.camp_id');
+                $assessments = $this->getSelectItems($assessments);
+
+                $assessments = $this->processSortRequest($request,  $this->findAssessmentBySearchTerm($request->searchTerm))->paginate($request->perPage);
+                return response()->json([
+                    'authRole' => AuthUtility::getRoleName(),
+                    'authPermission' => AuthUtility::getPermissionName(),
+                    'homeAssessments' => $assessments,
+                    'pagination' =>  PaginateUtility::mapPagination($assessments),
+                ]);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
+    }
+
     public function findHomeAssessments(Request $request) {
         //
         try {
@@ -150,7 +190,7 @@ class HomeAssessmentController extends Controller
         );
     }
 
-    private function findVulnerabilityBySearchTerm($searchTerm) {
+    private function findAssessmentBySearchTerm($searchTerm) {
         $dataType = config('database.default') == 'pgsql' ? 'INTEGER' : 'UNSIGNED';
         $dbPrefix = DB::getTablePrefix();
 
@@ -158,8 +198,7 @@ class HomeAssessmentController extends Controller
             ->leftJoin('camps', 'camps.id', '=', 'clients.camp_id')
             ->leftJoin('origins', 'origins.id', '=', 'clients.origin_id');
         $assessments = $this->getSelectItems($assessments);
-        $assessments = $assessments->where(DB::raw('lower('.$dbPrefix.'home_assessments.q1_1)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
-            ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.case_worker_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
+        $assessments = $assessments->where(DB::raw('lower('.$dbPrefix.'home_assessments.case_worker_name)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
             ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.case_code)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
             ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.needs_description)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )
             ->orWhere(DB::raw('lower('.$dbPrefix.'home_assessments.auth_status)'), 'LIKE', '%'. Str::lower($searchTerm) . '%' )

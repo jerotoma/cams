@@ -315,13 +315,21 @@ Route::prefix('rest/secured')->group(function () {
 
     //Item Distributions
     Route::get('/inventories/distributions','ItemsDisbursementController@findItemDistributions');
-    Route::get('/inventories/distributions/search-paginated','ItemInventoryController@searchInventoryPaginated');
+    Route::get('/inventories/distributions/search-paginated','ItemsDisbursementController@searchItemDistributionPaginated');
     Route::post('/inventories/distributions/{id}/authorize','ItemsDisbursementController@AuthorizeItemsDisbursementById');
 
     //Received Items
     Route::get('/inventories/received-items','ItemsReceivingController@getReceivedItemList');
     Route::post('/inventories/received-items/{id}/authorize','ItemsReceivingController@authorizeInventoryReceivedById');
     Route::get('/inventories/received-items/search-paginated','ItemInventoryController@searchInventoryPaginated');
+});
+
+Route::prefix('/settings')->group(function () {
+    //Client Settings
+    Route::resource('/clients','settings\ClientSettingController');
+
+    //User Settings
+    Route::resource('/users','settings\UserSettingController');
 });
 
 
