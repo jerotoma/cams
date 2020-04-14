@@ -1357,8 +1357,33 @@ if (!function_exists('deductActivityAmount')) {
 
 }
 
+if (!function_exists('isSidebarOpen')) {
+    function isSidebarOpen() {
+        $setting = \App\Helpers\SystemConfig::getUserSettingByUserIdAndKey(auth()->user()->id,
+        \App\Helpers\SystemConstant::SIDE_BAR_OPEN_CLOSE_STATUS);
 
+        if ($setting != null) {
+            return toBool($setting->setting_value);
+        }
+        return  false;
+    }
+}
 
+if (!function_exists('toBool')) {
+    function toBool($var) {
+        if (!is_string($var)) return (bool) $var;
+        switch (strtolower($var)) {
+        case '1':
+        case 'true':
+        case 'on':
+        case 'yes':
+        case 'y':
+            return true;
+        default:
+            return false;
+        }
+    }
+}
 
 
 //Get client ID

@@ -16,7 +16,7 @@ class UserSettingController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('settings.clients.index');
+        return view('settings.users.index');
     }
 
     /**

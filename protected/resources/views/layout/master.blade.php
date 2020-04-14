@@ -33,7 +33,7 @@
     <!-- /theme JS files -->
 </head>
 
-<body class="navbar-top sidebar-xs" style="overflow:auto;">
+<body class="navbar-top {{isSidebarOpen() ? 'sidebar-xs' : ''}}" style="overflow:auto;">
 <div id="campsn-app">
     @include('layout.header')
     <!-- Page container -->

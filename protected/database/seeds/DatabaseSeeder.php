@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             RolesTableSeeder::class,
             ConnectRelationshipsSeeder::class,
             UsersTableSeeder::class,
+            SystemDataSetupSeeder::class,
         ]);//
         Model::reguard();
     }

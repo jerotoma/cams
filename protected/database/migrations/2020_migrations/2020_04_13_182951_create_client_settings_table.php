@@ -15,7 +15,12 @@ class CreateClientSettingsTable extends Migration
     {
         Schema::create('client_settings', function (Blueprint $table) {
             $table->id();
+            $table->integer('client_id')->unsigned();
+            $table->string('setting_key');
+            $table->text('setting_value');
             $table->timestamps();
+            $table->foreign('client_id')->references('id')->on('clients')
+            ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -24,8 +29,7 @@ class CreateClientSettingsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('client_settings');
     }
 }
