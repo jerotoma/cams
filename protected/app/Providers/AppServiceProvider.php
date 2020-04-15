@@ -22,5 +22,6 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function register() {
+        ini_set('max_execution_time', 300);
     }
 }

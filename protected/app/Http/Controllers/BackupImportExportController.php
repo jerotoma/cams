@@ -76,7 +76,6 @@ class BackupImportExportController extends Controller
         return view('backups.exports.index');
     }
     public function postExport(Request $request) {
-        ini_set('max_execution_time', 300);
         ob_clean();
         try {
             $this->validate($request, [
