@@ -55,6 +55,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
+use Log;
+
 class BackupImportExportController extends Controller
 {
     public function __construct()
@@ -74,6 +76,7 @@ class BackupImportExportController extends Controller
         return view('backups.exports.index');
     }
     public function postExport(Request $request) {
+        ini_set('max_execution_time', 300);
         ob_clean();
         try {
             $this->validate($request, [
@@ -83,8 +86,8 @@ class BackupImportExportController extends Controller
                 $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
                 $xml .= "<ApplicationData>";
                 $xml .= "<Clients>";
-                Client::chunk(200, function($clients) use ($xml) {
-                    foreach ($clients as $client) {
+                Client::chunk(10, function($clients) use ($xml) {
+                    foreach ($clients as $index => $client) {
                         $xml .= "<Client>";
                         $xml .= "<hai_reg_number><![CDATA[" . $client->hai_reg_number . "]]></hai_reg_number>";
                         $xml .= "<client_number><![CDATA[" . $client->client_number . "]]></client_number>";
@@ -116,13 +119,13 @@ class BackupImportExportController extends Controller
                         if ($client->vulnerabilityCodes != null && is_object($client->vulnerabilityCodes)) {
                             foreach ($client->vulnerabilityCodes as $code) {
                                 $xml .= "<ClientVulnerabilityCode>";
-                                if (is_object($code->code) && $code->code != null) {
+                                if ($code->code != null && is_object($code->code)) {
                                     $xml .= "<PSNCode>";
                                     $xml .= "<code><![CDATA[" . $code->code->code . "]]></code>";
                                     $xml .= "<description><![CDATA[" . $code->code->description . "]]></description>";
                                     $xml .= "<definition><![CDATA[" . $code->code->definition . "]]></definition>";
                                     $xml .= "<for_reporting><![CDATA[" . $code->code->for_reporting . "]]></for_reporting>";
-                                    if (is_object($code->code->category) && $code->code->category != null) {
+                                    if ($code->code->category != null && is_object($code->code->category)) {
                                         $xml .= "<PSNCodeCategory>";
                                         $xml .= "<code><![CDATA[" . $code->code->category->code . "]]></code>";
                                         $xml .= "<description><![CDATA[" . $code->code->category->description . "]]></description>";
@@ -138,7 +141,7 @@ class BackupImportExportController extends Controller
                         }
                         $xml .= "</ClientVulnerabilityCodes>";
                         $xml .= "<Origin>";
-                        if (is_object($client->fromOrigin) && $client->fromOrigin != null) {
+                        if ($client->fromOrigin != null && is_object($client->fromOrigin)) {
                             $origin = $client->fromOrigin;
                             $xml .= "<origin_name><![CDATA[" . $origin->origin_name . "]]></origin_name>";
                             $xml .= "<auth_status><![CDATA[" . $origin->auth_status . "]]></auth_status>";
@@ -148,7 +151,7 @@ class BackupImportExportController extends Controller
                         }
                         $xml .= "</Origin>";
                         $xml .= "<Camp>";
-                        if (is_object($client->camp) && $client->camp != null) {
+                        if ($client->camp != null && is_object($client->camp)) {
                             $camp = $client->camp;
                             $xml .= "<reg_no><![CDATA[" . $camp->reg_no . "]]></reg_no>";
                             $xml .= "<camp_name><![CDATA[" . $camp->camp_name . "]]></camp_name>";
@@ -183,6 +186,8 @@ class BackupImportExportController extends Controller
                         }
                         $xml .= "</Camp>";
                         $xml .= "</Client>";
+
+                        Log::info('Index Number: ' . $index);
                     }
                 });
                 $xml .= "</Clients>";

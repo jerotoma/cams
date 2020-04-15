@@ -19,4 +19,18 @@ class SystemConfig {
        return null;
     }
 
+
+    public static function postUserSettingByUserIdAndKey($userId, $settingKey, $settingValue) {
+        if (!is_numeric($userId)) {
+            return null;
+        }
+        $query = UserSetting::where('user_id', '=', $userId)->where('setting_key', '=', $settingKey);
+        if (($query->count() > 0)) {
+            $userSetting = $query->first();
+            $userSetting->setting_value = $settingValue;
+            $userSetting->save();
+        }
+       return null;
+    }
+
 }

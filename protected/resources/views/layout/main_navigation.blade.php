@@ -32,7 +32,6 @@
             <li class="{{
                 Request::is('items/distributions')  ||
                 Request::is('inventories')          ||
-                Request::is('inventories')          ||
                 Request::is('inventory-received')   ||
                 Request::is('inventory-categories') ? 'active' : ''}}">
                 <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
@@ -55,8 +54,6 @@
                 </ul>
             </li>
             @endpermission
-            <!-- /forms -->
-            <!-- Forms -->
             <li class="{{Request::is('cases') || Request::is('progressive/notices') ? 'active' : ''}}">
                 <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
                 <ul>
@@ -66,7 +63,6 @@
             </li>
             @permission('backup')
                 <!-- Backup Restore-->
-
                 <li class="{{Request::is('backup/import/advanced') ? 'active' : ''}}">
                     <a href="#"><i class="fa fa-upload "></i> <span>Data import</span></a>
                     <ul>
@@ -146,20 +142,15 @@
                         <li class="{{Request::is('audit/logs') ? 'active' : ''}}"><a href="{{url('audit/logs')}}">User Logs</a></li>
                     </ul>
                 </li>
-                <li class="navigation-header"><span>System Settings</span> <i class="icon-menu" title="Users Managements"></i></li>
+                <li class="navigation-header"><span>CAMPSN Settings</span> <i class="icon-menu" title="Users Managements"></i></li>
                 <li class="{{
-                    Request::is('settings/users') ? 'active' : ''}}">
-                    <a href="#"><i class="icon-puzzle"></i> <span>User Settings</span></a>
+                        Request::is('settings/clients') ||
+                        Request::is('settings/users') ? 'active' : ''
+                    }}">
+                    <a href="#"><i class="icon-puzzle"></i> <span>System Settings</span></a>
                     <ul>
-                        <li class="{{Request::is('settings/users') ? 'active' : ''}}"><a href="{{url('settings/users')}}">Users</a></li>
-                    </ul>
-                </li>
-                <li class="{{
-                    Request::is('settings/clients')
-                    ? 'active' : ''}}">
-                    <a href="#"><i class="icon-puzzle"></i> <span>Clent Settings</span></a>
-                    <ul>
-                        <li class="{{Request::is('settings/clients') ? 'active' : ''}}"><a href="{{url('/settings/clients')}}">Clients</a></li>
+                        <li class="{{Request::is('settings/users') ? 'active' : ''}}"><a href="{{url('settings/users')}}">User Settings</a></li>
+                        <li class="{{Request::is('settings/clients') ? 'active' : ''}}"><a href="{{url('/settings/clients')}}">Client Settings</a></li>
                     </ul>
                 </li>
                 <li class="navigation-header"><span></span> <i class="icon-menu" title="System Settings"></i></li>

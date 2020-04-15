@@ -326,10 +326,12 @@ Route::prefix('rest/secured')->group(function () {
 
 Route::prefix('/settings')->group(function () {
     //Client Settings
-    Route::resource('/clients','settings\ClientSettingController');
+    Route::resource('/clients','Settings\ClientSettingController');
 
     //User Settings
-    Route::resource('/users','settings\UserSettingController');
+    Route::get('/users/edit', 'Settings\UserSettingController@editSettings');
+    Route::post('/users/update', 'Settings\UserSettingController@updateSettings');
+    Route::resource('/users','Settings\UserSettingController');
 });
 
 

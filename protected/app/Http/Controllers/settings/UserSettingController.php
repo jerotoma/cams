@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\settings;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
+
+use App\Helpers\SystemConfig;
+use App\Helpers\SystemConstant;
 
 class UserSettingController extends Controller {
 
@@ -16,6 +21,9 @@ class UserSettingController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
+
+
+
         return view('settings.users.index');
     }
 
@@ -24,9 +32,8 @@ class UserSettingController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function editSettings() {
+        return view('settings.users.edit');
     }
 
     /**
@@ -69,9 +76,37 @@ class UserSettingController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function updateSettings(Request $request) {
+        try {
+            $validator = Validator::make($request->all(), [
+                'keep_sidebar_open_or_close_onload' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+                ), 400); // 400 being the HTTP code for an invalid request.
+            } else {
+
+                if (auth()->user() != null) {
+                    SystemConfig::postUserSettingByUserIdAndKey(
+                        auth()->user()->id,
+                        SystemConstant::SIDE_BAR_OPEN_CLOSE_STATUS,
+                        toBool($request->keep_sidebar_open_or_close_onload)
+                    );
+                }
+                return response()->json([
+                    'success' => true,
+                    'message' => " Saved Successful"
+                ], 200);
+            }
+        } catch (\Exception $ex) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $ex->getMessage()
+            ), 400); // 400 being the HTTP code for an invalid request.
+        }
     }
 
     /**
