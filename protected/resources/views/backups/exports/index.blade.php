@@ -153,12 +153,18 @@
                     if (docs) {
                         docs.forEach(doc => {
                             doc.lastIndexOf('/')
-                            docList += '<a href="#" class="list-group-item text-primary">' + doc.substring(doc.lastIndexOf('/') + 1) +'</a>';
+                            docList += '<a href="/backup/export/advanced/downloads/?filePath=' + doc.substring(0, doc.lastIndexOf('.xml')) + '" class="list-group-item text-primary available-doc-list">' + doc.substring(doc.lastIndexOf('/') + 1) +'</a>';
                         });
                     }
                     $('#availableDocument').html(docList);
+                    $('.available-doc-list').on('click', function(e){
+                        //e.preventDefault();
+                        //console.log($(e.target).data('docpath'));
+                    });
                 }
             });
+
+
 
             $('form#formExportItems').on('submit', function(e){
                 e.preventDefault();

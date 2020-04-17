@@ -276,6 +276,8 @@ Route::post('backup/import/advanced','BackupImportExportController@postImport');
 Route::get('backup/export/advanced','BackupImportExportController@showExport');
 Route::post('backup/export/advanced','BackupImportExportController@postExport');
 
+Route::get('backup/export/advanced/downloads','BackupImportExportController@downloadDocs');
+
 Route::prefix('rest/secured')->group(function () {
     //Dashboard
     Route::get('/dashboard/chart-stats','HomeController@findChartStats');
@@ -324,7 +326,7 @@ Route::prefix('rest/secured')->group(function () {
     Route::get('/inventories/received-items/search-paginated','ItemInventoryController@searchInventoryPaginated');
 
     //Backups
-    Route::get('/backup/import/advanced/available-docs', 'BackupImportExportController@downloadDocs');
+    Route::get('/backup/import/advanced/available-docs', 'BackupImportExportController@findDocumentList');
 });
 
 Route::prefix('/settings')->group(function () {

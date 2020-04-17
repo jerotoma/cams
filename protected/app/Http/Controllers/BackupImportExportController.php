@@ -71,12 +71,32 @@ class BackupImportExportController extends Controller {
         $this->middleware('auth');
         $this->storage = Storage::disk('local');
     }
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function downloadDocs() {
+    public function downloadDocs(Request $request) {
+        $this->validate($request, [
+            'filePath' => 'required',
+        ]);
+        try {
+            if ($this->storage->exists($request->filePath . '.xml')) {
+                return response()->download(storage_path('app/'. $request->filePath. '.xml'));
+            }
+            return redirect()->back()->with('message', 'File ' .$request->filePath. 'doesn\'t exists');
+        } catch (\Exception $ex) {
+            return redirect()->back()->with('message',$ex->getMessage());
+        }
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function findDocumentList() {
         try {
 
             return response()->json([
@@ -107,7 +127,6 @@ class BackupImportExportController extends Controller {
                 'message' => 'The event to Export XML file has been scheduled. Download can happen after the file generation has been commpleted'
             ], 200);
         } catch (\Exception $ex) {
-            Log::info($ex);
             return response()->json([
                 'message' => $ex->getMessage(),
                 'success' => false,
