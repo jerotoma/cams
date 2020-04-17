@@ -49,6 +49,8 @@ use App\ReferringAgency;
 use App\Region;
 use App\RequestedService;
 use App\VulnerabilityAssessment;
+use App\Events\GenerateXMLDocumentEvent;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -63,12 +65,11 @@ class BackupImportExportController extends Controller {
 
     private $uploadDir = '/uploads';
     private $storage = null;
-    private $xmlGenerator = null;
+
 
     public function __construct() {
         $this->middleware('auth');
         $this->storage = Storage::disk('local');
-        $this->xmlGenerator = new ExportXMLGeneratorUtility();
     }
     /**
      * Display a listing of the resource.
@@ -100,132 +101,11 @@ class BackupImportExportController extends Controller {
             $this->validate($request, [
                 'module' => 'required',
             ]);
-
-            if ($request->module == 1) {
-                Client::chunk(1000, function($clients) {
-                    $this->xmlGenerator->generateClients($clients);
-                });
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Client XML file has been scheduled for downloads'
-                ]);
-            } elseif ($request->module == 2) {
-
-                VulnerabilityAssessment::chunk(1000, function($assessments) {
-                    $this->xmlGenerator->generateVulnerabilityAssessments($assessments);
-                });
-                HomeAssessment::chunk(1000, function($homeAssessments) {
-                    $this->xmlGenerator->generateHomeAssessments($homeAssessments);
-                });
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Assessments XML file has been scheduled for downloads'
-                ], 200);
-            } elseif ($request->module == 3) {
-                ClientReferral::chunk(1000, function($clientReferrals) {
-                    $this->xmlGenerator->generateClientReferrals($clientReferrals);
-                });
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Client Referrals XML file has been scheduled for downloads'
-                ], 200);
-            } elseif ($request->module == 4) {
-
-                ItemsInventory::chunk(1000, function($itemInventories) {
-                    $this->xmlGenerator->generateClientReferrals($clientReferrals);
-                });
-
-                InventoryReceived::chunk(1000, function($receivedItems) {
-                    $this->xmlGenerator->generateClientReferrals($clientReferrals);
-                });
-
-                ItemsDisbursement::chunk(1000, function($itemDisbursements) {
-                    $this->xmlGenerator->generateItemDisbursements($itemDisbursements);
-                });
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Client Referrals XML file has been scheduled for downloads'
-                ], 200);
-            } elseif ($request->module == 5) {
-                BudgetActivity::chunk(1000, function($budgetActivities) {
-                    $this->xmlGenerator->generateBudgetActivities($budgetActivities);
-                });
-
-                CashProvision::chunk(1000, function($cashProvisions) {
-                    $this->xmlGenerator->generateCashProvisions($cashProvisions);
-                });
-
-                PostCashAssessment::chunk(1000, function($postCashAssessments) {
-                    $this->xmlGenerator->generatePostCashAssessments($postCashAssessments);
-                });
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Client Referrals XML file has been scheduled for downloads'
-                ], 200);
-            } elseif ($request->module == 6) {
-                ClientCase::chunk(1000, function($clientCases) {
-                    $this->xmlGenerator->generateClientCases($clientCases);
-                });
-                ProgressNote::chunk(1000, function($progressNotes) {
-                    $this->xmlGenerator->generateProgressNotes($progressNotes);
-                });
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Client Referrals XML file has been scheduled for downloads'
-                ], 200);
-            } else {
-                Client::chunk(1000, function($clients) {
-                    $this->xmlGenerator->generateClients($clients);
-                });
-
-                VulnerabilityAssessment::chunk(1000, function($assessments) {
-                    $this->xmlGenerator->generateVulnerabilityAssessments($assessments);
-                });
-                HomeAssessment::chunk(1000, function($homeAssessments) {
-                    $this->xmlGenerator->generateHomeAssessments($homeAssessments);
-                });
-
-                ClientReferral::chunk(1000, function($clientReferrals) {
-                    $this->xmlGenerator->generateClientReferrals($clientReferrals);
-                });
-
-                ItemsInventory::chunk(1000, function($itemInventories) {
-                    $this->xmlGenerator->generateClientReferrals($clientReferrals);
-                });
-
-                InventoryReceived::chunk(1000, function($receivedItems) {
-                    $this->xmlGenerator->generateClientReferrals($clientReferrals);
-                });
-
-                ItemsDisbursement::chunk(1000, function($itemDisbursements) {
-                    $this->xmlGenerator->generateItemDisbursements($itemDisbursements);
-                });
-
-                BudgetActivity::chunk(1000, function($budgetActivities) {
-                    $this->xmlGenerator->generateBudgetActivities($budgetActivities);
-                });
-
-                CashProvision::chunk(1000, function($cashProvisions) {
-                    $this->xmlGenerator->generateCashProvisions($cashProvisions);
-                });
-
-                PostCashAssessment::chunk(1000, function($postCashAssessments) {
-                    $this->xmlGenerator->generatePostCashAssessments($postCashAssessments);
-                });
-
-                ClientCase::chunk(1000, function($clientCases) {
-                    $this->xmlGenerator->generateClientCases($clientCases);
-                });
-                ProgressNote::chunk(1000, function($progressNotes) {
-                    $this->xmlGenerator->generateProgressNotes($progressNotes);
-                });
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Client Referrals XML file has been scheduled for downloads'
-                ], 200);
-            }
+            event(new GenerateXMLDocumentEvent($request->module));
+            return response()->json([
+                'success' => true,
+                'message' => 'The event to Export XML file has been scheduled. Download can happen after the file generation has been commpleted'
+            ], 200);
         }
         catch (\Exception $ex) {
             return response()->json([
@@ -236,24 +116,19 @@ class BackupImportExportController extends Controller {
 
     }
     //Data export
-    public function showImport()
-    {
-        //
+    public function showImport() {
         return view('backups.imports.index');
     }
-    public function postImport(Request $request)
-    {
-        //
-        try {
+    public function postImport(Request $request) {
+         try {
             $this->validate($request, [
                 'system_data_file' => 'required',
                 'module' => 'required'
             ]);
-
-                $extension = strtolower($request->file('system_data_file')->getClientOriginalExtension());
-                if ($extension != "xml" && $extension != "xml") {
-                    return redirect()->back()->with('message', 'Invalid file type! allowed only xml')->withInput();
-                }
+            $extension = strtolower($request->file('system_data_file')->getClientOriginalExtension());
+            if ($extension != "xml" && $extension != "xml") {
+                return redirect()->back()->with('message', 'Invalid file type! allowed only xml')->withInput();
+            }
             $file= $request->file('system_data_file');
             $destinationPath = public_path() . '/uploads/temp/';
             $filename   = str_replace(' ', '_', $file->getClientOriginalName());
@@ -286,11 +161,8 @@ class BackupImportExportController extends Controller {
                         $vpsychosocial =$vulAssessment->AssessmentPsychosocial;
                         $vprotection =$vulAssessment->AssessmentProtection;
                         $vneeds=$vulAssessment->ClientNeeds;
-                        $client_id="";
-
-                        $client_id=$this->ImportClient($client);
-
-
+                        $client_id = "";
+                        $client_id= $this->ImportClient($client);
 						if(count(VulnerabilityAssessment::where('client_id','=',$client_id)
                                                         ->where('q1_5','=',$vulAssessment->q1_5)
                                 ->where('q1_1','=',$vulAssessment->q1_1)
