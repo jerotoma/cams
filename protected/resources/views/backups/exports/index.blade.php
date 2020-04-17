@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    {!! Form::open(array('url'=>'backup/export/advanced','role'=>'form','id'=>'formImportItems','files'=>true)) !!}
+                    {!! Form::open(array('url'=>'backup/export/advanced','role'=>'form','id'=>'formExportItems','files'=>true)) !!}
                     <div class="form-body">
                         @if (session('message'))
                             <div class="alert alert-danger">
@@ -118,8 +118,10 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-8 col-sm-8 pull-left" id="output">
+                        </div>
                         <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
-                            <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cogs"></i> Export Data </button>
+                            <button type="submit" id ="" class="btn btn-block btn-primary"><i class="fa fa-cogs"></i> Export Data </button>
                         </div>
                     </div>
                     {!! Form::close() !!}
@@ -156,6 +158,46 @@
                     }
                     $('#availableDocument').html(docList);
                 }
+            });
+
+            $('form#formExportItems').on('submit', function(e){
+                e.preventDefault();
+                $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
+                var postData = $('form#formExportItems').serializeArray();
+                var formURL = $('form#formExportItems').attr("action");
+                $.ajax({
+                    url : formURL,
+                    type: "POST",
+                    data : postData,
+                    success: function(data){
+                        swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
+                    },
+                    error: function(jqXhr,status, response) {
+
+                        if( jqXhr.status === 401 ) {
+                            location.replace("{{url('login')}}");
+                        }
+
+                        if(jqXhr.status === 400) {
+                            if (jqXhr.responseJSON.errors == 1)                            {
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p>';
+                                errorsHtml += '<h5 class="text-danger">'+jqXhr.responseJSON.message + '</h5>'
+                                $('#output').html(errorsHtml);
+                            } else {
+                                var errors = jqXhr.responseJSON.errors;
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                                $.each(errors, function (key, value) {
+                                    errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                });
+                                errorsHtml += '</ul></di>';
+                                $('#output').html(errorsHtml);
+                            }
+                        } else {
+                            $('#output').html(jqXhr.message);
+                        }
+
+                    }
+                });
             });
         });
     </script>
