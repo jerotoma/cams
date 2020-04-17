@@ -170,7 +170,8 @@
                     type: "POST",
                     data : postData,
                     success: function(data){
-                        swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"})
+                        swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"});
+                        $('#output').html('');
                     },
                     error: function(jqXhr,status, response) {
 

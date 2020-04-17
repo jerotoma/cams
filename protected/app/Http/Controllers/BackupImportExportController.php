@@ -106,12 +106,12 @@ class BackupImportExportController extends Controller {
                 'success' => true,
                 'message' => 'The event to Export XML file has been scheduled. Download can happen after the file generation has been commpleted'
             ], 200);
-        }
-        catch (\Exception $ex) {
+        } catch (\Exception $ex) {
+            Log::info($ex);
             return response()->json([
                 'message' => $ex->getMessage(),
                 'success' => false,
-            ], 502);
+            ], 504);
         }
 
     }
