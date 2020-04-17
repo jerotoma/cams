@@ -35,6 +35,19 @@
 
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
 @stop
+@section('page_css')
+<style>
+    .list-group {
+        border: 0;
+    }
+    .list-group-item {
+        border: 1px solid #ddd;
+    }
+    .badge {
+        background-color: #999999;
+    }
+</style>
+@endsection
 @section('page_title')
     Data Exports
 @stop
@@ -56,61 +69,94 @@
             <a  href="{{url('backup/import/advanced')}}" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Import Data</span></a>
         </div>
     </div>
-    <div class="panel panel-flat">
-        <div class="panel-heading">
-            <h5 class=" text-center text-uppercase"> DATA SYNCHRONIZATION EXPORT FROM LOCAL TO CENTRAL SYSTEM</h5>
-            <div class="alert alert-info">
-                This module is design for exporting data from local individual installed system to central system,Select the module to export
-                such as Client module which will export all client registration data from local system, you can do the same to other modules. For exporting
-                all data at per select All Modules
-            </div>
-        </div>
 
-        <div class="panel-body">
-            {!! Form::open(array('url'=>'backup/export/advanced','role'=>'form','id'=>'formImportItems','files'=>true)) !!}
-            <div class="form-body">
-                @if (session('message'))
-                    <div class="alert alert-danger">
-                        {{ session('message') }}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h5 class=" text-center text-uppercase"> DATA SYNCHRONIZATION EXPORT FROM LOCAL TO CENTRAL SYSTEM</h5>
+                    <div class="alert alert-info">
+                        This module is design for exporting data from local individual installed system to central system,Select the module to export
+                        such as Client module which will export all client registration data from local system, you can do the same to other modules. For exporting
+                        all data at per select All Modules
                     </div>
-                @endif
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                <div class="row">
-                    <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
-                        <div class="form-group">
-                            <label class="control-label text-bold"> Select Module to export</label>
-                            <select class="select" name="module" id="module" data-placeholder="Choose an option...">
-                                <option></option>
-                                <option value="1">Clients</option>
-                                <option value="2">Clients Assessments</option>
-                                <option value="3">Clients Referrals</option>
-                                <option value="4">NFIs Inventory</option>
-                                <option value="5">Cash Distributions</option>
-                                <option value="6">Progress Monitoring</option>
-                                <option value="7">All Modules</option>
-                            </select>
-                            @if($errors->first('module') !="")
-                                <label id="address-error" class="validation-error-label" for="module">{{ $errors->first('module') }}</label>
-                            @endif
+                </div>
+                <div class="panel-body">
+                    {!! Form::open(array('url'=>'backup/export/advanced','role'=>'form','id'=>'formImportItems','files'=>true)) !!}
+                    <div class="form-body">
+                        @if (session('message'))
+                            <div class="alert alert-danger">
+                                {{ session('message') }}
+                            </div>
+                        @endif
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <div class="row">
+                            <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
+                                <div class="form-group">
+                                    <label class="control-label text-bold"> Select Module to export</label>
+                                    <select class="select" name="module" id="module" data-placeholder="Choose an option...">
+                                        <option></option>
+                                        <option value="1">Clients</option>
+                                        <option value="2">Clients Assessments</option>
+                                        <option value="3">Clients Referrals</option>
+                                        <option value="4">NFIs Inventory</option>
+                                        <option value="5">Cash Distributions</option>
+                                        <option value="6">Progress Monitoring</option>
+                                        <option value="7">All Modules</option>
+                                    </select>
+                                    @if($errors->first('module') !="")
+                                        <label id="address-error" class="validation-error-label" for="module">{{ $errors->first('module') }}</label>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
+                            <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cogs"></i> Export Data </button>
                         </div>
                     </div>
+                    {!! Form::close() !!}
                 </div>
-                <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
-                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cogs"></i> Export Data </button>
-                </div>
-
             </div>
-
-            {!! Form::close() !!}
         </div>
-
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    List of Available Documents
+                </div>
+                <div class="panel-body">
+                    <div class="list-group" id="availableDocument">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+@stop
+@section('scripts')
+    <script>
+        $(function(){
+            $.ajax({
+                url: "{{url('rest/secured/backup/import/advanced/available-docs')}}",
+                type: 'GET',
+                success:function(response){
+                    const docs = response.docs;
+                    let docList = '';
+                    if (docs) {
+                        docs.forEach(doc => {
+                            doc.lastIndexOf('/')
+                            docList += '<a href="#" class="list-group-item text-primary">' + doc.substring(doc.lastIndexOf('/') + 1) +'</a>';
+                        });
+                    }
+                    $('#availableDocument').html(docList);
+                }
+            });
+        });
+    </script>
 @stop

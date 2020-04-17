@@ -19,7 +19,7 @@ class AuditController extends Controller
     public function index($request="")
     {
         //
-        $logs =Audit::orderBy('activity_date','DESC')->get()->take(500);
+        $logs = Audit::orderBy('activity_date','DESC')->get()->take(500);
         return view('users.audit.index',compact('logs','request'));
 
     }

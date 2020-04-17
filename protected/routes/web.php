@@ -322,6 +322,9 @@ Route::prefix('rest/secured')->group(function () {
     Route::get('/inventories/received-items','ItemsReceivingController@getReceivedItemList');
     Route::post('/inventories/received-items/{id}/authorize','ItemsReceivingController@authorizeInventoryReceivedById');
     Route::get('/inventories/received-items/search-paginated','ItemInventoryController@searchInventoryPaginated');
+
+    //Backups
+    Route::get('/backup/import/advanced/available-docs', 'BackupImportExportController@downloadDocs');
 });
 
 Route::prefix('/settings')->group(function () {

@@ -39,34 +39,25 @@ class ClientsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-        //dd(Auth::user()->level());
+    public function index() {
         if (Auth::user()->hasPermission('viewer')) {
-            $clients=Client::all();
             return view('clients.index',compact('clients'));
-        }
-        else
-        {
+        } else {
             return redirect('home');
         }
 
     }
-    public function showImportErrors()
-    {
+    public function showImportErrors() {
 
         if (Auth::user()->hasPermission('edit')) {
             $clients = DumpClient::all();
             return view('clients.importerrors', compact('clients'));
-        }
-        else
-        {
+        } else {
             return redirect('home');
         }
     }
-    public function downloadImportErrors()
-    { ob_clean();
+    public function downloadImportErrors() {
+        ob_clean();
         $clients = DumpClient::all();
         \Excel::create("list_of_clients_failed_import", function($excel) use($clients)  {
             $excel->sheet('sheet', function($sheet) use($clients){
@@ -117,7 +108,7 @@ class ClientsController extends Controller
     {
         //
         $clients = Client::orderBy('full_name','ASC')->get();
-        $iTotalRecords =count(Client::all());
+        $iTotalRecords =count(Client::count());
         $sEcho = intval(10);
 
         $records = array();
@@ -781,68 +772,68 @@ class ClientsController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
+                DB::transaction(function () {
+                    $client = new Client;
+                    $client->client_number = strtoupper($request->client_number);
+                    $client->individual_id = $request->individual_id;
+                    $client->full_name = ucwords($request->full_name);
+                    $client->sex = ucwords($request->sex);
+                    $client->age = $request->age;
+                    if ($request->age != null) {
+                        $agedef = Date("Y") - $request->age;
+                        $birthdate = $agedef."-01-01";
+                        $client->birth_date = $birthdate;
+                    }
+                    $client->marital_status = $request->marital_status;
+                    $client->spouse_name = $request->spouse_name;
+                    $client->care_giver = $request->care_giver;
+                    if($request->date_arrival != "" && $request->date_arrival != null) {
+                        $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
+                    }
+                    $client->present_address = $request->present_address;
+                    $client->household_number = $request->household_number;
+                    $client->ration_card_number = $request->ration_card_number;
+                    $client->assistance_received = $request->assistance_received;
+                    $client->problem_specification = $request->problem_specification;
+                    $client->camp_id = $request->camp_id;
+                    $client->origin_id=$request->origin;
+                    $client->present_address = $request->present_address;
+                    $client->females_total = $request->females_total;
+                    $client->males_total = $request->males_total;
+                    $client->present_address = $request->present_address;
+                    $client->hh_relation = $request->hh_relation;
+                    $client->share_info= $request->share_info;
+                    $client->created_by = Auth::user()->username;
+                    $client->status= $request->status;
+                    $client->age_score= CommonConstant::getAgeScore($request->age);
+                    $client->save();
 
-                $client = new Client;
-                $client->client_number = strtoupper($request->client_number);
-                $client->individual_id = $request->individual_id;
-                $client->full_name = ucwords($request->full_name);
-                $client->sex = ucwords($request->sex);
-                $client->age = $request->age;
-                if ($request->age != null) {
-                    $agedef = Date("Y") - $request->age;
-                    $birthdate = $agedef."-01-01";
-                    $client->birth_date = $birthdate;
-                }
-                $client->marital_status = $request->marital_status;
-                $client->spouse_name = $request->spouse_name;
-                $client->care_giver = $request->care_giver;
-                if($request->date_arrival != "" && $request->date_arrival != null) {
-                    $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
-                }
-                $client->present_address = $request->present_address;
-                $client->household_number = $request->household_number;
-                $client->ration_card_number = $request->ration_card_number;
-                $client->assistance_received = $request->assistance_received;
-                $client->problem_specification = $request->problem_specification;
-                $client->camp_id = $request->camp_id;
-                $client->origin_id=$request->origin;
-                $client->present_address = $request->present_address;
-                $client->females_total = $request->females_total;
-                $client->males_total = $request->males_total;
-                $client->present_address = $request->present_address;
-                $client->hh_relation = $request->hh_relation;
-                $client->share_info= $request->share_info;
-                $client->created_by = Auth::user()->username;
-                $client->status= $request->status;
-                $client->age_score= CommonConstant::getAgeScore($request->age);
-                $client->save();
+                    //Generate computer number
+                    $vn = "";
+                    foreach ($request->vulnerability_code as $item) {
+                        $code = PSNCode::find($item);
+                        $vn .= $code->code."-,";
+                        $vn = substr($vn, 0, strlen($vn)-1);
+                    }
+                    $vn = substr($vn,0,strlen($vn)-1);
 
-                //Generate computer number
-                $vn = "";
-                foreach ($request->vulnerability_code as $item) {
-                    $code = PSNCode::find($item);
-                    $vn .= $code->code."-,";
-                    $vn = substr($vn, 0, strlen($vn)-1);
-                }
-                $vn = substr($vn,0,strlen($vn)-1);
+                    $client->hai_reg_number = "HAI-".str_pad($client->id, 4, '0', STR_PAD_LEFT). $vn;
+                    $client->save();
 
-                $client->hai_reg_number = "HAI-".str_pad($client->id, 4, '0', STR_PAD_LEFT). $vn;
-                $client->save();
+                    //Save validation codes
+                    foreach (ClientVulnerabilityCode::where('client_id', '=', $client->id)->get() as $item) {
+                        $item->delete();
+                    }
 
-                //Save validation codes
-                foreach (ClientVulnerabilityCode::where('client_id', '=', $client->id)->get() as $item) {
-                    $item->delete();
-                }
-
-                foreach ($request->vulnerability_code as $item) {
-                    $codes = new ClientVulnerabilityCode;
-                    $codes->client_id = $client->id;
-                    $codes->code_id = $item;
-                    $codes->save();
-                }
-
+                    foreach ($request->vulnerability_code as $item) {
+                        $codes = new ClientVulnerabilityCode;
+                        $codes->client_id = $client->id;
+                        $codes->code_id = $item;
+                        $codes->save();
+                    }
+                });
                 //Audit trail
-                AuditRegister("ClientsController","Created new  Clients",$client);
+                AuditRegister("ClientsController","Created new  Clients", $client);
                 return response()->json([
                     'success' => true,
                     'message' => " Saved Successful"
