@@ -52,24 +52,36 @@ class LoginController extends Controller
     }
     //Post login for Authenticating users
     public function postLogin(Request $request) {
-
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
         $username = strtolower($request->username);
         $password = $request->password;
 
         if (Auth::attempt(['username' => $username, 'password' => $password])) {
-            if(Auth::user()->blocked ==1 || Auth::user()->status=="Inactive") {
+            if(Auth::user()->blocked == 1 || Auth::user()->status == "Inactive") {
                 Auth::logout();
-                return redirect()->back()->with('message', 'Login Failed you don\'t have Access to login please  Contact support team');
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Login Failed you don\'t have Access to login please  Contact support team'
+                ], 401);
             } else {
                 $user = User::find(Auth::user()->id);
                 $user->last_success_login=date("Y-m-d h:i:s");
                 $user->save();
                 //Audit trail
                 AuditRegister("LoginController","Success Loged in to the system",$username);
-                return redirect()->intended('home');
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Success Loged in to the system'
+                ], 200);
             }
         } else {
-            return redirect()->back()->with('message', 'Login Failed,Invalid username or password');
+            return response()->json([
+                    'success' => false,
+                    'message' => 'Login Failed,Invalid username or password'
+            ], 422);
         }
     }
 

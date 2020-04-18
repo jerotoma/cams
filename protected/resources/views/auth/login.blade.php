@@ -15,50 +15,35 @@
     <link href="{{asset("assets/css/colors.css")}}" rel="stylesheet" type="text/css">
 	<link rel="shortcut icon" type="image/x-icon" href="{{asset("assets/images/favicon.ico")}}" />
     <!-- /global stylesheets -->
-
     <!-- Core JS files -->
     <script type="text/javascript" src="{{asset("assets/js/plugins/loaders/pace.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/core/libraries/jquery.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/core/libraries/bootstrap.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/loaders/blockui.min.js")}}"></script>
     <!-- /core JS files -->
-
     <!-- Theme JS files -->
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/validation/validate.min.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/forms/styling/uniform.min.js")}}"></script>
-
     <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/pages/login_validation.js")}}"></script>
-
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
     <!-- /theme JS files -->
-
 </head>
-
 <body class="login-container">
-
 <!-- Main navbar -->
 <div class="navbar navbar-inverse bg-indigo text-center" style="padding-top: 10px">
-
-        <a  href="#" style="color: #FFFFFF; font-size: 20px;font-weight: bold; text-transform: uppercase; margin-top: 10px;"> 
+        <a  href="#" style="color: #FFFFFF; font-size: 20px;font-weight: bold; text-transform: uppercase; margin-top: 10px;">
 		 Case Management Database for Person with Specific Needs </a>
-
 </div>
 <!-- /main navbar -->
-
-
 <!-- Page container -->
 <div class="page-container">
-
     <!-- Page content -->
     <div class="page-content">
-
         <!-- Main content -->
         <div class="content-wrapper">
-
             <!-- Content area -->
             <div class="content">
-
                 <!-- Advanced login -->
                 {!! Form::open(array('url'=>'login','class'=>'form-validate','id'=>'form-validate')) !!}
                     <div class="login-form">
@@ -85,8 +70,6 @@
                                 <i class="icon-lock2 text-muted"></i>
                             </div>
                         </div>
-
-
 						<div class="form-group login-options">
                             <div class="row">
                                 <div class="col-sm-6">
@@ -98,11 +81,13 @@
                             <!--
                                 <div class="col-sm-6 text-right">
                                     <a href="{{url('password/recover')}}">Forgot password?</a>
-                                </div> 
+                                </div>
 								-->
                             </div>
                         </div>
-                        
+                        <div class="row">
+                            <div class="col-md-12 pull-left" id="output"></div>
+                        </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block btn-lg">Login <i class="icon-arrow-right14 position-right"></i></button>
                         </div>
@@ -110,15 +95,61 @@
                {!! Form::close() !!}
                 <!-- /advanced login -->
                 <script>
-                    $("#formLogin").validate({
-                        rules: {
-                            username: "required",
-                            password: "required"
-                        },
-                        messages: {
-                            username: "Enter your username",
-                            password: "Enter your password"
-                        }
+                    $(function(){
+                        $("#formLogin").validate({
+                            rules: {
+                                username: "required",
+                                password: "required"
+                            },
+                            messages: {
+                                username: "Enter your username",
+                                password: "Enter your password"
+                            }
+                        });
+                        $('#form-validate').on('submit', function(e){
+                            e.preventDefault();
+                            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Logging you in please wait...</span><h3>");
+                            var formURL = $('#form-validate').attr("action");
+                            $.ajax({
+                                url : formURL,
+                                type: "POST",
+                                data : new FormData(this),
+                                dataType: 'json',
+                                contentType: false,
+                                cache: false,
+                                processData: false,
+                                success: function(data){
+                                    if (data.success) {
+                                        location.replace("{{url('/home')}}");
+                                    } else {
+                                        console.log(data);
+                                    }
+                                },
+                                error: function(jqXhr,status, response) {
+                                    if( jqXhr.status === 401 ) {
+                                        let message = jqXhr.message ? jqXhr.message : jqXhr.errors;
+                                        $('#output').html(message);
+                                    }
+                                    if( jqXhr.status === 400 ) {
+                                       // var errors = jqXhr.responseJSON.errors;
+                                        console.log(jqXhr.responseJSON);
+                                        errorsHtml = '<div class="alert alert-danger"><p class="text-bold">Please resolve the following errors</p><ul>';
+                                        $.each(errors, function (key, value) {
+                                            errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                        });
+                                        errorsHtml += '</ul></di>';
+                                        $('#output').html(errorsHtml);
+                                    } else if (jqXhr.status === 422) {
+                                        let message = jqXhr.responseJSON.message ? jqXhr.responseJSON.message : jqXhr.errors;
+                                        $('#output').html('<div class="alert alert-danger"><p class="text-bold">' + message + '</p></div>');
+                                    } else {
+                                        let message = jqXhr.message ? jqXhr.message : jqXhr.errors;
+                                        $('#output').html('<div class="alert alert-danger"><p class="text-bold">' + message + '</p></div>');
+                                    }
+
+                                }
+                            });
+                        });
                     });
                 </script>
             </div>

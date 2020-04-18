@@ -149,7 +149,6 @@
             $('form#formImportItems').on('submit', function(e){
                 e.preventDefault();
                 $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Processing your request please wait...</span><h3>");
-                var postData = $('form#formExportItems').serializeArray();
                 var formURL = $('form#formExportItems').attr("action");
                 $.ajax({
                     url : formURL,
