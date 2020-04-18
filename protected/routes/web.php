@@ -331,12 +331,12 @@ Route::prefix('rest/secured')->group(function () {
 
 Route::prefix('/settings')->group(function () {
     //Client Settings
-    Route::resource('/clients','Settings\ClientSettingController');
+    Route::get('/clients','Settings\ClientSettingController@index');
 
     //User Settings
     Route::get('/users/edit', 'Settings\UserSettingController@editSettings');
     Route::post('/users/update', 'Settings\UserSettingController@updateSettings');
-    Route::resource('/users','Settings\UserSettingController');
+    Route::get('/users','Settings\UserSettingController@index');
 });
 
 

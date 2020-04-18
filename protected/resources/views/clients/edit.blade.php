@@ -32,7 +32,16 @@
 
 <div class="portlet light bordered">
     <div class="portlet-body form">
-        {!! Form::model($client,array('route'=>array('clients.update',$client->id),'method'=>'PUT','role'=>'form','id'=>'formClients'))!!}
+        {!! Form::model(
+                $client,
+                array('route' => array(
+                    'clients.update', $client->id),
+                    'method' => 'PUT',
+                    'role' => 'form',
+                    'id' => 'formClients'
+                )
+            )
+        !!}
         <div class="panel panel-flat">
 
             <div class="panel-body">
