@@ -772,7 +772,7 @@ class ClientController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
-                DB::transaction(function () {
+                DB::transaction(function () use ($request) {
                     $client = new Client;
                     $client->client_number = strtoupper($request->client_number);
                     $client->individual_id = $request->individual_id;
@@ -796,16 +796,16 @@ class ClientController extends Controller
                     $client->assistance_received = $request->assistance_received;
                     $client->problem_specification = $request->problem_specification;
                     $client->camp_id = $request->camp_id;
-                    $client->origin_id=$request->origin;
+                    $client->origin_id = $request->origin;
                     $client->present_address = $request->present_address;
                     $client->females_total = $request->females_total;
                     $client->males_total = $request->males_total;
                     $client->present_address = $request->present_address;
                     $client->hh_relation = $request->hh_relation;
-                    $client->share_info= $request->share_info;
+                    $client->share_info = $request->share_info;
                     $client->created_by = Auth::user()->username;
-                    $client->status= $request->status;
-                    $client->age_score= CommonConstant::getAgeScore($request->age);
+                    $client->status = $request->status;
+                    $client->age_score = CommonConstant::getAgeScore($request->age);
                     $client->save();
 
                     //Generate computer number
