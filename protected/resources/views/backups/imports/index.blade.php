@@ -27,6 +27,7 @@
     <script type="text/javascript" src="{{asset("assets/js/plugins/editors/wysihtml5/parsers.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/editors/wysihtml5/locales/bootstrap-wysihtml5.ua-UA.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/jgrowl.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
 
     <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
@@ -34,30 +35,6 @@
     <script type="text/javascript" src="{{asset("assets/js/pages/editor_wysihtml5.js")}}"></script>
 
     <script type="text/javascript" src="{{asset("assets/js/plugins/ui/ripple.min.js")}}"></script>
-@stop
-@section('scripts')
-    <script>
-        $("#formImportItems").validate({
-            ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
-            errorClass: 'validation-error-label',
-            successClass: 'validation-valid-label',
-            highlight: function(element, errorClass) {
-                $(element).removeClass(errorClass);
-            },
-            unhighlight: function(element, errorClass) {
-                $(element).removeClass(errorClass);
-            },
-            errorElement:'div',
-            rules: {
-                clients_import: "required",
-                camp_id: "required",
-            },
-            messages: {
-                inventory_file: "Please file is required",
-                camp_id: "Please Select camp"
-            }
-        });
-    </script>
 @stop
 @section('page_title')
     Data imports
@@ -132,6 +109,8 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-8 col-sm-8 pull-left" id="output">
+                </div>
                 <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4">
                     <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-cogs"></i> Import Data </button>
                 </div>
@@ -142,4 +121,80 @@
         </div>
 
     </div>
+@stop
+@section('scripts')
+    <script>
+
+        $(function(){
+            $("#formImportItems").validate({
+                ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
+                errorClass: 'validation-error-label',
+                successClass: 'validation-valid-label',
+                highlight: function(element, errorClass) {
+                    $(element).removeClass(errorClass);
+                },
+                unhighlight: function(element, errorClass) {
+                    $(element).removeClass(errorClass);
+                },
+                errorElement:'div',
+                rules: {
+                    clients_import: "required",
+                    camp_id: "required",
+                },
+                messages: {
+                    inventory_file: "Please file is required",
+                    camp_id: "Please Select camp"
+                },
+            });
+            $('form#formImportItems').on('submit', function(e){
+                e.preventDefault();
+                $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Processing your request please wait...</span><h3>");
+                var postData = $('form#formExportItems').serializeArray();
+                var formURL = $('form#formExportItems').attr("action");
+                $.ajax({
+                    url : formURL,
+                    type: "POST",
+                    data : new FormData(this),
+                    dataType: 'json',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(data){
+                        $('#output').html('');
+                        $('#module').val('');
+                        $('#system_data_file').val('');
+                        swal({
+                            title: "Request has  been succeeded!",
+                            text: data.message,
+                            type: "success",
+                            timer: 3000,
+                            confirmButtonColor: "#43ABDB"
+                        });
+                    },
+                    error: function(jqXhr, status, response) {
+                        if( jqXhr.status === 401 ) {
+                            location.replace("{{url('login')}}");
+                        }
+                        if(jqXhr.status === 400) {
+                            if (jqXhr.responseJSON.errors == 1)                            {
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p>';
+                                errorsHtml += '<h5 class="text-danger">'+jqXhr.responseJSON.message + '</h5>'
+                                $('#output').html(errorsHtml);
+                            } else {
+                                var errors = jqXhr.responseJSON.errors;
+                                errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p><ul>';
+                                $.each(errors, function (key, value) {
+                                    errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                });
+                                errorsHtml += '</ul></di>';
+                                $('#output').html(errorsHtml);
+                            }
+                        } else {
+                            $('#output').html('<div class="alert alert-danger"><p class="text-bold">' + jqXhr.responseJSON.message + '</p><ul>');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @stop

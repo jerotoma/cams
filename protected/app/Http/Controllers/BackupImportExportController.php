@@ -66,12 +66,10 @@ class BackupImportExportController extends Controller {
     private $uploadDir = '/uploads';
     private $storage = null;
 
-
     public function __construct() {
         $this->middleware('auth');
         $this->storage = Storage::disk('local');
     }
-
 
     /**
      * Display a listing of the resource.
@@ -83,10 +81,11 @@ class BackupImportExportController extends Controller {
             'filePath' => 'required',
         ]);
         try {
-            if ($this->storage->exists($request->filePath . '.xml')) {
-                return response()->download(storage_path('app/'. $request->filePath. '.xml'));
+            $filePath = $request->filePath . '.xml';
+            if ($this->storage->exists($filePath)) {
+                return $this->storage->download($filePath);
             }
-            return redirect()->back()->with('message', 'File ' .$request->filePath. 'doesn\'t exists');
+            return redirect()->back()->with('message', 'File ' .$filePath. 'doesn\'t exists');
         } catch (\Exception $ex) {
             return redirect()->back()->with('message',$ex->getMessage());
         }
@@ -100,8 +99,7 @@ class BackupImportExportController extends Controller {
         try {
 
             return response()->json([
-                'docs' => $this->storage->allFiles('/uploads'),
-                'storage_path' => storage_path('app' . $this->uploadDir)
+                'docs' => $this->storage->allFiles($this->uploadDir)
             ]);
         } catch (\Exception $ex) {
             return response()->json(array(
@@ -141,20 +139,22 @@ class BackupImportExportController extends Controller {
     public function postImport(Request $request) {
          try {
             $this->validate($request, [
-                'system_data_file' => 'required',
+                'system_data_file' => 'required|file|mimes:xml',
                 'module' => 'required'
             ]);
             $extension = strtolower($request->file('system_data_file')->getClientOriginalExtension());
             if ($extension != "xml" && $extension != "xml") {
                 return redirect()->back()->with('message', 'Invalid file type! allowed only xml')->withInput();
             }
-            $file= $request->file('system_data_file');
+            $file = $request->file('system_data_file');
             $destinationPath = public_path() . '/uploads/temp/';
             $filename   = str_replace(' ', '_', $file->getClientOriginalName());
 
             $file->move($destinationPath, $filename);
-            $requiredFile=$destinationPath.$filename;
-            $xml = simplexml_load_file($requiredFile,'SimpleXMLElement',LIBXML_NOCDATA);
+            $requiredFile = $destinationPath . $filename;
+
+            $xml = simplexml_load_file($requiredFile, 'SimpleXMLElement', LIBXML_NOCDATA);
+
 
             if($request->module =="1") {
                 foreach ($xml->Clients as $clients) {
@@ -1647,16 +1647,21 @@ class BackupImportExportController extends Controller {
 			}
 
 
-            if (File::exists($requiredFile))
-            {
+            if (File::exists($requiredFile)) {
                 File::delete($requiredFile);
             }
 
-            return redirect('home');
+            return response()->json([
+                'success' => true,
+                'message' => 'Document has been uploaded successfully'
+            ], 200);
         }
         catch (\Exception $ex) {
-            \Log::info('Export failed: ', $ex->getMessage());
-            return redirect()->back()->with('message',$ex->getMessage());
+            Log::error($ex);
+            return response()->json([
+                'success' => false,
+                'message' => $ex->getMessage()
+            ], 422);
         }
 
     }

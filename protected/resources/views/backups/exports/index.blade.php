@@ -27,6 +27,7 @@
     <script type="text/javascript" src="{{asset("assets/js/plugins/editors/wysihtml5/parsers.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/editors/wysihtml5/locales/bootstrap-wysihtml5.ua-UA.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/jgrowl.min.js")}}"></script>
+    <script type="text/javascript" src="{{asset("assets/js/plugins/notifications/sweet_alert.min.js")}}"></script>
 
     <script type="text/javascript" src="{{asset("assets/js/core/app.js")}}"></script>
     <script type="text/javascript" src="{{asset("assets/js/pages/form_floating_labels.js")}}"></script>
@@ -45,6 +46,9 @@
     }
     .badge {
         background-color: #999999;
+    }
+    span.index {
+        margin-right: 20px;
     }
 </style>
 @endsection
@@ -143,7 +147,8 @@
 @stop
 @section('scripts')
     <script>
-        $(function(){
+
+        function loadAvailableDocs() {
             $.ajax({
                 url: "{{url('rest/secured/backup/import/advanced/available-docs')}}",
                 type: 'GET',
@@ -151,9 +156,9 @@
                     const docs = response.docs;
                     let docList = '';
                     if (docs) {
-                        docs.forEach(doc => {
+                        docs.forEach((doc, index) => {
                             doc.lastIndexOf('/')
-                            docList += '<a href="/backup/export/advanced/downloads/?filePath=' + doc.substring(0, doc.lastIndexOf('.xml')) + '" class="list-group-item text-primary available-doc-list">' + doc.substring(doc.lastIndexOf('/') + 1) +'</a>';
+                            docList += '<a href="/backup/export/advanced/downloads/?filePath=' + doc.substring(0, doc.lastIndexOf('.xml')) + '" class="list-group-item text-primary available-doc-list">'+ '<span class="text-info text-bold index" >'+ (index + 1) +'</span>' + doc.substring(doc.lastIndexOf('/') + 1) +'</a>';
                         });
                     }
                     $('#availableDocument').html(docList);
@@ -163,12 +168,12 @@
                     });
                 }
             });
-
-
-
+        }
+        $(function(){
+            loadAvailableDocs();
             $('form#formExportItems').on('submit', function(e){
                 e.preventDefault();
-                $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Making changes please wait...</span><h3>");
+                $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Processing your request please wait...</span><h3>");
                 var postData = $('form#formExportItems').serializeArray();
                 var formURL = $('form#formExportItems').attr("action");
                 $.ajax({
@@ -176,15 +181,22 @@
                     type: "POST",
                     data : postData,
                     success: function(data){
-                        swal({title: "Form Submitted successful!", text: data.message, type: "success", timer: 2000, confirmButtonColor: "#43ABDB"});
+                        swal({
+                            title: "Request has  been succeeded!",
+                            text: data.message,
+                            type: "success",
+                            timer: 3000,
+                            confirmButtonColor: "#43ABDB"
+                        });
                         $('#output').html('');
+                        $('#module').prop('selectedIndex', 0);
+                        $('#module').val('');
+                        loadAvailableDocs();
                     },
                     error: function(jqXhr,status, response) {
-
                         if( jqXhr.status === 401 ) {
                             location.replace("{{url('login')}}");
                         }
-
                         if(jqXhr.status === 400) {
                             if (jqXhr.responseJSON.errors == 1)                            {
                                 errorsHtml = '<div class="alert alert-danger"><p class="text-uppercase text-bold">There are errors kindly check</p>';
@@ -202,7 +214,6 @@
                         } else {
                             $('#output').html(jqXhr.message);
                         }
-
                     }
                 });
             });

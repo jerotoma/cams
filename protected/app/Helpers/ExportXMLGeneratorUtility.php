@@ -573,9 +573,9 @@ class ExportXMLGeneratorUtility {
         $this->storage->put($this->uploadDir . '/' . $this->getUniqueString()  . '-vulnerability-assessments.xml', $xml);
     }
 
-    public function generateHomeAssessments($assessments) {
+    public function generateHomeAssessments($homeAssessments) {
 
-        if ($assessments == null || count($assessments) <= 0) {
+        if ($homeAssessments == null || count($homeAssessments) <= 0) {
             return '';
         }
         $xml = '<?xml version=\'1.0\' encoding=\'UTF-8\'?>';
@@ -707,6 +707,10 @@ class ExportXMLGeneratorUtility {
     }
 
     public function generateItemInventories($itemInventories) {
+
+        if ($itemInventories == null || count($itemInventories) <= 0) {
+            return '';
+        }
         $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         $xml .= "<ApplicationData>";
         $xml .= "<ItemsInventories>";
@@ -737,6 +741,10 @@ class ExportXMLGeneratorUtility {
     }
 
     public function generateReceivedItems($receivedItems) {
+
+        if ($receivedItems == null || count($receivedItems) <= 0) {
+            return '';
+        }
         $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         $xml .= "<ApplicationData>";
         $xml .= "<InventoriesReceived>";
@@ -773,17 +781,13 @@ class ExportXMLGeneratorUtility {
                         $xml .= "<ItemCategory>";
                         if (is_object($item->category) && $item->category != null) {
                             $category = $item->category;
-
                             $xml .= "<category_name><![CDATA[" . $category->category_name . "]]></category_name>";
                             $xml .= "<status><![CDATA[" . $category->status . "]]></status>";
                             $xml .= "<description><![CDATA[" . $category->description . "]]></description>";
-
                         }
                         $xml .= "</ItemCategory>";
-
                     }
                     $xml .= "</ItemsInventory>";
-
                     $xml .= "</ItemReceived>";
                 }
             }
@@ -796,6 +800,10 @@ class ExportXMLGeneratorUtility {
     }
 
     public function generateItemDisbursements($itemDisbursements) {
+
+        if ($itemDisbursements == null || count($itemDisbursements) <= 0) {
+            return '';
+        }
         $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         $xml .= "<ApplicationData>";
         $xml .= "<ItemsDisbursements>";
@@ -979,6 +987,9 @@ class ExportXMLGeneratorUtility {
     }
 
     public function generateBudgetActivities($budgetActivities) {
+        if ($budgetActivities == null || count($budgetActivities) <= 0) {
+            return '';
+        }
         $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         $xml .= "<ApplicationData>";
         $xml .= "<BudgetActivities>";
@@ -1003,6 +1014,9 @@ class ExportXMLGeneratorUtility {
     }
 
     public function generateCashProvisions($cashProvisions) {
+        if ($cashProvisions == null || count($cashProvisions) <= 0) {
+            return '';
+        }
         $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         $xml .= "<ApplicationData>";
         $xml .= "<CashProvisions>";
@@ -1196,6 +1210,9 @@ class ExportXMLGeneratorUtility {
     }
 
     public function generatePostCashAssessments($postCashAssessments) {
+        if ($postCashAssessments == null || count($postCashAssessments) <= 0) {
+            return '';
+        }
         $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         $xml .= "<ApplicationData>";
         $xml .= "<PostCashAssessments>";
@@ -1459,6 +1476,9 @@ class ExportXMLGeneratorUtility {
 
 
     public function generateClientCases($clientCases) {
+        if ($clientCases == null || count($clientCases) <= 0) {
+            return '';
+        }
         $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         $xml .= "<ApplicationData>";
         $xml .= "<ClientCases>";
@@ -1623,8 +1643,10 @@ class ExportXMLGeneratorUtility {
         $this->storage->put($this->uploadDir . '/' . $this->getUniqueString()  . '-client-cases.xml', $xml);
     }
 
-
     public function generateProgressNotes($progressNotes) {
+        if ($progressNotes == null || count($progressNotes) <= 0) {
+            return '';
+        }
         $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         $xml .= "<ApplicationData>";
         $xml .= "<ProgressNotes>";
@@ -1679,7 +1701,7 @@ class ExportXMLGeneratorUtility {
             $xml .= "</Camp>";
             $xml .= "<Client>";
             if (is_object($note->client)) {
-
+                $client = $note->client;
                 $xml .= "<hai_reg_number><![CDATA[" . $client->hai_reg_number . "]]></hai_reg_number>";
                 $xml .= "<client_number><![CDATA[" . $client->client_number . "]]></client_number>";
                 $xml .= "<full_name><![CDATA[" . $client->full_name . "]]></full_name>";
@@ -1784,5 +1806,5 @@ class ExportXMLGeneratorUtility {
         $xml .= "</ProgressNotes>";
         $xml .= "</ApplicationData>";
         $this->storage->put($this->uploadDir . '/' . $this->getUniqueString()  . '-progress-notes.xml', $xml);
-}
+    }
 }

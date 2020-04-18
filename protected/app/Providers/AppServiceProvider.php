@@ -11,13 +11,8 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        \DB::listen(function ($query) {
-            \Log::info($query->sql);
-            \Log::info($query->bindings);
-            \Log::info($query->time);
-        });
+    public function boot() {
+        //$this->listenToQuery();
     }
 
     /**
@@ -27,5 +22,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register() {
         ini_set('max_execution_time', 300);
+    }
+
+    public function listenToQuery() {
+        \DB::listen(function ($query) {
+            \Log::info($query->sql);
+            \Log::info($query->bindings);
+            \Log::info($query->time);
+        });
     }
 }
