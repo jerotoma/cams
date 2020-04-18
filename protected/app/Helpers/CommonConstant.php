@@ -33,7 +33,7 @@ class CommonConstant {
         12 => 'December'
     ];
 
-    public function getAgeScore($age){
+    public static function getAgeScore($age){
         if($age <=17 ){
             return "A";
         }
