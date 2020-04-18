@@ -430,7 +430,6 @@
                         }, 2000);
                     },
                     error: function(jqXhr,status, response) {
-                        console.log(jqXhr);
                         if( jqXhr.status === 401 ) {
                             location.replace('{{url('login')}}');
                         }
@@ -442,10 +441,9 @@
                             });
                             errorsHtml += '</ul></di>';
                             $('#output').html(errorsHtml);
-                        }
-                        else
-                        {
-                            $('#output').html(jqXhr.message);
+                        } else {
+                            let message = jqXhr.message ? jqXhr.message : jqXhr.errors;
+                            $('#output').html(message);
                         }
 
                     }

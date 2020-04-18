@@ -64,18 +64,18 @@ Route::resource('departments','DepartmentController');
 Route::resource('psncodes','PSNCodesController');
 Route::resource('psncodes-categories','PSNCodeCategoryController');
 
-Route::resource('clients','ClientsController');
+Route::resource('clients','ClientController');
 
 //Authorize
-Route::post('authorize/all/clients','ClientsController@authorizeAll');
-Route::post('authorize/{id}/clients','ClientsController@authorizeClientById');
+Route::post('authorize/all/clients','ClientController@authorizeAll');
+Route::post('authorize/{id}/clients','ClientController@authorizeClientById');
 
-Route::get('getclientslist','ClientsController@getJSonClientDataSearch');
-Route::get('search/clients','ClientsController@searchClient');
-Route::post('search/clients','ClientsController@postSearchClient');
-Route::post('advanced/search/clients','ClientsController@advancedSearchClient');
+Route::get('getclientslist','ClientController@getJSonClientDataSearch');
+Route::get('search/clients','ClientController@searchClient');
+Route::post('search/clients','ClientController@postSearchClient');
+Route::post('advanced/search/clients','ClientController@advancedSearchClient');
 
-Route::get('create-client','ClientsController@createClient');
+Route::get('create-client','ClientController@createClient');
 
 //NFIs Item inventory
 Route::resource('inventory-categories','ItemsCategoriesController');
@@ -169,12 +169,12 @@ Route::post('inventory-import','ItemInventoryController@postImport');
 Route::get('import/referrals','ReferralController@showImport');
 Route::post('import/referrals','ReferralController@postImport');
 //Clients
-Route::get('import/clients','ClientsController@showImport');
-Route::post('import/clients','ClientsController@postImport');
-Route::get('import/clients/errors','ClientsController@showImportErrors');
-Route::get('download/import/clients/errors','ClientsController@downloadImportErrors');
+Route::get('import/clients','ClientController@showImport');
+Route::post('import/clients','ClientController@postImport');
+Route::get('import/clients/errors','ClientController@showImportErrors');
+Route::get('download/import/clients/errors','ClientController@downloadImportErrors');
 //Just for me
-//Route::get('create-client','ClientsController@createClient');
+//Route::get('create-client','ClientController@createClient');
 
 
 Route::get('excel/import/received/items','ItemsReceivingController@showImport');
@@ -288,9 +288,9 @@ Route::prefix('rest/secured')->group(function () {
     Route::post('/dashboard/cases/year', 'HomeController@loadMonthlyAverageCaseByYear');
 
     //Clients
-    Route::get('/clients','ClientsController@findClientList');
-    Route::get('/clients/search-paginated','ClientsController@searchClientPaginated');
-    Route::post('/clients/{id}/authorize','ClientsController@authorizeClientById');
+    Route::get('/clients','ClientController@findClientList');
+    Route::get('/clients/search-paginated','ClientController@searchClientPaginated');
+    Route::post('/clients/{id}/authorize','ClientController@authorizeClientById');
 
     //VulnerabilityAssessmentsearch-paginated
     Route::get('/assessments/vulnerabilities','VulnerabilityAssessmentController@findVulnerabilityAssessments');

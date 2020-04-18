@@ -26,7 +26,7 @@ use App\Helpers\AuthUtility;
 use App\Helpers\ValidatorUtility;
 use App\Helpers\CommonConstant;
 
-class ClientsController extends Controller
+class ClientController extends Controller
 {
     protected $import_errors;
     public function __construct()
