@@ -831,9 +831,9 @@ class ClientController extends Controller
                         $codes->code_id = $item;
                         $codes->save();
                     }
+                    AuditRegister("ClientsController","Created new  Clients", $client);
                 });
                 //Audit trail
-                AuditRegister("ClientsController","Created new  Clients", $client);
                 return response()->json([
                     'success' => true,
                     'message' => " Saved Successful"
