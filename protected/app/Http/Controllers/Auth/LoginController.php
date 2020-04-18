@@ -12,8 +12,7 @@ use Illuminate\Http\Request;
 use App\User;
 use DB;
 
-class LoginController extends Controller
-{
+class LoginController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -32,7 +31,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -87,7 +86,7 @@ class LoginController extends Controller
 
 	public function logout() {
         if (Auth::check()) {
-            $user= User::find(Auth::user()->id);
+            $user= User::find(auth()->user()->id);
             $user->last_logout=date("Y-m-d h:i:s");
             $user->save();
         }

@@ -94,73 +94,12 @@
                     </div>
                {!! Form::close() !!}
                 <!-- /advanced login -->
-                <script>
-                    $(function(){
-                        $("#formLogin").validate({
-                            rules: {
-                                username: "required",
-                                password: "required"
-                            },
-                            messages: {
-                                username: "Enter your username",
-                                password: "Enter your password"
-                            }
-                        });
-                        $('#form-validate').on('submit', function(e){
-                            e.preventDefault();
-                            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Logging you in please wait...</span><h3>");
-                            var formURL = $('#form-validate').attr("action");
-                            $.ajax({
-                                url : formURL,
-                                type: "POST",
-                                data : new FormData(this),
-                                dataType: 'json',
-                                contentType: false,
-                                cache: false,
-                                processData: false,
-                                success: function(data){
-                                    if (data.success) {
-                                        location.replace("{{url('/home')}}");
-                                    } else {
-                                        console.log(data);
-                                    }
-                                },
-                                error: function(jqXhr,status, response) {
-                                    if( jqXhr.status === 401 ) {
-                                        let message = jqXhr.message ? jqXhr.message : jqXhr.errors;
-                                        $('#output').html(message);
-                                    }
-                                    if( jqXhr.status === 400 ) {
-                                       // var errors = jqXhr.responseJSON.errors;
-                                        console.log(jqXhr.responseJSON);
-                                        errorsHtml = '<div class="alert alert-danger"><p class="text-bold">Please resolve the following errors</p><ul>';
-                                        $.each(errors, function (key, value) {
-                                            errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
-                                        });
-                                        errorsHtml += '</ul></di>';
-                                        $('#output').html(errorsHtml);
-                                    } else if (jqXhr.status === 422) {
-                                        let message = jqXhr.responseJSON.message ? jqXhr.responseJSON.message : jqXhr.errors;
-                                        $('#output').html('<div class="alert alert-danger"><p class="text-bold">' + message + '</p></div>');
-                                    } else {
-                                        let message = jqXhr.message ? jqXhr.message : jqXhr.errors;
-                                        $('#output').html('<div class="alert alert-danger"><p class="text-bold">' + message + '</p></div>');
-                                    }
-
-                                }
-                            });
-                        });
-                    });
-                </script>
             </div>
             <!-- /content area -->
-
         </div>
         <!-- /main content -->
-
     </div>
     <!-- /page content -->
-
 </div>
 <!-- /page container -->
 <!-- Footer -->
@@ -190,5 +129,61 @@
 
 </div>
 <!-- /footer -->
+<script>
+    $(function(){
+        $("#formLogin").validate({
+            rules: {
+                username: "required",
+                password: "required"
+            },
+            messages: {
+                username: "Enter your username",
+                password: "Enter your password"
+            }
+        });
+        $('#form-validate').on('submit', function(e){
+            e.preventDefault();
+            $("#output").html("<h3><span class='text-info'><i class='fa fa-spinner fa-spin'></i> Logging you in please wait...</span><h3>");
+            var formURL = $('#form-validate').attr("action");
+            $.ajax({
+                url : formURL,
+                type: "POST",
+                data : new FormData(this),
+                dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data){
+                    if (data.success) {
+                        window.location.assign("{{url('/home')}}");
+                    } else {
+                       $('#output').html('<div class="alert alert-danger"><p class="text-bold">' + data.message + '</p></div>');
+                    }
+                },
+                error: function(jqXhr,status, response) {
+                    if( jqXhr.status === 401 ) {
+                        let message = jqXhr.message ? jqXhr.message : jqXhr.errors;
+                        $('#output').html(message);
+                    }
+                    if( jqXhr.status === 400 ) {
+                       var errors = jqXhr.responseJSON.errors;
+                        errorsHtml = '<div class="alert alert-danger"><p class="text-bold">Please resolve the following errors</p><ul>';
+                        $.each(errors, function (key, value) {
+                            errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                        });
+                        errorsHtml += '</ul></di>';
+                        $('#output').html(errorsHtml);
+                    } else if (jqXhr.status === 422) {
+                        let message = jqXhr.responseJSON.message ? jqXhr.responseJSON.message : jqXhr.errors;
+                        $('#output').html('<div class="alert alert-danger"><p class="text-bold">' + message + '</p></div>');
+                    } else {
+                        let message = jqXhr.message ? jqXhr.message : jqXhr.errors;
+                        $('#output').html('<div class="alert alert-danger"><p class="text-bold">' + message + '</p></div>');
+                    }
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

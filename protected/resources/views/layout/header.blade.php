@@ -40,7 +40,7 @@
 
                                 <div class="media-body">
                                     Registered Clients <a href="#">More..</a>
-                                    <div class="media-annotation">{{floor(( strtotime(date('Y-m-d H:i:s')) - strtotime(\Auth::user()->updated_at)) /3600)}} minutes ago</div>
+                                    <div class="media-annotation">{{floor(( strtotime(date('Y-m-d H:i:s')) - strtotime(auth()->user()->updated_at)) /3600)}} minutes ago</div>
                                 </div>
                             </li>
                             <li><hr/></li>
@@ -52,7 +52,7 @@
 
                                 <div class="media-body">
                                     Vulnerability assessment <a href="#">More..</a>
-                                    <div class="media-annotation">{{floor(( strtotime(date('Y-m-d H:i:s')) - strtotime(\Auth::user()->updated_at)) /3600)}} minutes ago</div>
+                                    <div class="media-annotation">{{floor(( strtotime(date('Y-m-d H:i:s')) - strtotime(auth()->user()->updated_at)) /3600)}} minutes ago</div>
                                 </div>
                             </li>
                             <li><hr/></li>
@@ -63,7 +63,7 @@
 
                                 <div class="media-body">
                                     Clients Referrals <a href="#">More..</a>
-                                    <div class="media-annotation">{{floor(( strtotime(date('Y-m-d H:i:s')) - strtotime(\Auth::user()->updated_at)) /3600)}} minutes ago</div>
+                                    <div class="media-annotation">{{floor(( strtotime(date('Y-m-d H:i:s')) - strtotime(auth()->user()->updated_at)) /3600)}} minutes ago</div>
                                 </div>
                             </li>
                             <li><hr/></li>
@@ -74,7 +74,7 @@
 
                                 <div class="media-body">
                                     NFIs Inventory <a href="#">More..</a>
-                                    <div class="media-annotation">{{floor(( strtotime(date('Y-m-d H:i:s')) - strtotime(\Auth::user()->updated_at)) /3600)}} minutes ago</div>
+                                    <div class="media-annotation">{{floor(( strtotime(date('Y-m-d H:i:s')) - strtotime(auth()->user()->updated_at)) /3600)}} minutes ago</div>
                                 </div>
                             </li>
                             <li><hr/></li>
@@ -85,7 +85,7 @@
 
                                 <div class="media-body">
                                     Clients Referrals <a href="#">More..</a>
-                                    <div class="media-annotation">{{floor(( strtotime(date('Y-m-d H:i:s')) - strtotime(\Auth::user()->updated_at)) /3600)}} minutes ago</div>
+                                    <div class="media-annotation">{{floor(( strtotime(date('Y-m-d H:i:s')) - strtotime(auth()->user()->updated_at)) /3600)}} minutes ago</div>
                                 </div>
                             </li>
                             <li><hr/></li>
@@ -96,7 +96,7 @@
 
                                 <div class="media-body">
                                     Cash Transfer <a href="#">More..</a>
-                                    <div class="media-annotation">{{floor(( strtotime(date('Y-m-d H:i:s')) - strtotime(\Auth::user()->updated_at)) /3600)}} minutes ago</div>
+                                    <div class="media-annotation">{{floor(( strtotime(date('Y-m-d H:i:s')) - strtotime(auth()->user()->updated_at)) /3600)}} minutes ago</div>
                                 </div>
                             </li>
                             <li><hr/></li>
@@ -106,9 +106,12 @@
                 </li>
                 @endpermission
                 <li class="dropdown">
-                    <a href="{{url('logout')}}" class="dropdown-toggle" >
+                    <a href="{{url('logout')}}" onclick="event.preventDefault(); document.getElementById('campsn-logout').submit();" class="dropdown-toggle" >
                         <i class="icon-switch2"> </i> Logout
                     </a>
+                    <form id="campsn-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
 
                 </li>
 

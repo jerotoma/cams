@@ -8,7 +8,7 @@ Route::get('fingerprint','FingerprintController@index');
 //Authentication
 Route::get('login','Auth\LoginController@login');
 Route::post('login','Auth\LoginController@postLogin');
-Route::get('logout','Auth\LoginController@logout');
+Route::post('logout','Auth\LoginController@logout')->name('logout');
 
 //Users
 Route::resource('users','UserController');
