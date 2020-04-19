@@ -54,7 +54,7 @@
                                 <label class="control-label">Camp</label>
                                 <select class="select" name="camp_id" id="camp_id" data-placeholder="Choose an option...">
                                     <option ></option>
-                                    @foreach(\App\Camp::all() as $item)
+                                    @foreach($camps as $item)
                                         <option value="{{$item->id}}">{{$item->camp_name}}</option>
                                     @endforeach
                                 </select>
@@ -68,7 +68,7 @@
                                 <label class="control-label">Origin</label>
                                 <select class="select" name="origin" id="origin" data-placeholder="Choose an option...">
                                     <option></option>
-                                    @foreach(\App\Origin::all() as $item)
+                                    @foreach($origins as $item)
                                         <option value="{{$item->id}}">{{$item->origin_name}}</option>
                                     @endforeach
                                 </select>
@@ -231,9 +231,9 @@
                 </fieldset>
                 <div class="form-group ">
                     <label>Vulnerability Code</label>
-                    <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="vulnerability_code[]" id="vulnerability_code">
+                    <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="vulnerability_codes[]" id="vulnerability_code">
                         <optgroup label="Vulnerability Code">
-                            @foreach(\App\PSNCode::all() as $item)
+                            @foreach($psnCodes as $item)
                                 <option value="{{$item->id}}">{{$item->code}}</option>
                             @endforeach
                         </optgroup>
@@ -401,7 +401,6 @@
                         }, 2000);
                     },
                     error: function(jqXhr,status, response) {
-                        console.log(jqXhr);
                         if( jqXhr.status === 401 ) {
                             location.replace('{{url('login')}}');
                         }

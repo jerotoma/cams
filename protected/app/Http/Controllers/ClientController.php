@@ -7,6 +7,7 @@ use App\ClientVulnerabilityCode;
 use App\Country;
 use App\DumpClient;
 use App\Origin;
+use App\Camp;
 use App\PSNCode;
 use App\PSNCodeCategory;
 use Illuminate\Http\Request;
@@ -195,13 +196,12 @@ class ClientController extends Controller
         return view('clients.search');
     }
     public function searchClientPaginated(Request $request) {
-
         try {
             $validator = Validator::make($request->all(), [
                 'sortField' => 'required',
                 'sortType' => 'required|max:5',
-                'perPage' => 'required',
-                'page' => 'required',
+                'perPage' => 'required|numeric',
+                'page' => 'required|numeric',
                 'searchTerm' => 'required',
             ]);
 
@@ -439,21 +439,18 @@ class ClientController extends Controller
     {
         return view('clients.import');
     }
-    public function postImport(Request $request)
-    {
+    public function postImport(Request $request) {
         try {
             $validator = Validator::make($request->all(), [
                 'clients_import' => 'required',
                 'camp_id' => 'required',
-
             ]);
+
             if ($validator->fails()) {
-
                 return redirect()->back()->withErrors($validator)->withInput();
-
             }
 
-            \DB::table('dump_clients')->truncate();
+            DB::table('dump_clients')->truncate();
 
             $extension= strtolower($request->file('clients_import')->getClientOriginalExtension());
             if($extension !="xlsx" && $extension !="xls")
@@ -472,243 +469,243 @@ class ClientController extends Controller
                 $results= $reader->get();
                 $results->each(function($row) use($request) {
 
-            if($row->names != "" && $row->sex !="" && is_numeric($row->age) && $row->marital_status !="" &&
-                is_numeric($row->m) &&  is_numeric($row->f) &&  is_numeric($row->t) && $row->origin != "" && $row->date_of_arrival !="" && $row->vul_1 !="" ){
-                    $sex ="";
-                    if(strtolower($row->sex) =="k" || strtolower($row->sex) =="mk" || strtolower($row->sex) =="f")
-                    {
-                        $sex = "Female";
-                    }
-                    else
-                    {
-                        $sex = "Male";
-                    }
-                    $client_number=strtoupper(strtolower(preg_replace('/\s+/S', "",$row->unique_id)));
-                    $individual_id=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->individual_id)));
-                    $full_name=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->names)));
-                    $age=intval($row->age);
-                    $present_address=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->present_address)));
-                    $ration_card_number=strtoupper(strtolower(preg_replace('/\s+/S', "",$row->ration_card_number)));
-                    $marital_status=ucwords(strtolower(preg_replace('/\s+/S', "",$row->marital_status)));
-                    $spouse_name=ucwords(strtolower(preg_replace('/\s+/S', "",$row->spouse_name)));
-                    $care_giver=ucwords(strtolower(preg_replace('/\s+/S', "",$row->name_of_parents)));
-                    $date_arrival=null;
-                    if($row->date_of_arrival != "") {
-                        $date_arrival = date("Y-m-d", strtotime(preg_replace('/\s+/S', "",$row->date_of_arrival)));
-                    }
-
-                    $origin="";
-                    $origin_name=ucwords(strtolower(preg_replace('/\s+/S', "", $row->origin)));
-                    if($origin_name =="Nyarugusu" || $origin_name =="Nyrugusu" || $origin_name =="Nyarugusi"|| $origin_name =="Nyaruguu"){
-
-                        $origin_name="Nyarugusu";
-                    }
-
-                    $females_total=intval($row->f);
-                    $males_total=intval($row->m);
-                    $household_number=$females_total+$males_total;
-
-                    $origin_id="";
-                    if($row->origin !="") {
-                        if (count(Origin::where('origin_name', '=', $origin_name)->get()) > 0) {
-                            $origin = Origin::where('origin_name', '=', $origin_name)->get()->first();
-                            $origin_id=$origin->id;
-                        } else {
-                            $co = new Origin;
-                            $co->origin_name = $origin_name;
-                            $co->save();
-                            $origin = $co;
-                            $origin_id=$origin->id;
-                        }
-                    }
-
-                    if(!count(Client::where('full_name','=',$full_name)
-                            ->where('age','=',$age)
-                            ->where('sex','=',$sex)
-                            ->where('marital_status','=',$marital_status)
-                            ->where('date_arrival','=',$date_arrival)
-                            ->where('household_number','=',$household_number)
-                            ->where('females_total','=',$females_total)
-                            ->where('males_total','=',$males_total)
-                            ->where('origin_id','=',$origin_id)
-                            ->get()) > 0)
-                    {
-
-
-
-                        $client=new Client;
-                        $client->client_number = $client_number;
-                        $client->individual_id = $individual_id;
-                        $client->full_name = $full_name;
-
-                        $client->sex = $sex;
-                        $client->age = $age;
-                        if ($age != null) {
-                            $agedef=intval(Date("Y")) - $age;
-                            $birthdate=$agedef."-01-01";
-                            $client->birth_date = $birthdate;
-                        }
-                        $client->marital_status = $marital_status;
-                        $client->spouse_name = $spouse_name;
-                        $client->care_giver = $care_giver;
-
-                        $client->date_arrival =$date_arrival;
-                        if($origin_id != ""){
-                            $client->origin_id = $origin_id;
-                        }
-                        $client->present_address =$present_address;
-                        $client->household_number = $row->t;
-                        $client->ration_card_number =$ration_card_number;
-                        $client->camp_id = $request->camp_id;
-                        $client->females_total = $females_total;
-                        $client->males_total = $males_total;
-                        $client->created_by = Auth::user()->username;
-                        $client->age_score= CommonConstant::getAgeScore($row->age);
-                        $client->save();
-
-                        //Generate computer number
-
-                        $psnCodes=array($row->vul_1,$row->vul_2,$row->vul_3,$row->vul_4,$row->vul_5);
-                        $hai_psn_code="";
-                        foreach ($psnCodes as $data )
+                if($row->names != "" && $row->sex !="" && is_numeric($row->age) && $row->marital_status !="" &&
+                    is_numeric($row->m) &&  is_numeric($row->f) &&  is_numeric($row->t) && $row->origin != "" && $row->date_of_arrival !="" && $row->vul_1 !="" ){
+                        $sex ="";
+                        if(strtolower($row->sex) =="k" || strtolower($row->sex) =="mk" || strtolower($row->sex) =="f")
                         {
-                           if($data != "" && $data != null) {
-                               $hai_psn_code .= preg_replace('/\s+/S', "",$data) . "-";
-                           }
+                            $sex = "Female";
                         }
-                        $hai_psn_code=substr($hai_psn_code,0,strlen($hai_psn_code)-1);
-                        $client->hai_reg_number="HAI-".str_pad($client->id,4,'0',STR_PAD_LEFT).$hai_psn_code;
-                        $client->save();
-
-                        //Save validation codes
-                        foreach ($psnCodes as $codeData )
+                        else
                         {
+                            $sex = "Male";
+                        }
+                        $client_number=strtoupper(strtolower(preg_replace('/\s+/S', "",$row->unique_id)));
+                        $individual_id=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->individual_id)));
+                        $full_name=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->names)));
+                        $age=intval($row->age);
+                        $present_address=ucwords(strtolower(preg_replace('/\s+/S', " ",$row->present_address)));
+                        $ration_card_number=strtoupper(strtolower(preg_replace('/\s+/S', "",$row->ration_card_number)));
+                        $marital_status=ucwords(strtolower(preg_replace('/\s+/S', "",$row->marital_status)));
+                        $spouse_name=ucwords(strtolower(preg_replace('/\s+/S', "",$row->spouse_name)));
+                        $care_giver=ucwords(strtolower(preg_replace('/\s+/S', "",$row->name_of_parents)));
+                        $date_arrival=null;
+                        if($row->date_of_arrival != "") {
+                            $date_arrival = date("Y-m-d", strtotime(preg_replace('/\s+/S', "",$row->date_of_arrival)));
+                        }
 
-                            $code =preg_replace('/\s+/S', "",$codeData);
-                            $pcode="";
-                            if($code != "")
-                            {
+                        $origin="";
+                        $origin_name=ucwords(strtolower(preg_replace('/\s+/S', "", $row->origin)));
+                        if($origin_name =="Nyarugusu" || $origin_name =="Nyrugusu" || $origin_name =="Nyarugusi"|| $origin_name =="Nyaruguu"){
 
-                              if (count(PSNCode::where('code', '=',$code)->get()) > 0)
-                                {
-                                    $pcode = PSNCode::where('code', '=',$code)->get()->first();
+                            $origin_name="Nyarugusu";
+                        }
 
-                                }
-                                else
-                                    {
+                        $females_total=intval($row->f);
+                        $males_total=intval($row->m);
+                        $household_number=$females_total+$males_total;
 
-                                        $categorycode="";
-                                        $arr=explode('-',$code);
-                                        if (isset($arr[0])) {
-                                            $categorycode = $arr[0];
-
-                                        }
-                                        $psncategory="";
-
-                                        if (count(PSNCodeCategory::where('code','=',$categorycode)->get()) > 0)
-                                        {
-                                            $psncategory=PSNCodeCategory::where('code','=',$categorycode)
-                                                         ->get()->first();
-
-
-                                        }
-                                        else{
-                                            $psncate = new PSNCodeCategory;
-                                            $psncate->code = $categorycode;
-                                            $psncate->description = $categorycode;
-                                            $psncate->definition = $categorycode;
-                                            $psncate->for_reporting = "Yes";
-                                            $psncate->created_by = Auth::user()->username;
-                                            $psncate->save();
-                                            $psncategory=$psncate;
-                                        }
-                                        if ($psncategory != "" && $code != "") {
-
-                                            $psc = new PSNCode;
-                                            $psc->code = strtoupper(strtolower($code));
-                                            $psc->category_id = $psncategory->id;
-                                            $psc->description = $code;
-                                            $psc->definition = $code;
-                                            $psc->for_reporting = "Yes";
-                                            $psc->definition = Auth::user()->username;
-                                            $psc->save();
-                                            $pcode = $psc;
-                                        }
-                                }
-                                if ($pcode != "") {
-                                    $codes = new ClientVulnerabilityCode;
-                                    $codes->client_id = $client->id;
-                                    $codes->code_id = $pcode->id;
-                                    $codes->save();
-                                }
-
+                        $origin_id="";
+                        if($row->origin !="") {
+                            if (count(Origin::where('origin_name', '=', $origin_name)->get()) > 0) {
+                                $origin = Origin::where('origin_name', '=', $origin_name)->get()->first();
+                                $origin_id=$origin->id;
+                            } else {
+                                $co = new Origin;
+                                $co->origin_name = $origin_name;
+                                $co->save();
+                                $origin = $co;
+                                $origin_id=$origin->id;
                             }
                         }
 
-                    }
-                }
-                else{
-                   $filed_error="";
+                        if(!count(Client::where('full_name','=',$full_name)
+                                ->where('age','=',$age)
+                                ->where('sex','=',$sex)
+                                ->where('marital_status','=',$marital_status)
+                                ->where('date_arrival','=',$date_arrival)
+                                ->where('household_number','=',$household_number)
+                                ->where('females_total','=',$females_total)
+                                ->where('males_total','=',$males_total)
+                                ->where('origin_id','=',$origin_id)
+                                ->get()) > 0)
+                        {
 
-                    if($row->names == "" ){
-                        $filed_error .="Names is  Missing-";
-                    }
-                    if( $row->sex == "" ){
-                        $filed_error .="Sex is Missing-";
-                    }
-                    if(  !is_numeric($row->age)){
-                        $filed_error .="Age is Missing-";
-                    }
-                    if( $row->marital_status == "" ){
-                        $filed_error .="Marital Status is Missing-";
-                    }
-                    if( !is_numeric($row->m) ){
-                        $filed_error .="Number of males is Missing-";
-                    }
-                    if( !is_numeric($row->f)){
-                        $filed_error .="Number of females is Missing-";
-                    }
-                    if( !is_numeric($row->t) ){
-                        $filed_error .="HouseHold Number is Missing-";
-                    }
-                    if( $row->origin ==""){
-                        $filed_error .="Origin is Missing-";
-                    }
-                    if( $row->date_of_arrival == "" ){
-                        $filed_error .="date of arrival is Missing-";
-                    }
-                    if( $row->vul_1 == "" ){
-                        $filed_error .="Vulnerability code(s) is Missing-";
-                    }
-                    $filed_error=substr($filed_error,0,strlen($filed_error)-1);
 
-                    $client =new DumpClient;
-                    $client->unique_id=$row->unique_id;
-                    $client->individual_id=$row->individual_id;
-                    $client->names=$row->names;
-                    $client->sex=$row->sex;
-					$client->age = $row->age;
-                    $client->marital_status=$row->marital_status;
-                    $client->name_of_parents=$row->name_of_parents;
-                    $client->name_of_spouse=$row->name_of_spouse;
-                    $client->m=$row->m;
-                    $client->f=$row->f;
-                    $client->t=$row->t;
-                    $client->origin=$row->origin;
-                    $client->date_of_arrival=$row->date_of_arrival;
-                    $client->present_address=$row->present_address;
-                    $client->ration_card_number=$row->ration_card_number;
-                    $client->vul_1=$row->vul_1;
-                    $client->vul_2=$row->vul_2;
-                    $client->vul_3=$row->vul_3;
-                    $client->vul_4=$row->vul_4;
-                    $client->vul_5=$row->vul_5;
-                    $client->error_descriptions=$filed_error;
-                    $client->save();
-                    $this->import_errors="Missing filed is marked with red";
-                }
 
-            });
+                            $client=new Client;
+                            $client->client_number = $client_number;
+                            $client->individual_id = $individual_id;
+                            $client->full_name = $full_name;
+
+                            $client->sex = $sex;
+                            $client->age = $age;
+                            if ($age != null) {
+                                $agedef=intval(Date("Y")) - $age;
+                                $birthdate=$agedef."-01-01";
+                                $client->birth_date = $birthdate;
+                            }
+                            $client->marital_status = $marital_status;
+                            $client->spouse_name = $spouse_name;
+                            $client->care_giver = $care_giver;
+
+                            $client->date_arrival =$date_arrival;
+                            if($origin_id != ""){
+                                $client->origin_id = $origin_id;
+                            }
+                            $client->present_address =$present_address;
+                            $client->household_number = $row->t;
+                            $client->ration_card_number =$ration_card_number;
+                            $client->camp_id = $request->camp_id;
+                            $client->females_total = $females_total;
+                            $client->males_total = $males_total;
+                            $client->created_by = Auth::user()->username;
+                            $client->age_score= CommonConstant::getAgeScore($row->age);
+                            $client->save();
+
+                            //Generate computer number
+
+                            $psnCodes=array($row->vul_1,$row->vul_2,$row->vul_3,$row->vul_4,$row->vul_5);
+                            $hai_psn_code="";
+                            foreach ($psnCodes as $data )
+                            {
+                            if($data != "" && $data != null) {
+                                $hai_psn_code .= preg_replace('/\s+/S', "",$data) . "-";
+                            }
+                            }
+                            $hai_psn_code=substr($hai_psn_code,0,strlen($hai_psn_code)-1);
+                            $client->hai_reg_number="HAI-".str_pad($client->id,4,'0',STR_PAD_LEFT).$hai_psn_code;
+                            $client->save();
+
+                            //Save validation codes
+                            foreach ($psnCodes as $codeData )
+                            {
+
+                                $code =preg_replace('/\s+/S', "",$codeData);
+                                $pcode="";
+                                if($code != "")
+                                {
+
+                                if (count(PSNCode::where('code', '=',$code)->get()) > 0)
+                                    {
+                                        $pcode = PSNCode::where('code', '=',$code)->get()->first();
+
+                                    }
+                                    else
+                                        {
+
+                                            $categorycode="";
+                                            $arr=explode('-',$code);
+                                            if (isset($arr[0])) {
+                                                $categorycode = $arr[0];
+
+                                            }
+                                            $psncategory="";
+
+                                            if (count(PSNCodeCategory::where('code','=',$categorycode)->get()) > 0)
+                                            {
+                                                $psncategory=PSNCodeCategory::where('code','=',$categorycode)
+                                                            ->get()->first();
+
+
+                                            }
+                                            else{
+                                                $psncate = new PSNCodeCategory;
+                                                $psncate->code = $categorycode;
+                                                $psncate->description = $categorycode;
+                                                $psncate->definition = $categorycode;
+                                                $psncate->for_reporting = "Yes";
+                                                $psncate->created_by = Auth::user()->username;
+                                                $psncate->save();
+                                                $psncategory=$psncate;
+                                            }
+                                            if ($psncategory != "" && $code != "") {
+
+                                                $psc = new PSNCode;
+                                                $psc->code = strtoupper(strtolower($code));
+                                                $psc->category_id = $psncategory->id;
+                                                $psc->description = $code;
+                                                $psc->definition = $code;
+                                                $psc->for_reporting = "Yes";
+                                                $psc->definition = Auth::user()->username;
+                                                $psc->save();
+                                                $pcode = $psc;
+                                            }
+                                    }
+                                    if ($pcode != "") {
+                                        $codes = new ClientVulnerabilityCode;
+                                        $codes->client_id = $client->id;
+                                        $codes->code_id = $pcode->id;
+                                        $codes->save();
+                                    }
+
+                                }
+                            }
+
+                        }
+                    }
+                    else{
+                    $filed_error="";
+
+                        if($row->names == "" ){
+                            $filed_error .="Names is  Missing-";
+                        }
+                        if( $row->sex == "" ){
+                            $filed_error .="Sex is Missing-";
+                        }
+                        if(  !is_numeric($row->age)){
+                            $filed_error .="Age is Missing-";
+                        }
+                        if( $row->marital_status == "" ){
+                            $filed_error .="Marital Status is Missing-";
+                        }
+                        if( !is_numeric($row->m) ){
+                            $filed_error .="Number of males is Missing-";
+                        }
+                        if( !is_numeric($row->f)){
+                            $filed_error .="Number of females is Missing-";
+                        }
+                        if( !is_numeric($row->t) ){
+                            $filed_error .="HouseHold Number is Missing-";
+                        }
+                        if( $row->origin ==""){
+                            $filed_error .="Origin is Missing-";
+                        }
+                        if( $row->date_of_arrival == "" ){
+                            $filed_error .="date of arrival is Missing-";
+                        }
+                        if( $row->vul_1 == "" ){
+                            $filed_error .="Vulnerability code(s) is Missing-";
+                        }
+                        $filed_error=substr($filed_error,0,strlen($filed_error)-1);
+
+                        $client =new DumpClient;
+                        $client->unique_id=$row->unique_id;
+                        $client->individual_id=$row->individual_id;
+                        $client->names=$row->names;
+                        $client->sex=$row->sex;
+                        $client->age = $row->age;
+                        $client->marital_status=$row->marital_status;
+                        $client->name_of_parents=$row->name_of_parents;
+                        $client->name_of_spouse=$row->name_of_spouse;
+                        $client->m=$row->m;
+                        $client->f=$row->f;
+                        $client->t=$row->t;
+                        $client->origin=$row->origin;
+                        $client->date_of_arrival=$row->date_of_arrival;
+                        $client->present_address=$row->present_address;
+                        $client->ration_card_number=$row->ration_card_number;
+                        $client->vul_1=$row->vul_1;
+                        $client->vul_2=$row->vul_2;
+                        $client->vul_3=$row->vul_3;
+                        $client->vul_4=$row->vul_4;
+                        $client->vul_5=$row->vul_5;
+                        $client->error_descriptions=$filed_error;
+                        $client->save();
+                        $this->import_errors="Missing filed is marked with red";
+                    }
+
+                });
 
             });
             File::delete($orfile);
@@ -740,7 +737,11 @@ class ClientController extends Controller
     public function create() {
         //
         if (Auth::user()->hasPermission('create')) {
-            return view('clients.create');
+            return view('clients.create', [
+                'psnCodes' => PSNCode::all(),
+                'origins' => Origin::all(),
+                'camps' => Camp::all(),
+            ]);
         } else {
            return redirect('home');
         }
@@ -757,7 +758,7 @@ class ClientController extends Controller
                 'date_arrival' => 'required|before:tomorrow',
                 'ration_card_number' => 'required',
                 'camp_id' => 'required',
-                'vulnerability_code' => 'required',
+                'vulnerability_codes' => 'required',
                 'females_total' => 'required',
                 'males_total' => 'required',
                 'present_address'=> 'required',
@@ -772,7 +773,7 @@ class ClientController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ), 400); // 400 being the HTTP code for an invalid request.
             } else {
-                DB::transaction(function () use ($request) {
+                DB::transaction(function() use ($request) {
                     $client = new Client;
                     $client->client_number = strtoupper($request->client_number);
                     $client->individual_id = $request->individual_id;
@@ -810,14 +811,13 @@ class ClientController extends Controller
 
                     //Generate computer number
                     $vn = "";
-                    foreach ($request->vulnerability_code as $item) {
+                    foreach ($request->vulnerability_codes as $item) {
                         $code = PSNCode::find($item);
                         $vn .= $code->code."-,";
-                        $vn = substr($vn, 0, strlen($vn)-1);
+                        $vn = substr($vn, 0, strlen($vn) - 1);
                     }
-                    $vn = substr($vn,0,strlen($vn)-1);
-
-                    $client->hai_reg_number = "HAI-".str_pad($client->id, 4, '0', STR_PAD_LEFT). $vn;
+                    $vn = substr($vn, 0, strlen($vn) - 1);
+                    $client->hai_reg_number =  "HAI-" . str_pad($client->id, 4, '0', STR_PAD_LEFT). $vn;
                     $client->save();
 
                     //Save validation codes
@@ -825,7 +825,7 @@ class ClientController extends Controller
                         $item->delete();
                     }
 
-                    foreach ($request->vulnerability_code as $item) {
+                    foreach ($request->vulnerability_codes as $item) {
                         $codes = new ClientVulnerabilityCode;
                         $codes->client_id = $client->id;
                         $codes->code_id = $item;
@@ -879,7 +879,8 @@ class ClientController extends Controller
         //
         if (Auth::user()->hasPermission('viewer')) {
             $client = Client::find($id);
-            return view('clients.edit', compact('client'));
+            $psnCodes = PSNCode::all();
+            return view('clients.edit', compact('client', 'psnCodes'));
         }
         else{
             return redirect('home');
@@ -901,18 +902,18 @@ class ClientController extends Controller
                 'full_name' => 'required',
                 'sex' => 'required',
                 'age' => 'required',
+                'status' => 'required',
                 'marital_status' => 'required',
                 'origin' => 'required',
-                'date_arrival' => 'required|before:tomorrow',
+                'date_arrival' => 'required|date|before:tomorrow',
                 'ration_card_number' => 'required',
                 'camp_id' => 'required',
-                'vulnerability_code' => 'required',
+                'vulnerability_codes' => 'required',
                 'females_total' => 'required',
                 'males_total' => 'required',
                 'present_address'=> 'required',
                 'share_info' => 'required',
                 'hh_relation' => 'required',
-
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
@@ -934,8 +935,7 @@ class ClientController extends Controller
                 $client->marital_status = $request->marital_status;
                 $client->spouse_name = $request->spouse_name;
                 $client->care_giver = $request->care_giver;
-                if($request->date_arrival !="" && $request->date_arrival != null)
-                {
+                if($request->date_arrival != null && $request->date_arrival !="" ) {
                     $client->date_arrival = date("Y-m-d", strtotime("$request->date_arrival"));
                 }
                 $client->present_address = $request->present_address;
@@ -962,7 +962,7 @@ class ClientController extends Controller
                     $item->delete();
                 }
 
-                foreach ($request->vulnerability_code as $item) {
+                foreach ($request->vulnerability_codes as $item) {
                     $codes = new ClientVulnerabilityCode;
                     $codes->client_id = $client->id;
                     $codes->code_id = $item;

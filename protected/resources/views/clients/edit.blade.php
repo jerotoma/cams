@@ -237,16 +237,27 @@
                 </fieldset>
 
                 <div class="form-group ">
-                    <label>Vulnerability Code</label>
-                    <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="vulnerability_code[]" id="vulnerability_code">
+                <label>Vulnerability Code</label>
+                    <select multiple="multiple" class="bootstrap-select" data-live-search="true" data-width="100%" name="vulnerability_codes[]" id="vulnerability_code">
                         <optgroup label="Vulnerability Code">
-                            @foreach(\App\PSNCode::all() as $item)
-                                @if(count(\App\ClientVulnerabilityCode::where('code_id','=',$item->id)->where('client_id','=',$client->id)->get())>0)
-                                    <option value="{{$item->id}}" selected>{{$item->code}}</option>
+                            @if($client->vulnerabilityCodes != null && $client->vulnerabilityCodes->count() > 0)
+                                @foreach ($client->vulnerabilityCodes as $vulCode)
+                                        <option value="{{$vulCode->code->id}}" selected>{{$vulCode->code->code}}</option>
+                                @endforeach
+                            @endif
+
+                            @foreach($psnCodes as $item)
+                                @if($client->vulnerabilityCodes != null && $client->vulnerabilityCodes->count() > 0)
+                                    @foreach ($client->vulnerabilityCodes as $vulCode)
+                                        @if($vulCode->code->id != $item->id)
+                                            <option value="{{$item->id}}">{{$item->code}}</option>
+                                        @endif
+                                    @endforeach
                                 @else
                                     <option value="{{$item->id}}">{{$item->code}}</option>
                                 @endif
                             @endforeach
+
                         </optgroup>
                     </select>
                     @if($errors->first('vulnerability_code') !="")
@@ -291,14 +302,11 @@
                     </div>
                 </div>
                 <div class="form-group ">
-                    <label class="control-label">Client Status</label>
+                <label class="control-label">Client Status {{$client->status}}</label>
                     <select class="select" name="status" id="status" data-placeholder="Choose an option...">
-                        @if($client->status)
-                            <option value="{{$client->status}}" selected>{{$client->status}}</option>
-                        @endif
                         <option></option>
-                        <option value="Active">Active</option>
-                        <option value="In Active">In Active</option>
+                        <option value="Active" {{$client->status == 'Active' ? 'selected' : ''}} >Active</option>
+                        <option value="In Active" {{$client->status == 'In Active' ? 'selected' : ''}} >In Active</option>
                     </select>
                 </div>
 
@@ -387,7 +395,7 @@
             nationality: "required",
             date_arrival: "required",
             ration_card_number: "required",
-            vulnerability_code:"required",
+            vulnerability_codes:"required",
             camp_id:"required"
         },
         messages: {
@@ -410,7 +418,7 @@
             nationality: "Please origin is required",
             date_arrival: "Please arrival date is required",
             ration_card_number: "Please ration card number is required",
-            vulnerability_code: "Please  vulnerability code is required",
+            vulnerability_codes: "Please  vulnerability code is required",
             camp_id: "Please  Camp name is required"
         },
         submitHandler: function(form) {
