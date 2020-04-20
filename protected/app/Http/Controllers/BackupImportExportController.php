@@ -531,17 +531,14 @@ class BackupImportExportController extends Controller {
                 }
                 foreach ($xml->InventoriesReceived as $InventoriesReceived) {
                     foreach ($InventoriesReceived as $inventory_received) {
-
-
-
-                        if(count(InventoryReceived::where('reference_number','=',$inventory_received->reference_number)
+                       $mInventoryReceived =  InventoryReceived::where('reference_number','=',$inventory_received->reference_number)
                                 ->where('donor_ref','=',$inventory_received->donor_ref)
                                 ->where('received_from','=',$inventory_received->received_from)
                                 ->where('receiving_officer','=',$inventory_received->receiving_officer)
                                 ->where('project','=',$inventory_received->project)
-                                ->where('date_received','=',date("Y-m-d",strtotime($inventory_received->date_received)))->get()) <= 0)
-                        {
+                                ->where('date_received','=', date("Y-m-d", strtotime($inventory_received->date_received)));
 
+                        if($mInventoryReceived->count() <= 0) {
                             $inventoryReceived = new InventoryReceived;
                             $inventoryReceived->reference_number = $inventory_received->reference_number;
                             $inventoryReceived->date_received = date("Y-m-d", strtotime($inventory_received->date_received));
@@ -553,13 +550,9 @@ class BackupImportExportController extends Controller {
                             $inventoryReceived->comments = $inventory_received->comments;
                             $inventoryReceived->created_by = $inventory_received->created_by;
                             $inventoryReceived->save();
-
-                            foreach($inventory_received->ItemsReceived->ItemReceived as $item)
-                            {
-
-                                $itemReceived=$item;
-                                $item_id= $this->ImportInventoryItem($itemReceived->ItemsInventory);
-
+                            foreach($inventory_received->ItemsReceived->ItemReceived as $item) {
+                                $itemReceived = $item;
+                                $item_id = $this->ImportInventoryItem($itemReceived->ItemsInventory);
                                 if (count(ItemReceived::where('received_id','=',$itemReceived->id)
                                         ->where('item_id','=',$item_id)
                                         ->where('quantity','=',$itemReceived->quantity)
@@ -570,49 +563,39 @@ class BackupImportExportController extends Controller {
                                     $tmreceived->quantity = intval($itemReceived->quantity);
                                     $tmreceived->description = $itemReceived->description;
                                     $tmreceived->save();
-
                                     //Increase inventory
                                     $invItem=ItemsInventory::find($item_id);
                                     $invItem->quantity = intval($invItem->quantity) + intval($itemReceived->quantity);
                                     $invItem->status = "Available";
                                     $invItem->save();
                                 }
-
                             }
                         }
                     }
                 }
                 foreach ($xml->ItemsDisbursements as $itemsDisbursements) {
                     foreach ($itemsDisbursements as $itemDisbursement) {
-
-
-                        $camp_id=$this->ImportCamp($itemDisbursement->Camp);
-
-                        if(count(ItemsDisbursement::where('disbursements_date','=',date('Y-m-d', strtotime($itemDisbursement->disbursements_date)))
+                        $camp_id = $this->ImportCamp($itemDisbursement->Camp);
+                        $mItemsDisbursement = ItemsDisbursement::where('disbursements_date','=',date('Y-m-d', strtotime($itemDisbursement->disbursements_date)))
                                 ->where('disbursements_by','=',ucwords(strtolower($itemDisbursement->disbursements_by)))
                                 ->where('camp_id','=',$camp_id)
-                                ->where('comments','=',$itemDisbursement->comments)->get()) <=0 )
-                        {
+                                ->where('comments','=',$itemDisbursement->comments);
+                        if($mItemsDisbursement->count() <= 0) {
                             $distribution = new ItemsDisbursement;
                             $distribution->disbursements_date = date('Y-m-d', strtotime($itemDisbursement->disbursements_date));
                             $distribution->camp_id =  $camp_id;
                             $distribution->comments = $itemDisbursement->comments;
                             $distribution->disbursements_by = ucwords(strtolower($itemDisbursement->disbursements_by));
                             $distribution->save();
-
-                            foreach ($itemDisbursement->ItemsDisbursementItems->ItemsDisbursementItem as $itemsDisbursementItem)
-                            {
-
-
+                            foreach ($itemDisbursement->ItemsDisbursementItems->ItemsDisbursementItem as $itemsDisbursementItem) {
                                 $client_id=$this->ImportClient($itemsDisbursementItem->Client);
                                 $item_id= $this->ImportInventoryItem($itemsDisbursementItem->ItemsInventory);
-
-                                if (count(ItemsDisbursementItems::where('item_id', '=', $item_id)
+                                $mItemsDisbursementItems = ItemsDisbursementItems::where('item_id', '=', $item_id)
                                         ->where('distribution_id', '=', $distribution->id)
                                         ->where('client_id', '=', $client_id)
                                         ->where('distribution_date', '=', $itemsDisbursementItem->distribution_date)
-                                        ->where('quantity', '=', $itemsDisbursementItem->quantity)->get()) <=0
-                                ) {
+                                        ->where('quantity', '=', $itemsDisbursementItem->quantity);
+                                if ($mItemsDisbursementItems->count() <= 0) {
                                     $dist_items = new ItemsDisbursementItems;
                                     $dist_items->client_id = $client_id;
                                     $dist_items->item_id = $item_id;
@@ -620,36 +603,24 @@ class BackupImportExportController extends Controller {
                                     $dist_items->distribution_id = $distribution->id;
                                     $dist_items->distribution_date = $itemsDisbursementItem->distribution_date;
                                     $dist_items->save();
-                                    if (!isItemOutOfStock($item_id,intval($itemsDisbursementItem->quantity))) {
-                                        deductItems($item_id,intval($itemsDisbursementItem->quantity));
+                                    if (!isItemOutOfStock($item_id, intval($itemsDisbursementItem->quantity))) {
+                                        deductItems($item_id, intval($itemsDisbursementItem->quantity));
                                     }
                                 }
                             }
-
-
                         }
                     }
                 }
-            }
-            elseif($request->module =="5") {
-
+            } elseif($request->module == "5" ) {
                 foreach ($xml->BudgetActivities as $budgetActivities) {
                     foreach ($budgetActivities as $b_activity) {
-
-
                         $activity_id=$this->ImportActivity($b_activity);
                     }
                 }
-
-
                 foreach ($xml->CashProvisions as $cashProvisions) {
                     foreach ($cashProvisions as $cashProvision) {
-
-
-
-
-                        $activity_id=$this->ImportActivity($cashProvision->BudgetActivity);
-                            $camp_id=$this->ImportCamp($cashProvision->Camp);
+                        $activity_id = $this->ImportActivity($cashProvision->BudgetActivity);
+                        $camp_id = $this->ImportCamp($cashProvision->Camp);
 
 
                             if(!count(CashProvision::where('provision_date','=',$cashProvision->provision_date)

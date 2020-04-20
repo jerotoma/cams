@@ -9,6 +9,7 @@
     <!-- Global stylesheets -->
     <link href="{{asset("assets/css/googlefonts.css")}}" rel="stylesheet" type="text/css">
     <link href="{{asset("assets/css/icons/icomoon/styles.css")}}" rel="stylesheet" type="text/css">
+    <link href="{{asset("assets/css/icons/fontawesome/styles.min.css")}}" rel="stylesheet" type="text/css">
     <link href="{{asset("assets/css/bootstrap.css")}}" rel="stylesheet" type="text/css">
     <link href="{{asset("assets/css/core.css")}}" rel="stylesheet" type="text/css">
     <link href="{{asset("assets/css/components.css")}}" rel="stylesheet" type="text/css">

@@ -17,7 +17,6 @@
                 <ul>
                     <li class="{{Request::is('assessments/vulnerability') ? 'active' : ''}}"><a href="{{url('assessments/vulnerability')}}">Vulnerability Assessment</a></li>
                     <li class="{{Request::is('assessments/home') ? 'active' : ''}}"><a href="{{url('assessments/home')}}">Home Assessment </a></li>
-
                 </ul>
             </li>
             <li class="{{Request::is('referrals') ? 'active' : ''}}">
@@ -29,38 +28,38 @@
             <!-- /main -->
             <!-- Forms -->
             @permission('inventory')
-            <li class="{{
-                Request::is('items/distributions')  ||
-                Request::is('inventories')          ||
-                Request::is('inventory-received')   ||
-                Request::is('inventory-categories') ? 'active' : ''}}">
-                <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
-                <ul>
-                    <li class="{{Request::is('items/distributions') ? 'active' : ''}}"><a href="{{url('items/distributions')}}">Item Distribution</a></li>
-                    <li class="{{Request::is('inventory-received') ? 'active' : ''}}"><a href="{{url('inventory-received')}}">Received Items</a></li>
-                    <li class="{{Request::is('inventories') ? 'active' : ''}}"><a href="{{url('inventories')}}">Items Inventory</a></li>
-                    <li class="{{Request::is('inventory-categories') ? 'active' : ''}}"><a href="{{url('inventory-categories')}}">Items Categories</a></li>
-                </ul>
-            </li>
-            <li class="{{
-                Request::is('cash/monitoring/provision') ||
-                Request::is('cash/monitoring/budget')    ||
-                Request::is('post/cash/monitoring')  ? 'active' : ''}}">
-                <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
-                <ul>
-                    <li class="{{Request::is('cash/monitoring/provision') ? 'active' : ''}}"><a href="{{url('cash/monitoring/provision')}}">Cash Distributions</a></li>
-                    <li class="{{Request::is('cash/monitoring/budget') ? 'active' : ''}}"><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
-                    <li class="{{Request::is('post/cash/monitoring') ? 'active' : ''}}"><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
-                </ul>
-            </li>
+                <li class="{{
+                    Request::is('items/distributions')  ||
+                    Request::is('inventories')          ||
+                    Request::is('inventory-received')   ||
+                    Request::is('inventory-categories') ? 'active' : ''}}">
+                    <a href="#"><i class="icon-popout"></i> <span>NFIs Inventory</span></a>
+                    <ul>
+                        <li class="{{Request::is('items/distributions') ? 'active' : ''}}"><a href="{{url('items/distributions')}}">Item Distribution</a></li>
+                        <li class="{{Request::is('inventory-received') ? 'active' : ''}}"><a href="{{url('inventory-received')}}">Received Items</a></li>
+                        <li class="{{Request::is('inventories') ? 'active' : ''}}"><a href="{{url('inventories')}}">Items Inventory</a></li>
+                        <li class="{{Request::is('inventory-categories') ? 'active' : ''}}"><a href="{{url('inventory-categories')}}">Items Categories</a></li>
+                    </ul>
+                </li>
+                <li class="{{
+                    Request::is('cash/monitoring/provision') ||
+                    Request::is('cash/monitoring/budget')    ||
+                    Request::is('post/cash/monitoring')  ? 'active' : ''}}">
+                    <a href="#"><i class="fa fa-money"></i> <span>Cash Monitoring</span></a>
+                    <ul>
+                        <li class="{{Request::is('cash/monitoring/provision') ? 'active' : ''}}"><a href="{{url('cash/monitoring/provision')}}">Cash Distributions</a></li>
+                        <li class="{{Request::is('cash/monitoring/budget') ? 'active' : ''}}"><a href="{{url('cash/monitoring/budget')}}">Budget Register</a></li>
+                        <li class="{{Request::is('post/cash/monitoring') ? 'active' : ''}}"><a href="{{url('post/cash/monitoring')}}">Cash Post Distribution Monitoring</a></li>
+                    </ul>
+                </li>
             @endpermission
-            <li class="{{Request::is('cases') || Request::is('progressive/notices') ? 'active' : ''}}">
-                <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
-                <ul>
-                    <li class="{{Request::is('cases') ? 'active' : ''}}"><a href="{{url('cases')}}">Case Management</a></li>
-                    <li class="{{Request::is('progressive/notices') ? 'active' : ''}}"><a href="{{url('progressive/notices')}}">Progressive Note</a></li>
-                </ul>
-            </li>
+                <li class="{{Request::is('cases') || Request::is('progressive/notices') ? 'active' : ''}}">
+                    <a href="#"><i class="icon-grid"></i> <span>Progress Monitoring</span></a>
+                    <ul>
+                        <li class="{{Request::is('cases') ? 'active' : ''}}"><a href="{{url('cases')}}">Case Management</a></li>
+                        <li class="{{Request::is('progressive/notices') ? 'active' : ''}}"><a href="{{url('progressive/notices')}}">Progressive Note</a></li>
+                    </ul>
+                </li>
             @permission('backup')
                 <!-- Backup Restore-->
                 <li class="{{Request::is('backup/import/advanced') ? 'active' : ''}}">
