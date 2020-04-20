@@ -17,7 +17,6 @@ class ExportXMLGeneratorUtility {
     }
 
     public function generateClientReferrals($clientReferrals) {
-
         if ($clientReferrals == null || count($clientReferrals) <= 0) {
             return '';
         }

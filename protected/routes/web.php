@@ -275,7 +275,7 @@ Route::post('backup/import/advanced','BackupImportExportController@postImport');
 
 Route::get('backup/export/advanced','BackupImportExportController@showExport');
 Route::post('backup/export/advanced','BackupImportExportController@postExport');
-
+Route::delete('/backup/export/advanced/downloads', 'BackupImportExportController@deleteFile');
 Route::get('backup/export/advanced/downloads','BackupImportExportController@downloadDocs');
 
 Route::prefix('rest/secured')->group(function () {

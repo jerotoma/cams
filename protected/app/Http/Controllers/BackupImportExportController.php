@@ -76,18 +76,60 @@ class BackupImportExportController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function downloadDocs(Request $request) {
+    public function deleteFile(Request $request) {
+        ob_clean(); //Clean any empty spaces
         $this->validate($request, [
             'filePath' => 'required',
         ]);
         try {
             $filePath = $request->filePath . '.xml';
             if ($this->storage->exists($filePath)) {
-                return $this->storage->download($filePath);
+                //dd(strlen($this->storage->get($filePath)) . ' Size: ' . $this->storage->size($filePath));
+                $name = substr($filePath, (strrpos($filePath, '/') + 1));
+                $isDeleted = $this->storage->delete($filePath);
+
+                return response()->json([
+                    'success' => $isDeleted,
+                    'message' => $isDeleted ? 'File ' . $name . ' has been deleted' : 'File ' . $name . ' hasn\'t been deleted'
+                ]);
+            }
+            return response()->json([
+                    'success' => false,
+                    'message' => 'File ' . $name . 'doesn\'t exists'
+                ]);
+        } catch (\Exception $ex) {
+            return response()->json([
+                'success' => false,
+                'message' => $ex->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function downloadDocs(Request $request) {
+        ob_clean(); //Clean any empty spaces
+        $this->validate($request, [
+            'filePath' => 'required',
+        ]);
+        try {
+            $filePath = $request->filePath . '.xml';
+            if ($this->storage->exists($filePath)) {
+                //dd(strlen($this->storage->get($filePath)) . ' Size: ' . $this->storage->size($filePath));
+                $name = substr($filePath, (strrpos($filePath, '/') + 1));
+                $headers = array(
+                    'Content-length' => $this->storage->size($filePath),
+                    'Content-Disposition' => 'attachment; filename=' . $name,
+                    'Content-Type' => 'text/xml charset=UTF-8'
+                );
+                return $this->storage->download($filePath, $name, $headers);
             }
             return redirect()->back()->with('message', 'File ' .$filePath. 'doesn\'t exists');
         } catch (\Exception $ex) {
-            return redirect()->back()->with('message',$ex->getMessage());
+            return redirect()->back()->with('message', $ex->getMessage());
         }
     }
     /**
